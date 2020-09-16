@@ -5,6 +5,7 @@ require "duke/interventions"
 require "duke/harvest_receptions"
 require "duke/version"
 require "duke/rails/engine"
+require "fuzzystringmatch"
 
 module Duke
   class Error < StandardError; end

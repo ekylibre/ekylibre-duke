@@ -8,7 +8,7 @@ Duke currently handles harvest receptions (viti) and vegetal/viti interventions
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'duke', gitlab: 'ekylibre/ekylibre-duke', branch: 'master'
+gem 'duke', gitlab: 'ekylibre/ekylibre-duke', branch: 'dev'
 ```
 
 And then execute:
