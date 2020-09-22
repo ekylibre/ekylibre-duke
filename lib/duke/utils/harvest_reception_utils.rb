@@ -20,10 +20,17 @@ module Duke
         end
         sentence+= "<br>&#8226 Quantité : #{params[:parameters]['quantity']['rate'].to_s} #{params[:parameters]['quantity']['unit']}"
         sentence+= "<br>&#8226 TAVP : #{params[:parameters]['tav'].to_s} % vol"
-        sentence+= "<br>&#8226 Destination : "
+        sentence+= "<br>&#8226 Destination(s) : "
         params[:destination].each do |destination|
           sentence+= destination[:name]
           sentence+= " (#{destination[:quantity].to_s} hl), " if destination.key?('quantity')
+        end
+        unless !params.key?("press")
+          sentence+= "<br>&#8226 Pressoir(s) : "
+          params[:press].each do |press|
+            sentence+= press[:name]
+            sentence+= " (#{press[:quantity].to_s} hl), " if press.key?('quantity')
+          end
         end
         sentence+= "<br>&#8226 Date : #{params[:date].to_datetime.strftime("%d/%m/%Y - %H:%M")}"
         unless params[:parameters]['temperature'].nil?
@@ -49,9 +56,6 @@ module Duke
         end
         unless params[:parameters]['assimilated_nitrogen'].nil?
           sentence+= "<br>&#8226 Azote assimilable : #{params[:parameters]['assimilated_nitrogen']} mg/L"
-        end
-        unless params[:parameters]['pressing'].nil?
-          sentence+= "<br>&#8226 Pressurage spécifié"
         end
         unless params[:parameters]['pressing_tavp'].nil?
           sentence+= "<br>&#8226 TAVP jus de presse : #{params[:parameters]['pressing_tavp'].to_s} % vol "
@@ -87,6 +91,19 @@ module Duke
         params[:destination].each_with_index do |cuve, index|
           unless cuve.key?("quantity")
             sentence += cuve[:name]
+            return sentence, index
+          end
+        end
+      end
+
+      def speak_pressing_hl(params)
+        # Creates "How much hectoliters in Cuve 1 ?"
+        # Return the sentence, and the index of the destination inside params[:destination] to transfer as an optional value to IBM
+        I18n.locale = :fra
+        sentence = I18n.t("duke.harvest_reception.how_much_to_#{rand(0...2)}")
+        params[:press].each_with_index do |press, index|
+          unless press.key?("quantity")
+            sentence += press[:name]
             return sentence, index
           end
         end
@@ -428,7 +445,7 @@ module Duke
         # Find what we should ask the user next for an harvest reception
         if parsed[:retry] == 2
           return "cancel", nil, nil
-        end 
+        end
         unless parsed[:ambiguities].to_a.empty?
           return "ask_ambiguity", nil, parsed[:ambiguities][0]
         end
@@ -445,6 +462,12 @@ module Duke
         if parsed[:destination].to_a.length > 1 and parsed[:destination].any? {|dest| !dest.key?("quantity")}
           sentence, optional = speak_destination_hl(parsed)
           return "ask_destination_quantity", sentence, optional
+        end
+        unless !parsed.key?(:press)
+          if parsed[:press].to_a.length > 1 and parsed[:press].any? {|press| !press.key?("quantity")}
+            sentence, optional = speak_pressing_hl(parsed)
+            return "ask_pressing_quantity", sentence, optional
+          end
         end
         if parsed[:parameters]["tav"].nil?
           return "ask_tav", nil, nil

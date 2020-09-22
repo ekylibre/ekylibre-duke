@@ -90,7 +90,11 @@ module Duke
         what_next, sentence, optional = redirect(parsed)
         return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
       end
-      parsed[:destination][params[:optional]][:quantity] = value
+      if parameter == "destination"
+        parsed[:destination][params[:optional]][:quantity] = value
+      else
+        parsed[:press][params[:optional]][:quantity] = value
+      end
       parsed[:user_input] += " - (Quantité) #{params[:user_input]}"
       parsed[:retry] = 0
       what_next, sentence, optional = redirect(parsed)
@@ -162,7 +166,7 @@ module Duke
     def handle_parse_disambiguation(params)
       parsed = params[:parsed]
       ambElement = params[:optional][-2]
-      ambType, ambArray = parsed.find { |key, value| value.is_a?(Array) and value.any? { |subhash| subhash[:name] == ambElement[:name]}}
+      ambType, ambArray = parsed.find { |key, value| value.is_a?(Array) and key != "ambiguities" and value.any? { |subhash| subhash[:name] == ambElement[:name]}}
       ambHash = ambArray.find {|hash| hash[:name] == ambElement[:name]}
       begin
         chosen_one = eval(params[:user_input])
@@ -206,9 +210,25 @@ module Duke
     end
 
     def handle_add_pressing(params)
-      #look_for press 
-      what_next, sentence, optional = redirect(params[:parsed])
-      return  { :parsed => params[:parsed], :asking_again => what_next, :sentence => sentence, :optional => optional}
+      parsed = params[:parsed]
+      user_input = clear_string(params[:user_input])
+      Ekylibre::Tenant.switch params['tenant'] do
+        press = []
+        new_parsed = {:press => press,
+                      :date => parsed[:date]}
+        extract_user_specifics(user_input, new_parsed)
+        parsed[:press] = new_parsed[:press]
+        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
+      end
+      parsed[:user_input] += " (Pressoir) #{params[:user_input]}"
+      what_next, sentence, optional = redirect(parsed)
+      if what_next == params[:current_asking] and optional == params[:optional]
+        parsed[:retry] += 1
+        what_next, sentence, optional = redirect(parsed)
+        return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
+      end
+      parsed[:retry] = 0
+      return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
     end
 
     def handle_add_complementary(params)

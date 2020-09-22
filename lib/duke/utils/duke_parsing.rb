@@ -231,7 +231,7 @@ module Duke
         # Find ambiguities in what's been parsed, ie items with close fuzzy match for the best words that matched
         ambiguities = []
         parsed.each do |key, reco|
-          if [:targets, :destination, :crop_groups, :equipments, :workers, :inputs].include?(key)
+          if [:targets, :destination, :crop_groups, :equipments, :workers, :inputs, :press].include?(key)
             reco.each do |anItem|
               unless anItem[:distance] == 1
                 ambig = []
@@ -248,6 +248,8 @@ module Duke
                   iterator = Worker.availables(at: parsed[:date]).each
                 elsif key == :crop_groups
                   iterator = CropGroup.all.where("target = 'plant'")
+                elsif key == :press
+                  iterator = Matter.availables(at: parsed[:date]).can('press(grape)')
                 end
                 iterator.each do |product|
                   if anItem[:key] != product[:id] and (anItem[:distance] - @@fuzzloader.getDistance(clear_string(product[:name]), clear_string(anItem_name))).between?(0,0.02)
@@ -295,7 +297,8 @@ module Duke
                          :inputs =>(Matter.availables(at: parsed[:date]).where("nature_id=45")  if parsed[:procedure] and !Procedo::Procedure.find( parsed[:procedure]).parameters_of_type(:input).empty?) || [],
                          :crop_groups => CropGroup.all,
                          :destination => Matter.availables(at: parsed[:date]).where("variety='tank'"),
-                         :targets => Plant.availables(at: parsed[:date])}
+                         :targets => Plant.availables(at: parsed[:date]),
+                         :press => Matter.availables(at: parsed[:date]).can('press(grape)')}
         user_specifics = parsed.select{ |key, value| iterators_dic.key?(key)}
         create_words_combo(user_input).each do |index, combo|
           level = 0.89
