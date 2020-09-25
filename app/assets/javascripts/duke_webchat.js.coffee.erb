@@ -1,0 +1,139 @@
+$(document).behave "load", "duke[data-current-account]", ->
+  delete_session = ->
+      $.ajax '/duke_delete_session',
+        type: 'post'
+      return undefined;
+  add_received_msg = (msg) ->
+    $.each msg, (index, value) ->
+        if value.response_type == "text"
+          output_received_msg(value.text)
+        else if value.response_type == "option"
+          output_received_msg(value.title)
+          options = []
+          $.each value.options, (index, value) ->
+            options.push(value)
+            return
+          output_option(options)
+      return
+    return
+
+  output_option = (options) ->
+    $('.msg_container_base').append('<div class="row msg_container options"/>')
+    $.each options, (index, op) ->
+      $('.row.msg_container.options').last().append('<button type="button" id="gb11" data-value= '+op.value.input.text+' class="gb gb-bordered hover-slide hover-fill gb-rounded option ">'+op.label+'</button>')
+      return
+    $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
+    return
+
+  output_received_msg = (msg) ->
+    if msg != "null"
+      $('.msg_container_base').append('<div class="msg-list">
+                                        <div class="messenger-container">
+                                          <p>'+msg+'</p>
+                                        </div>
+                                      </div>');
+      $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
+    return
+
+  add_sent_msg = (msg) ->
+    if msg != ""
+      $('.msg_container_base').append('<div class="msg-list sender">
+                                        <div class="messenger-container">
+                                          <p>'+msg+'</p>
+                                        </div>
+                                      </div>');
+      $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
+    return
+
+  send_msg =  ->
+    msg = $("#duke-input").val()
+    console.log("le message : "+msg)
+    add_sent_msg(msg)
+    $('#btn-send').prop("disabled",true);
+    $("#btn-send").toggleClass("send-enabled",false)
+    $("#duke-input").val("")
+    $('#btn-send').prop("disabled",true);
+    console.log("le tenant : "+tenant)
+    console.log("le account : "+account)
+    $.ajax '/duke_send_msg',
+      type: 'post'
+      data:
+        "msg": msg
+        "user_id": account
+        "tenant": tenant
+      dataType: 'json'
+      success: (data, status, xhr) ->
+        $("#duke-input").val("")
+        add_received_msg(data)
+        return
+    return
+
+  create_session =  ->
+    $.ajax '/duke_create_session',
+      type: 'post'
+      dataType: 'json'
+      data:
+        "user_id": account
+        "tenant": tenant
+      success: (data, status, xhr) ->
+        add_received_msg(data)
+        return
+    return
+
+  account = $(this).data('current-account')
+  tenant = $(this).data('current-tenant')
+  language = $(this).data('current-language')
+  window.onbeforeunload = delete_session
+  $(document).on 'click', '#btn_chat', (e) ->
+    $('.btn-chat').hide()
+    $('.chat-window').show()
+    create_session()
+    return
+
+  $(document).on 'click', '.fas.fa-minus', (e) ->
+    $('.chat-window').hide()
+    $('.btn-chat').show()
+    return
+
+  $(document).on 'click', '#btn-send', (e) ->
+    send_msg()
+    return
+
+
+  $(document).on 'click', '.option',  ->
+    target = event.target || event.srcElement;
+    option_container = $(this).parent()
+    current_option = $(this).data("value")
+    $.each option_container.children(), (index, option) ->
+      if $(option).data("value") == current_option
+        $(option).toggleClass( "hover-fill hover-slide selected")
+      else
+        $(option).toggleClass( "hover-fill hover-slide disabled");
+      $(option).prop("disabled",true);
+      return
+    add_sent_msg(target.innerHTML)
+    $.ajax '/duke_send_msg',
+      type: 'post'
+      data:
+        "msg": $(this).data("value")
+        "user_id": account
+        "tenant": tenant
+      dataType: 'json'
+      success: (data, status, xhr) ->
+        # success callback function
+        add_received_msg(data)
+        return
+    return
+
+  $('#duke-input').keydown (e) ->
+    code = if e.keyCode then e.keyCode else e.which
+    if code == 13
+      send_msg()
+      return false
+    else if $("#duke-input").val() == ""
+      $('#btn-send').prop("disabled",true);
+      $("#btn-send").toggleClass("send-enabled",false)
+    else
+      $('#btn-send').prop("disabled",false);
+      $("#btn-send").toggleClass("send-enabled",true)
+    return

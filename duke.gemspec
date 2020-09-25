@@ -16,4 +16,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_runtime_dependency 'rchardet', "~> 1.8.0"
   spec.add_runtime_dependency 'fuzzy-string-match', "~> 1.0.1"
+  spec.add_runtime_dependency 'ibm_watson'
 end

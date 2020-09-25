@@ -1,0 +1,14 @@
+%nav#bottom_right
+  %submit#btn_chat.btn-chat
+  #chat_window_1.row.chat-window.col-xs-5.col-md-3
+    #panel_default.panel.panel-default
+      #top_bar.panel-heading.top-bar
+        Duke
+        %a.minus-link{:href => "#"}
+          %i.fas.fa-minus
+      .msg_container_base
+      #under_container.msg_container_under
+        .flex
+          %textarea#duke-input.duke-input{:placeholder => "Saisissez votre texte ...", :spellcheck => "false"}
+          %button#btn-send{:disabled => "disabled"}
+            Envoyer
