@@ -1,4 +1,6 @@
 require "fuzzystringmatch"
+require "ibm_watson"
+require "duke/duke_webchat.rb"
 require "duke/utils/duke_parsing"
 require "duke/utils/intervention_utils"
 require "duke/utils/harvest_reception_utils"

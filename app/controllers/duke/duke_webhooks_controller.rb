@@ -1,6 +1,6 @@
 module Duke
   class DukeWebhooksController < ApplicationController
-  skip_before_action :verify_authenticity_token
+    skip_before_action :verify_authenticity_token
 
     def handle_webhook
       begin
