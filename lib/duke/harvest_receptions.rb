@@ -245,6 +245,7 @@ module Duke
     end
 
     def handle_save_harvest_reception(params)
+      I18n.locale = :fra
       parsed = params[:parsed]
       Ekylibre::Tenant.switch params['tenant'] do
         # Checking recognized storages

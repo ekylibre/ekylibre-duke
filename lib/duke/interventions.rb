@@ -156,6 +156,7 @@ module Duke
 
 
     def handle_save_intervention(params)
+      I18n.locale = :fra
       Ekylibre::Tenant.switch params['tenant'] do
         tools_attributes = []
         params[:parsed][:equipments].to_a.each do |tool|
