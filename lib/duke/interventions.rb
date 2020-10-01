@@ -18,7 +18,7 @@ module Duke
                   :date => date,
                   :user_input => params[:user_input]}
         extract_user_specifics(user_input, parsed)
-        add_input_rate(user_input, inputs)
+        add_input_rate(user_input, parsed[:inputs])
         parsed[:ambiguities] = find_ambiguity(parsed, user_input)
         what_next, sentence, optional = redirect(parsed)
         return  { :parsed => parsed, :sentence => sentence, :redirect => what_next, :optional => optional  }
