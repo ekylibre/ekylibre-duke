@@ -10,8 +10,8 @@ module Duke
     end
 
     def delete_session(assistant, assistant_id, duke_id)
-      response = @assistant.delete_session(
-        assistant_id: @assistant_id,
+      response = assistant.delete_session(
+        assistant_id: assistant_id,
         session_id: duke_id
       )
       return ""

@@ -10,5 +10,11 @@ require "duke/version"
 require "duke/rails/engine"
 
 module Duke
-  class Error < StandardError; end
+  class WebChatRender < ApplicationController
+    def render_webchat
+      render partial: 'duke'
+    end
+  end
+  wC = WebChatRender.new()
+  wC.render_webchat()
 end
