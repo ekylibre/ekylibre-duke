@@ -36,6 +36,19 @@ module Duke
         return sentence.gsub(/, <br>&#8226/, "<br>&#8226")
       end
 
+      def speak_input_rate(params)
+        # Creates "Combien de kg de bouillie bordelaise ont été utilisés ? "
+        # Return the sentence, and the index of the destination inside params[:destination] to transfer as an optional value to IBM
+        unit_to_human = {:net_mass => :kilogrammes, :net_volume => :litres, :population => :unités}
+        I18n.locale = :fra
+        params[:inputs].each_with_index do |input, index|
+          if input[:rate][:value].nil?
+            sentence = I18n.t("duke.interventions.how_much_inputs_#{rand(0...2)}", input: input[:name], unit: unit_to_human[input[:rate][:unit].to_sym])
+            return sentence, index
+          end
+        end
+      end
+
       def add_input_rate(content, recognized_inputs)
         # This function adds a 1 population quantity to every input that has been found
         # Next step could be to match this type of regex : /{1,3}(g|kg|litre)(d)(de)? *{1}/
@@ -54,21 +67,19 @@ module Duke
           else
             unit = :population
             rate = nil
-            factor = nil
             area = nil
           end
-          unless rate.nil?
-            unit, factor = get_input_indicator(unit, input, area)
-          end
+          unit, factor = get_input_indicator(unit, input, area)
           input[:rate] = {:value => rate, :unit => unit, :factor => factor}
         end
         return recognized_inputs
-        # Matter.where('id = 93').first.indicators_list.include? (:net_mass)
       end
 
       def get_input_indicator(unit, input, area)
-        if Matter.where("id = #{input[:key]}").first.indicators_list.include? (:net_mass)
-          if unit.match(/(gramme|\bg\b)/)
+        if Matter.where("id = #{input[:key]}").first.has_indicator?(:net_mass)
+          if unit == :population
+            return :net_mass, 1
+          elsif unit.match(/(gramme|\bg\b)/)
             return :net_mass, 0.001 if area.nil?
             return :mass_area_density, 0.001
           elsif unit.match(/(kilo|kg)/)
@@ -79,8 +90,10 @@ module Duke
             return :mass_area_density, 1000
           end
         end
-        if Matter.where("id = #{input[:key]}").first.indicators_list.include? (:net_volume)
-          if unit.match(/(litre|l\b)/)
+        if Matter.where("id = #{input[:key]}").first.has_indicator?(:net_volume)
+          if unit == :population
+            return :net_volume, 1
+          elsif unit.match(/(litre|l\b)/)
             return :net_volume, 1 if area.nil?
             return :volume_area_density, 1
           elsif unit.match(/(hectolitre|hl\b)/)
@@ -92,8 +105,15 @@ module Duke
       end
 
       def redirect(parsed)
+        if parsed[:retry] == 2
+          return "cancel", nil, nil
+        end
         unless parsed[:ambiguities].to_a.empty?
           return "ask_ambiguity", nil, parsed[:ambiguities][0]
+        end
+        if parsed[:inputs].to_a.any? {|input| input[:rate][:value].nil?}
+          sentence, optional = speak_input_rate(parsed)
+          return "ask_input_rate", sentence, optional
         end
         return "save", speak_intervention(parsed), nil
       end

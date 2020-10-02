@@ -16,7 +16,8 @@ module Duke
                   :procedure => procedure,
                   :duration => duration,
                   :date => date,
-                  :user_input => params[:user_input]}
+                  :user_input => params[:user_input],
+                  :retry => 0}
         extract_user_specifics(user_input, parsed)
         add_input_rate(user_input, parsed[:inputs])
         parsed[:ambiguities] = find_ambiguity(parsed, user_input)
@@ -152,6 +153,21 @@ module Duke
         what_next, sentence, optional = redirect(parsed)
         return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
       end
+    end
+
+    def handle_parse_input_quantity(params)
+      parsed = params[:parsed]
+      value = extract_number_parameter(params[:quantity], params[:user_input])
+      if value.nil?
+        parsed[:retry] += 1
+        what_next, sentence, optional = redirect(parsed)
+        return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
+      end
+      parsed[:inputs][params[:optional]][:rate][:value] = value
+      parsed[:user_input] += " - (Quantité) #{params[:user_input]}"
+      parsed[:retry] = 0
+      what_next, sentence, optional = redirect(parsed)
+      return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
     end
 
 
