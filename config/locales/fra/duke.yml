@@ -1,0 +1,13 @@
+fra:
+  duke:
+    interventions:
+      save_intervention_0: "Voulez vous enregistrer cette intervention :"
+      save_intervention_1: "Validez vous la saisie de cette intervention :"
+      save_intervention_2: "Confirmez vous l'enregistrement de cette intervention :"
+      how_much_inputs_0: "Combien de %{unit} de %{input} ont été utilisés ?"
+      how_much_inputs_1: "Combien de %{unit} de %{input} avez-vous utilisé ?"
+    harvest_reception:
+      save_harvest_reception_0: "Validez vous cette réception de vendange :"
+      save_harvest_reception_1: "Voulez vous saisir la réception de vendange suivante :"
+      how_much_to_0: "Combien d'hectolitres de vendanges sont allés dans la "
+      how_much_to_1: "Combien d'hectolitres ont été transférés vers la "
