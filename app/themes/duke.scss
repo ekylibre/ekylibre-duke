@@ -10,22 +10,21 @@
   z-index:1000000;
 }
 .btn-chat{
-    background-image: image-url("assistant.png");
-    background-repeat: no-repeat;
-    width:70px;
-    height:70px;
     position: fixed;
     bottom: 3%;
-    right: 3%;
+    left: 3%;
+    background-color: $base-color;
+    -webkit-transition: background-color 2s ease-out;
+    -moz-transition: background-color 2s ease-out;
+    -o-transition: background-color 2s ease-out;
+    transition: background-color 2s ease-out;
+    .fa-comment-alt{
+      margin: 10px 10px 10px 10px;
+      color: white;
+    }
   }
 .btn-chat:hover {
-  background-color: $base-color;
-}
-.btn-send{
-  appearance: none;
-  border: none;
-  background-color: #FFFFFF;
-  margin: auto;
+  background-color: black;
 }
 .send-enabled{
   border-style: solid;
@@ -33,6 +32,33 @@
   border-color: $base-color;
   background-color: $base-color;
   color: white;
+  .fa-caret-right{
+    color: white;
+  }
+  .fa-microphone{
+    color: white;
+  }
+}
+.fa-microphone{
+  color: $base-color;
+  margin: 10px 10px 10px 10px;
+}
+.fa-caret-right{
+  color: $base-color;
+  margin: 10px 20px 10px 20px;
+}
+.fa-spin{
+  color: $base-color;
+}
+.btn-mic{
+  border-style: solid;
+  border-width: 1px 1px 1px 1px;
+  border-color: $base-color;
+}
+.btn-send{
+  border-style: solid;
+  border-width: 1px 1px 1px 0px;
+  border-color: $base-color;
 }
 .chat-window{
   display:none;
@@ -51,15 +77,23 @@
     width: 100%;
 }
 .duke-input {
-  width: 84%;
-  max-height: 20px;
+  width: 100%;
+  max-height: 53px;
   background-color: #FFFFFF;
   resize: none;
   border-style: solid;
-  border-width: 2px 2px 2px 2px;
-  padding-top: 10px;
+  border-width: 1px 0px 1px 0px;
+  border-color: $base-color;
+  border-radius: 0px;
   font-size: 15px;
   font-family: Georgia, serif;
+}
+.duke-input:focus {
+    outline: none !important;
+    border-style: solid;
+    border-width: 1px 1px 1px 0px;
+    border-color: $base-color;
+    box-shadow: none;
 }
 .duke-input::-webkit-scrollbar {
    display: none;
@@ -125,6 +159,15 @@
    min-width: 20%;
    position: relative; box-sizing: border-box;
    box-shadow: 7px 10px 6px -5px #BBC0C7;
+}
+.responding-container {
+   padding: 8px 15px 8px 13px;
+   margin: 0 50px 25px 35px;
+   float: left;
+   max-width: 82%;
+   background: #FFFFFF;
+   min-width: 20%;
+   position: relative; box-sizing: border-box;
 }
 .messenger-container p {
   color: #3D3D3D;
@@ -211,4 +254,8 @@
 }
 .disabled {
   background-color: grey;
+}
+a.disabled-send {
+  pointer-events: none;
+  cursor: default;
 }

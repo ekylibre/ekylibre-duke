@@ -27,10 +27,5 @@ module Duke
       render json: resp
     end
 
-    def delete_session
-      resp = @webChat.delete_session()
-      render json: resp
-    end
-
   end
 end
