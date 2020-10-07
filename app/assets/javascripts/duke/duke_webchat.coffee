@@ -1,6 +1,5 @@
 ((E, $) ->
   'use strict'
-  alert ("bonjour")
   $(document).behave "load", "duke[data-current-account]", ->
     account = $(this).data('current-account')
     tenant = $(this).data('current-tenant')
