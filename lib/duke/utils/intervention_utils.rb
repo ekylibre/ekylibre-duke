@@ -99,7 +99,7 @@ module Duke
           elsif unit.match(/(gramme|g)/)
             return :net_mass, 0.001 if area.nil?
             return :mass_area_density, 0.001
-          elsif unit.match(/(tonne|t)/)
+          elsif unit.match(/(tonne)/) || unit == "t"
             return :net_mass, 1000 if area.nil?
             return :mass_area_density, 1000
           end
@@ -109,7 +109,7 @@ module Duke
             return :net_volume, 1
           elsif unit.match(/(hectolitre|hl)/)
             return :net_volume, 100 if area.nil?
-            return :volume_area_density, 1
+            return :volume_area_density, 100
           elsif unit.match(/(litre|l)/)
             return :net_volume, 1 if area.nil?
             return :volume_area_density, 1
