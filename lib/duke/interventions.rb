@@ -7,8 +7,7 @@ module Duke
         return if Procedo::Procedure.find(procedure).nil?
         equipments, workers, inputs, crop_groups = [], [], [], []
         # Finding when it happened and how long it lasted, + getting cleaned user_input
-        duration, user_input = extract_duration(clear_string(params[:user_input]))
-        date, user_input = extract_date(user_input)
+        date, duration, user_input = extract_date_and_duration(clear_string(params[:user_input]))
         parsed = {:inputs => inputs,
                   :workers => workers,
                   :equipments => equipments,
@@ -126,8 +125,7 @@ module Duke
 
     def handle_modify_temporality(params)
       parsed = params[:parsed]
-      date, user_input = extract_date(clear_string(params[:user_input]))
-      duration, user_input = extract_duration(user_input)
+      date, duration, user_input = extract_date_and_duration(clear_string(params[:user_input]))
       parsed[:date] = choose_date(date, parsed[:date])
       parsed[:duration] = choose_duration(duration, parsed[:duration])
       parsed[:user_input] += " - (Temporalité) #{params[:user_input]}"
@@ -187,8 +185,8 @@ module Duke
           params[:parsed][:inputs].to_a.each do |input|
             inputs_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:input)[0].name,
                                                "product_id" => input[:key],
-                                               "quantity_value" => input[:rate][:value],
-                                               "quantity_population" => input[:rate][:value],
+                                               "quantity_value" => input[:rate][:value].to_f*input[:rate][:factor],
+                                               "quantity_population" => input[:rate][:value].to_f*input[:rate][:factor],
                                                "quantity_handler" => input[:rate][:unit]})
           end
         end
@@ -210,7 +208,7 @@ module Duke
                                             doers_attributes: doers_attributes,
                                             targets_attributes: targets_attributes,
                                             inputs_attributes: inputs_attributes,
-                                            working_periods_attributes:   [ { "started_at": Time.zone.parse(date) - duration.minutes, "stopped_at": date}])
+                                            working_periods_attributes:   [ { "started_at": Time.zone.parse(date) , "stopped_at": Time.zone.parse(date) + duration.minutes}])
         return {"link" => "\\backend\\interventions\\"+intervention['id'].to_s}
       end
     end
