@@ -277,11 +277,11 @@ module Duke
           parsed[:parameters]['quantity']['rate'] *= 1000
         end
         # Extract quantity per target in correlation with area harvested
-        total_area = targets_attributes.values.inject(0) {|sum, tar| sum + Plant.find_by(id: tar["plant_id"])&.net_surface_area&.to_f* tar["harvest_percentage_received"].to_f/100  }
-        targets_attributes.values.each do |tar|
-          tar["quantity"] = {"value" => parsed[:parameters]['quantity']['rate']* Plant.find_by(id: tar["plant_id"])&.net_surface_area&.to_f* tar["harvest_percentage_received"].to_f/(100 * total_area),
-                            "unit" => ("kilogram" if ["kg","t"].include?(parsed[:parameters]['quantity']['unit' ])) || "hectoliter" }
-        end
+        # total_area = targets_attributes.values.inject(0) {|sum, tar| sum + Plant.find_by(id: tar["plant_id"])&.net_surface_area&.to_f* tar["harvest_percentage_received"].to_f/100  }
+        # targets_attributes.values.each do |tar|
+        #  tar["quantity"] = {"value" => parsed[:parameters]['quantity']['rate']* Plant.find_by(id: tar["plant_id"])&.net_surface_area&.to_f* tar["harvest_percentage_received"].to_f/(100 * total_area),
+        #                   "unit" => ("kilogram" if ["kg","t"].include?(parsed[:parameters]['quantity']['unit' ])) || "hectoliter" }
+        # end
 
         analysis = Analysis.create!({
          nature: "vine_harvesting_analysis",
