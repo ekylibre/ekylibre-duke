@@ -6,6 +6,7 @@ fra:
       save_intervention_2: "Confirmez vous l'enregistrement de cette intervention :"
       how_much_inputs_0: "Combien de %{unit} de %{input} ont été utilisés ?"
       how_much_inputs_1: "Combien de %{unit} de %{input} avez-vous utilisé ?"
+      which_procedure: "Quelle procédure souhaitez vous saisir ? "
     harvest_reception:
       save_harvest_reception_0: "Validez vous cette réception de vendange :"
       save_harvest_reception_1: "Voulez vous saisir la réception de vendange suivante :"

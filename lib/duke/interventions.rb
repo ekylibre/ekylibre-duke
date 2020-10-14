@@ -2,8 +2,16 @@ module Duke
   class Interventions < Duke::Utils::InterventionUtils
 
     def handle_parse_sentence(params)
+      procedure = params['procedure']
+      unless procedure.scan(/[|]/).empty?
+        if Activity.all.any? {|act| act[:family] != :vine_farming}
+          what_next, sentence, optional = disambiguate_procedure(procedure)
+          return {:parsed => params[:user_input], :redirect => what_next, :sentence => sentence, :optional => optional}
+        else 
+          procedure = procedure.split(/[|]/)[1]
+        end 
+      end 
       Ekylibre::Tenant.switch params['tenant'] do
-        procedure = params['procedure']
         return if Procedo::Procedure.find(procedure).nil?
         equipments, workers, inputs, crop_groups = [], [], [], []
         # Finding when it happened and how long it lasted, + getting cleaned user_input

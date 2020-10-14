@@ -76,12 +76,12 @@ module Duke
             else
               year = Date.today.year
             end
-            return DateTime.new(year, month, day, time.hour, time.min, time.sec), content.strip.gsub(/\s+/, " ")
+            return DateTime.new(year, month, day, time.hour, time.min, time.sec, "+02:00"), content.strip.gsub(/\s+/, " ")
           else
-            return DateTime.new(now.year, now.month, now.day, time.hour, time.min, time.sec),  content.strip.gsub(/\s+/, " ")
+            return DateTime.new(now.year, now.month, now.day, time.hour, time.min, time.sec, "+02:00"),  content.strip.gsub(/\s+/, " ")
           end
         end
-        return DateTime.new(d.year, d.month, d.day, time.hour, time.min, time.sec), content.strip.gsub(/\s+/, " ")
+        return DateTime.new(d.year, d.month, d.day, time.hour, time.min, time.sec, "+02:00"), content.strip.gsub(/\s+/, " ")
       end
 
       def extract_hour(content)
@@ -112,7 +112,7 @@ module Duke
           return DateTime.new(now.year, now.month, now.day, 20, 0, 0), content
         elsif content.include? "minuit"
           content["minuit"] = ""
-          return DateTime.new(now.year, now.month, now.day, 0, 0, 0), content
+          return DateTime.new(now.year, now.month, now.day, 0, 0, 0, ), content
         else
           return DateTime.now, content
         end

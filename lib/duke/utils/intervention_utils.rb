@@ -49,6 +49,17 @@ module Duke
         end
       end
 
+      def disambiguate_procedure(procs)
+        I18n.locale = :fra
+        optional = []
+        family = :Végétal
+        procs.split(/[|]/).each do |proc| 
+          family = :Viti if Procedo::Procedure.find(proc).activity_families.include? :vine_farming
+          optional.push({:key => proc, :human => "#{Procedo::Procedure.find(proc).human_name} - #{family}"})
+        end 
+        return :ask_proc, I18n.t("duke.interventions.which_procedure"), optional
+      end 
+
       def extract_date_and_duration(content)
         whole_temp = content.match(/(de|à|a) *\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b *(jusqu\')?(a|à) *\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b/)
         if whole_temp
