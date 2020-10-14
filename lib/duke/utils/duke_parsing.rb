@@ -294,7 +294,7 @@ module Duke
       def extract_user_specifics(user_input, parsed)
         iterators_dic = {:workers => Worker.availables(at: parsed[:date]),
                          :equipments => Equipment.availables(at: parsed[:date]),
-                         :inputs =>(Matter.availables(at: parsed[:date]).where("nature_id=45")  if parsed[:procedure] and !Procedo::Procedure.find( parsed[:procedure]).parameters_of_type(:input).empty?) || [],
+                         :inputs =>(Matter.availables(at: parsed[:date]).of_expression(Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :input}.filter)  if parsed[:procedure] and !Procedo::Procedure.find( parsed[:procedure]).parameters_of_type(:input).empty?) || [],
                          :crop_groups => CropGroup.all,
                          :destination => Matter.availables(at: parsed[:date]).where("variety='tank'"),
                          :targets => Plant.availables(at: parsed[:date]),
