@@ -1,49 +1,56 @@
 module Duke
   module Utils
     class InterventionUtils < Duke::Utils::DukeParsing
-      @@unit_to_human = {:net_mass => :kg, :net_volume => :litres, :mass_area_density => 'kg/ha', :volume_area_density => 'L/ha', :population => :unités}
 
       def speak_intervention(params)
         # Create validation sentence for InterventionSkill
         I18n.locale = :fra
-        sentence = I18n.t("duke.interventions.save_intervention_#{rand(0...3)}")
-        sentence += "<br>&#8226 Procédure : #{Procedo::Procedure.find(params[:procedure]).human_name}"
+        sentence = I18n.t("duke.interventions.ask.save_intervention_#{rand(0...3)}")
+        sentence += "<br>&#8226 #{I18n.t("duke.interventions.proc")} : #{Procedo::Procedure.find(params[:procedure]).human_name}"
         unless params[:crop_groups].to_a.empty?
-          sentence += "<br>&#8226 Groupements : "
+          sentence += "<br>&#8226 #{I18n.t("duke.interventions.group")} : "
           params[:crop_groups].each do |cg|
             sentence += "#{cg[:name]}, "
           end
         end
+        unless Procedo::Procedure.find(params[:procedure]).parameters.find {|param| param.type == :target}.nil?
+          unless params[Procedo::Procedure.find(params[:procedure]).parameters.find {|param| param.type == :target}.name].to_a.empty?
+            sentence += "<br>&#8226 #{I18n.t("duke.interventions.#{Procedo::Procedure.find(params[:procedure]).parameters.find {|param| param.type == :target}.name}")} : "
+            params[Procedo::Procedure.find(params[:procedure]).parameters.find {|param| param.type == :target}.name].each do |target|
+              sentence += "#{target[:name]}, "
+            end 
+          end 
+        end 
         unless params[:equipments].to_a.empty?
-          sentence += "<br>&#8226 Equipement : "
+          sentence += "<br>&#8226 #{I18n.t("duke.interventions.tool")} : "
           params[:equipments].each do |eq|
             sentence += "#{eq[:name]}, "
           end
         end
         unless params[:workers].to_a.empty?
-          sentence += "<br>&#8226 Travailleurs : "
+          sentence += "<br>&#8226 #{I18n.t("duke.interventions.worker")} : "
           params[:workers].each do |worker|
             sentence += "#{worker[:name]}, "
           end
         end
         unless params[:inputs].to_a.empty?
-          sentence += "<br>&#8226 Intrants : "
+          sentence += "<br>&#8226 #{I18n.t("duke.interventions.input")} : "
           params[:inputs].each do |input|
-            sentence += "#{input[:name]} (#{input[:rate][:value].to_f*input[:rate][:factor]} #{@@unit_to_human[input[:rate][:unit].to_sym]}), "
+            sentence += "#{input[:name]} (#{input[:rate][:value].to_f*input[:rate][:factor]} #{I18n.t("duke.interventions.#{input[:rate][:unit].to_sym}")}), "
           end
         end
-        sentence += "<br>&#8226 Date : #{params[:date].to_datetime.strftime("%d/%m/%Y - %H:%M")}"
-        sentence += "<br>&#8226 Durée : #{params[:duration]} mins"
+        sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{params[:date].to_datetime.strftime("%d/%m/%Y - %H:%M")}"
+        sentence += "<br>&#8226 #{I18n.t("duke.interventions.duration")} : #{params[:duration]} #{I18n.t("duke.interventions.mins")}"
         return sentence.gsub(/, <br>&#8226/, "<br>&#8226")
       end
 
       def speak_input_rate(params)
         # Creates "Combien de kg de bouillie bordelaise ont été utilisés ? "
-        # Return the sentence, and the index of the destination inside params[:destination] to transfer as an optional value to IBM
+        # Return the sentence, and the index of the destination inside params[:destination] to transfer as an optional value to IBM 
         I18n.locale = :fra
         params[:inputs].each_with_index do |input, index|
           if input[:rate][:value].nil?
-            sentence = I18n.t("duke.interventions.how_much_inputs_#{rand(0...2)}", input: input[:name], unit: @@unit_to_human[input[:rate][:unit].to_sym])
+            sentence = I18n.t("duke.interventions.ask.how_much_inputs_#{rand(0...2)}", input: input[:name], unit: I18n.t("duke.interventions.#{input[:rate][:unit].to_sym}"))
             return sentence, index
           end
         end
@@ -57,7 +64,14 @@ module Duke
           family = :Viti if Procedo::Procedure.find(proc).activity_families.include? :vine_farming
           optional.push({:key => proc, :human => "#{Procedo::Procedure.find(proc).human_name} - #{family}"})
         end 
-        return :ask_proc, I18n.t("duke.interventions.which_procedure"), optional
+        return :ask_proc, I18n.t("duke.interventions.ask.which_procedure"), optional
+      end 
+
+      def tag_specific_targets(parsed)
+        unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.nil?
+          parsed[:crop_groups] = []
+          parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] = []
+        end 
       end 
 
       def extract_date_and_duration(content)

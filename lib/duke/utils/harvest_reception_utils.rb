@@ -5,79 +5,79 @@ module Duke
       def speak_harvest_reception(params)
         # Create validation sentence for HarvestReceptionSkill
         I18n.locale = :fra
-        sentence = I18n.t("duke.harvest_reception.save_harvest_reception_#{rand(0...2)}")
+        sentence = I18n.t("duke.harvest_reception.ask.save_harvest_reception_#{rand(0...2)}")
         unless params[:crop_groups].to_a.empty?
-          sentence+= "<br>&#8226 Groupement(s) : "
+          sentence+= "<br>&#8226 #{I18n.t("duke.interventions.group")} : "
           params[:crop_groups].each do |crop_group|
             sentence += "#{crop_group[:area].to_s}% #{crop_group[:name]}, "
           end
         end
-        unless params[:targets].to_a.empty?
-          sentence+= "<br>&#8226 Culture(s) : "
-          params[:targets].each do |target|
+        unless params[:plant].to_a.empty?
+          sentence+= "<br>&#8226 #{I18n.t("duke.interventions.plant")} : "
+          params[:plant].each do |target|
             sentence += "#{target[:area].to_s}% #{target[:name]}, "
           end
         end
-        sentence+= "<br>&#8226 Quantité : #{params[:parameters]['quantity']['rate'].to_s} #{params[:parameters]['quantity']['unit']}"
-        sentence+= "<br>&#8226 TAVP : #{params[:parameters]['tav'].to_s} % vol"
-        sentence+= "<br>&#8226 Destination(s) : "
+        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.quantity")} : #{params[:parameters]['quantity']['rate'].to_s} #{params[:parameters]['quantity']['unit']}"
+        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.tavp")} : #{params[:parameters]['tav'].to_s} % vol"
+        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.destination")} : "
         params[:destination].each do |destination|
           sentence+= destination[:name]
           sentence+= " (#{destination[:quantity].to_s} hl), " if destination.key?('quantity')
         end
         unless !params.key?("press")
-          sentence+= "<br>&#8226 Pressoir(s) : "
+          sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.press")} : "
           params[:press].each do |press|
             sentence+= press[:name]
             sentence+= " (#{press[:quantity].to_s} hl), " if press.key?('quantity')
           end
         end
-        sentence+= "<br>&#8226 Date : #{params[:date].to_datetime.strftime("%d/%m/%Y - %H:%M")}"
+        sentence+= "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{params[:date].to_datetime.strftime("%d/%m/%Y - %H:%M")}"
         unless params[:parameters]['temperature'].nil?
-          sentence+= "<br>&#8226 Température : #{params[:parameters]['temperature']} °C"
+          sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.temp")} : #{params[:parameters]['temperature']} °C"
         end
         unless params[:parameters]['sanitarystate'].nil?
-          sentence+= "<br>&#8226 État sanitaire spécifié"
+          sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.sanitary_specified")}"
         end
         unless params[:parameters]['ph'].nil?
-          sentence+= "<br>&#8226 pH : #{params[:parameters]['ph']}"
+          sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.ph")} : #{params[:parameters]['ph']}"
         end
         unless params[:parameters]['h2so4'].nil?
-          sentence+= "<br>&#8226 Acidité totale : #{params[:parameters]['h2so4']} g H2SO4/L"
+          sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.total_acidity")} : #{params[:parameters]['h2so4']} g H2SO4/L"
         end
         unless params[:parameters]['malic'].nil?
-          sentence+= "<br>&#8226 Acide Malique : #{params[:parameters]['malic']} g/L"
+          sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.malic_acid")} : #{params[:parameters]['malic']} g/L"
         end
         unless params[:parameters]['amino_nitrogen'].nil?
-          sentence+= "<br>&#8226 Azote aminée : #{params[:parameters]['amino_nitrogen']} mg/L"
+          sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.amino_n")} : #{params[:parameters]['amino_nitrogen']} mg/L"
         end
         unless params[:parameters]['ammoniacal_nitrogen'].nil?
-          sentence+= "<br>&#8226 Azote ammoniacal : #{params[:parameters]['ammoniacal_nitrogen']} mg/L"
+          sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.ammoniacal_n")} : #{params[:parameters]['ammoniacal_nitrogen']} mg/L"
         end
         unless params[:parameters]['assimilated_nitrogen'].nil?
-          sentence+= "<br>&#8226 Azote assimilable : #{params[:parameters]['assimilated_nitrogen']} mg/L"
+          sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.assimilated_n")} : #{params[:parameters]['assimilated_nitrogen']} mg/L"
         end
         unless params[:parameters]['pressing_tavp'].nil?
-          sentence+= "<br>&#8226 TAVP jus de presse : #{params[:parameters]['pressing_tavp'].to_s} % vol "
+          sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.press_tavp")} : #{params[:parameters]['pressing_tavp'].to_s} % vol "
         end
         unless params[:parameters]['complementary'].nil?
           if params[:parameters]['complementary'].key?('ComplementaryDecantation')
-            sentence+= "<br>&#8226 Temps de décantation : #{params[:parameters]['complementary']['ComplementaryDecantation'].delete("^0-9")} mins"
+            sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.decant_time")} : #{params[:parameters]['complementary']['ComplementaryDecantation'].delete("^0-9")} mins"
           end
           if params[:parameters]['complementary'].key?('ComplementaryTrailer')
-            sentence+= "<br>&#8226 Transporteur : #{params[:parameters]['complementary']['ComplementaryTrailer']}"
+            sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.transportor")} : #{params[:parameters]['complementary']['ComplementaryTrailer']}"
           end
           if params[:parameters]['complementary'].key?('ComplementaryTime')
-            sentence+= "<br>&#8226 Durée de transport : #{params[:parameters]['complementary']['ComplementaryTime'].delete("^0-9")} mins"
+            sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.transport_dur")} : #{params[:parameters]['complementary']['ComplementaryTime'].delete("^0-9")} mins"
           end
           if params[:parameters]['complementary'].key?('ComplementaryDock')
-            sentence+= "<br>&#8226 Quai de réception : #{params[:parameters]['complementary']['ComplementaryDock']}"
+            sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.reception_dock")} : #{params[:parameters]['complementary']['ComplementaryDock']}"
           end
           if params[:parameters]['complementary'].key?('ComplementaryNature')
-            sentence+= "<br>&#8226 Type de vendange : #{I18n.t('labels.'+params[:parameters]['complementary']['ComplementaryNature'])}"
+            sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.vendange_nature")} : #{I18n.t('labels.'+params[:parameters]['complementary']['ComplementaryNature'])}"
           end
           if params[:parameters]['complementary'].key?('ComplementaryLastLoad')
-            sentence+= "<br>&#8226 Dernier chargement"
+            sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.last_load")}"
           end
         end
         return sentence.gsub(/, <br>&#8226/, "<br>&#8226")
@@ -87,7 +87,7 @@ module Duke
         # Creates "How much hectoliters in Cuve 1 ?"
         # Return the sentence, and the index of the destination inside params[:destination] to transfer as an optional value to IBM
         I18n.locale = :fra
-        sentence = I18n.t("duke.harvest_reception.how_much_to_#{rand(0...2)}")
+        sentence = I18n.t("duke.harvest_reception.ask.how_much_to_#{rand(0...2)}")
         params[:destination].each_with_index do |cuve, index|
           unless cuve.key?("quantity")
             sentence += cuve[:name]
@@ -97,10 +97,10 @@ module Duke
       end
 
       def speak_pressing_hl(params)
-        # Creates "How much hectoliters in Cuve 1 ?"
+        # Creates "How much hectoliters in Press 1 ?"
         # Return the sentence, and the index of the destination inside params[:destination] to transfer as an optional value to IBM
         I18n.locale = :fra
-        sentence = I18n.t("duke.harvest_reception.how_much_to_#{rand(0...2)}")
+        sentence = I18n.t("duke.harvest_reception.ask.how_much_to_#{rand(0...2)}")
         params[:press].each_with_index do |press, index|
           unless press.key?("quantity")
             sentence += press[:name]
@@ -449,7 +449,7 @@ module Duke
         unless parsed[:ambiguities].to_a.empty?
           return "ask_ambiguity", nil, parsed[:ambiguities][0]
         end
-        if parsed[:targets].to_a.empty? && parsed[:crop_groups].to_a.empty?
+        if parsed[:plant].to_a.empty? && parsed[:crop_groups].to_a.empty?
           return "ask_plant", nil, nil
         end
         if parsed[:parameters]['quantity'].nil?

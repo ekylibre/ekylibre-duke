@@ -4,33 +4,44 @@
     account = $(this).data('current-account')
     tenant = $(this).data('current-tenant')
     language = $(this).data('current-language')
-    watson_integration = $(this).data('watson-integration')
-    watson_region = $(this).data('watson-region')
-    watson_service = $(this).data('watson-service')
-    # Function that sets the tenant as a watson context element
-    preSendhandler = (event) ->
-      event.data.context.skills['main skill'].user_defined.tenant = tenant
-      event.data.context.skills['main skill'].user_defined.language = language
-      return
+    integrate_webchat =  (tenant) ->
+      $.ajax '/duke_which_integration',
+        type: 'post'
+        dataType: 'html'
+        data:
+          "tenant": tenant
+        success: (data, status, xhr) ->
+          watson_integration = data
+          watson_region = $("duke[data-current-account]").data('watson-region')
+          watson_service = $("duke[data-current-account]").data('watson-service') 
+          # Function that sets the tenant as a watson context element
+          preSendhandler = (event) ->
+            event.data.context.skills['main skill'].user_defined.tenant = tenant
+            event.data.context.skills['main skill'].user_defined.language = language
+            return
 
-    window.watsonAssistantChatOptions =
-      integrationID: watson_integration
-      region: watson_region
-      serviceInstanceID: watson_service
-      onLoad: (instance) ->
-        instance.render()
-        instance.on
-          type: 'pre:send'
-          handler: preSendhandler
-        instance.updateUserID account
-        return
+          window.watsonAssistantChatOptions =
+            integrationID: watson_integration
+            region: watson_region
+            serviceInstanceID: watson_service
+            onLoad: (instance) ->
+              instance.render()
+              instance.on
+                type: 'pre:send'
+                handler: preSendhandler
+              instance.updateUserID account
+              return
 
-    addObserverIfNodeAvailable()
-    setTimeout ->
-      t = document.createElement('script')
-      t.src = 'https://web-chat.global.assistant.watson.appdomain.cloud/loadWatsonAssistantChat.js'
-      document.head.appendChild t
+          addObserverIfNodeAvailable()
+          setTimeout ->
+            t = document.createElement('script')
+            t.src = 'https://web-chat.global.assistant.watson.appdomain.cloud/loadWatsonAssistantChat.js'
+            document.head.appendChild t
+            return
+          return
       return
+    integrate_webchat(tenant)
+    
   basic_url = window.location.protocol + '//' + location.host.split(':')[0]
   # MutationObserver to detect specific elements in Watson Responses Messages (urls)
   addObserverIfNodeAvailable = ->

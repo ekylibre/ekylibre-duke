@@ -3,12 +3,10 @@ module Duke
 
     def handle_parse_sentence(params)
       Ekylibre::Tenant.switch params['tenant'] do
-        targets = []
-        crop_groups = []
-        destination = []
+        plant, crop_groups, destination = [], [], []
         date, user_input = extract_date(clear_string(params[:user_input]))
         user_input, parameters = extract_reception_parameters(user_input)
-        parsed = {:targets => targets,
+        parsed = {:plant => plant,
                   :crop_groups => crop_groups,
                   :destination => destination,
                   :parameters => parameters,
@@ -16,7 +14,7 @@ module Duke
                   :user_input => params[:user_input],
                   :retry => 0}
         extract_user_specifics(user_input, parsed)
-        targets, crop_groups = extract_plant_area(user_input, targets, crop_groups)
+        plant, crop_groups = extract_plant_area(user_input, plant, crop_groups)
         parsed[:ambiguities] = find_ambiguity(parsed, user_input)
         # Find if crucials parameters haven't been given, to ask again to the user
         what_next, sentence, optional = redirect(parsed)
@@ -104,22 +102,22 @@ module Duke
     def handle_parse_targets(params)
       parsed = params[:parsed]
       Ekylibre::Tenant.switch params['tenant'] do
-        targets, crop_groups = [], []
+        plant, crop_groups = [], []
         user_input = clear_string(params[:user_input])
-        new_parsed = {:targets => targets,
+        new_parsed = {:plant => plant,
                       :crop_groups => crop_groups,
                       :date => parsed[:date]}
         extract_user_specifics(user_input, new_parsed)
-        targets, crop_groups = extract_plant_area(user_input, targets, crop_groups)
+        plant, crop_groups = extract_plant_area(user_input, plant, crop_groups)
         # If there's no new Target/Crop_group, But a percentage, it's the new area % foreach previous target
-        if crop_groups.empty? and targets.empty?
+        if crop_groups.empty? and plant.empty?
           pct_regex = user_input.match(/(\d{1,2}) *(%|pour( )?cent(s)?)/)
           if pct_regex
             parsed[:crop_groups].to_a.each { |crop_group| crop_group[:area] = pct_regex[1]}
-            parsed[:targets].to_a.each { |target| target[:area] = pct_regex[1]}
+            parsed[:plant].to_a.each { |target| target[:area] = pct_regex[1]}
           end
         else
-          parsed[:targets] = new_parsed[:targets]
+          parsed[:plant] = new_parsed[:plant]
           parsed[:crop_groups] = new_parsed[:crop_groups]
           parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
         end
@@ -262,7 +260,7 @@ module Duke
         end
         # Checking recognized targets & crop_groups
         targets_attributes = {}
-        parsed[:targets].to_a.each_with_index do |target, index|
+        parsed[:plant].to_a.each_with_index do |target, index|
           targets_attributes[index] = {"plant_id" => target[:key], "harvest_percentage_received" => target[:area].to_s}
         end
         parsed[:crop_groups].to_a.each_with_index do |cropgroup, index|

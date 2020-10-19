@@ -13,18 +13,18 @@ module Duke
           end 
         end 
         return if Procedo::Procedure.find(procedure).nil?
-        equipments, workers, inputs, crop_groups = [], [], [], []
+        equipments, workers, inputs = [], [], []
         # Finding when it happened and how long it lasted, + getting cleaned user_input
         date, duration, user_input = extract_date_and_duration(clear_string(params[:user_input]))
         parsed = {:inputs => inputs,
                   :workers => workers,
                   :equipments => equipments,
-                  :crop_groups => crop_groups,
                   :procedure => procedure,
                   :duration => duration,
                   :date => date,
                   :user_input => params[:user_input],
                   :retry => 0}
+        tag_specific_targets(parsed)
         extract_user_specifics(user_input, parsed)
         add_input_rate(user_input, parsed[:inputs])
         parsed[:ambiguities] = find_ambiguity(parsed, user_input)
@@ -70,27 +70,25 @@ module Duke
         new_workers = []
         new_inputs = []
         new_crop_groups = []
-        procedure = params[:parsed][:procedure]
         user_input = clear_string(params[:user_input])
         new_parsed = {:inputs => new_inputs,
                       :workers => new_workers,
                       :equipments => new_equipments,
-                      :crop_groups => new_crop_groups,
                       :procedure => parsed[:procedure],
                       :duration => parsed[:duration],
                       :date => parsed[:date],
                       :user_input => user_input}
+        tag_specific_targets(new_parsed)
         extract_user_specifics(user_input, new_parsed)
         add_input_rate(user_input, new_inputs)
-        parsed[:inputs] = uniq_concat(new_parsed[:inputs],parsed[:inputs].to_a)
-        parsed[:workers] = uniq_concat(new_parsed[:workers],parsed[:workers].to_a)
-        parsed[:equipments] = uniq_concat(new_parsed[:equipments],parsed[:equipments].to_a)
-        parsed[:crop_groups] = uniq_concat(new_parsed[:crop_groups],parsed[:crop_groups].to_a)
+        [:inputs, :workers, :equipments, :crop_groups, Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].each do |entity|
+          parsed[entity] = uniq_concat(new_parsed[entity], parsed[entity].to_a)
+        end
         parsed[:user_input] += " - #{params[:user_input]}"
         parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
         what_next, sentence, optional = redirect(parsed)
         return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
-     end
+      end
     end
 
     def handle_modify_target(params)
@@ -98,13 +96,14 @@ module Duke
       Ekylibre::Tenant.switch params['tenant'] do
         crop_groups = []
         user_input = clear_string(params[:user_input])
-        new_parsed = {:crop_groups => crop_groups,
-                      :procedure => parsed[:procedure],
+        new_parsed = {:procedure => parsed[:procedure],
                       :duration => parsed[:duration],
                       :date => parsed[:date],
                       :user_input => user_input}
+        tag_specific_targets(new_parsed)
         extract_user_specifics(user_input, new_parsed)
         parsed[:crop_groups] = new_parsed[:crop_groups]
+        parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] =  new_parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name]
         parsed[:user_input] += " - (Cultures) #{params[:user_input]}"
         parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
         what_next, sentence, optional = redirect(parsed)
@@ -198,12 +197,17 @@ module Duke
                                                "quantity_handler" => input[:rate][:unit]})
           end
         end
-        targets_attributes = []
-        params[:parsed][:crop_groups].to_a.each do |cropgroup|
-          CropGroup.available_crops(cropgroup[:key], "is plant").each do |crop|
-            targets_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:target)[0].name, "product_id" => crop[:id]})
+        unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.nil?
+          targets_attributes = []
+          params[:parsed][Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name].to_a.each do |target|
+            targets_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name, "product_id" => target[:key]})
+          end 
+          params[:parsed][:crop_groups].to_a.each do |cropgroup|
+            CropGroup.available_crops(cropgroup[:key], "is plant").each do |crop|
+              targets_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name, "product_id" => crop[:id]})
+            end
           end
-        end
+        end 
         duration = params[:parsed][:duration].to_i
         date = params[:parsed][:date]
 
