@@ -4,21 +4,29 @@ module Duke
     def handle_parse_sentence(params)
       Ekylibre::Tenant.switch params['tenant'] do
         procedure = params['procedure']
+        unless procedure.scan(/[|]/).empty?
+          if Activity.availables.any? {|act| act[:family] != :vine_farming}
+            what_next, sentence, optional = disambiguate_procedure(procedure)
+            return {:parsed => params[:user_input], :redirect => what_next, :sentence => sentence, :optional => optional}
+          else 
+            procedure = procedure.split(/[|]/)[1]
+          end 
+        end 
         return if Procedo::Procedure.find(procedure).nil?
-        equipments, workers, inputs, crop_groups = [], [], [], []
+        equipments, workers, inputs = [], [], []
         # Finding when it happened and how long it lasted, + getting cleaned user_input
-        duration, user_input = extract_duration(clear_string(params[:user_input]))
-        date, user_input = extract_date(user_input)
+        date, duration, user_input = extract_date_and_duration(clear_string(params[:user_input]))
         parsed = {:inputs => inputs,
                   :workers => workers,
                   :equipments => equipments,
-                  :crop_groups => crop_groups,
                   :procedure => procedure,
                   :duration => duration,
                   :date => date,
-                  :user_input => params[:user_input]}
+                  :user_input => params[:user_input],
+                  :retry => 0}
+        tag_specific_targets(parsed)
         extract_user_specifics(user_input, parsed)
-        add_input_rate(user_input, inputs)
+        add_input_rate(user_input, parsed[:inputs])
         parsed[:ambiguities] = find_ambiguity(parsed, user_input)
         what_next, sentence, optional = redirect(parsed)
         return  { :parsed => parsed, :sentence => sentence, :redirect => what_next, :optional => optional  }
@@ -62,27 +70,25 @@ module Duke
         new_workers = []
         new_inputs = []
         new_crop_groups = []
-        procedure = params[:parsed][:procedure]
         user_input = clear_string(params[:user_input])
         new_parsed = {:inputs => new_inputs,
                       :workers => new_workers,
                       :equipments => new_equipments,
-                      :crop_groups => new_crop_groups,
                       :procedure => parsed[:procedure],
                       :duration => parsed[:duration],
                       :date => parsed[:date],
                       :user_input => user_input}
+        tag_specific_targets(new_parsed)
         extract_user_specifics(user_input, new_parsed)
         add_input_rate(user_input, new_inputs)
-        parsed[:inputs] = uniq_concat(new_parsed[:inputs],parsed[:inputs].to_a)
-        parsed[:workers] = uniq_concat(new_parsed[:workers],parsed[:workers].to_a)
-        parsed[:equipments] = uniq_concat(new_parsed[:equipments],parsed[:equipments].to_a)
-        parsed[:crop_groups] = uniq_concat(new_parsed[:crop_groups],parsed[:crop_groups].to_a)
+        [:inputs, :workers, :equipments, :crop_groups, Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].each do |entity|
+          parsed[entity] = uniq_concat(new_parsed[entity], parsed[entity].to_a)
+        end
         parsed[:user_input] += " - #{params[:user_input]}"
         parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
         what_next, sentence, optional = redirect(parsed)
         return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
-     end
+      end
     end
 
     def handle_modify_target(params)
@@ -90,13 +96,14 @@ module Duke
       Ekylibre::Tenant.switch params['tenant'] do
         crop_groups = []
         user_input = clear_string(params[:user_input])
-        new_parsed = {:crop_groups => crop_groups,
-                      :procedure => parsed[:procedure],
+        new_parsed = {:procedure => parsed[:procedure],
                       :duration => parsed[:duration],
                       :date => parsed[:date],
                       :user_input => user_input}
+        tag_specific_targets(new_parsed)
         extract_user_specifics(user_input, new_parsed)
         parsed[:crop_groups] = new_parsed[:crop_groups]
+        parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] =  new_parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name]
         parsed[:user_input] += " - (Cultures) #{params[:user_input]}"
         parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
         what_next, sentence, optional = redirect(parsed)
@@ -125,8 +132,7 @@ module Duke
 
     def handle_modify_temporality(params)
       parsed = params[:parsed]
-      date, user_input = extract_date(clear_string(params[:user_input]))
-      duration, user_input = extract_duration(user_input)
+      date, duration, user_input = extract_date_and_duration(clear_string(params[:user_input]))
       parsed[:date] = choose_date(date, parsed[:date])
       parsed[:duration] = choose_duration(duration, parsed[:duration])
       parsed[:user_input] += " - (Temporalité) #{params[:user_input]}"
@@ -154,8 +160,24 @@ module Duke
       end
     end
 
+    def handle_parse_input_quantity(params)
+      parsed = params[:parsed]
+      value = extract_number_parameter(params[:quantity], params[:user_input])
+      if value.nil?
+        parsed[:retry] += 1
+        what_next, sentence, optional = redirect(parsed)
+        return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
+      end
+      parsed[:inputs][params[:optional]][:rate][:value] = value
+      parsed[:user_input] += " - (Quantité) #{params[:user_input]}"
+      parsed[:retry] = 0
+      what_next, sentence, optional = redirect(parsed)
+      return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
+    end
+
 
     def handle_save_intervention(params)
+      I18n.locale = :fra
       Ekylibre::Tenant.switch params['tenant'] do
         tools_attributes = []
         params[:parsed][:equipments].to_a.each do |tool|
@@ -170,17 +192,22 @@ module Duke
           params[:parsed][:inputs].to_a.each do |input|
             inputs_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:input)[0].name,
                                                "product_id" => input[:key],
-                                               "quantity_value" => input[:rate][:value],
-                                               "quantity_population" => input[:rate][:value],
+                                               "quantity_value" => input[:rate][:value].to_f*input[:rate][:factor],
+                                               "quantity_population" => input[:rate][:value].to_f*input[:rate][:factor],
                                                "quantity_handler" => input[:rate][:unit]})
           end
         end
-        targets_attributes = []
-        params[:parsed][:crop_groups].to_a.each do |cropgroup|
-          CropGroup.available_crops(cropgroup[:key], "is plant").each do |crop|
-            targets_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:target)[0].name, "product_id" => crop[:id]})
+        unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.nil?
+          targets_attributes = []
+          params[:parsed][Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name].to_a.each do |target|
+            targets_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name, "product_id" => target[:key]})
+          end 
+          params[:parsed][:crop_groups].to_a.each do |cropgroup|
+            CropGroup.available_crops(cropgroup[:key], "is plant").each do |crop|
+              targets_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name, "product_id" => crop[:id]})
+            end
           end
-        end
+        end 
         duration = params[:parsed][:duration].to_i
         date = params[:parsed][:date]
 
@@ -193,7 +220,7 @@ module Duke
                                             doers_attributes: doers_attributes,
                                             targets_attributes: targets_attributes,
                                             inputs_attributes: inputs_attributes,
-                                            working_periods_attributes:   [ { "started_at": Time.zone.parse(date) - duration.minutes, "stopped_at": date}])
+                                            working_periods_attributes:   [ { "started_at": Time.zone.parse(date) , "stopped_at": Time.zone.parse(date) + duration.minutes}])
         return {"link" => "\\backend\\interventions\\"+intervention['id'].to_s}
       end
     end

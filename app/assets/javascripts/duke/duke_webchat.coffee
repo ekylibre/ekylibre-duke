@@ -1,10 +1,20 @@
-user_specifics = {}
-basic_url = window.location.protocol + '//' + location.host.split(':')[0]
-link_regex = /<lien (.{10,}) lien>/
+$.getScript 'https://js.pusher.com/7.0/pusher.min.js'
+# Initialize global vars with baseUrl & regex for relocation
+global_vars = {}
+global_vars.base_url = window.location.protocol + '//' + location.host.split(':')[0]
+global_vars.redir_regex = /<lien (.{10,}) lien>/
+# Initialize webchat unless there's already a session
+if !sessionStorage.getItem('duke_id')
+  $.ajax '/duke_init_webchat',
+    type: 'post'
+    dataType: 'html'
+# When Duke's data attribute is loaded, add account & pusher vals to global_vars
 $(document).behave "load", "duke[data-current-account]", ->
-  user_specifics.account = $(this).data('current-account')
-  user_specifics.tenant = $(this).data('current-tenant')
-  user_specifics.language = $(this).data('current-language')
+  global_vars.account = $(this).data('current-account')
+  global_vars.tenant = $(this).data('current-tenant')
+  global_vars.language = $(this).data('current-language')
+  global_vars.pusher_key = $(this).data('pusher-key')
+  # OnKeyPressed inside Duke Textarea -> Enable/Disable send button
   $('#duke-input').keyup (e) ->
     if $("#duke-input").val() == ""
       $('#btn-send').toggleClass("disabled-send", true)
@@ -13,41 +23,54 @@ $(document).behave "load", "duke[data-current-account]", ->
       $('#btn-send').toggleClass("disabled-send", false)
       $("#btn-send").toggleClass("send-enabled",true)
     return
+  # Before sending keyValue to Duke's Textarea -> If PressedKey is enter -> Send Message
   $('#duke-input').keydown (e) ->
     code = if e.keyCode then e.keyCode else e.which
     if code == 13
-      output_sent($("#duke-input").val())
+      output_sent()
       send_msg()
       clear_textarea()
       return false
-
+# Send msg to backends methods that communicate with IBM
 send_msg = (msg = $("#duke-input").val()) ->
   $.ajax '/duke_render_msg',
     type: 'post'
     data:
       "msg": msg
-      "user_id": user_specifics.account
-      "tenant": user_specifics.tenant
+      "user_id": global_vars.account
+      "tenant": global_vars.tenant
       "duke_id": sessionStorage.getItem('duke_id')
     dataType: 'json'
     success: (data, status, xhr) ->
-      integrate_received(data)
+      # On message sent, open Websocket connection to listen for an answer
+      pusher = new Pusher(global_vars.pusher_key, cluster: 'eu')
+      channel = pusher.subscribe(sessionStorage.getItem('duke_id'))
+      channel.bind 'my-event', (data) ->
+        # Add received message & close websocket connection
+        integrate_received(data.message)
+        pusher.disconnect();
+        return
       return
   return
 
+# Create session with backend that communicates with IBM.
+# Attributes a sessionID, which is stored in SessionStorage
 create_session =  ->
   $.ajax '/duke_create_session',
     type: 'post'
     dataType: 'html'
     data:
-      "user_id": user_specifics.account
-      "tenant": user_specifics.tenant
+      "user_id": global_vars.account
+      "tenant": global_vars.tenant
     success: (data, status, xhr) ->
       sessionStorage.setItem('duke_id', data)
       send_msg("")
       return
   return
 
+# Appends a waiting animation icon, deletes it after 0.7s
+# Finds the type of the message received & outputs accordingly
+# Redefines Duke-Chat sessionHistory inside SessionStorage
 integrate_received = (data) ->
   # Unless it's the first message, we add the waiting animated icon
   if $('.msg_container_base').children().length > 1
@@ -62,11 +85,11 @@ integrate_received = (data) ->
     $('#waiting').remove()
     $.each data, (index, value) ->
       if value.response_type == "text"
-        output_received(value.text)
-        if value.text.match(link_regex)
-          location.replace basic_url + value.text.match(link_regex)[1]
+        output_received_txt(value.text)
+        if value.text.match(global_vars.redir_regex)
+          location.replace global_vars.base_url + value.text.match(global_vars.redir_regex)[1]
       else if value.response_type == "option"
-        output_received(value.title)
+        output_received_txt(value.title)
         options = []
         $.each value.options, (index, value) ->
           options.push(value)
@@ -83,7 +106,7 @@ integrate_received = (data) ->
   ), 700
   return
 
-
+# If response type comports options -> Output it
 output_options = (options) ->
   # We first create the container
   $('.msg_container_base').append('<div class="row msg_container options"/>')
@@ -94,7 +117,8 @@ output_options = (options) ->
   $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
   return
 
-output_received = (msg) ->
+# If response type is plain text -> output it like this
+output_received_txt = (msg) ->
   # We create a received container, and we append the msg to it
   $('.msg_container_base').append('<div class="msg-list">
                                     <div class="messenger-container">
@@ -104,7 +128,8 @@ output_received = (msg) ->
   $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
   return
 
-output_sent = (msg) ->
+# Disables potential buttons above & output our message in a SentMessageContainer
+output_sent = (msg = $("#duke-input").val()) ->
   # Disable buttons if previous message had options selections enabled
   if $('.msg_container_base').children().last().hasClass('options')
     $.each $('.msg_container_base').children().last().children(), (index, option) ->
@@ -122,6 +147,7 @@ output_sent = (msg) ->
     $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
   return
 
+# TextArea is reset, Send button is disabled
 clear_textarea = ->
   # TextArea gets cleared, and send-btn gets disabled
   $('#btn-send').toggleClass("disabled-send", true)
@@ -130,7 +156,7 @@ clear_textarea = ->
   return
 
 
-
+# OnButtonChatClik, we show the chat window, & restore the discussion if any, or show waiting sign until ready
 $(document).on 'click', '#btn_chat', (e) ->
   # We open the webchat, and focus on the textArea
   $('.btn-chat').hide()
@@ -145,13 +171,14 @@ $(document).on 'click', '#btn_chat', (e) ->
     create_session()
   return
 
+# Hiding the chat, and removing the current discussion from it. Will be reloaded from sessionStorage if we re-open the chat
 $(document).on 'click', '.fas.fa-minus', (e) ->
-  # Hiding the chat, and removing the current discussion from it. Will be reloaded from sessionStorage if we re-open the chat
   $('.chat-window').hide()
   $('.btn-chat').show()
   $('.msg_container_base').children().remove()
   return
 
+# Send message & clear text area
 $(document).on 'click', '#btn-send', (e) ->
   # Send
   output_sent()
@@ -159,6 +186,7 @@ $(document).on 'click', '#btn-send', (e) ->
   clear_textarea()
   return
 
+# Sends message containing Option data-Value, but shows Option data-label
 $(document).on 'click', '.option',  ->
   target = event.target || event.srcElement;
   $(this).toggleClass( "hover-fill selected")
@@ -184,15 +212,16 @@ recognition.onresult = (event) ->
     else
       interim_transcript += event.results[i][0].transcript
     ++i
-  # Choose which result may be useful for you
+  # If message is over ie last transcript was null -> We send the output & clear textarea & buttonMic
   if interim_transcript == ""
     $("#duke-input").val(final_transcript)
-    output_sent($("#duke-input").val())
+    output_sent()
     send_msg()
     clear_textarea()
     $("#btn-mic").toggleClass("send-enabled", false)
     $("#btn-mic").toggleClass("disabled-send",false)
     recognition.stop()
+  # Or we add interim transcription to Duke's textarea
   else
     $( "#duke-input" ).val(interim_transcript)
   return
@@ -201,6 +230,7 @@ recognition.onerror = (event) ->
   recognition.stop()
   return
 
+# On end, Mic button is clickable and back base style
 recognition.onend = ->
   clear_textarea()
   $("#btn-mic").toggleClass("send-enabled", false)
@@ -208,6 +238,7 @@ recognition.onend = ->
   console.log 'Speech recognition service disconnected'
   return
 
+# On mic click, btn is disabled & new style
 $(document).on 'click', '#btn-mic', (e) ->
   $("#btn-mic").toggleClass("send-enabled",true)
   $("#btn-mic").toggleClass("disabled-send",true)

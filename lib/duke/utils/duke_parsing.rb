@@ -231,19 +231,21 @@ module Duke
         # Find ambiguities in what's been parsed, ie items with close fuzzy match for the best words that matched
         ambiguities = []
         parsed.each do |key, reco|
-          if [:targets, :destination, :crop_groups, :equipments, :workers, :inputs, :press].include?(key)
+          if [:plant, :land_parcel, :cultivation, :destination, :crop_groups, :equipments, :workers, :inputs, :press].include?(key)
             reco.each do |anItem|
               unless anItem[:distance] == 1
                 ambig = []
                 anItem_name = content.split()[anItem[:indexes][0]..anItem[:indexes][-1]].join(" ")
-                if key == :targets
+                if key == :plant
                   iterator = Plant.availables(at: parsed[:date])
+                elsif [:land_parcel, :cultivation].include? (key)
+                  iterator = LandParcel.availables(at: parsed[:date])
                 elsif key == :destination
                   iterator = Matter.availables(at: parsed[:date]).where("variety='tank'")
                 elsif key == :equipments
                   iterator = Equipment.availables(at: parsed[:date])
                 elsif key == :inputs
-                  iterator = Matter.availables(at: parsed[:date]).where("nature_id=45")
+                  iterator = Matter.availables(at: parsed[:date]).of_expression(Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :input}.filter)
                 elsif key == :workers
                   iterator = Worker.availables(at: parsed[:date]).each
                 elsif key == :crop_groups
@@ -270,7 +272,7 @@ module Duke
       end
 
       def clear_string(fstr)
-        useless_dic = [/\bnum(e|é)ro\b/, /n ?°/, /(#|-|_|\/|\\)/]
+        useless_dic = [/\bnum(e|é)ro\b/, /n ?°/, /(#|-|_|\\)/]
         useless_dic.each do |rgx|
           fstr = fstr.gsub(rgx, "")
         end
@@ -294,10 +296,12 @@ module Duke
       def extract_user_specifics(user_input, parsed)
         iterators_dic = {:workers => Worker.availables(at: parsed[:date]),
                          :equipments => Equipment.availables(at: parsed[:date]),
-                         :inputs =>(Matter.availables(at: parsed[:date]).where("nature_id=45")  if parsed[:procedure] and !Procedo::Procedure.find( parsed[:procedure]).parameters_of_type(:input).empty?) || [],
-                         :crop_groups => CropGroup.all,
+                         :inputs =>(Matter.availables(at: parsed[:date]).of_expression(Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :input}.filter)  if parsed[:procedure] and !Procedo::Procedure.find( parsed[:procedure]).parameters_of_type(:input).empty?) || [],
+                         :crop_groups => (CropGroup.all if !(defined? (CropGroup)).nil?) || [],
                          :destination => Matter.availables(at: parsed[:date]).where("variety='tank'"),
-                         :targets => Plant.availables(at: parsed[:date]),
+                         :plant => Plant.availables(at: parsed[:date]),
+                         :land_parcel => LandParcel.availables(at: Time.now),
+                         :cultivation => LandParcel.availables(at: Time.now),
                          :press => Matter.availables(at: parsed[:date]).can('press(grape)')}
         user_specifics = parsed.select{ |key, value| iterators_dic.key?(key)}
         create_words_combo(user_input).each do |index, combo|
