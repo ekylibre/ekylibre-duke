@@ -13,7 +13,7 @@ module Duke
           end 
         end 
         return if Procedo::Procedure.find(procedure).nil?
-        unless Procedo::Procedure.find(procedure).activity_families.include? (:plant_farming)
+        unless (Procedo::Procedure.find(procedure).activity_families & [:vine_farming, :plant_farming]).any?
           return {:redirect => "non_supported_proc"}
         end 
         equipments, workers, inputs = [], [], []
