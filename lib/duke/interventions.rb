@@ -13,6 +13,9 @@ module Duke
           end 
         end 
         return if Procedo::Procedure.find(procedure).nil?
+        unless Procedo::Procedure.find(procedure).activity_families.include? (:plant_farming)
+          return {:redirect => "non_supported_proc"}
+        end 
         equipments, workers, inputs = [], [], []
         # Finding when it happened and how long it lasted, + getting cleaned user_input
         date, duration, user_input = extract_date_and_duration(clear_string(params[:user_input]))

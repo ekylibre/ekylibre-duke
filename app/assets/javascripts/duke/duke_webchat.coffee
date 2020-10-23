@@ -33,6 +33,14 @@ $(document).behave "load", "duke[data-current-account]", ->
       return false
 # Send msg to backends methods that communicate with IBM
 send_msg = (msg = $("#duke-input").val()) ->
+  # On message sent, open Websocket connection to listen for an answer
+  pusher = new Pusher(global_vars.pusher_key, cluster: 'eu')
+  channel = pusher.subscribe(sessionStorage.getItem('duke_id'))
+  channel.bind 'my-event', (data) ->
+    # Add received message & close websocket connection
+    integrate_received(data.message)
+    pusher.disconnect();
+    return
   $.ajax '/duke_render_msg',
     type: 'post'
     data:
@@ -41,16 +49,6 @@ send_msg = (msg = $("#duke-input").val()) ->
       "tenant": global_vars.tenant
       "duke_id": sessionStorage.getItem('duke_id')
     dataType: 'json'
-    success: (data, status, xhr) ->
-      # On message sent, open Websocket connection to listen for an answer
-      pusher = new Pusher(global_vars.pusher_key, cluster: 'eu')
-      channel = pusher.subscribe(sessionStorage.getItem('duke_id'))
-      channel.bind 'my-event', (data) ->
-        # Add received message & close websocket connection
-        integrate_received(data.message)
-        pusher.disconnect();
-        return
-      return
   return
 
 # Create session with backend that communicates with IBM.
@@ -74,7 +72,7 @@ create_session =  ->
 integrate_received = (data) ->
   # Unless it's the first message, we add the waiting animated icon
   if $('.msg_container_base').children().length > 1
-    $('.msg_container_base').append('<div class="msg-list" id="waiting">
+    $('.msg_container_base').append('<div class="msg-list msg-rcvd" id="waiting">
                                         <div class="responding-container">
                                           <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
                                         </div>
@@ -95,6 +93,13 @@ integrate_received = (data) ->
           options.push(value)
           return
         output_options(options)
+      else if value.response_type == "suggestion"
+        output_received_txt(value.title)
+        options = []
+        $.each value.suggestions, (index, value) ->
+          options.push(value)
+          return
+        output_options(options)
       return
     # And we add all the discussion history to sessionStorage
     html = ''
@@ -107,12 +112,12 @@ integrate_received = (data) ->
   return
 
 # If response type comports options -> Output it
-output_options = (options) ->
+output_options = (options, type="options") ->
   # We first create the container
   $('.msg_container_base').append('<div class="row msg_container options"/>')
   # Then we add every button with it's label, and it's value
   $.each options, (index, op) ->
-    $('.row.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text+'\' class="gb-bordered hover-fill option ">'+op.label+'</button>')
+    $('.row.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text+'\' class="gb-bordered hover-fill duke-option ">'+op.label+'</button>')
     return
   $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
   return
@@ -120,7 +125,7 @@ output_options = (options) ->
 # If response type is plain text -> output it like this
 output_received_txt = (msg) ->
   # We create a received container, and we append the msg to it
-  $('.msg_container_base').append('<div class="msg-list">
+  $('.msg_container_base').append('<div class="msg-list msg-rcvd">
                                     <div class="messenger-container">
                                       <p>'+msg+'</p>
                                     </div>
@@ -139,7 +144,7 @@ output_sent = (msg = $("#duke-input").val()) ->
       return
   # Then display the message by creating a container, and appendind msg to it
   if msg != ""
-    $('.msg_container_base').append('<div class="msg-list sender">
+    $('.msg_container_base').append('<div class="msg-list sender msg-sdd">
                                       <div class="messenger-container">
                                         <p>'+msg+'</p>
                                       </div>
@@ -187,7 +192,7 @@ $(document).on 'click', '#btn-send', (e) ->
   return
 
 # Sends message containing Option data-Value, but shows Option data-label
-$(document).on 'click', '.option',  ->
+$(document).on 'click', '.duke-option',  ->
   target = event.target || event.srcElement;
   $(this).toggleClass( "hover-fill selected")
   output_sent(target.innerHTML)
