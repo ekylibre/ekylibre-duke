@@ -1,17 +1,16 @@
+%meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+%submit#btn_chat.btn-chat
+  %i.far.fa-comment-alt.fa-3x
 %nav#bottom_right
-  %submit#btn_chat.btn-chat
-    %i.far.fa-comment-alt.fa-3x
-  #chat_window_1.row.chat-window
-    #panel_default.panel.panel-default
-      #top_bar.panel-heading
-        Duke
-        %a.minus-link{:href => "#"}
-          %i.fas.fa-minus
-      .msg_container_base
-      #under_container.msg_container_under
-        .input-flex
-          %a.btn-mic#btn-mic{:href => "#"}
-            %i.fas.fa-microphone.fa-2x
-          %textarea#duke-input.duke-input{:placeholder => "Saisissez votre texte ...", :spellcheck => "false"}
-          %a.btn-send.disabled-send#btn-send{:href => "#"}
-            %i.fas.fa-caret-right.fa-2x
+  %nav#header-and-messages
+    %nav#top_bar
+      .duke-title Duke
+      %a.minus-link{:href => "#"}
+        %i.fas.fa-minus
+    .msg_container_base
+  .input-flex
+    %a.btn-mic#btn-mic{:href => "#"}
+      %i.fas.fa-microphone.fa-2x
+    %textarea#duke-input.duke-input{:placeholder => "Saisissez votre texte ...", :spellcheck => "false"}
+    %a.btn-send.disabled-send#btn-send{:href => "#"}
+      %i.fas.fa-caret-right.fa-2x
