@@ -32,19 +32,25 @@ module Duke
         add_input_rate(user_input, parsed[:inputs])
         parsed[:ambiguities] = find_ambiguity(parsed, user_input)
         what_next, sentence, optional = redirect(parsed)
-        return  { :parsed => parsed, :sentence => sentence, :redirect => what_next, :optional => optional  }
+        puts "voici les modifiable : #{modification_candidates(parsed)}"
+        return  { :parsed => parsed, :sentence => sentence, :redirect => what_next, :optional => optional, :modifiable => modification_candidates(parsed) }
       end
     end
 
     def handle_parse_disambiguation(params)
       parsed = params[:parsed]
       ambElement = params[:optional][-2]
+      puts "le ambElement : #{ambElement}"
       ambType, ambArray = parsed.find { |key, value| value.is_a?(Array) and value.any? { |subhash| subhash[:name] == ambElement[:name]}}
+      puts "le ambType et ambArray : #{ambType}, #{ambArray}"
       ambHash = ambArray.find {|hash| hash[:name] == ambElement[:name]}
+      puts "le ambHash : #{ambHash}"
       begin
         chosen_one = eval(params[:user_input])
+        puts "voici le chosen_one : #{chosen_one}"
         ambHash[:name] = chosen_one["name"]
         ambHash[:key] = chosen_one["key"]
+        puts "voici maintenant le nouveau ambHash : #{ambHash}"
       rescue
         if params[:user_input] == "Tous"
           params[:optional].each_with_index do |ambiguate, index|
@@ -61,35 +67,9 @@ module Duke
         end
       ensure
         parsed[:ambiguities].shift
+        puts "voici le parsed ambig : #{parsed[:ambiguities]}"
         what_next, sentence, optional = redirect(parsed)
-        return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
-      end
-    end
-
-    def handle_add_information(params)
-      parsed = params[:parsed]
-      Ekylibre::Tenant.switch params['tenant'] do
-        new_equipments = []
-        new_workers = []
-        new_inputs = []
-        new_crop_groups = []
-        user_input = clear_string(params[:user_input])
-        new_parsed = {:inputs => new_inputs,
-                      :workers => new_workers,
-                      :equipments => new_equipments,
-                      :procedure => parsed[:procedure],
-                      :duration => parsed[:duration],
-                      :date => parsed[:date],
-                      :user_input => user_input}
-        tag_specific_targets(new_parsed)
-        extract_user_specifics(user_input, new_parsed)
-        add_input_rate(user_input, new_inputs)
-        [:inputs, :workers, :equipments, :crop_groups, Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].each do |entity|
-          parsed[entity] = uniq_concat(new_parsed[entity], parsed[entity].to_a)
-        end
-        parsed[:user_input] += " - #{params[:user_input]}"
-        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
-        what_next, sentence, optional = redirect(parsed)
+        puts "et on va return maintenant !"
         return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
       end
     end
@@ -127,6 +107,26 @@ module Duke
         extract_user_specifics(user_input, new_parsed)
         parsed[:workers] = new_parsed[:workers]
         parsed[:user_input] += " - (Travailleurs) #{params[:user_input]}"
+        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
+        what_next, sentence, optional = redirect(parsed)
+        return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
+      end
+    end
+
+    def handle_modify_input(params)
+      parsed = params[:parsed]
+      Ekylibre::Tenant.switch params['tenant'] do
+        inputs = []
+        user_input = clear_string(params[:user_input])
+        new_parsed = {:inputs => inputs,
+                      :procedure => parsed[:procedure],
+                      :duration => parsed[:duration],
+                      :date => parsed[:date],
+                      :user_input => user_input}
+        extract_user_specifics(user_input, new_parsed)
+        add_input_rate(user_input, new_parsed[:inputs])
+        parsed[:inputs] = new_parsed[:inputs]
+        parsed[:user_input] += " - (Intrants) #{params[:user_input]}"
         parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
         what_next, sentence, optional = redirect(parsed)
         return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
@@ -183,8 +183,17 @@ module Duke
       I18n.locale = :fra
       Ekylibre::Tenant.switch params['tenant'] do
         tools_attributes = []
-        params[:parsed][:equipments].to_a.each do |tool|
-          tools_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:tool)[0].name, 'product_id' => tool[:key]})
+        unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:tool).empty?
+          params[:parsed][:equipments].to_a.each do |tool|
+            reference_name = Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:tool)[0].name
+            Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find_all {|param| param.type == :tool}.each do |tool_type|
+              if Equipment.of_expression(tool_type.filter).include? Equipment.where("id = #{tool[:key]}")[0]
+                reference_name = tool_type.name
+                break 
+              end 
+            end 
+            tools_attributes.push({"reference_name" => reference_name, 'product_id' => tool[:key]})
+          end
         end
         doers_attributes = []
         params[:parsed][:workers].to_a.each do |worker|

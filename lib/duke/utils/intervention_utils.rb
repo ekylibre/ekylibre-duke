@@ -6,7 +6,7 @@ module Duke
         # Create validation sentence for InterventionSkill
         I18n.locale = :fra
         sentence = I18n.t("duke.interventions.ask.save_intervention_#{rand(0...3)}")
-        sentence += "<br>&#8226 #{I18n.t("duke.interventions.proc")} : #{Procedo::Procedure.find(params[:procedure]).human_name}"
+        sentence += "<br>&#8226 #{I18n.t("duke.interventions.intervention")} : #{Procedo::Procedure.find(params[:procedure]).human_name}"
         unless params[:crop_groups].to_a.empty?
           sentence += "<br>&#8226 #{I18n.t("duke.interventions.group")} : "
           params[:crop_groups].each do |cg|
@@ -59,10 +59,10 @@ module Duke
       def disambiguate_procedure(procs)
         I18n.locale = :fra
         optional = []
-        family = :Végétal
+        family = :viti
         procs.split(/[|]/).each do |proc| 
-          family = :Viti if Procedo::Procedure.find(proc).activity_families.include? :vine_farming
-          optional.push({:key => proc, :human => "#{Procedo::Procedure.find(proc).human_name} - #{family}"})
+          family = :vegetal if Procedo::Procedure.find(proc).activity_families.include? :plant_farming
+          optional.push({:key => proc, :human => "#{Procedo::Procedure.find(proc).human_name} - #{I18n.t("duke.interventions.#{family}_production")}"})
         end 
         return :ask_proc, I18n.t("duke.interventions.ask.which_procedure"), optional
       end 
@@ -72,6 +72,24 @@ module Duke
           parsed[:crop_groups] = []
           parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] = []
         end 
+      end 
+
+      def modification_candidates(parsed)
+        I18n.locale = :fra
+        candidates = [I18n.t("duke.interventions.temporality")]
+        unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.nil?
+          candidates.push(I18n.t("duke.interventions.cultivation"))
+        end 
+        unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :tool}.nil?
+          candidates.push(I18n.t("duke.interventions.tool"))
+        end 
+        unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :doer}.nil?
+          candidates.push(I18n.t("duke.interventions.worker"))
+        end 
+        unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :input}.nil?
+          candidates.push(I18n.t("duke.interventions.input"))
+        end 
+        return candidates
       end 
 
       def extract_date_and_duration(content)
@@ -150,6 +168,11 @@ module Duke
         unless parsed[:ambiguities].to_a.empty?
           return "ask_ambiguity", nil, parsed[:ambiguities][0]
         end
+        puts "voici le parsed : #{parsed}"
+        parsed[:inputs].to_a.each do |input| 
+          puts "le input rate pour 1 : #{input[:rate][:value]}"
+          puts "nil ? #{input[:rate][:value].nil?}"
+        end 
         if parsed[:inputs].to_a.any? {|input| input[:rate][:value].nil?}
           sentence, optional = speak_input_rate(parsed)
           return "ask_input_rate", sentence, optional
