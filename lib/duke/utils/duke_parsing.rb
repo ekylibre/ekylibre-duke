@@ -51,8 +51,9 @@ module Duke
         # Extract date from a string, and returns a dateTime object with appropriate date & time
         # Default value is Datetime.now
         now = DateTime.now
-        month_hash = {"janvier" => 1, "février" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "août" => 8, "aout" => 8, "septembre" => 9, "octobre" => 10, "novembre" => 11, "décembre" => 12, "decembre" => 12 }
-        full_date_regex = '(\d|\d{2})\s(janvier|février|fevrier|mars|avril|mai|juin|juillet|aout|août|septembre|octobre|novembre|décembre|decembre)(\s\d{4}|\s\b)'
+        month_hash = {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9, "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12 }
+        full_date_regex = '(\d|\d{2}) *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)( *\d{4})?'
+        slash_date_regex = '(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?'
         time, content = extract_hour(content)
         # Search for keywords
         if content.include? "avant-hier"
@@ -67,14 +68,27 @@ module Duke
         else
           # Then search for full date
           full_date = content.match(full_date_regex)
+          slash_date = content.match(slash_date_regex)
           if full_date
             content[full_date[0]] = ""
             day = full_date[1].to_i
             month = month_hash[full_date[2]]
-            if full_date[3].to_i.between?(2015, 2021)
+            if full_date[3].to_i.between?(now.year - 5, now.year + 1)
               year = full_date[3].to_i
             else
-              year = Date.today.year
+              year = now.year
+            end
+            return DateTime.new(year, month, day, time.hour, time.min, time.sec, "+02:00"), content.strip.gsub(/\s+/, " ")
+          elsif slash_date
+            content[slash_date[0]] = ""
+            day = slash_date[1].to_i
+            month = slash_date[2].to_i
+            if slash_date[4].nil?
+              year = now.year
+            elsif slash_date[4].to_i.between?(now.year - 2005, now.year - 1999)
+              year = 2000 + slash_date[4].to_i
+            elsif slash_date[4].to_i.between?(now.year - 5, now.year + 1)
+              year = slash_date[4].to_i
             end
             return DateTime.new(year, month, day, time.hour, time.min, time.sec, "+02:00"), content.strip.gsub(/\s+/, " ")
           else
@@ -88,7 +102,7 @@ module Duke
         # Extract hour from a string, returns a DateTime object with appropriate date
         # Default value is Time.now
         now = DateTime.now
-        time_regex = '\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b'
+        time_regex = '\b(00|[0-9]|1[0-9]|2[0-3]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b'
         time = content.match(time_regex)
         if time
           if time[4].nil?
