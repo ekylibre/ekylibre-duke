@@ -9,7 +9,7 @@ module Duke
             what_next, sentence, optional = disambiguate_procedure(procedure)
             return {:parsed => params[:user_input], :redirect => what_next, :sentence => sentence, :optional => optional}
           else 
-            procedure = procedure.split(/[|]/)[1]
+            procedure = procedure.split(/[|]/)[0]
           end 
         end 
         return if Procedo::Procedure.find(procedure).nil?
@@ -40,17 +40,12 @@ module Duke
     def handle_parse_disambiguation(params)
       parsed = params[:parsed]
       ambElement = params[:optional][-2]
-      puts "le ambElement : #{ambElement}"
       ambType, ambArray = parsed.find { |key, value| value.is_a?(Array) and value.any? { |subhash| subhash[:name] == ambElement[:name]}}
-      puts "le ambType et ambArray : #{ambType}, #{ambArray}"
       ambHash = ambArray.find {|hash| hash[:name] == ambElement[:name]}
-      puts "le ambHash : #{ambHash}"
       begin
         chosen_one = eval(params[:user_input])
-        puts "voici le chosen_one : #{chosen_one}"
         ambHash[:name] = chosen_one["name"]
         ambHash[:key] = chosen_one["key"]
-        puts "voici maintenant le nouveau ambHash : #{ambHash}"
       rescue
         if params[:user_input] == "Tous"
           params[:optional].each_with_index do |ambiguate, index|
@@ -67,9 +62,7 @@ module Duke
         end
       ensure
         parsed[:ambiguities].shift
-        puts "voici le parsed ambig : #{parsed[:ambiguities]}"
         what_next, sentence, optional = redirect(parsed)
-        puts "et on va return maintenant !"
         return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
       end
     end

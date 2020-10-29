@@ -14,3 +14,5 @@
     %textarea#duke-input.duke-input{:placeholder => "Saisissez votre texte ...", :spellcheck => "false"}
     %a.btn-send.disabled-send#btn-send{:href => "#"}
       %i.fas.fa-caret-right.fa-2x
+
+%duke{data: {current_account: current_user.email, current_language: current_user.language, current_tenant: Ekylibre::Tenant.current, pusher_key: Pusher.key} }
