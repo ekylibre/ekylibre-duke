@@ -1,0 +1,2 @@
+AZURE_API_KEY = "de2d0eb46abf47b59348c7c355221081"
+AZURE_REGION = "francecentral"

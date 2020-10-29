@@ -18,6 +18,8 @@ $(document).behave "load", "duke[data-current-account]", ->
   global_vars.tenant = $(this).data('current-tenant')
   global_vars.language = $(this).data('current-language')
   global_vars.pusher_key = $(this).data('pusher-key')
+  global_vars.azure_key = $(this).data('azure-key')
+  global_vars.azure_region = $(this).data('azure-region')
   # OnKeyPressed inside Duke Textarea -> Enable/Disable send button
   $('#duke-input').keyup (e) ->
     if $("#duke-input").val() == ""
@@ -214,51 +216,20 @@ $(document).on 'click', '.duke-option',  ->
   return
 
 # STT integration
-recognition = new webkitSpeechRecognition
-recognition.continuous = true
-recognition.interimResults = true
-recognition.lang = 'fr-FR'
-
-recognition.onresult = (event) ->
-  interim_transcript = ''
-  final_transcript = ''
-  i = event.resultIndex
-  while i < event.results.length
-    # Verify if the recognized text is the last with the isFinal property
-    if event.results[i].isFinal
-      final_transcript += event.results[i][0].transcript
-    else
-      interim_transcript += event.results[i][0].transcript
-    ++i
-  # If message is over ie last transcript was null -> We send the output & clear textarea & buttonMic
-  if interim_transcript == ""
-    $("#duke-input").val(final_transcript)
-    output_sent()
-    send_msg()
-    clear_textarea()
-    $("#btn-mic").toggleClass("send-enabled", false)
-    $("#btn-mic").toggleClass("disabled-send",false)
-    recognition.stop()
-  # Or we add interim transcription to Duke's textarea
-  else
-    $( "#duke-input" ).val(interim_transcript)
-  return
-
-recognition.onerror = (event) ->
-  recognition.stop()
-  return
-
-# On end, Mic button is clickable and back base style
-recognition.onend = ->
-  clear_textarea()
-  $("#btn-mic").toggleClass("send-enabled", false)
-  $("#btn-mic").toggleClass("disabled-send",false)
-  console.log 'Speech recognition service disconnected'
-  return
-
-# On mic click, btn is disabled & new style
 $(document).on 'click', '#btn-mic', (e) ->
+  speechConfig = SpeechSDK.SpeechConfig.fromSubscription(global_vars.azure_key, global_vars.azure_region);
+  speechConfig.speechRecognitionLanguage = "fr-FR";
+  audioConfig  = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
+  recognizer = new (SpeechSDK.SpeechRecognizer)(speechConfig, audioConfig);
   $("#btn-mic").toggleClass("send-enabled",true)
   $("#btn-mic").toggleClass("disabled-send",true)
-  recognition.start()
-  return
+  recognizer.recognizeOnceAsync ((result) ->
+      output_sent(result.privText)
+      send_msg(result.privText)
+      clear_textarea()
+      $("#btn-mic").toggleClass("send-enabled", false)
+      $("#btn-mic").toggleClass("disabled-send",false)
+      recognizer.close();
+      return
+  ), (err) ->
+      recognizer.close();
