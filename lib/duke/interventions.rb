@@ -28,28 +28,44 @@ module Duke
                   :user_input => params[:user_input],
                   :retry => 0}
         tag_specific_targets(parsed)
-        extract_user_specifics(user_input, parsed)
+        extract_user_specifics(user_input, parsed, 0.89)
         add_input_rate(user_input, parsed[:inputs])
-        parsed[:ambiguities] = find_ambiguity(parsed, user_input)
+        parsed[:ambiguities] = find_ambiguity(parsed, user_input, 0.02)
         what_next, sentence, optional = redirect(parsed)
-        puts "voici les modifiable : #{modification_candidates(parsed)}"
         return  { :parsed => parsed, :sentence => sentence, :redirect => what_next, :optional => optional, :modifiable => modification_candidates(parsed) }
       end
     end
 
     def handle_parse_disambiguation(params)
+      # Handle disambiguation when users returns a choice.
+      # Last two elements from an Ambiguate Item are respectively : -2: Element that matches and his key, -1: InSentenceName and what we matched in user sentence
       parsed = params[:parsed]
+      # Find the parsed element that we're gonna modify
       ambElement = params[:optional][-2]
+      # Find the type of element (:input, :plant ..) and the corresponding array from the previously parsed items
       ambType, ambArray = parsed.find { |key, value| value.is_a?(Array) and value.any? { |subhash| subhash[:name] == ambElement[:name]}}
+      # Find the hash in question
       ambHash = ambArray.find {|hash| hash[:name] == ambElement[:name]}
+      # If user clicked on the "see more button"
+      if ["AddMore", "plus", "voire plus", "encore"].include?(params[:user_input])
+        # We recheck for an ambiguity on the specific element that can't be validated by the user, with a bigger level of incertitude
+        new_ambiguities = ambiguity_check(ambHash, params[:optional][-1][:name], 0.20, [], find_iterator(ambType.to_sym, parsed))
+        # Then we remove elements that have already been suggested to the user (we leave last two which will be used when we come back here)
+        new_ambiguities[0].reject! {|item| (parsed[:ambiguities][0][0..-3] & new_ambiguities[0]).include? (item)}
+        # If more than 7 items remains, drop some
+        new_ambiguities[0] = new_ambiguities[0].drop((new_ambiguities[0].length - 9 if new_ambiguities[0].length - 9 > 0 ) || 0)
+        parsed[:ambiguities] = new_ambiguities 
+        return { :parsed => parsed, :redirect => "see_more_ambiguity", :optional => parsed[:ambiguities][0]}
+      end 
       begin
+        # If the user_input can be turned to an hash -> user clicked on a value, we replace the name & key from the previously chosen one
         chosen_one = eval(params[:user_input])
         ambHash[:name] = chosen_one["name"]
         ambHash[:key] = chosen_one["key"]
       rescue
         if params[:user_input] == "Tous"
           params[:optional].each_with_index do |ambiguate, index|
-            # Last two values are the one that's already added, and the inSentenceName value -> useless
+            # Last two values are useless or already in, so we append every other ones
             unless [1,2].include?(params[:optional].length - index)
               hashClone = ambHash.clone()
               hashClone[:name] = ambiguate[:name].to_s
@@ -58,9 +74,11 @@ module Duke
             end
           end
         elsif params[:user_input] == "Aucun"
+          # On None -> We delete the previously chosen value from what was parsed
           ambArray.delete(ambHash)
         end
       ensure
+        # This ambiguity has been take care of, we remove it from parsed[:ambiguities]
         parsed[:ambiguities].shift
         what_next, sentence, optional = redirect(parsed)
         return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
@@ -77,11 +95,11 @@ module Duke
                       :date => parsed[:date],
                       :user_input => user_input}
         tag_specific_targets(new_parsed)
-        extract_user_specifics(user_input, new_parsed)
+        extract_user_specifics(user_input, new_parsed, 0.82)
         parsed[:crop_groups] = new_parsed[:crop_groups]
         parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] =  new_parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name]
         parsed[:user_input] += " - (Cultures) #{params[:user_input]}"
-        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
+        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
         what_next, sentence, optional = redirect(parsed)
         return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
       end
@@ -97,10 +115,10 @@ module Duke
                       :duration => parsed[:duration],
                       :date => parsed[:date],
                       :user_input => user_input}
-        extract_user_specifics(user_input, new_parsed)
+        extract_user_specifics(user_input, new_parsed, 0.82)
         parsed[:workers] = new_parsed[:workers]
         parsed[:user_input] += " - (Travailleurs) #{params[:user_input]}"
-        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
+        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
         what_next, sentence, optional = redirect(parsed)
         return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
       end
@@ -116,11 +134,11 @@ module Duke
                       :duration => parsed[:duration],
                       :date => parsed[:date],
                       :user_input => user_input}
-        extract_user_specifics(user_input, new_parsed)
+        extract_user_specifics(user_input, new_parsed, 0.82)
         add_input_rate(user_input, new_parsed[:inputs])
         parsed[:inputs] = new_parsed[:inputs]
         parsed[:user_input] += " - (Intrants) #{params[:user_input]}"
-        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
+        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
         what_next, sentence, optional = redirect(parsed)
         return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
       end
@@ -147,10 +165,10 @@ module Duke
                       :duration => parsed[:duration],
                       :date => parsed[:date],
                       :user_input => user_input}
-        extract_user_specifics(user_input, new_parsed)
+        extract_user_specifics(user_input, new_parsed, 0.82)
         parsed[:equipments] = new_parsed[:equipments]
         parsed[:user_input] += " - (Equipement) #{params[:user_input]}"
-        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
+        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
         what_next, sentence, optional = redirect(parsed)
         return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
       end

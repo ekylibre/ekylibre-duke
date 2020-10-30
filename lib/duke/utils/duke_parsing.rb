@@ -2,6 +2,7 @@ module Duke
   module Utils
     class DukeParsing
       @@fuzzloader = FuzzyStringMatch::JaroWinkler.create( :pure )
+      @@user_specific_types = [:plant, :land_parcel, :cultivation, :destination, :crop_groups, :equipments, :workers, :inputs, :press] 
 
       def extract_duration(content)
           #Function that finds the duration of the intervention & converts this value in minutes using regexes to have it stored into Ekylibre
@@ -241,49 +242,66 @@ module Duke
         return new_array
       end
 
-      def find_ambiguity(parsed, content)
+      def find_iterator(item_type, parsed)
+        if item_type == :plant
+          iterator = Plant.availables(at: parsed[:date].to_datetime)
+        elsif [:land_parcel, :cultivation].include? (item_type)
+          iterator = LandParcel.availables(at: parsed[:date].to_datetime)
+        elsif item_type == :destination
+          iterator = Matter.availables(at: parsed[:date].to_datetime).where("variety='tank'")
+        elsif item_type == :equipments
+          iterator = Equipment.availables(at: parsed[:date].to_datetime)
+        elsif item_type == :inputs
+          iterator = Matter.availables(at: parsed[:date].to_datetime).of_expression(Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :input}.filter)
+        elsif item_type == :workers
+          iterator = Worker.availables(at: parsed[:date].to_datetime).each
+        elsif item_type == :crop_groups
+          iterator = CropGroup.all.where("target = 'plant'")
+        elsif item_type == :press
+          iterator = Matter.availables(at: parsed[:date].to_datetime).can('press(grape)')
+        end
+        return iterator
+      end 
+
+      def find_ambiguity(parsed, content, level)
         # Find ambiguities in what's been parsed, ie items with close fuzzy match for the best words that matched
         ambiguities = []
         parsed.each do |key, reco|
-          if [:plant, :land_parcel, :cultivation, :destination, :crop_groups, :equipments, :workers, :inputs, :press].include?(key)
+          if @@user_specific_types.include?(key)
+            iterator = find_iterator(key, parsed)
             reco.each do |anItem|
               unless anItem[:distance] == 1
-                ambig = []
                 anItem_name = content.split()[anItem[:indexes][0]..anItem[:indexes][-1]].join(" ")
-                if key == :plant
-                  iterator = Plant.availables(at: parsed[:date])
-                elsif [:land_parcel, :cultivation].include? (key)
-                  iterator = LandParcel.availables(at: parsed[:date])
-                elsif key == :destination
-                  iterator = Matter.availables(at: parsed[:date]).where("variety='tank'")
-                elsif key == :equipments
-                  iterator = Equipment.availables(at: parsed[:date])
-                elsif key == :inputs
-                  iterator = Matter.availables(at: parsed[:date]).of_expression(Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :input}.filter)
-                elsif key == :workers
-                  iterator = Worker.availables(at: parsed[:date]).each
-                elsif key == :crop_groups
-                  iterator = CropGroup.all.where("target = 'plant'")
-                elsif key == :press
-                  iterator = Matter.availables(at: parsed[:date]).can('press(grape)')
-                end
-                iterator.each do |product|
-                  if anItem[:key] != product[:id] and (anItem[:distance] - @@fuzzloader.getDistance(clear_string(product[:name]), clear_string(anItem_name))).between?(0,0.02)
-                    ambig.push({"key" => product[:id].to_s, "name" => product[:name]})
-                  end
-                end
-                unless ambig.empty?
-                  ambig.push({"key" => anItem[:key].to_s, "name" => anItem[:name]})
-                  ambig.push({"key" => "inSentenceName", "name" => anItem_name})
-                  # Only save ambiguities between max 7 elements
-                  ambiguities.push(ambig.drop((ambig.length - 9 if ambig.length - 9 > 0 ) || 0))
-                end
+                ambiguity_check(anItem, anItem_name, level, ambiguities, iterator)
               end
             end
           end
         end
         return ambiguities
       end
+
+      def ambiguity_check(item_hash, what_matched, level, ambiguities, iterator)
+        # Method to check entities about a specific item
+        ambig = []
+        # For each element of the iterator (ex : for crop_groups => CropGroup.all ), if distances is close (+/-level) to item that matchedit's part of the ambiguity possibilities
+        iterator.each do |product|
+          if item_hash[:key] != product[:id] and (item_hash[:distance] - @@fuzzloader.getDistance(clear_string(product[:name]), clear_string(what_matched))).between?(0,level)
+            ambig.push({"key" => product[:id].to_s, "name" => product[:name]})
+          end
+        end
+        # If ambiguous items, we add the current chosen element this ambig, and an element with what_matched do display to the user which words cuased problems
+        unless ambig.empty?
+          ambig.push({"key" => item_hash[:key].to_s, "name" => item_hash[:name]})
+          ambig.push({"key" => "inSentenceName", "name" => what_matched})
+          # Only save ambiguities with max 7 elements if we're not in the "see more possibilities" (level < 0.05)
+          if level < 0.05
+            ambiguities.push(ambig.drop((ambig.length - 9 if ambig.length - 9 > 0 ) || 0))
+          else 
+            ambiguities.push(ambig)
+          end 
+        end
+        return ambiguities
+      end 
 
       def clear_string(fstr)
         useless_dic = [/\bnum(e|é)ro\b/, /n ?°/, /(#|-|_|\\)/]
@@ -295,7 +313,7 @@ module Duke
 
       def key_duplicate?(list, saved_hash)
         # Is there a duplicate in the list ? + List we want to keep using. List Mutation allows us to persist modification
-        # -> No Duplicate : false + current list, Duplicate -> Distance(+/-)=False/True + Current list (with/without duplicate)
+        # ie. No Duplicate -> false + current list, Duplicate -> Distance(+/-)=False/True + Current list (with/without duplicate)
         if not list.any? {|recon_element| recon_element[:key] == saved_hash[:key]}
           return false, list
         elsif not list.any? {|recon_element| recon_element[:key] == saved_hash[:key] and saved_hash[:distance] >= recon_element[:distance] }
@@ -307,23 +325,13 @@ module Duke
         end
       end
 
-      def extract_user_specifics(user_input, parsed)
-        iterators_dic = {:workers => Worker.availables(at: parsed[:date]),
-                         :equipments => Equipment.availables(at: parsed[:date]),
-                         :inputs =>(Matter.availables(at: parsed[:date]).of_expression(Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :input}.filter)  if parsed[:procedure] and !Procedo::Procedure.find( parsed[:procedure]).parameters_of_type(:input).empty?) || [],
-                         :crop_groups => (CropGroup.all if !(defined? (CropGroup)).nil?) || [],
-                         :destination => Matter.availables(at: parsed[:date]).where("variety='tank'"),
-                         :plant => Plant.availables(at: parsed[:date]),
-                         :land_parcel => LandParcel.availables(at: Time.now),
-                         :cultivation => LandParcel.availables(at: Time.now),
-                         :press => Matter.availables(at: parsed[:date]).can('press(grape)')}
-        user_specifics = parsed.select{ |key, value| iterators_dic.key?(key)}
+      def extract_user_specifics(user_input, parsed, level)
+        user_specifics = parsed.select{ |key, value| @@user_specific_types.include?(key.to_sym)}
         create_words_combo(user_input).each do |index, combo|
-          level = 0.89
           matching_element = nil # A Hash containing :key, :name, :indexes, :distance,
           matching_list = nil  # A pointer, which will point to the list on which to add the matching element, if a match occurs, else points to nothing
           user_specifics.keys.each do |itemType|
-            iterators_dic[itemType].each do |item|
+            find_iterator(itemType, parsed).each do |item|
               if itemType == :workers
                 level, matching_element, matching_list = compare_elements(combo, item[:name].split[0], index, level, item[:id], parsed[itemType], matching_element, matching_list)
               end

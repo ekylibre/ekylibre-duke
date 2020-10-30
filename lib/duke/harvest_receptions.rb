@@ -13,9 +13,9 @@ module Duke
                   :date => date,
                   :user_input => params[:user_input],
                   :retry => 0}
-        extract_user_specifics(user_input, parsed)
+        extract_user_specifics(user_input, parsed, 0.89)
         plant, crop_groups = extract_plant_area(user_input, plant, crop_groups)
-        parsed[:ambiguities] = find_ambiguity(parsed, user_input)
+        parsed[:ambiguities] = find_ambiguity(parsed, user_input, 0.02)
         # Find if crucials parameters haven't been given, to ask again to the user
         what_next, sentence, optional = redirect(parsed)
         return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
@@ -107,7 +107,7 @@ module Duke
         new_parsed = {:plant => plant,
                       :crop_groups => crop_groups,
                       :date => parsed[:date]}
-        extract_user_specifics(user_input, new_parsed)
+        extract_user_specifics(user_input, new_parsed, 0.82)
         plant, crop_groups = extract_plant_area(user_input, plant, crop_groups)
         # If there's no new Target/Crop_group, But a percentage, it's the new area % foreach previous target
         if crop_groups.empty? and plant.empty?
@@ -119,7 +119,7 @@ module Duke
         else
           parsed[:plant] = new_parsed[:plant]
           parsed[:crop_groups] = new_parsed[:crop_groups]
-          parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
+          parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
         end
       end
       parsed[:user_input] += " - (Cibles) #{params[:user_input]}"
@@ -140,9 +140,9 @@ module Duke
         user_input = clear_string(params[:user_input]).gsub("que","cuve")
         new_parsed = {:destination => destination,
                       :date => parsed[:date]}
-        extract_user_specifics(user_input, new_parsed)
+        extract_user_specifics(user_input, new_parsed, 0.82)
         parsed[:destination] = new_parsed[:destination]
-        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
+        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
       end
       parsed[:user_input] += ' (Destination) ' << params[:user_input]
       what_next, sentence, optional = redirect(parsed)
@@ -214,9 +214,9 @@ module Duke
         press = []
         new_parsed = {:press => press,
                       :date => parsed[:date]}
-        extract_user_specifics(user_input, new_parsed)
+        extract_user_specifics(user_input, new_parsed, 0.82)
         parsed[:press] = new_parsed[:press]
-        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
+        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
       end
       parsed[:user_input] += " (Pressoir) #{params[:user_input]}"
       what_next, sentence, optional = redirect(parsed)
