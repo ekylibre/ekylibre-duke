@@ -252,8 +252,12 @@ module Duke
         elsif item_type == :equipments
           iterator = Equipment.availables(at: parsed[:date].to_datetime)
         elsif item_type == :inputs
-          iterator = Matter.availables(at: parsed[:date].to_datetime).of_expression(Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :input}.filter)
-        elsif item_type == :workers
+          if Procedo::Procedure.find(parsed[:procedure]).parameters_of_type(:input).empty?
+            iterator = [] 
+          else 
+            iterator = Matter.availables(at: parsed[:date].to_datetime).of_expression(Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :input}.filter)
+          end
+          elsif item_type == :workers
           iterator = Worker.availables(at: parsed[:date].to_datetime).each
         elsif item_type == :crop_groups
           iterator = CropGroup.all.where("target = 'plant'")
