@@ -38,7 +38,7 @@ $(document).behave "load", "duke[data-current-account]", ->
       clear_textarea()
       return false
 # Send msg to backends methods that communicate with IBM
-send_msg = (msg = $("#duke-input").val()) ->
+send_msg = (msg = $("#duke-input").val(), user_intent=undefined) ->
   # On message sent, open Websocket connection to listen for an answer
   pusher = new Pusher(global_vars.pusher_key, cluster: 'eu')
   channel = pusher.subscribe(sessionStorage.getItem('duke_id'))
@@ -51,6 +51,7 @@ send_msg = (msg = $("#duke-input").val()) ->
     type: 'post'
     data:
       "msg": msg
+      "user_intent": user_intent
       "user_id": global_vars.account
       "tenant": global_vars.tenant
       "duke_id": sessionStorage.getItem('duke_id')
@@ -117,13 +118,20 @@ integrate_received = (data) ->
   ), 700
   return
 
-# If response type comports options -> Output it
+# If response type comports options, or suggestion -> Output it as clickable buttons
 output_options = (options, type="options") ->
   # We first create the container
   $('.msg_container_base').append('<div class="row msg_container options"/>')
-  # Then we add every button with it's label, and it's value
+  # Then we add every button with it's label, and it's value, and the potential intent to redirect the user
   $.each options, (index, op) ->
-    $('.row.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text+'\' class="gb-bordered hover-fill duke-option ">'+op.label+'</button>')
+    if op.hasOwnProperty('source_dialog_node')
+      if op.value.input.intents.length == 0
+        intent = "anything_else"
+      else 
+        intent = op.value.input.intents[0].intent
+      $('.row.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text+'\'data-intent= \''+intent+'\' class="gb-bordered hover-fill duke-option duke-suggestion ">'+op.label+'</button>')
+    else 
+      $('.row.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text+'\' class="gb-bordered hover-fill duke-option duke-message-option">'+op.label+'</button>')
     return
   $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
   return
@@ -207,12 +215,21 @@ $(document).on 'click', '#btn-send', (e) ->
   return
 
 # Sends message containing Option data-Value, but shows Option data-label
-$(document).on 'click', '.duke-option',  ->
+$(document).on 'click', '.duke-message-option',  ->
   target = event.target || event.srcElement;
   $(this).toggleClass( "hover-fill selected")
   output_sent(target.innerHTML)
   if event.stopPropagation then event.stopPropagation() else (event.cancelBubble = true)
   send_msg($(this).data("value"))
+  return
+
+# Sends previous message to the functionnality the user chose when suggested
+$(document).on 'click', '.duke-suggestion',  ->
+  target = event.target || event.srcElement;
+  $(this).toggleClass( "hover-fill selected")
+  output_sent(target.innerHTML)
+  if event.stopPropagation then event.stopPropagation() else (event.cancelBubble = true)
+  send_msg($(this).data("value"), $(this).data("intent"))
   return
 
 # STT integration
