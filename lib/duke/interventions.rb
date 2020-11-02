@@ -3,14 +3,21 @@ module Duke
 
     def handle_parse_sentence(params)
       Ekylibre::Tenant.switch params['tenant'] do
-        procedure = params['procedure']
+        procedure = params[:procedure]
+        # Check for | delimiter inside procedure type, if exists, it means it's Ekyviti and we have choice between vegetal & viti procedure
         unless procedure.scan(/[|]/).empty?
+          # If there's no vegetal farming we take viti one, otherwise we ask the user
           if Activity.availables.any? {|act| act[:family] != :vine_farming}
-            what_next, sentence, optional = disambiguate_procedure(procedure)
+            what_next, sentence, optional = disambiguate_procedure(procedure, "|")
             return {:parsed => params[:user_input], :redirect => what_next, :sentence => sentence, :optional => optional}
           else 
             procedure = procedure.split(/[|]/)[0]
           end 
+        end 
+        # Check for ~ delimiter inside procedure type, if exists, it means there's an amibuity in the user asking
+        unless procedure.scan(/[~]/).empty?
+          what_next, sentence, optional = disambiguate_procedure(procedure, "~")
+          return {:parsed => params[:user_input], :redirect => what_next, :sentence => sentence, :optional => optional}
         end 
         return if Procedo::Procedure.find(procedure).nil?
         unless (Procedo::Procedure.find(procedure).activity_families & [:vine_farming, :plant_farming]).any?
@@ -19,6 +26,8 @@ module Duke
         equipments, workers, inputs = [], [], []
         # Finding when it happened and how long it lasted, + getting cleaned user_input
         date, duration, user_input = extract_date_and_duration(clear_string(params[:user_input]))
+        # Removing word that matched procedure type
+        user_input = user_input.gsub(params[:procedure_word], "")
         parsed = {:inputs => inputs,
                   :workers => workers,
                   :equipments => equipments,

@@ -56,15 +56,22 @@ module Duke
         end
       end
 
-      def disambiguate_procedure(procs)
+      def disambiguate_procedure(procs, delimiter)
         I18n.locale = :fra
         optional = []
-        family = :viti
-        procs.split(/[|]/).each do |proc| 
-          family = :vegetal if Procedo::Procedure.find(proc).activity_families.include? :plant_farming
-          optional.push({:key => proc, :human => "#{Procedo::Procedure.find(proc).human_name} - #{I18n.t("duke.interventions.#{family}_production")}"})
+        if delimiter == "|"
+          family = :viti
+          procs.split(/[|]/).each do |proc| 
+            family = :vegetal if Procedo::Procedure.find(proc).activity_families.include? :plant_farming
+            optional.push({:key => proc, :human => "#{Procedo::Procedure.find(proc).human_name} - #{I18n.t("duke.interventions.#{family}_production")}"})
+          end 
+          return :ask_proc, I18n.t("duke.interventions.ask.which_procedure"), optional
+        else 
+          procs.split(/[~]/).each do |proc|
+            optional.push({:key => proc, :human => "#{Procedo::Procedure.find(proc).human_name}"})
+          end 
+          return :ask_proc, I18n.t("duke.interventions.ask.which_procedure"), optional
         end 
-        return :ask_proc, I18n.t("duke.interventions.ask.which_procedure"), optional
       end 
 
       def tag_specific_targets(parsed)
@@ -168,10 +175,7 @@ module Duke
         unless parsed[:ambiguities].to_a.empty?
           return "ask_ambiguity", nil, parsed[:ambiguities][0]
         end
-        puts "voici le parsed : #{parsed}"
         parsed[:inputs].to_a.each do |input| 
-          puts "le input rate pour 1 : #{input[:rate][:value]}"
-          puts "nil ? #{input[:rate][:value].nil?}"
         end 
         if parsed[:inputs].to_a.any? {|input| input[:rate][:value].nil?}
           sentence, optional = speak_input_rate(parsed)
