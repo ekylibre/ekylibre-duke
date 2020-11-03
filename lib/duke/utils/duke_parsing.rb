@@ -255,7 +255,7 @@ module Duke
           if Procedo::Procedure.find(parsed[:procedure]).parameters_of_type(:input).empty?
             iterator = [] 
           else 
-            iterator = Matter.availables(at: parsed[:date].to_datetime).of_expression(Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :input}.filter)
+            iterator = Matter.availables(at: parsed[:date].to_datetime).of_expression(Procedo::Procedure.find(parsed[:procedure]).parameters_of_type(:input).collect(&:filter).join(" or "))
           end
           elsif item_type == :workers
           iterator = Worker.availables(at: parsed[:date].to_datetime).each

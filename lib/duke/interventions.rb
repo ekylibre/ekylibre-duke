@@ -38,7 +38,7 @@ module Duke
                   :retry => 0}
         tag_specific_targets(parsed)
         extract_user_specifics(user_input, parsed, 0.89)
-        add_input_rate(user_input, parsed[:inputs])
+        add_input_rate(user_input, parsed[:inputs], parsed[:procedure])
         parsed[:ambiguities] = find_ambiguity(parsed, user_input, 0.02)
         what_next, sentence, optional = redirect(parsed)
         return  { :parsed => parsed, :sentence => sentence, :redirect => what_next, :optional => optional, :modifiable => modification_candidates(parsed) }
@@ -71,6 +71,13 @@ module Duke
         chosen_one = eval(params[:user_input])
         ambHash[:name] = chosen_one["name"]
         ambHash[:key] = chosen_one["key"]
+        # If the type of ambiguation is an input, make sure quantity handlers are concording with new input, otherwise remove rate infos
+        if ambType.to_sym == :inputs 
+          if ([:net_mass, :mass_area_density].include? ambHash[:rate][:unit].to_sym and Matter.where("id = #{ambHash[:key]}").first&.net_mass.to_f == 0) || ([:net_volume, :volume_area_density].include? ambHash[:rate][:unit].to_sym and Matter.where("id = #{ambHash[:key]}").first&.net_volume.fo_f == 0)
+            ambHash[:rate][:unit] = :population 
+            ambHash[:rate][:value] = nil 
+          end 
+        end 
       rescue
         if params[:user_input] == "Tous"
           params[:optional].each_with_index do |ambiguate, index|
@@ -80,6 +87,11 @@ module Duke
               hashClone[:name] = ambiguate[:name].to_s
               hashClone[:key] = ambiguate[:key].to_s
               ambArray.push(hashClone)
+              # If ambiguation type is an input, and we add multiple, we ask how much quantity for each new input
+              if ambType.to_sym == :inputs 
+                hashClone[:rate][:unit] = :population 
+                hashClone[:rate][:value] = nil 
+              end 
             end
           end
         elsif params[:user_input] == "Aucun"
@@ -144,7 +156,7 @@ module Duke
                       :date => parsed[:date],
                       :user_input => user_input}
         extract_user_specifics(user_input, new_parsed, 0.82)
-        add_input_rate(user_input, new_parsed[:inputs])
+        add_input_rate(user_input, new_parsed[:inputs], parsed[:procedure])
         parsed[:inputs] = new_parsed[:inputs]
         parsed[:user_input] += " - (Intrants) #{params[:user_input]}"
         parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
@@ -222,11 +234,11 @@ module Duke
         inputs_attributes = []
         unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:input).empty?
           params[:parsed][:inputs].to_a.each do |input|
-            inputs_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:input)[0].name,
-                                               "product_id" => input[:key],
-                                               "quantity_value" => input[:rate][:value].to_f*input[:rate][:factor],
-                                               "quantity_population" => input[:rate][:value].to_f*input[:rate][:factor],
-                                               "quantity_handler" => input[:rate][:unit]})
+            inputs_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:input).find {|inp| Matter.where("id = #{input[:key]}").first.of_expression(inp.filter)}.name,
+                                    "product_id" => input[:key],
+                                    "quantity_value" => input[:rate][:value].to_f,
+                                    "quantity_population" => input[:rate][:value].to_f,
+                                    "quantity_handler" => input[:rate][:unit]})
           end
         end
         unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.nil?

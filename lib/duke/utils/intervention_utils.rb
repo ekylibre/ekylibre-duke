@@ -36,7 +36,7 @@ module Duke
         unless params[:inputs].to_a.empty?
           sentence += "<br>&#8226 #{I18n.t("duke.interventions.input")} : "
           params[:inputs].each do |input|
-            sentence += "#{input[:name]} (#{input[:rate][:value].to_f*input[:rate][:factor]} #{I18n.t("duke.interventions.#{input[:rate][:unit].to_sym}")}), "
+            sentence += "#{input[:name]} (#{input[:rate][:value].to_f} #{(I18n.t("nomenclatures.units.items.#{Procedo::Procedure.find(params[:procedure]).parameters_of_type(:input).find {|inp| Matter.where("id = #{input[:key]}").first.of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name}") if input[:rate][:unit].to_sym != :population) || Matter.where("id = #{input[:key]}").first&.unit_name}), "
           end
         end
         sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{params[:date].to_datetime.strftime("%d/%m/%Y - %H:%M")}"
@@ -50,7 +50,7 @@ module Duke
         I18n.locale = :fra
         params[:inputs].each_with_index do |input, index|
           if input[:rate][:value].nil?
-            sentence = I18n.t("duke.interventions.ask.how_much_inputs_#{rand(0...2)}", input: input[:name], unit: I18n.t("duke.interventions.#{input[:rate][:unit].to_sym}"))
+            sentence = I18n.t("duke.interventions.ask.how_much_inputs_#{rand(0...2)}", input: input[:name], unit: (Procedo::Procedure.find(params[:procedure]).parameters_of_type(:input).find {|inp| Matter.where("id = #{input[:key]}").first.of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name if input[:rate][:unit].to_sym != :population) || Matter.where("id = #{input[:key]}").first&.unit_name)
             return sentence, index
           end
         end
@@ -113,7 +113,7 @@ module Duke
         return date, duration, content
       end
 
-      def add_input_rate(content, recognized_inputs)
+      def add_input_rate(content, recognized_inputs, procedure)
         # This function adds a 1 population quantity to every input that has been found
         # Next step could be to match this type of regex : /{1,3}(g|kg|litre)(d)(de)? *{1}/
         recognized_inputs.each_with_index do |input, index|
@@ -133,40 +133,44 @@ module Duke
             rate = nil
             area = nil
           end
-          unit, factor = get_input_indicator(unit, input, area)
-          input[:rate] = {:value => rate, :unit => unit, :factor => factor}
+          measure = get_measure(rate.to_f, unit, area)
+          # If measure in mass or volume , and procedure can handle this type of indicators for its inputs and net dimension exists for specific input
+          if [:mass, :volume].include? measure.base_dimension.to_sym and !Procedo::Procedure.find(procedure).parameters_of_type(:input).find {|inp| Matter.where("id = #{input[:key]}").first.of_expression(inp.filter)}.handler("net_#{measure.base_dimension}").nil? and !Matter.where("id = #{input[:key]}").first&.send("net_#{measure.base_dimension}").zero?
+            # If it's not a per hectare distance
+            if measure.repartition_unit.nil?
+              measure = measure.in(Procedo::Procedure.find(procedure).parameters_of_type(:input).find {|inp| Matter.where("id = #{input[:key]}").first.of_expression(inp.filter)}.handler("net_#{measure.base_dimension}").unit.name)
+              input[:rate] = {:value => measure.value.to_f, :unit => "net_#{measure.base_dimension}"}
+            else 
+              measure = measure.in(Procedo::Procedure.find(procedure).parameters_of_type(:input).find {|inp| Matter.where("id = #{input[:key]}").first.of_expression(inp.filter)}.handler(measure.dimension).unit.name)
+              input[:rate] = {:value => measure.value.to_f, :unit => measure.dimension}
+            end 
+          else 
+            input[:rate] = {:value => nil, :unit => :population}
+          end 
         end
         return recognized_inputs
       end
 
-      def get_input_indicator(unit, input, area)
-        if Matter.where("id = #{input[:key]}").first.has_indicator?(:net_mass)
-          if unit == :population
-            return :net_mass, 1
-          elsif unit.match(/(kilo|kg)/)
-            return :net_mass, 1 if area.nil?
-            return :mass_area_density, 1
-          elsif unit.match(/(gramme|g)/)
-            return :net_mass, 0.001 if area.nil?
-            return :mass_area_density, 0.001
-          elsif unit.match(/(tonne)/) || unit == "t"
-            return :net_mass, 1000 if area.nil?
-            return :mass_area_density, 1000
-          end
+      def get_measure(value, unit, area)
+        if unit == :population 
+          return Measure.new(value, :population)
+        elsif unit.match(/(kilo|kg)/)
+          return Measure.new(value, "kilogram") if area.nil?
+          return  Measure.new(value, "kilogram_per_hectare")
+        elsif unit.match(/(gramme|g)/)
+          return Measure.new(value, "gram") if area.nil?
+          return  Measure.new(value, "gram_per_hectare")
+        elsif unit.match(/(tonne)/) || unit == "t"
+          return Measure.new(value, "ton") if area.nil?
+          return  Measure.new(value, "ton_per_hectare")
+        elsif unit.match(/(hectolitre|hl)/)
+          return Measure.new(value, "hectoliter") if area.nil?
+          return  Measure.new(value, "hectoliter_per_hectare")
+        elsif unit.match(/(litre|l)/)
+          return Measure.new(value, "liter") if area.nil?
+          return  Measure.new(value, "liter_per_hectare")
         end
-        if Matter.where("id = #{input[:key]}").first.has_indicator?(:net_volume)
-          if unit == :population
-            return :net_volume, 1
-          elsif unit.match(/(hectolitre|hl)/)
-            return :net_volume, 100 if area.nil?
-            return :volume_area_density, 100
-          elsif unit.match(/(litre|l)/)
-            return :net_volume, 1 if area.nil?
-            return :volume_area_density, 1
-          end
-        end
-        return :population, 1
-      end
+      end 
 
       def redirect(parsed)
         if parsed[:retry] == 2
