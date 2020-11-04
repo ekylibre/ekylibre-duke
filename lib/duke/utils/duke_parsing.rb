@@ -10,6 +10,7 @@ module Duke
           regex = '\d+\s(\w*minute\w*|mins)'
           regex2 = '(de|pendant|durée) *(\d)\s?(heures|h|heure)\s?(\d\d)'
           regex3 = '(de|pendant|durée) *(\d)\s?(h\b|h\s|heure)'
+          # If content includes a non numeric value, we catch it & return this duration
           if content.include? "trois quarts d'heure"
             content["trois quart d'heure"] = ""
             return 45, content.strip.gsub(/\s+/, " ")
@@ -23,6 +24,7 @@ module Duke
             return 30, content.strip.gsub(/\s+/, " ")
           end
           min_time = content.match(regex)
+          # If any regex matches, we extract the min value
           if min_time
             delta_in_mins += min_time[0].to_i
             content[min_time[0]] = ""
@@ -39,13 +41,15 @@ module Duke
           if hour_time
             delta_in_mins += hour_time[2].to_i*60
             content[hour_time[0]] = ""
+            # If "et demi" in sentence, we add 30min to what's already parsed
             if content.include? "et demi"
               delta_in_mins += 30
               content["et demi"] = ""
             end
             return delta_in_mins, content.strip.gsub(/\s+/, " ")
           end
-          return 60, content.strip.gsub(/\s+/, " ")
+          # If nothing matched, we return the basic duration => 1 hour
+          return 60, content
       end
 
       def extract_date(content)
@@ -55,8 +59,9 @@ module Duke
         month_hash = {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9, "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12 }
         full_date_regex = '(\d|\d{2}) *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)( *\d{4})?'
         slash_date_regex = '(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?'
+        # Extract the hour at which intervention was done
         time, content = extract_hour(content)
-        # Search for keywords
+        # Search for keywords and define a d=DateTime if match
         if content.include? "avant-hier"
           content["avant-hier"] = ""
           d = Date.yesterday.prev_day
@@ -67,7 +72,7 @@ module Duke
           content["demain"] = ""
           d = Date.tomorrow
         else
-          # Then search for full date
+          # If no keyword, try to match regexes and return 
           full_date = content.match(full_date_regex)
           slash_date = content.match(slash_date_regex)
           if full_date
@@ -93,9 +98,11 @@ module Duke
             end
             return DateTime.new(year, month, day, time.hour, time.min, time.sec, "+02:00"), content.strip.gsub(/\s+/, " ")
           else
+            # If nothing matches, we return DateTime.now item, with extracted time
             return DateTime.new(now.year, now.month, now.day, time.hour, time.min, time.sec, "+02:00"),  content.strip.gsub(/\s+/, " ")
           end
         end
+        # If a d object is set, return the DateTime object with extracted time
         return DateTime.new(d.year, d.month, d.day, time.hour, time.min, time.sec, "+02:00"), content.strip.gsub(/\s+/, " ")
       end
 
@@ -104,6 +111,7 @@ module Duke
         # Default value is Time.now
         now = DateTime.now
         time_regex = '\b(00|[0-9]|1[0-9]|2[0-3]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b'
+        # Try to match the time regex & Return DateTime with todays date and correct time
         time = content.match(time_regex)
         if time
           if time[4].nil?
@@ -113,6 +121,7 @@ module Duke
             content[time[0]] = ""
             return DateTime.new(now.year, now.month, now.day, time[1].to_i, time[4].to_i, 0), content
           end
+        # Otherwise try to match keywords
         elsif content.include? "matin"
           content["matin"] = ""
           return DateTime.new(now.year, now.month, now.day, 10, 0, 0), content
@@ -134,6 +143,7 @@ module Duke
       end
 
       def extract_number_parameter(value, content)
+        # Extract a value from a sentence. A value can already be specified, in this case, we look for a float with values int
         match_to_float = content.match(/#{value}(\.\d{1,2})/) unless value.nil?
         if value.nil?
           # If we don't have a value, we search for an integer/float inside the user input
@@ -147,11 +157,12 @@ module Duke
         elsif match_to_float
           value = match_to_float[0]
         end
+        # Return the value as a string
         return value.to_s.gsub(',','.')
       end
 
       def choose_date(date1, date2)
-        #Date.now is the default value, so if the value returned is more than 15 away from now, we select it
+        #Date.now is the default value, so if the value returned is more than 15 min away from now, we select it
         if (date1.to_datetime - DateTime.now).abs >= 0.010
           return date1
         else
@@ -170,7 +181,7 @@ module Duke
 
       def add_to_recognized(saved_hash, list, all_lists, content)
         #Function that adds elements to a list of recognized items only if no other elements uses the same words to match or if this word has a lower fuzzmatch
-        #If no element inside any of the lists has the same words used to match an element (overlapping indexes)
+        #If no element inside any of the lists has the same words used to match an element (overlapping indexes), and no duplicate => we push the hash to the list
         if not all_lists.any? {|aList| aList.any? {|recon_element| !(recon_element[:indexes] & saved_hash[:indexes]).empty?}}
           hasDuplicate, list = key_duplicate?(list, saved_hash)
           unless hasDuplicate
@@ -193,6 +204,7 @@ module Duke
       end
 
       def create_words_combo(user_input)
+        # Creating words combos with_index
         # "Je suis ton " becomes { [0] => "Je", [0,1] => "Je suis", [0,1,2] => "Je suis ton", [1] => "suis", [1,2] => "suis ton", [2] => "ton"}
         words_combos = {}
         (0..user_input.split().length).to_a.combination(2).to_a.each do |index_combo|
@@ -204,14 +216,14 @@ module Duke
       end
 
       def compare_elements(string1, string2, indexes, level, key, append_list, saved_hash, rec_list)
-          # We check the fuzz distance between two elements, if it's greater than the min_matching_level or the current best distance, this is the new recordman
-          # We only compare with item_part before "|"
-          item_to_match = clear_string(string2).split(" | ")[0]
-          distance = @@fuzzloader.getDistance(string1, item_to_match)
-          if distance > level
-            return distance, { :key => key, :name => string2, :indexes => indexes , :distance => distance}, append_list
-          end
-          return level, saved_hash, rec_list
+        # We check the fuzz distance between two elements, if it's greater than the min_matching_level or the current best distance, this is the new recordman
+        # We only compare with item_part before "|" if any delimiter is present
+        item_to_match = clear_string(string2).split(" | ")[0]
+        distance = @@fuzzloader.getDistance(string1, item_to_match)
+        if distance > level
+          return distance, { :key => key, :name => string2, :indexes => indexes , :distance => distance}, append_list
+        end
+        return level, saved_hash, rec_list
       end
 
       def better_corrected_distance?(a,b, content)
@@ -219,8 +231,10 @@ module Duke
         if a[:key] == b[:key]
           return (true if a[:distance] >= b[:distance]) || false
         else
+          # Finding the lenght of what matched for both elements
           len_a = content.split()[a[:indexes][0]..a[:indexes][-1]].join(" ").split("").length
           len_b = content.split()[b[:indexes][0]..b[:indexes][-1]].join(" ").split("").length
+          # Multiply distance with exponential/70 => we favour longer elements even if match was lower
           aDist = a[:distance].to_f * Math.exp((len_a - len_b)/70.0)
           if aDist > b[:distance]
             return true
@@ -243,6 +257,7 @@ module Duke
       end
 
       def find_iterator(item_type, parsed)
+        # Returns correct array to iterate over, given what item_type we're looking for
         if item_type == :plant
           iterator = Plant.availables(at: parsed[:date].to_datetime)
         elsif [:land_parcel, :cultivation].include? (item_type)
@@ -252,12 +267,13 @@ module Duke
         elsif item_type == :equipments
           iterator = Equipment.availables(at: parsed[:date].to_datetime)
         elsif item_type == :inputs
+          # For Inputs, check if procedure comports inputs
           if Procedo::Procedure.find(parsed[:procedure]).parameters_of_type(:input).empty?
             iterator = [] 
           else 
             iterator = Matter.availables(at: parsed[:date].to_datetime).of_expression(Procedo::Procedure.find(parsed[:procedure]).parameters_of_type(:input).collect(&:filter).join(" or "))
           end
-          elsif item_type == :workers
+        elsif item_type == :workers
           iterator = Worker.availables(at: parsed[:date].to_datetime).each
         elsif item_type == :crop_groups
           iterator = CropGroup.all.where("target = 'plant'")
@@ -285,9 +301,9 @@ module Duke
       end
 
       def ambiguity_check(item_hash, what_matched, level, ambiguities, iterator)
-        # Method to check entities about a specific item
+        # Method to check ambiguity about a specific item
         ambig = []
-        # For each element of the iterator (ex : for crop_groups => CropGroup.all ), if distances is close (+/-level) to item that matchedit's part of the ambiguity possibilities
+        # For each element of the iterator (ex : for crop_groups => CropGroup.all ), if distances is close (+/-level) to item that matched it's part of the ambiguity possibilities
         iterator.each do |product|
           if item_hash[:key] != product[:id] and (item_hash[:distance] - @@fuzzloader.getDistance(clear_string(product[:name]), clear_string(what_matched))).between?(0,level)
             ambig.push({"key" => product[:id].to_s, "name" => product[:name]})
@@ -308,6 +324,7 @@ module Duke
       end 
 
       def clear_string(fstr)
+        # Remove useless elements from user sentence
         useless_dic = [/\bnum(e|é)ro\b/, /n ?°/, /(#|-|_|\\)/]
         useless_dic.each do |rgx|
           fstr = fstr.gsub(rgx, "")
@@ -330,12 +347,18 @@ module Duke
       end
 
       def extract_user_specifics(user_input, parsed, level)
+        # Function used for extracting specific elements of every type that's in parsed & @@user_specifics, with minimum matching % level from user_input
+        # Find all types that we're gonna check, and their values
+        original_level = level
         user_specifics = parsed.select{ |key, value| @@user_specific_types.include?(key.to_sym)}
+        # Creating all combo_words from user_input
         create_words_combo(user_input).each do |index, combo|
           matching_element = nil # A Hash containing :key, :name, :indexes, :distance,
           matching_list = nil  # A pointer, which will point to the list on which to add the matching element, if a match occurs, else points to nothing
+          level = original_level
           user_specifics.keys.each do |itemType|
             find_iterator(itemType, parsed).each do |item|
+              # Check specifically for first name if worker
               if itemType == :workers
                 level, matching_element, matching_list = compare_elements(combo, item[:name].split[0], index, level, item[:id], parsed[itemType], matching_element, matching_list)
               end

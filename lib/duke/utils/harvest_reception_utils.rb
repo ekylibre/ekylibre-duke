@@ -369,6 +369,7 @@ module Duke
       end
 
       def extract_decantation_time(content)
+        # Extracting decantation time from user_input
         decantation_regex = /((pendant|(temps de )*décantation (de)?|duran.) *)(\d{1,3}) *(heure(s)?|h|:) *([0-5]?[0-9])?/
         second_decantation_regex = /(\d{1,3}) *(heure(s)?|h|:) *([0-5]?[0-9])? *(de)? * décantation/
         decantation = content.match(decantation_regex)
@@ -409,6 +410,7 @@ module Duke
       end
 
       def extract_plant_area(content, targets, crop_groups)
+        # Extracts a plant area from a sentence
         [targets, crop_groups].each do |crops|
           crops.each do |target|
             # Find the string that matched, ie "Jeunes Plants" when index is [3,4], then look for it in regex
@@ -438,24 +440,28 @@ module Duke
             end
           end
         end
-        return targets, crop_groups
       end
 
       def redirect(parsed)
         # Find what we should ask the user next for an harvest reception
         if parsed[:retry] == 2
+          # If user failed to answer correctly twice, we cancel
           return "cancel", nil, nil
         end
         unless parsed[:ambiguities].to_a.empty?
+          # If there's an ambiguity, we solve it
           return "ask_ambiguity", nil, parsed[:ambiguities][0]
         end
         if parsed[:plant].to_a.empty? && parsed[:crop_groups].to_a.empty?
+          # If there's not plant, we ask for it
           return "ask_plant", nil, nil
         end
         if parsed[:parameters]['quantity'].nil?
+          # Same for quantity
           return "ask_quantity", nil, nil
         end
         if parsed[:destination].to_a.empty?
+          # Same for destination
           return "ask_destination", nil, nil
         end
         # If we have more that one destination, and no quantity specified for at least one, ask for it
@@ -463,6 +469,7 @@ module Duke
           sentence, optional = speak_destination_hl(parsed)
           return "ask_destination_quantity", sentence, optional
         end
+        # If theres more than one press without quantity, we ask for quantity in each of them
         unless !parsed.key?(:press)
           if parsed[:press].to_a.length > 1 and parsed[:press].any? {|press| !press.key?("quantity")}
             sentence, optional = speak_pressing_hl(parsed)
@@ -470,13 +477,15 @@ module Duke
           end
         end
         if parsed[:parameters]["tav"].nil?
+          # If tav wasn't given, ask for it
           return "ask_tav", nil, nil
         end
+        # Otherwise save harvest reception
         return "save", speak_harvest_reception(parsed)
       end
 
       def concatenate_analysis(parameters, new_parameters)
-        # For harvesing receptions, concatenate previous found parameters and new one given by the user
+        # For harvesting receptions, concatenate previous found parameters and new one given by the user
         final_parameters =  new_parameters.dup.map(&:dup).to_h
         new_parameters.each do |key, value|
           if ['key','tav'].include?(key)
@@ -511,6 +520,7 @@ module Duke
       end
 
       def unit_to_hectoliter(value, unit)
+        # Converts kg or T to hectoliter
         if unit == "hl"
           return sprintf('%.3f', value.to_f)
         elsif unit == "kg"

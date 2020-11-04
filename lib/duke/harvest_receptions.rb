@@ -2,19 +2,21 @@ module Duke
   class HarvestReceptions < Duke::Utils::HarvestReceptionUtils
 
     def handle_parse_sentence(params)
+      # First parsing inside harvest receptions
       Ekylibre::Tenant.switch params['tenant'] do
-        plant, crop_groups, destination = [], [], []
+        # Extract date and parameters
         date, user_input = extract_date(clear_string(params[:user_input]))
         user_input, parameters = extract_reception_parameters(user_input)
-        parsed = {:plant => plant,
-                  :crop_groups => crop_groups,
-                  :destination => destination,
+        parsed = {:plant => [],
+                  :crop_groups => [],
+                  :destination => [],
                   :parameters => parameters,
                   :date => date,
                   :user_input => params[:user_input],
                   :retry => 0}
+        # Then extract user_specifics (plant, crop_group & destination), and add plant_area %
         extract_user_specifics(user_input, parsed, 0.89)
-        plant, crop_groups = extract_plant_area(user_input, plant, crop_groups)
+        extract_plant_area(user_input, parsed[:plant], parsed[:crop_groups])
         parsed[:ambiguities] = find_ambiguity(parsed, user_input, 0.02)
         # Find if crucials parameters haven't been given, to ask again to the user
         what_next, sentence, optional = redirect(parsed)
@@ -23,8 +25,11 @@ module Duke
     end
 
     def handle_parse_parameter(params)
+      # Parse parameters when modifying it
       parsed = params[:parsed]
+      # Parameter is the type of parameter to be checked
       parameter = params[:parameter]
+      # Look for its value (params[params[:parameter]])
       value = extract_number_parameter(params[parameter], params[:user_input])
       if value.nil?
         # If we couldn't find one, we cancel the functionnality
@@ -52,15 +57,18 @@ module Duke
     end
 
     def handle_modify_quantity_tav(params)
+      # Modify tavp & quantity
       parsed = params[:parsed]
       new_params = {}
       content = clear_string(params[:user_input])
       content, new_params = extract_quantity(content, new_params)
       content, new_params = extract_conflicting_degrees(content, new_params)
       content, new_params = extract_tav(content, new_params)
+      # Append new value if not null
       unless new_params['quantity'].nil?
         parsed[:parameters]['quantity'] = new_params['quantity']
       end
+      # Same for TAVP
       unless new_params['tav'].nil?
         parsed[:parameters]['tav'] = new_params['tav']
       end
@@ -70,6 +78,7 @@ module Duke
     end
 
     def handle_modify_date(params)
+      # Modify date
       parsed = params[:parsed]
       user_input = clear_string(params[:user_input])
       date, user_input = extract_date(user_input)
@@ -80,6 +89,7 @@ module Duke
     end
 
     def handle_parse_destination_quantity(params)
+      # Add quantity to a specific destination afer being asked to the user
       parsed = params[:parsed]
       parameter = params[:parameter]
       value = extract_number_parameter(params[parameter], params[:user_input])
@@ -100,15 +110,15 @@ module Duke
     end
 
     def handle_parse_targets(params)
+      # Adding targets 
       parsed = params[:parsed]
       Ekylibre::Tenant.switch params['tenant'] do
-        plant, crop_groups = [], []
         user_input = clear_string(params[:user_input])
-        new_parsed = {:plant => plant,
-                      :crop_groups => crop_groups,
+        new_parsed = {:plant => [],
+                      :crop_groups => [],
                       :date => parsed[:date]}
         extract_user_specifics(user_input, new_parsed, 0.82)
-        plant, crop_groups = extract_plant_area(user_input, plant, crop_groups)
+        extract_plant_area(user_input, new_parsed[:plant], new_parsed[:crop_groups])
         # If there's no new Target/Crop_group, But a percentage, it's the new area % foreach previous target
         if crop_groups.empty? and plant.empty?
           pct_regex = user_input.match(/(\d{1,2}) *(%|pour( )?cent(s)?)/)
@@ -134,11 +144,11 @@ module Duke
     end
 
     def handle_parse_destination(params)
+      # Adding destination
       parsed = params[:parsed]
       Ekylibre::Tenant.switch params['tenant'] do
-        destination = []
         user_input = clear_string(params[:user_input]).gsub("que","cuve")
-        new_parsed = {:destination => destination,
+        new_parsed = {:destination => [],
                       :date => parsed[:date]}
         extract_user_specifics(user_input, new_parsed, 0.82)
         parsed[:destination] = new_parsed[:destination]
@@ -156,12 +166,14 @@ module Duke
     end
 
     def handle_add_other(params)
+      # Used to add none and redirect to save interface
       parsed = params[:parsed]
       what_next, sentence, optional = redirect(parsed)
       return  { :parsed => params[:parsed], :asking_again => what_next, :sentence => sentence, :optional => optional}
     end
 
     def handle_parse_disambiguation(params)
+      # Function that disambiguate a word when user responds to ambiguity
       parsed = params[:parsed]
       ambElement = params[:optional][-2]
       ambType, ambArray = parsed.find { |key, value| value.is_a?(Array) and key != "ambiguities" and value.any? { |subhash| subhash[:name] == ambElement[:name]}}
@@ -192,6 +204,7 @@ module Duke
     end
 
     def handle_add_analysis(params)
+      # Add analysis elements, and concatenate with previous ones
       user_input, new_parameters = extract_reception_parameters(clear_string(params[:user_input]))
       if new_parameters['tav'].nil?
         pressing_tavp = nil
@@ -208,11 +221,11 @@ module Duke
     end
 
     def handle_add_pressing(params)
+      # Add a press
       parsed = params[:parsed]
       user_input = clear_string(params[:user_input])
       Ekylibre::Tenant.switch params['tenant'] do
-        press = []
-        new_parsed = {:press => press,
+        new_parsed = {:press => [],
                       :date => parsed[:date]}
         extract_user_specifics(user_input, new_parsed, 0.82)
         parsed[:press] = new_parsed[:press]
@@ -230,6 +243,7 @@ module Duke
     end
 
     def handle_add_complementary(params)
+      # Add complementary parameters
       if params[:parsed][:parameters][:complementary].nil?
         complementary = {}
       else
@@ -243,6 +257,7 @@ module Duke
     end
 
     def handle_save_harvest_reception(params)
+      # Finally save the harvest reception
       I18n.locale = :fra
       parsed = params[:parsed]
       Ekylibre::Tenant.switch params['tenant'] do
