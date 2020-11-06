@@ -10,9 +10,9 @@
   #bottom_right {
     position: fixed;
     bottom: 3%;
-    right: 4%;
+    right: 2%;
     height: 71%;
-    width: 22%;
+    width: 20%;
   }
 }
 #bottom_right {
@@ -29,7 +29,7 @@
 .btn-chat{
   position: fixed;
   bottom: 3%;
-  right: 3%;
+  left: 3%;
   background-color: $base-color;
   -webkit-transition: background-color 0.5s ease-out;
   -moz-transition: background-color 0.5s ease-out;
@@ -47,6 +47,10 @@
   .fa-comment-alt{
     color: $base-color;
   }
+}
+.duke-load {
+  text-align: center;
+  padding-top: 50%;
 }
 .send-enabled{
   border-style: solid;
@@ -90,7 +94,7 @@
 }
 .minus-link{
   position:absolute;
-  right: 10%;
+  right: 5%;
   top: 2%;
   .fa-minus{
     color: white;
@@ -139,8 +143,8 @@
 @media only screen and (min-width: $small-screen + 1px) {
   .input-flex {
     bottom: 3%;
-    right: 4%;
-    width: 22%;
+    right: 2%;
+    width: 20%;
   }
 }
 .input-flex {
@@ -154,23 +158,20 @@
 }
 #top_bar {
     background-color: $base-color;
-    max-height: 10%;
-    min-height: 10%;
+    max-height: 8%;
+    min-height: 8%;
     height: 10%;
-}
-.icon_minim{
-    padding:10px 80px;
+    border-style: solid;
+    border-width: 1px 0px;
+    border-color: #F3F3F3;
 }
 .msg_container_base{
-  background: #FFFFFF;
+  background: #F3F3F3  ;
   overflow-x:hidden;
-  max-height: 90%;
-  min-height: 90%;
+  max-height: 92%;
+  min-height: 92%;
   margin: 0;
   padding-bottom: 50px;
-  border-style: solid;
-  border-width: 0px 1px;
-  border-color: $base-color;
 }
 .options{
   padding-left: 5%;
@@ -182,10 +183,6 @@
     margin-right: 5%;
     margin-bottom: 5%;
     padding: 0 0 0 0
-}
-.duke-option p {
-  color: #3D3D3D;
-  font-size: 15px;
 }
 .msg-list {
   width: 100%;
@@ -204,55 +201,43 @@
 .msg-rcvd {
     justify-content: flex-start;
 }
+
 .messenger-container {
-    padding: 8px 15px 8px 13px;
-    margin: 10px 50px 15px 20px;
-    float: left;
-    max-width: 82%;
-    background: #f2f2f2;
-    border-radius: 10px;
-    min-width: 20%;
-    position: relative; box-sizing: border-box;
-    box-shadow: 7px 10px 6px -5px #BBC0C7;
-}
-.responding-container {
-    padding: 8px 15px 8px 13px;
-    margin: 0 50px 25px 20px;
-    float: left;
-    max-width: 82%;
-    background: #FFFFFF;
-    min-width: 20%;
-    position: relative; box-sizing: border-box;
+  padding: 8px 15px 8px 0px;
+  margin: 5px 20px 5px 8px;
+  float: left;
+  max-width: 82%;
+  background: transparent;
+  min-width: 10%;
+  position: relative;
+  box-sizing: border-box;
 }
 .messenger-container p {
   color: #3D3D3D;
-    font-size: 13px;
-    margin-bottom: 6px;
-    line-height: 18px;
-    word-wrap: break-word; margin: 0;
+  font-size: 14px;
+  margin-bottom: 6px;
+  padding-left: 8px;
+  line-height: 18px;
+  word-wrap: break-word; margin: 0;
+  border-style: solid;
+  border-left-width: 3px;
+  border-color: $base-color;
 }
 .sender .messenger-container {
     float: right;
-    margin-right: 35px;
+    margin-right: 32px;
+    border-radius: 10px;
     width: auto;
+    padding-left: 13px;
     background: $base-color;
-    margin-left: 50px;
+    margin-left: 70px;
+    box-sizing: border-box;
 }
 .sender .messenger-container p {
   color: #FFFFFF;
+  border-style: unset;
+  padding-left: 0px;
 }
-  .messenger-container::before {
-      width: 0px;
-      height: 0px;
-      border-top: 8px solid transparent;
-      border-bottom: 8px solid transparent;
-
-      border-right:15px solid #f2f2f2;
-      content: "";
-      position: absolute;
-      top: 9px;
-      left: -15px;
-  }
 .sender .messenger-container::before {
       width: 0px;
       height: 0px;
@@ -267,7 +252,7 @@
 .msg_container_base::-webkit-scrollbar
 {
     width: 4px;
-    background-color: #F5F5F5;
+    background-color: #c6c6c6;
 }
 .msg_container_base::-webkit-scrollbar-thumb
 {
@@ -277,16 +262,17 @@
   margin-right: 3%;
   margin-bottom: 5%;
   cursor: pointer;
-  font-size: 11px;
+  font-size: 12px;
   border-radius: 4px;
-  padding: 2% 4%;
+  padding: 2% 2%;
   position: relative;
   border: 4px black;
   background-clip: padding-box;
   border-radius: 50px;
+  background-color: #c8c7c7;
   &:after {
     border-radius: 50px;
-    transition: .5s all;
+    transition: 1s all;
     position: absolute;
     top: 4px;
     left: 4px;
@@ -299,7 +285,7 @@
 
 }
 .hover-fill{
-  transition: .5s all;
+  transition: 1s all;
   &:hover {
     background-color: green;
     color: white;

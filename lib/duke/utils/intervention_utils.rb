@@ -114,14 +114,14 @@ module Duke
         whole_temp = content.match(/(de|à|a) *\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b *(jusqu\')?(a|à) *\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b/)
         if whole_temp
           new_content = content.gsub(whole_temp[0], "")
-          hour, _c = extract_hour(whole_temp[0].split(/\b(a|à)/)[0])
-          ending_hour, _c = extract_hour(whole_temp[0].split(/\b(a|à)/)[2])
-          day, _c = extract_date(content)
-          return DateTime.new(day.year, day.month, day.day, hour.hour, hour.min, hour.sec), ((ending_hour - hour)* 24 * 60).to_i, new_content
+          hour = extract_hour(whole_temp[0].split(/\b(a|à)/)[0])
+          ending_hour = extract_hour(whole_temp[0].split(/\b(a|à)/)[2])
+          day = extract_date(content)
+          return DateTime.new(day.year, day.month, day.day, hour.hour, hour.min, hour.sec, "+0#{Time.now.utc_offset / 3600}:00"), ((ending_hour - hour)* 24 * 60).to_i
         end
-        duration, content = extract_duration(content)
-        date, content = extract_date(content)
-        return date, duration, content
+        duration = extract_duration(content)
+        date = extract_date(content)
+        return date, duration
       end
 
       def add_input_rate(content, recognized_inputs, procedure)

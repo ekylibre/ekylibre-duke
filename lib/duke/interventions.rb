@@ -27,7 +27,8 @@ module Duke
           return {:redirect => "non_supported_proc"}
         end 
         # Finding when it happened and how long it lasted, + getting cleaned user_input
-        date, duration, user_input = extract_date_and_duration(clear_string(params[:user_input]))
+        user_input = clear_string(params[:user_input])
+        date, duration = extract_date_and_duration(user_input)
         # Removing word that matched procedure type
         user_input = user_input.gsub(params[:procedure_word], "")
         parsed = {:inputs => [],
@@ -91,11 +92,12 @@ module Duke
     def handle_modify_temporality(params)
       # Function called when user wants to modify his intervention's temporality
       parsed = params[:parsed]
-      date, duration, user_input = extract_date_and_duration(clear_string(params[:user_input]))
+      user_input = clear_string(params[:user_input])
+      date, duration = extract_date_and_duration(user_input)
       # Choose date & duration between previous value & new one
       parsed[:date] = choose_date(date, parsed[:date])
       parsed[:duration] = choose_duration(duration, parsed[:duration])
-      parsed[:user_input] += " - (Temporalité) #{params[:user_input]}"
+      parsed[:user_input] += " - #{params[:user_input]}"
       parsed[:ambiguities] = []
       what_next, sentence, optional = redirect(parsed)
       return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
@@ -113,7 +115,7 @@ module Duke
       end
       # Otherwise add value for the given input (we get it via it's index in parsed[:inputs])
       parsed[:inputs][params[:optional]][:rate][:value] = value
-      parsed[:user_input] += " - (Quantité) #{params[:user_input]}"
+      parsed[:user_input] += " - #{params[:user_input]}"
       parsed[:retry] = 0
       what_next, sentence, optional = redirect(parsed)
       return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
@@ -185,6 +187,7 @@ module Duke
       # Function that's called when user press "save" button
       # Saves intervention & returns the link to it, to interface-redirect user
       I18n.locale = :fra
+      Time.zone = "Paris"
       Ekylibre::Tenant.switch params['tenant'] do
         # If procedure type can handle tools 
         unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:tool).empty?

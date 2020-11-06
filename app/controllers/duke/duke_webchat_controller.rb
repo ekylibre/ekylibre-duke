@@ -29,7 +29,7 @@ module Duke
       render html: session_id
     end
 
-    def render_msg
+    def send_msg
       headers = {}.merge!(Common.new.get_sdk_headers("conversation", "V2", "message"))
       headers["Accept"] = "application/json"
       headers["Content-Type"] = "application/json" 

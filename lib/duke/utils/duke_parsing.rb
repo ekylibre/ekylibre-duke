@@ -8,37 +8,33 @@ module Duke
           #Function that finds the duration of the intervention & converts this value in minutes using regexes to have it stored into Ekylibre
           delta_in_mins = 0
           regex = '\d+\s(\w*minute\w*|mins)'
-          regex2 = '(de|pendant|durée) *(\d)\s?(heures|h|heure)\s?(\d\d)'
-          regex3 = '(de|pendant|durée) *(\d)\s?(h\b|h\s|heure)'
+          regex2 = '(de|pendant|durée) *(\d{1,2})\s?(heures|h|heure)\s?(\d\d)'
+          regex3 = '(de|pendant|durée) *(\d{1,2})\s?(h\b|h\s|heure)'
           # If content includes a non numeric value, we catch it & return this duration
           if content.include? "trois quarts d'heure"
             content["trois quart d'heure"] = ""
-            return 45, content.strip.gsub(/\s+/, " ")
+            return 45
           end
           if content.include? "quart d'heure"
             content["quart d'heure"] = ""
-            return 15, content.strip.gsub(/\s+/, " ")
+            return 15
           end
           if content.include? "demi heure"
             content["demi heure"] = ""
-            return 30, content.strip.gsub(/\s+/, " ")
+            return 30
           end
           min_time = content.match(regex)
+          hour_min_time = content.match(regex2)
+          hour_time = content.match(regex3)
           # If any regex matches, we extract the min value
           if min_time
             delta_in_mins += min_time[0].to_i
             content[min_time[0]] = ""
-            return delta_in_mins, content.strip.gsub(/\s+/, " ")
-          end
-          hour_min_time = content.match(regex2)
-          if hour_min_time
+          elsif hour_min_time
             delta_in_mins += hour_min_time[2].to_i*60
             delta_in_mins += hour_min_time[4].to_i
             content[hour_min_time[0]] = ""
-            return delta_in_mins, content.strip.gsub(/\s+/, " ")
-          end
-          hour_time = content.match(regex3)
-          if hour_time
+          elsif hour_time
             delta_in_mins += hour_time[2].to_i*60
             content[hour_time[0]] = ""
             # If "et demi" in sentence, we add 30min to what's already parsed
@@ -46,10 +42,11 @@ module Duke
               delta_in_mins += 30
               content["et demi"] = ""
             end
-            return delta_in_mins, content.strip.gsub(/\s+/, " ")
-          end
-          # If nothing matched, we return the basic duration => 1 hour
-          return 60, content
+          else
+            # If nothing matched, we return the basic duration => 1 hour
+            delta_in_mins = 60
+          end 
+          return delta_in_mins
       end
 
       def extract_date(content)
@@ -60,7 +57,7 @@ module Duke
         full_date_regex = '(\d|\d{2}) *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)( *\d{4})?'
         slash_date_regex = '(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?'
         # Extract the hour at which intervention was done
-        time, content = extract_hour(content)
+        time = extract_hour(content)
         # Search for keywords and define a d=DateTime if match
         if content.include? "avant-hier"
           content["avant-hier"] = ""
@@ -84,7 +81,7 @@ module Duke
             else
               year = now.year
             end
-            return DateTime.new(year, month, day, time.hour, time.min, time.sec, "+02:00"), content.strip.gsub(/\s+/, " ")
+            return DateTime.new(year, month, day, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00")
           elsif slash_date
             content[slash_date[0]] = ""
             day = slash_date[1].to_i
@@ -96,14 +93,14 @@ module Duke
             elsif slash_date[4].to_i.between?(now.year - 5, now.year + 1)
               year = slash_date[4].to_i
             end
-            return DateTime.new(year, month, day, time.hour, time.min, time.sec, "+02:00"), content.strip.gsub(/\s+/, " ")
+            return DateTime.new(year, month, day, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00")
           else
             # If nothing matches, we return DateTime.now item, with extracted time
-            return DateTime.new(now.year, now.month, now.day, time.hour, time.min, time.sec, "+02:00"),  content.strip.gsub(/\s+/, " ")
+            return DateTime.new(now.year, now.month, now.day, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00")
           end
         end
         # If a d object is set, return the DateTime object with extracted time
-        return DateTime.new(d.year, d.month, d.day, time.hour, time.min, time.sec, "+02:00"), content.strip.gsub(/\s+/, " ")
+        return DateTime.new(d.year, d.month, d.day, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00")
       end
 
       def extract_hour(content)
@@ -116,35 +113,35 @@ module Duke
         if time
           if time[4].nil?
             content[time[0]] = ""
-            return DateTime.new(now.year, now.month, now.day, time[1].to_i, 0, 0), content
+            return DateTime.new(now.year, now.month, now.day, time[1].to_i, 0, 0)
           else
             content[time[0]] = ""
-            return DateTime.new(now.year, now.month, now.day, time[1].to_i, time[4].to_i, 0), content
+            return DateTime.new(now.year, now.month, now.day, time[1].to_i, time[4].to_i, 0)
           end
         # Otherwise try to match keywords
         elsif content.include? "matin"
           content["matin"] = ""
-          return DateTime.new(now.year, now.month, now.day, 10, 0, 0), content
+          return DateTime.new(now.year, now.month, now.day, 10, 0, 0)
         elsif content.include? "après-midi"
           content["après-midi"] = ""
-          return DateTime.new(now.year, now.month, now.day, 17, 0, 0), content
+          return DateTime.new(now.year, now.month, now.day, 17, 0, 0)
         elsif content.include? "midi"
           content["midi"] = ""
-          return DateTime.new(now.year, now.month, now.day, 12, 0, 0), content
+          return DateTime.new(now.year, now.month, now.day, 12, 0, 0)
         elsif content.include? "soir"
           content["soir"] = ""
-          return DateTime.new(now.year, now.month, now.day, 20, 0, 0), content
+          return DateTime.new(now.year, now.month, now.day, 20, 0, 0)
         elsif content.include? "minuit"
           content["minuit"] = ""
-          return DateTime.new(now.year, now.month, now.day, 0, 0, 0), content
+          return DateTime.new(now.year, now.month, now.day, 0, 0, 0)
         else
-          return DateTime.now, content
+          return DateTime.now
         end
       end
 
       def extract_number_parameter(value, content)
         # Extract a value from a sentence. A value can already be specified, in this case, we look for a float with values int
-        match_to_float = content.match(/#{value}(\.\d{1,2})/) unless value.nil?
+        match_to_float = content.match(/#{value}((\.|,)\d{1,2})/) unless value.nil?
         if value.nil?
           # If we don't have a value, we search for an integer/float inside the user input
           hasNumbers = content.match('\d{1,4}((\.|,)\d{1,2})?')
@@ -183,15 +180,13 @@ module Duke
         #Function that adds elements to a list of recognized items only if no other elements uses the same words to match or if this word has a lower fuzzmatch
         #If no element inside any of the lists has the same words used to match an element (overlapping indexes), and no duplicate => we push the hash to the list
         if not all_lists.any? {|aList| aList.any? {|recon_element| !(recon_element[:indexes] & saved_hash[:indexes]).empty?}}
-          hasDuplicate, list = key_duplicate?(list, saved_hash)
-          unless hasDuplicate
+          unless key_duplicate?(list, saved_hash)
             list.push(saved_hash)
           end
         # Else if one or multiple elements uses the same words -> if the distance is greater for this hash -> Remove other ones and add this one
         elsif not all_lists.any? {|aList| aList.any? {|recon_element| !(recon_element[:indexes] & saved_hash[:indexes]).empty? and !better_corrected_distance?(saved_hash, recon_element, content)}}
           # Check for duplicates in the list, if clear : -> remove value from any list with indexes overlapping and add current match to our list
-          hasDuplicate, list = key_duplicate?(list, saved_hash)
-          unless hasDuplicate
+          unless key_duplicate?(list, saved_hash)
             list_where_removing = all_lists.find{ |aList| aList.any? {|recon_element| !(recon_element[:indexes] & saved_hash[:indexes]).empty?}}
             unless list_where_removing.nil?
               item_to_remove = list_where_removing.find {|hash|!(hash[:indexes] & saved_hash[:indexes]).empty?}
@@ -248,8 +243,7 @@ module Duke
         # Concatenate two "recognized items" arrays, by making sure there's not 2 values with the same key
         new_array = array1.dup.map(&:dup)
         array2.each do |hash|
-          hasDuplicate, new_array = key_duplicate?(new_array, hash)
-          unless hasDuplicate
+          unless key_duplicate?(new_array, hash)
             new_array.push(hash)
           end
         end
@@ -336,13 +330,13 @@ module Duke
         # Is there a duplicate in the list ? + List we want to keep using. List Mutation allows us to persist modification
         # ie. No Duplicate -> false + current list, Duplicate -> Distance(+/-)=False/True + Current list (with/without duplicate)
         if not list.any? {|recon_element| recon_element[:key] == saved_hash[:key]}
-          return false, list
+          return false
         elsif not list.any? {|recon_element| recon_element[:key] == saved_hash[:key] and saved_hash[:distance] >= recon_element[:distance] }
-          return true, list
+          return true
         else
           item_to_remove = list.find {|hash| hash[:key] == saved_hash[:key]}
           list.delete(item_to_remove)
-          return false, list
+          return false
         end
       end
 

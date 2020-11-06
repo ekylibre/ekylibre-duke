@@ -38,7 +38,7 @@ $(document).behave "load", "duke[data-current-account]", ->
       clear_textarea()
       return false
 # Send msg to backends methods that communicate with IBM
-send_msg = (msg = $("#duke-input").val(), user_intent=undefined) ->
+send_msg = (msg = $("#duke-input").val().replace(/\n/g, ""), user_intent=undefined) ->
   # On message sent, open Websocket connection to listen for an answer
   pusher = new Pusher(global_vars.pusher_key, cluster: 'eu')
   channel = pusher.subscribe(sessionStorage.getItem('duke_id'))
@@ -47,7 +47,7 @@ send_msg = (msg = $("#duke-input").val(), user_intent=undefined) ->
     integrate_received(data.message)
     pusher.disconnect();
     return
-  $.ajax '/duke_render_msg',
+  $.ajax '/duke_send_msg',
     type: 'post'
     data:
       "msg": msg
@@ -80,7 +80,7 @@ integrate_received = (data) ->
   # Unless it's the first message, we add the waiting animated icon
   if $('.msg_container_base').children().length > 1
     $('.msg_container_base').append('<div class="msg-list msg-rcvd" id="waiting">
-                                        <div class="responding-container">
+                                        <div class="messenger-container">
                                           <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
                                         </div>
                                       </div>')
@@ -139,8 +139,9 @@ output_options = (options, type="options") ->
 # If response type is plain text -> output it like this
 output_received_txt = (msg) ->
   # We create a received container, and we append the msg to it
+  $('.duke-received:last p:first').css("border-style", "unset");
   $('.msg_container_base').append('<div class="msg-list msg-rcvd">
-                                    <div class="messenger-container">
+                                    <div class="messenger-container duke-received">
                                       <p>'+msg+'</p>
                                     </div>
                                   </div>');
@@ -148,7 +149,7 @@ output_received_txt = (msg) ->
   return
 
 # Disables potential buttons above & output our message in a SentMessageContainer
-output_sent = (msg = $("#duke-input").val()) ->
+output_sent = (msg = $("#duke-input").val().replace(/\n/g, "")) ->
   # Disable buttons if previous message had options selections enabled
   if $('.msg_container_base').children().last().hasClass('options')
     $.each $('.msg_container_base').children().last().children(), (index, option) ->
@@ -189,10 +190,10 @@ $(document).on 'click', '#btn_chat', (e) ->
     $('.msg_container_base').append(sessionStorage.getItem('duke-chat'))
     $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
   else
-    $('.msg_container_base').append('<div class="msg-list msg-rcvd" id="waiting">
-                                    <div class="responding-container">
-                                      <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
-                                    </div>
+    $('.msg_container_base').append('<div class="duke-load" id="waiting">
+                                      <div class="responding-container">
+                                        <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                                      </div>
                                   </div>')
     create_session()
   return

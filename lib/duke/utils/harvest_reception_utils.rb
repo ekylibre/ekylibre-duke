@@ -173,7 +173,7 @@ module Duke
         else
           parameters['quantity'] = nil
         end
-        return content, parameters
+        return parameters
       end
 
       def extract_conflicting_degrees(content, parameters)
@@ -190,7 +190,7 @@ module Duke
           content[temp[0]] = ""
           parameters['temperature'] = temp[4].gsub(',','.') # temperature is the fourth capturing group
         end
-        return content, parameters
+        return parameters
       end
 
       def extract_tav(content, parameters)
@@ -205,7 +205,7 @@ module Duke
             parameters['tav'] = nil
           end
         end
-        return content, parameters
+        return parameters
       end
 
       def extract_temp(content, parameters)
@@ -220,7 +220,6 @@ module Duke
             parameters['temperature'] = nil
           end
         end
-        return content, parameters
       end
 
       def extract_ph(content, parameters)
@@ -238,7 +237,6 @@ module Duke
         else
           parameters['ph'] = nil
         end
-        return content, parameters
       end
 
       def extract_amino_nitrogen(content, parameters)
@@ -256,7 +254,6 @@ module Duke
         else
           parameters['amino_nitrogen'] = nil
         end
-        return content, parameters
       end
 
       def extract_ammoniacal_nitrogen(content, parameters)
@@ -274,7 +271,6 @@ module Duke
         else
           parameters['ammoniacal_nitrogen'] = nil
         end
-        return content, parameters
       end
 
       def extract_assimilated_nitrogen(content, parameters)
@@ -292,7 +288,6 @@ module Duke
         else
           parameters['assimilated_nitrogen'] = nil
         end
-        return content, parameters
       end
 
       def extract_sanitarystate(content, parameters)
@@ -329,7 +324,6 @@ module Duke
         end
         state = sanitarystate if sanitarystate != "" || nil
         parameters['sanitarystate'] = state
-        return content, parameters
       end
 
       def extrat_h2SO4(content, parameters)
@@ -347,7 +341,6 @@ module Duke
         else
           parameters['h2so4'] = nil
         end
-        return content, parameters
       end
 
       def extract_malic(content, parameters)
@@ -365,48 +358,21 @@ module Duke
         else
           parameters['malic'] = nil
         end
-        return content, parameters
-      end
-
-      def extract_decantation_time(content)
-        # Extracting decantation time from user_input
-        decantation_regex = /((pendant|(temps de )*décantation (de)?|duran.) *)(\d{1,3}) *(heure(s)?|h|:) *([0-5]?[0-9])?/
-        second_decantation_regex = /(\d{1,3}) *(heure(s)?|h|:) *([0-5]?[0-9])? *(de)? * décantation/
-        decantation = content.match(decantation_regex)
-        second_decantation = content.match(second_decantation_regex)
-        decantation_time = 0
-        if decantation
-          content[decantation[0]] = ""
-          decantation_time = decantation[5].to_i * 60
-          unless decantation[8].nil?
-            decantation_time += decantation[8].to_i
-          end
-        elsif second_decantation
-          content[second_decantation[0]] = ""
-          decantation_time = second_decantation[1].to_i * 60
-          unless second_decantation[4].nil?
-            decantation_time += second_decantation[4].to_i
-          end
-        end
-        return decantation_time, content
       end
 
       def extract_pressing(content, parameters)
         # pressing values can only be added by clicking on a button, and are empty by default
         parameters['pressing'] = nil
-        return content, parameters
       end
 
       def extract_pressing_tavp(content, parameters)
         # pressing values can only be added by clicking on a button, and are empty by default
         parameters['pressing_tavp'] = nil
-        return content, parameters
       end
 
       def extract_complementary(content, parameters)
         # pressing values can only be added by clicking on a button, and are empty by default
         parameters['complementary'] = nil
-        return content, parameters
       end
 
       def extract_plant_area(content, targets, crop_groups)
@@ -502,21 +468,21 @@ module Duke
       def extract_reception_parameters(content)
         # Extracting all regex parameters for an harvest reception
         parameters = {}
-        content, parameters = extract_conflicting_degrees(content, parameters)
-        content, parameters = extract_quantity(content, parameters)
-        content, parameters = extract_tav(content, parameters)
-        content, parameters = extract_temp(content, parameters)
-        content, parameters = extract_ph(content, parameters)
-        content, parameters = extract_amino_nitrogen(content, parameters)
-        content, parameters = extract_ammoniacal_nitrogen(content, parameters)
-        content, parameters = extract_assimilated_nitrogen(content, parameters)
-        content, parameters = extract_sanitarystate(content, parameters)
-        content, parameters = extract_malic(content, parameters)
-        content, parameters = extrat_h2SO4(content, parameters)
-        content, parameters = extract_pressing(content, parameters)
-        content, parameters = extract_complementary(content, parameters)
-        content, parameters = extract_pressing_tavp(content,parameters)
-        return content, parameters
+        extract_conflicting_degrees(content, parameters)
+        extract_quantity(content, parameters)
+        extract_tav(content, parameters)
+        extract_temp(content, parameters)
+        extract_ph(content, parameters)
+        extract_amino_nitrogen(content, parameters)
+        extract_ammoniacal_nitrogen(content, parameters)
+        extract_assimilated_nitrogen(content, parameters)
+        extract_sanitarystate(content, parameters)
+        extract_malic(content, parameters)
+        extrat_h2SO4(content, parameters)
+        extract_pressing(content, parameters)
+        extract_complementary(content, parameters)
+        extract_pressing_tavp(content,parameters)
+        return parameters
       end
 
       def unit_to_hectoliter(value, unit)

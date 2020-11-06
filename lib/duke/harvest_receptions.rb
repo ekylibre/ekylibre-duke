@@ -5,8 +5,9 @@ module Duke
       # First parsing inside harvest receptions
       Ekylibre::Tenant.switch params['tenant'] do
         # Extract date and parameters
-        date, user_input = extract_date(clear_string(params[:user_input]))
-        user_input, parameters = extract_reception_parameters(user_input)
+        user_input = clear_string(params[:user_input])
+        date = extract_date(user_input)
+        parameters = extract_reception_parameters(user_input)
         parsed = {:plant => [],
                   :crop_groups => [],
                   :destination => [],
@@ -57,13 +58,13 @@ module Duke
     end
 
     def handle_modify_quantity_tav(params)
-      # Modify tavp & quantity
+      # Modify tavp &/or quantity
       parsed = params[:parsed]
       new_params = {}
-      content = clear_string(params[:user_input])
-      content, new_params = extract_quantity(content, new_params)
-      content, new_params = extract_conflicting_degrees(content, new_params)
-      content, new_params = extract_tav(content, new_params)
+      user_input = clear_string(params[:user_input])
+      new_params = extract_quantity(user_input, new_params)
+      new_params = extract_conflicting_degrees(user_input, new_params)
+      new_params = extract_tav(user_input, new_params)
       # Append new value if not null
       unless new_params['quantity'].nil?
         parsed[:parameters]['quantity'] = new_params['quantity']
@@ -81,9 +82,9 @@ module Duke
       # Modify date
       parsed = params[:parsed]
       user_input = clear_string(params[:user_input])
-      date, user_input = extract_date(user_input)
-      parsed[:date] = choose_date(date, parsed[:date])
-      parsed[:user_input] = params[:parsed][:user_input] << ' - ' << params[:user_input]
+      date = extract_date(user_input)
+      parsed[:date] = date
+      parsed[:user_input] += " - #{params[:user_input]}"
       what_next, sentence, optional = redirect(parsed)
       return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
     end
@@ -120,7 +121,7 @@ module Duke
         extract_user_specifics(user_input, new_parsed, 0.82)
         extract_plant_area(user_input, new_parsed[:plant], new_parsed[:crop_groups])
         # If there's no new Target/Crop_group, But a percentage, it's the new area % foreach previous target
-        if crop_groups.empty? and plant.empty?
+        if new_parsed[:crop_groups].empty? and new_parsed[:plant].empty?
           pct_regex = user_input.match(/(\d{1,2}) *(%|pour( )?cent(s)?)/)
           if pct_regex
             parsed[:crop_groups].to_a.each { |crop_group| crop_group[:area] = pct_regex[1]}
@@ -132,7 +133,7 @@ module Duke
           parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
         end
       end
-      parsed[:user_input] += " - (Cibles) #{params[:user_input]}"
+      parsed[:user_input] += " - #{params[:user_input]}"
       what_next, sentence, optional = redirect(parsed)
       if what_next == params[:current_asking]
         parsed[:retry] += 1
@@ -154,7 +155,7 @@ module Duke
         parsed[:destination] = new_parsed[:destination]
         parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
       end
-      parsed[:user_input] += ' (Destination) ' << params[:user_input]
+      parsed[:user_input] += " - #{params[:user_input]}"
       what_next, sentence, optional = redirect(parsed)
       if what_next == params[:current_asking] and optional == params[:optional]
         parsed[:retry] += 1
@@ -183,7 +184,7 @@ module Duke
         ambHash[:name] = chosen_one["name"]
         ambHash[:key] = chosen_one["key"]
       rescue
-        if params[:user_input] == "Tous"
+        if clear_string(params[:user_input]) == "tous"
           params[:optional].each_with_index do |ambiguate, index|
             # Last two values are the one that's already added, and the inSentenceName value -> useless
             unless [1,2].include?(params[:optional].length - index)
@@ -193,7 +194,7 @@ module Duke
               ambArray.push(hashClone)
             end
           end
-        elsif params[:user_input] == "Aucun"
+        elsif clear_string(params[:user_input]) == "aucun"
           ambArray.delete(ambHash)
         end
       ensure
@@ -205,7 +206,8 @@ module Duke
 
     def handle_add_analysis(params)
       # Add analysis elements, and concatenate with previous ones
-      user_input, new_parameters = extract_reception_parameters(clear_string(params[:user_input]))
+      user_input = clear_string(params[:user_input])
+      new_parameters = extract_reception_parameters(user_input)
       if new_parameters['tav'].nil?
         pressing_tavp = nil
       else
@@ -231,7 +233,7 @@ module Duke
         parsed[:press] = new_parsed[:press]
         parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
       end
-      parsed[:user_input] += " (Pressoir) #{params[:user_input]}"
+      parsed[:user_input] += " - #{params[:user_input]}"
       what_next, sentence, optional = redirect(parsed)
       if what_next == params[:current_asking] and optional == params[:optional]
         parsed[:retry] += 1
