@@ -7,6 +7,7 @@ else
   global_vars.isMobile = false
 global_vars.base_url = window.location.protocol + '//' + location.host.split(':')[0]
 global_vars.redir_regex = /<lien (.{10,}) lien>/
+global_vars.stt = {}
 # Initialize webchat unless there's already a session
 if !sessionStorage.getItem('duke_id')
   $.ajax '/duke_init_webchat',
@@ -213,6 +214,8 @@ $(document).on 'click', '#btn-send', (e) ->
   output_sent()
   send_msg()
   clear_textarea()
+  if global_vars.stt.is_on 
+    stop_stt()
   return
 
 # Sends message containing Option data-Value, but shows Option data-label
@@ -234,20 +237,50 @@ $(document).on 'click', '.duke-suggestion',  ->
   return
 
 # STT integration
+global_vars.stt.stt_on = false
 $(document).on 'click', '#btn-mic', (e) ->
-  speechConfig = SpeechSDK.SpeechConfig.fromSubscription(global_vars.azure_key, global_vars.azure_region);
-  speechConfig.speechRecognitionLanguage = "fr-FR";
-  audioConfig  = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
-  recognizer = new (SpeechSDK.SpeechRecognizer)(speechConfig, audioConfig);
-  $("#btn-mic").toggleClass("send-enabled",true)
-  $("#btn-mic").toggleClass("disabled-send",true)
-  recognizer.recognizeOnceAsync ((result) ->
-      output_sent(result.privText)
-      send_msg(result.privText)
+  transcript = ""
+  # If stt is on, we stop the recognizer and send the message
+  if global_vars.stt.is_on 
+    stop_stt()
+    if $("#duke-input").val() != ""
+      output_sent()
+      send_msg()
       clear_textarea()
-      $("#btn-mic").toggleClass("send-enabled", false)
-      $("#btn-mic").toggleClass("disabled-send",false)
-      recognizer.close();
+  else 
+    # If stt is off, we start recording and printing transcription to textarea
+    global_vars.stt.is_on = true
+    # Limiting speech recognition to 20 seconds
+    $(this).delay(20000).queue ->
+      if global_vars.stt.is_on 
+        stop_stt()
+        return
+    # Creating STT config if non existent
+    if !("speechConfig" in global_vars.stt)
+      global_vars.stt.speechConfig = SpeechSDK.SpeechConfig.fromSubscription(global_vars.azure_key, global_vars.azure_region);
+      global_vars.stt.speechConfig.speechRecognitionLanguage = "fr-FR";
+      global_vars.stt.audioConfig  = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
+    # Launching recognition
+    global_vars.stt.recognizer = new (SpeechSDK.SpeechRecognizer)(global_vars.stt.speechConfig, global_vars.stt.audioConfig);
+    $("#btn-mic").toggleClass("send-enabled",true)
+    global_vars.stt.recognizer.startContinuousRecognitionAsync()
+    # On intermediate responses
+    global_vars.stt.recognizer.recognizing = (s, e) ->
+      $("#duke-input").val(transcript+" "+e.result.text)
+      if !($( "#duke-input" ).hasClass( "send-enabled"))
+        $('#btn-send').toggleClass("disabled-send", false)
+        $("#btn-send").toggleClass("send-enabled",true)
       return
-  ), (err) ->
-      recognizer.close();
+    # On final sentence recognition
+    global_vars.stt.recognizer.recognized = (s, e) ->
+      transcript += e.result.text.replace(/.$/," ")
+      return
+
+# Function used to stop STT, and remove recognizer Element
+stop_stt = ->
+    $("#btn-mic").toggleClass("send-enabled",false)
+    global_vars.stt.recognizer.stopContinuousRecognitionAsync ->
+    global_vars.stt.recognizer.close()
+    global_vars.stt.recognizer = undefined
+    global_vars.stt.is_on = false
+  return
