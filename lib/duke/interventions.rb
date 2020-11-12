@@ -54,7 +54,7 @@ module Duke
     end
 
     def handle_modify_specific(params)
-      # Function called when user wants to modify on of his specific entities
+      # Function called when user wants to modify one of his specific entities
       parsed = params[:parsed]
       # which_specific corresponds to the type of element to be modified (inputs, workers..)
       which_specific = params[:specific].to_sym
@@ -187,11 +187,10 @@ module Duke
       # Function that's called when user press "save" button
       # Saves intervention & returns the link to it, to interface-redirect user
       I18n.locale = :fra
-      Time.zone = "Paris"
       Ekylibre::Tenant.switch params['tenant'] do
         # If procedure type can handle tools 
+        tools_attributes = []
         unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:tool).empty?
-          tools_attributes = []
           # For each tool, append it with the correct reference name if exists, or with the first reference-name from proc
           params[:parsed][:equipments].to_a.each do |tool|
             reference_name = Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:tool)[0].name
@@ -205,15 +204,15 @@ module Duke
           end
         end
         # If procedure type can handle workers, save each worker with first reference name from proc
+        doers_attributes = []
         unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:doer).empty?
-          doers_attributes = []
           params[:parsed][:workers].to_a.each do |worker|
             doers_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:doer)[0].name, "product_id" => worker[:key]})
           end
         end 
         # If procedure type can handle inputs
+        inputs_attributes = []
         unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:input).empty?
-          inputs_attributes = []
           params[:parsed][:inputs].to_a.each do |input|
             # For each input, save it with the reference name from it's type of input which was detected in the proc
             inputs_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:input).find {|inp| Matter.where("id = #{input[:key]}").first.of_expression(inp.filter)}.name,
@@ -224,8 +223,8 @@ module Duke
           end
         end
         # If procedure type can handle targets
+        targets_attributes = []
         unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.nil?
-          targets_attributes = []
           # Add each target 
           params[:parsed][Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name].to_a.each do |target|
             targets_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name, "product_id" => target[:key]})

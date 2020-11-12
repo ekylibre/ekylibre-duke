@@ -1,5 +1,5 @@
-WATSON_APIKEY = "5boUgUgHnTAjNhjaN0X0CIpIs5w2z7YFZo-3PcNDP9OD"
+WATSON_APIKEY = "l1axis0IxVrDuc3IjC6xPjhWGPJngzPhFxt7qOefwzL0"
 WATSON_URL = "https://api.eu-gb.assistant.watson.cloud.ibm.com"
 WATSON_VERSION = "2020-04-01"
-WATSON_EKYVITI_ID = "8813ae7e-22f3-4ad8-ad89-9a9d69af1244"
-WATSON_EKY_ID = "d729bd6a-95e8-4bdd-a687-1b4757a9d1fa"
+WATSON_EKYVITI_ID = "dbe7a3ac-c569-4803-9aee-e1a78b0fc5b8"
+WATSON_EKY_ID = "81eae43c-07a1-4edf-80d9-6beb8f670a43"

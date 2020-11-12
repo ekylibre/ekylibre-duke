@@ -270,7 +270,11 @@ module Duke
         elsif item_type == :workers
           iterator = Worker.availables(at: parsed[:date].to_datetime).each
         elsif item_type == :crop_groups
-          iterator = CropGroup.all.where("target = 'plant'")
+          begin 
+            iterator = CropGroup.all.where("target = 'plant'")
+          rescue 
+            iterator = [] 
+          end 
         elsif item_type == :press
           iterator = Matter.availables(at: parsed[:date].to_datetime).can('press(grape)')
         end

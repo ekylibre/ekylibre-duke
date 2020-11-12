@@ -168,7 +168,6 @@ module Duke
 
     def handle_add_other(params)
       # Used to add none and redirect to save interface
-      parsed = params[:parsed]
       what_next, sentence, optional = redirect(parsed)
       return  { :parsed => params[:parsed], :asking_again => what_next, :sentence => sentence, :optional => optional}
     end
