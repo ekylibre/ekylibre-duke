@@ -1,0 +1,18 @@
+%meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}/
+%submit#btn_chat.btn-chat
+  %i.far.fa-comment-alt.fa-3x
+%nav#bottom_right
+  %nav#header-and-messages
+    %nav#top_bar
+      .duke-title Duke
+      %a.minus-link{:href => "#"}
+        %i.fas.fa-minus
+    .msg_container_base
+  .input-flex
+    %a.btn-mic#btn-mic{:href => "#"}
+      %i.fas.fa-microphone.fa-2x
+    %textarea#duke-input.duke-input{:placeholder => "Saisissez votre texte ...", :spellcheck => "false"}
+    %a.btn-send.disabled-send#btn-send{:href => "#"}
+      %i.fas.fa-caret-right.fa-2x
+
+%duke{data: {current_account: current_user.email, current_language: current_user.language, current_tenant: Ekylibre::Tenant.current, pusher_key: Pusher.key, azure_key: AZURE_API_KEY, azure_region: AZURE_REGION} }
