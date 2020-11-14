@@ -17,7 +17,6 @@
 }
 #bottom_right {
   z-index:-10;
-  display:none;
   display: flex;
   flex-direction: column;
   display: none;
@@ -36,7 +35,6 @@
   -o-transition: background-color 0.5s ease-out;
   transition: background-color 0.5s ease-out;
   border-radius: 20px;
-  z-index: 100000000;
   .fa-comment-alt{
     margin: 10px 10px 10px 10px;
     color: white;
