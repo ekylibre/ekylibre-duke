@@ -264,6 +264,10 @@ module Duke
         return words_combos
       end
 
+      def is_number? string
+        true if Float(string) rescue false
+      end
+
       def compare_elements(string1, string2, indexes, level, key, append_list, saved_hash, rec_list)
         # We check the fuzz distance between two elements, if it's greater than the min_matching_level or the current best distance, this is the new recordman
         # We only compare with item_part before "|" if any delimiter is present
@@ -318,7 +322,7 @@ module Duke
           # Get unique activities by cultivation_variety : TODO : do it cleanly
           activities = Activity.of_campaign(Campaign.current)
           Activity.all.each do |act|
-            unless activities.any? {|curr_act| curr_act.cultivation_variety == act.cultivation_variety}
+            unless activities.any? {|curr_act| curr_act.cultivation_variety_name == act.cultivation_variety_name}
               activities.push(act)
             end 
           end 

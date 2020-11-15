@@ -112,10 +112,12 @@ $(document).behave "load", "duke[data-current-account]", ->
       $.each data, (index, value) ->
         if value.response_type == "text"
           if value.text.match(global_vars.redir_sec_regex)
-            location.replace global_vars.base_url + ":3000" + value.text.match(global_vars.redir_sec_regex)[1]
+            location.replace global_vars.base_url + value.text.match(global_vars.redir_sec_regex)[1]
             value.text = value.text.replace(value.text.match(global_vars.redir_sec_regex)[0], "")
           if value.text.match(global_vars.redir_regex)
-            location.replace global_vars.base_url + ":3000" + value.text.match(global_vars.redir_regex)[1]
+            location.replace global_vars.base_url + value.text.match(global_vars.redir_regex)[1]
+          if value.text.indexOf('#base-url') >= 0
+            value.text = value.text.replace('#base-url', global_vars.base_url )
           output_received_txt(value.text)
         else if value.response_type == "option"
           output_received_txt(value.title)
@@ -211,6 +213,7 @@ $(document).behave "load", "duke[data-current-account]", ->
       $( "#duke-input" ).focus()
     # If duke-id is stored, we restore the discussion, otherwise we create a new id, store it and start a discussion
     if sessionStorage.getItem('duke-chat')
+      $('.msg_container_base').children().remove()
       $('.msg_container_base').append(sessionStorage.getItem('duke-chat'))
       $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
     else
@@ -228,7 +231,6 @@ $(document).behave "load", "duke[data-current-account]", ->
     $('#bottom_right').css("z-index","-10");
     $(".btn-chat").css("z-index","100000");
     $('.btn-chat').show()
-    $('.msg_container_base').children().remove()
     return
 
   # Send message & clear text area
