@@ -112,12 +112,12 @@ $(document).behave "load", "duke[data-current-account]", ->
       $.each data, (index, value) ->
         if value.response_type == "text"
           if value.text.match(global_vars.redir_sec_regex)
-            location.replace global_vars.base_url + value.text.match(global_vars.redir_sec_regex)[1]
+            location.replace global_vars.base_url + ":3000" + value.text.match(global_vars.redir_sec_regex)[1]
             value.text = value.text.replace(value.text.match(global_vars.redir_sec_regex)[0], "")
           if value.text.match(global_vars.redir_regex)
-            location.replace global_vars.base_url + value.text.match(global_vars.redir_regex)[1]
+            location.replace global_vars.base_url + ":3000" + value.text.match(global_vars.redir_regex)[1]
           if value.text.indexOf('#base-url') >= 0
-            value.text = value.text.replace('#base-url', global_vars.base_url )
+            value.text = value.text.replace('#base-url', global_vars.base_url + ":3000")
           output_received_txt(value.text)
         else if value.response_type == "option"
           output_received_txt(value.title)
