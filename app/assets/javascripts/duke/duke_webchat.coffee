@@ -18,6 +18,15 @@ $(document).behave "load", "duke[data-current-account]", ->
   global_vars.pusher_key = $(this).data('pusher-key')
   global_vars.azure_key = $(this).data('azure-key')
   global_vars.azure_region = $(this).data('azure-region')
+  $('#duke-input').each(->
+    @setAttribute 'style', 'height:' + @scrollHeight + 'px;overflow-y:hidden;'
+    return
+  ).on 'input', ->
+    @style.height = 'auto'
+    $('.msg_container_base').css('height', $('#bottom_left').height() - @scrollHeight - 45)
+    @style.height = @scrollHeight + 'px'
+    $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
+    return
   # OnKeyPressed inside Duke Textarea -> Enable/Disable send button
   $('#duke-input').keyup (e) ->
     if $("#duke-input").val() == ""
@@ -31,40 +40,55 @@ $(document).behave "load", "duke[data-current-account]", ->
   $('#duke-input').keydown (e) ->
     code = if e.keyCode then e.keyCode else e.which
     if code == 13
-      output_sent()
-      send_msg()
-      clear_textarea()
+      if $("#duke-input").val() != ""
+        output_sent()
+        send_msg()
       return false
+      
   create_session =  ->
     $.ajax '/duke_create_session',
       type: 'post'
-      dataType: 'html'
+      dataType: 'json'
       data:
         "user_id": global_vars.account
         "tenant": global_vars.tenant
       success: (data, status, xhr) ->
-        sessionStorage.setItem('duke_id', data)
+        sessionStorage.setItem('duke_id', data.session_id)
+        sessionStorage.setItem('assistant_id', data.assistant_id)
+        global_vars.pusher = new Pusher(global_vars.pusher_key, cluster: 'eu')
+        channel = global_vars.pusher.subscribe(sessionStorage.getItem('duke_id'))
+        channel.bind 'my-event', (data) ->
+          # Add received message
+          integrate_received(data.message)
+          return
+        send_msg("")
         return
     return
 
-  waitforDukeId = ->
-    if sessionStorage.getItem('duke_id')
-      global_vars.pusher = new Pusher(global_vars.pusher_key, cluster: 'eu')
-      channel = global_vars.pusher.subscribe(sessionStorage.getItem('duke_id'))
-      channel.bind 'my-event', (data) ->
-        # Add received message
-        integrate_received(data.message)
-        return
+  waitforDukeMsg = ->
+    if sessionStorage.getItem('duke-chat')
       # Adding the chat btn 
       $(document.body).append('<submit class="btn-chat">
-                                  <i class="far fa-comment-alt fa-3x"></i>
-                                </submit>');
+                                <svg version="1.1" class="icon-chat" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                  viewBox="0 0 200 200" style="enable-background:new 0 0 200 200;" xml:space="preserve">
+                                  <g>
+                                  <g>
+                                    <path class="st0" d="M111.2,182.6l-11.1-6.4l25.4-44.5h38.1c7,0,12.7-5.7,12.7-12.7V42.8c0-7-5.7-12.7-12.7-12.7H36.5
+                                      c-7,0-12.7,5.7-12.7,12.7v76.3c0,7,5.7,12.7,12.7,12.7h57.2v12.7H36.5c-14,0-25.4-11.4-25.4-25.4V42.8c0-14,11.4-25.4,25.4-25.4
+                                      h127.1c14,0,25.4,11.4,25.4,25.4v76.3c0,14-11.4,25.4-25.4,25.4h-30.8L111.2,182.6z"/>
+                                    <path class="st0" d="M49.2,55.5h101.7v12.7H49.2V55.5z M49.2,93.6h63.6v12.7H49.2V93.6z"/>
+                                  </g>
+                                </g>
+                                </svg>
+                              </submit>');
     else
-      setTimeout waitforDukeId, 1000
+      setTimeout waitforDukeMsg, 1000
     return
 
   # Send msg to backends methods that communicate with IBM
   send_msg = (msg = $("#duke-input").val().replace(/\n/g, ""), user_intent=undefined) ->
+    reset_textarea() 
+    clear_textarea()
     if !global_vars.pusher
       global_vars.pusher = new Pusher(global_vars.pusher_key, cluster: 'eu')
       channel = global_vars.pusher.subscribe(sessionStorage.getItem('duke_id'))
@@ -81,43 +105,79 @@ $(document).behave "load", "duke[data-current-account]", ->
         "user_id": global_vars.account
         "tenant": global_vars.tenant
         "duke_id": sessionStorage.getItem('duke_id')
+        "assistant_id": sessionStorage.getItem('assistant_id')
       dataType: 'json'
     return
   if !sessionStorage.getItem('duke_id')
-    $.ajax '/duke_init_webchat',
-      type: 'post'
-      dataType: 'html'
     create_session()
-    waitforDukeId()
+    waitforDukeMsg()
   else 
     $(document.body).append('<submit class="btn-chat">
-                            <i class="far fa-comment-alt fa-3x"></i>
-                          </submit>');
+                              <svg version="1.1" class="icon-chat" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                viewBox="0 0 200 200" style="enable-background:new 0 0 200 200;" xml:space="preserve">
+                                <g>
+                                <g>
+                                  <path class="st0" d="M111.2,182.6l-11.1-6.4l25.4-44.5h38.1c7,0,12.7-5.7,12.7-12.7V42.8c0-7-5.7-12.7-12.7-12.7H36.5
+                                    c-7,0-12.7,5.7-12.7,12.7v76.3c0,7,5.7,12.7,12.7,12.7h57.2v12.7H36.5c-14,0-25.4-11.4-25.4-25.4V42.8c0-14,11.4-25.4,25.4-25.4
+                                    h127.1c14,0,25.4,11.4,25.4,25.4v76.3c0,14-11.4,25.4-25.4,25.4h-30.8L111.2,182.6z"/>
+                                  <path class="st0" d="M49.2,55.5h101.7v12.7H49.2V55.5z M49.2,93.6h63.6v12.7H49.2V93.6z"/>
+                                </g>
+                              </g>
+                              </svg>
+                            </submit>');
 
   # Appends a waiting animation icon, deletes it after 0.7s
   # Finds the type of the message received & outputs accordingly
   # Redefines Duke-Chat sessionHistory inside SessionStorage
   integrate_received = (data) ->
-    # Unless it's the first message, we add the waiting animated icon
-    if $('.msg_container_base').children().length > 1
-      $('.msg_container_base').append('<div class="msg-list msg-rcvd" id="waiting">
-                                          <div class="messenger-container">
-                                            <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
-                                          </div>
-                                        </div>')
-      $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
+    $('.msg_container_base').append('<div class="msg-list msg-rcvd" id="waiting">
+                                        <div class="messenger-container">
+                                          <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
+                                            <defs>
+                                                <linearGradient x1="8.042%" y1="0%" x2="65.682%" y2="23.865%" id="a">
+                                                    <stop stop-color="black" stop-opacity="0" offset="0%"/>
+                                                    <stop stop-color="black" stop-opacity=".631" offset="63.146%"/>
+                                                    <stop stop-color="black" offset="100%"/>
+                                                </linearGradient>
+                                            </defs>
+                                            <g fill="none" fill-rule="evenodd">
+                                                <g transform="translate(1 1)">
+                                                    <path d="M36 18c0-9.94-8.06-18-18-18" id="Oval-2" stroke="url(#a)" stroke-width="2">
+                                                        <animateTransform
+                                                            attributeName="transform"
+                                                            type="rotate"
+                                                            from="0 18 18"
+                                                            to="360 18 18"
+                                                            dur="0.5s"
+                                                            repeatCount="indefinite" />
+                                                    </path>
+                                                    <circle fill="black" cx="36" cy="18" r="1">
+                                                        <animateTransform
+                                                            attributeName="transform"
+                                                            type="rotate"
+                                                            from="0 18 18"
+                                                            to="360 18 18"
+                                                            dur="0.5s"
+                                                            repeatCount="indefinite" />
+                                                    </circle>
+                                                </g>
+                                            </g>
+                                          </svg>
+                                        </div>
+                                      </div>')
+    $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
     # Then 700 ms  later, we output the desired output
     setTimeout (->
       $('#waiting').remove()
       $.each data, (index, value) ->
         if value.response_type == "text"
           if value.text.match(global_vars.redir_sec_regex)
-            location.replace global_vars.base_url + value.text.match(global_vars.redir_sec_regex)[1]
+            location.replace global_vars.base_url + ":3000" + value.text.match(global_vars.redir_sec_regex)[1]
             value.text = value.text.replace(value.text.match(global_vars.redir_sec_regex)[0], "")
           if value.text.match(global_vars.redir_regex)
-            location.replace global_vars.base_url + value.text.match(global_vars.redir_regex)[1]
+            location.replace global_vars.base_url + ":3000" + value.text.match(global_vars.redir_regex)[1]
           if value.text.indexOf('#base-url') >= 0
-            value.text = value.text.replace('#base-url', global_vars.base_url )
+            value.text = value.text.replace('#base-url', global_vars.base_url +":3000")
           output_received_txt(value.text)
         else if value.response_type == "option"
           output_received_txt(value.title)
@@ -200,6 +260,16 @@ $(document).behave "load", "duke[data-current-account]", ->
     $("#btn-send").toggleClass("send-enabled",false)
     $("#duke-input").val("")
     return
+  
+  reset_textarea = -> 
+    $('#duke-input').css('height', '60px')
+    $('.msg_container_base').css('height', $('#bottom_left').height() - 105)
+    return
+
+  $(window).resize ->
+    $('.msg_container_base').css('height', $('#bottom_left').height() - 105)
+    return
+
 
 
   # OnButtonChatClik, we show the chat window, & restore the discussion if any, or show waiting sign until ready
@@ -207,28 +277,20 @@ $(document).behave "load", "duke[data-current-account]", ->
     # We open the webchat, and focus on the textArea
     $('.btn-chat').hide()
     $(".btn-chat").css("z-index","-10");
-    $('#bottom_right').css("z-index","100000");
-    $('#bottom_right').show()
+    $('#bottom_left').css("z-index","100000");
+    $('#bottom_left').show()
     if !global_vars.isMobile
       $( "#duke-input" ).focus()
     # If duke-id is stored, we restore the discussion, otherwise we create a new id, store it and start a discussion
-    if sessionStorage.getItem('duke-chat')
-      $('.msg_container_base').children().remove()
-      $('.msg_container_base').append(sessionStorage.getItem('duke-chat'))
-      $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
-    else
-      send_msg("")
-      $('.msg_container_base').append('<div class="duke-load" id="waiting">
-                                  <div class="responding-container">
-                                    <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
-                                  </div>
-                              </div>')
+    $('.msg_container_base').children().remove()
+    $('.msg_container_base').append(sessionStorage.getItem('duke-chat'))
+    $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
     return
 
   # Hiding the chat, and removing the current discussion from it. Will be reloaded from sessionStorage if we re-open the chat
-  $(document).on 'click', '.fas.fa-minus', (e) ->
-    $('#bottom_right').hide()
-    $('#bottom_right').css("z-index","-10");
+  $(document).on 'click', '.minus-link', (e) ->
+    $('#bottom_left').hide()
+    $('#bottom_left').css("z-index","-10");
     $(".btn-chat").css("z-index","100000");
     $('.btn-chat').show()
     return
@@ -238,7 +300,6 @@ $(document).behave "load", "duke[data-current-account]", ->
     # Send
     output_sent()
     send_msg()
-    clear_textarea()
     if global_vars.stt.is_on 
       stop_stt()
     return
@@ -261,6 +322,15 @@ $(document).behave "load", "duke[data-current-account]", ->
     send_msg($(this).data("value"), $(this).data("intent"))
     return
 
+  $('#duke-input').focusin ->
+    base_color = $('#top_bar').css('background-color')
+    $('#btn-mic').css('border-color', base_color)
+    return
+
+  $('#duke-input').focusout ->
+    $('#btn-mic').css('border-color', 'lightgray')
+    return
+
   # STT integration
   global_vars.stt.stt_on = false
   $(document).on 'click', '#btn-mic', (e) ->
@@ -271,7 +341,6 @@ $(document).behave "load", "duke[data-current-account]", ->
       if $("#duke-input").val() != ""
         output_sent()
         send_msg()
-        clear_textarea()
     else 
       # If stt is off, we start recording and printing transcription to textarea
       global_vars.stt.is_on = true
@@ -292,6 +361,11 @@ $(document).behave "load", "duke[data-current-account]", ->
       # On intermediate responses
       global_vars.stt.recognizer.recognizing = (s, e) ->
         $("#duke-input").val(transcript+" "+e.result.text)
+        $('#duke-input').css('height', 'auto')
+        height = $("#duke-input").prop('scrollHeight')
+        $('.msg_container_base').css('height', $('#bottom_left').height() - height - 45)
+        $('#duke-input').css('height', height + 'px')
+        $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight)
         if !($( "#duke-input" ).hasClass( "send-enabled"))
           $('#btn-send').toggleClass("disabled-send", false)
           $("#btn-send").toggleClass("send-enabled",true)

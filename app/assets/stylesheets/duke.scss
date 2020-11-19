@@ -1,21 +1,20 @@
-@import "font-awesome";
 @media only screen and (max-width: $small-screen) {
-  #bottom_right {
+  #bottom_left {
     position: fixed;
     height: 100%;
     width: 100%;
   }
 }
 @media only screen and (min-width: $small-screen + 1px) {
-  #bottom_right {
+  #bottom_left {
     position: fixed;
     bottom: 3%;
-    right: 2%;
+    left: 5%;
     height: 71%;
     width: 20%;
   }
 }
-#bottom_right {
+#bottom_left {
   z-index:-10;
   display:none;
   display: flex;
@@ -26,23 +25,47 @@
   position: fixed;
   bottom: 3%;
   left: 3%;
-  background-color: $base-color;
-  -webkit-transition: background-color 0.5s ease-out;
-  -moz-transition: background-color 0.5s ease-out;
-  -o-transition: background-color 0.5s ease-out;
-  transition: background-color 0.5s ease-out;
-  border-radius: 20px;
+  background-color: transparent;
   z-index: 100000000;
-  .fa-comment-alt{
-    margin: 10px 10px 10px 10px;
-    color: white;
-  }
+  cursor: pointer;
 }
 .btn-chat:hover {
-  background-color: transparent;
-  .fa-comment-alt{
-    color: $base-color;
+  .icon-chat{
+    filter: contrast(1.10);
   }
+}
+.icon-mic{
+  background-color: transparent;
+  fill : $base-color;
+  height: 100%;
+  width: 30px;
+  box-sizing: content-box;
+  padding : 0px 8px;
+}
+.icon-send{
+  background-color: transparent;
+  fill : lightgray;
+  height: 100%;
+  width: 24px;
+  box-sizing: content-box;
+  padding : 0px 8px;
+}
+.icon-chat{
+  filter: contrast(1); 
+  background-color:$base-color;
+  fill : white;
+  padding: 10px;
+  margin: 0px;
+  height: 35px;
+  width: 35px;
+  box-sizing: content-box;
+}
+.icon-minus{
+  background-color:transparent;
+  padding-top: 2%;
+  height: 6px;
+  width: 13px;
+  box-sizing: content-box;
 }
 .duke-load {
   text-align: center;
@@ -50,15 +73,15 @@
 }
 .send-enabled{
   border-style: solid;
-  border-width: 2px 2px 2px 2px;
-  border-color: $base-color;
+  border-width: 1px 1px 1px 1px;
+  border-color: $base-color !important;
   background-color: $base-color;
   color: white;
-  .fa-caret-right{
-    color: white;
+  .icon-send{
+    fill: white;
   }
-  .fa-microphone{
-    color: white;
+  .icon-mic{
+    fill: white;
   }
 }
 .fa-microphone{
@@ -79,48 +102,46 @@
 .btn-mic{
   border-style: solid;
   border-width: 1px 1px 1px 1px;
-  border-color: $base-color;
-  padding: 3%;
+  border-color: lightgray;
 }
 .btn-send{
   border-style: solid;
   border-width: 1px 1px 1px 0px;
-  border-color: $base-color;
-  padding: 3% 4% 4% 4%;
+  border-color: lightgray;
 }
 .minus-link{
-  position:absolute;
-  right: 5%;
-  top: 2%;
-  .fa-minus{
-    color: white;
-  }
+  position: relative;
+  right : 5%;
+  box-sizing: border-box;
+  height: auto;
+  padding : 15px 0px;
+}
+.loader-gif{
+  background-image: image-url("loader.svg");
 }
 .duke-title{
-  position:absolute;
-  left: 5%;
-  top: 2%;
+  box-sizing: border-box;
+  width: 100%;
+  padding : 15px 10px;
+  height: auto;
   color: white;
   font-weight: bold;
   font-size: 16px;
 }
 .duke-input {
-  box-sizing: border-box;
-  width: 100%;
-  height: 100%;
-  min-height: 100%;
-  max-height: 100%;
-  padding: 1%;
   background-color: #FFFFFF;
   resize: none;
+  width: 100%;
+  height: 100%;
+  min-height: 60px;
   border-style: solid;
   border-width: 1px 0px 1px 0px;
-  border-color: $base-color;
-  border-radius: 0px;
+  border-color: lightgray;
   font-size: 15px;
-  font-family: Georgia, serif;
+  padding: 10px;
+  box-sizing: border-box;
 }
-.duke-input:focus {
+.duke-input:focus{
     outline: none !important;
     border-style: solid;
     border-width: 1px 1px 1px 0px;
@@ -139,7 +160,7 @@
 @media only screen and (min-width: $small-screen + 1px) {
   .input-flex {
     bottom: 3%;
-    right: 2%;
+    left: 5%;
     width: 20%;
   }
 }
@@ -147,16 +168,19 @@
   display: flex;
   flex-direction: row;
   position: fixed;
-  height: 50px;
-  min-height: 50px;
-  max-height: 50px;
+  height: auto;
+  line-height: 1;
+  min-height: 60px;
+  max-height: 500px;
   background-color: #FFFFFF;
 }
 #top_bar {
+    display: flex;
+    flex-direction: row;
     background-color: $base-color;
-    max-height: 8%;
-    min-height: 8%;
-    height: 8%;
+    max-height: 45px;
+    min-height: 45px;
+    height: 45px;
     border-style: solid;
     border-width: 1px 0px;
     border-color: #F3F3F3;
@@ -164,8 +188,8 @@
 .msg_container_base{
   background: #F3F3F3  ;
   overflow-x: hidden;
-  max-height: calc(92% - 50px);
-  height: calc(92% - 50px);
+  max-height: calc(100% - 105px);
+  height: calc(100% - 105px);
 }
 .options{
   padding-left: 5%;
@@ -198,7 +222,7 @@
 
 .messenger-container {
   padding: 8px 15px 8px 0px;
-  margin: 5px 20px 5px 8px;
+  margin: 3px 20px 7px 8px;
   float: left;
   max-width: 82%;
   background: transparent;

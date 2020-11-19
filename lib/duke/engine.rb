@@ -1,7 +1,7 @@
 module Duke
   class Engine < ::Rails::Engine
     initializer 'duke.assets.precompile' do |app|
-      app.config.assets.precompile += %w( duke.js )
+      app.config.assets.precompile += %w( duke.js *.svg *.haml)
     end
 
     initializer :i18n do |app|
