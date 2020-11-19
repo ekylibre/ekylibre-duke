@@ -18,6 +18,11 @@ $(document).behave "load", "duke[data-current-account]", ->
   global_vars.pusher_key = $(this).data('pusher-key')
   global_vars.azure_key = $(this).data('azure-key')
   global_vars.azure_region = $(this).data('azure-region')
+  if !sessionStorage.getItem('duke-chat')
+    create_session()
+    waitforDukeMsg()
+  else 
+    add_chat_btn()
   $('#duke-input').each(->
     @setAttribute 'style', 'height:' + @scrollHeight + 'px;overflow-y:hidden;'
     return
@@ -44,74 +49,38 @@ $(document).behave "load", "duke[data-current-account]", ->
         output_sent()
         send_msg()
       return false
-      
-  create_session =  ->
-    $.ajax '/duke_create_session',
-      type: 'post'
-      dataType: 'json'
-      data:
-        "user_id": global_vars.account
-        "tenant": global_vars.tenant
-      success: (data, status, xhr) ->
-        sessionStorage.setItem('duke_id', data.session_id)
-        sessionStorage.setItem('assistant_id', data.assistant_id)
-        global_vars.pusher = new Pusher(global_vars.pusher_key, cluster: 'eu')
-        channel = global_vars.pusher.subscribe(sessionStorage.getItem('duke_id'))
-        channel.bind 'my-event', (data) ->
-          # Add received message
-          integrate_received(data.message)
-          return
-        send_msg("")
-        return
+  $('#duke-input').focusin ->
+    base_color = $('#top_bar').css('background-color')
+    $('#btn-mic').css('border-color', base_color)
     return
 
-  waitforDukeMsg = ->
-    if sessionStorage.getItem('duke-chat')
-      # Adding the chat btn 
-      $(document.body).append('<submit class="btn-chat">
-                                <svg version="1.1" class="icon-chat" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                  viewBox="0 0 200 200" style="enable-background:new 0 0 200 200;" xml:space="preserve">
-                                  <g>
-                                  <g>
-                                    <path class="st0" d="M111.2,182.6l-11.1-6.4l25.4-44.5h38.1c7,0,12.7-5.7,12.7-12.7V42.8c0-7-5.7-12.7-12.7-12.7H36.5
-                                      c-7,0-12.7,5.7-12.7,12.7v76.3c0,7,5.7,12.7,12.7,12.7h57.2v12.7H36.5c-14,0-25.4-11.4-25.4-25.4V42.8c0-14,11.4-25.4,25.4-25.4
-                                      h127.1c14,0,25.4,11.4,25.4,25.4v76.3c0,14-11.4,25.4-25.4,25.4h-30.8L111.2,182.6z"/>
-                                    <path class="st0" d="M49.2,55.5h101.7v12.7H49.2V55.5z M49.2,93.6h63.6v12.7H49.2V93.6z"/>
-                                  </g>
-                                </g>
-                                </svg>
-                              </submit>');
-    else
-      setTimeout waitforDukeMsg, 1000
+  $('#duke-input').focusout ->
+    $('#btn-mic').css('border-color', 'lightgray')
     return
-
-  # Send msg to backends methods that communicate with IBM
-  send_msg = (msg = $("#duke-input").val().replace(/\n/g, ""), user_intent=undefined) ->
-    reset_textarea() 
-    clear_textarea()
-    if !global_vars.pusher
+    
+create_session =  ->
+  $.ajax '/duke_create_session',
+    type: 'post'
+    dataType: 'json'
+    data:
+      "user_id": global_vars.account
+      "tenant": global_vars.tenant
+    success: (data, status, xhr) ->
+      sessionStorage.setItem('duke_id', data.session_id)
+      sessionStorage.setItem('assistant_id', data.assistant_id)
       global_vars.pusher = new Pusher(global_vars.pusher_key, cluster: 'eu')
       channel = global_vars.pusher.subscribe(sessionStorage.getItem('duke_id'))
       channel.bind 'my-event', (data) ->
         # Add received message
         integrate_received(data.message)
         return
-    # On message sent, open Websocket connection to listen for an answer
-    $.ajax '/duke_send_msg',
-      type: 'post'
-      data:
-        "msg": msg
-        "user_intent": user_intent
-        "user_id": global_vars.account
-        "tenant": global_vars.tenant
-        "duke_id": sessionStorage.getItem('duke_id')
-        "assistant_id": sessionStorage.getItem('assistant_id')
-      dataType: 'json'
-    return
-  if !sessionStorage.getItem('duke_id')
-    create_session()
-    waitforDukeMsg()
-  else 
+      send_msg("")
+      return
+  return
+
+waitforDukeMsg = ->
+  if sessionStorage.getItem('duke-chat')
+    # Adding the chat btn 
     $(document.body).append('<submit class="btn-chat">
                               <svg version="1.1" class="icon-chat" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                 viewBox="0 0 200 200" style="enable-background:new 0 0 200 200;" xml:space="preserve">
@@ -125,261 +94,297 @@ $(document).behave "load", "duke[data-current-account]", ->
                               </g>
                               </svg>
                             </submit>');
+  else
+    setTimeout waitforDukeMsg, 1000
+  return
 
-  # Appends a waiting animation icon, deletes it after 0.7s
-  # Finds the type of the message received & outputs accordingly
-  # Redefines Duke-Chat sessionHistory inside SessionStorage
-  integrate_received = (data) ->
-    $('.msg_container_base').append('<div class="msg-list msg-rcvd" id="waiting">
-                                        <div class="messenger-container">
-                                          <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
-                                            <defs>
-                                                <linearGradient x1="8.042%" y1="0%" x2="65.682%" y2="23.865%" id="a">
-                                                    <stop stop-color="black" stop-opacity="0" offset="0%"/>
-                                                    <stop stop-color="black" stop-opacity=".631" offset="63.146%"/>
-                                                    <stop stop-color="black" offset="100%"/>
-                                                </linearGradient>
-                                            </defs>
-                                            <g fill="none" fill-rule="evenodd">
-                                                <g transform="translate(1 1)">
-                                                    <path d="M36 18c0-9.94-8.06-18-18-18" id="Oval-2" stroke="url(#a)" stroke-width="2">
-                                                        <animateTransform
-                                                            attributeName="transform"
-                                                            type="rotate"
-                                                            from="0 18 18"
-                                                            to="360 18 18"
-                                                            dur="0.5s"
-                                                            repeatCount="indefinite" />
-                                                    </path>
-                                                    <circle fill="black" cx="36" cy="18" r="1">
-                                                        <animateTransform
-                                                            attributeName="transform"
-                                                            type="rotate"
-                                                            from="0 18 18"
-                                                            to="360 18 18"
-                                                            dur="0.5s"
-                                                            repeatCount="indefinite" />
-                                                    </circle>
-                                                </g>
-                                            </g>
-                                          </svg>
-                                        </div>
-                                      </div>')
-    $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
-    # Then 700 ms  later, we output the desired output
-    setTimeout (->
-      $('#waiting').remove()
-      $.each data, (index, value) ->
-        if value.response_type == "text"
-          if value.text.match(global_vars.redir_sec_regex)
-            location.replace global_vars.base_url + ":3000" + value.text.match(global_vars.redir_sec_regex)[1]
-            value.text = value.text.replace(value.text.match(global_vars.redir_sec_regex)[0], "")
-          if value.text.match(global_vars.redir_regex)
-            location.replace global_vars.base_url + ":3000" + value.text.match(global_vars.redir_regex)[1]
-          if value.text.indexOf('#base-url') >= 0
-            value.text = value.text.replace('#base-url', global_vars.base_url +":3000")
-          output_received_txt(value.text)
-        else if value.response_type == "option"
-          output_received_txt(value.title)
-          options = []
-          $.each value.options, (index, value) ->
-            options.push(value)
-            return
-          output_options(options)
-        else if value.response_type == "suggestion"
-          output_received_txt(value.title)
-          options = []
-          $.each value.suggestions, (index, value) ->
-            options.push(value)
-            return
-          output_options(options)
-        return
-      # And we add all the discussion history to sessionStorage
-      html = ''
-      $.each $('.msg_container_base').children(), (index, msg) ->
-          html += this.outerHTML;
+# Send msg to backends methods that communicate with IBM
+send_msg = (msg = $("#duke-input").val().replace(/\n/g, ""), user_intent=undefined) ->
+  reset_textarea() 
+  clear_textarea()
+  if !global_vars.pusher
+    global_vars.pusher = new Pusher(global_vars.pusher_key, cluster: 'eu')
+    channel = global_vars.pusher.subscribe(sessionStorage.getItem('duke_id'))
+    channel.bind 'my-event', (data) ->
+      # Add received message
+      integrate_received(data.message)
+      return
+  # On message sent, open Websocket connection to listen for an answer
+  $.ajax '/duke_send_msg',
+    type: 'post'
+    data:
+      "msg": msg
+      "user_intent": user_intent
+      "user_id": global_vars.account
+      "tenant": global_vars.tenant
+      "duke_id": sessionStorage.getItem('duke_id')
+      "assistant_id": sessionStorage.getItem('assistant_id')
+    dataType: 'json'
+  return
+
+# Appends a waiting animation icon, deletes it after 0.7s
+# Finds the type of the message received & outputs accordingly
+# Redefines Duke-Chat sessionHistory inside SessionStorage
+integrate_received = (data) ->
+  add_loading_icon()
+  $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
+  # Then 700 ms  later, we output the desired output
+  setTimeout (->
+    $('#waiting').remove()
+    $.each data, (index, value) ->
+      if value.response_type == "text"
+        if value.text.match(global_vars.redir_sec_regex)
+          location.replace global_vars.base_url + ":3000" + value.text.match(global_vars.redir_sec_regex)[1]
+          value.text = value.text.replace(value.text.match(global_vars.redir_sec_regex)[0], "")
+        if value.text.match(global_vars.redir_regex)
+          location.replace global_vars.base_url + ":3000" + value.text.match(global_vars.redir_regex)[1]
+        if value.text.indexOf('#base-url') >= 0
+          value.text = value.text.replace('#base-url', global_vars.base_url +":3000")
+        output_received_txt(value.text)
+      else if value.response_type == "option"
+        output_received_txt(value.title)
+        options = []
+        $.each value.options, (index, value) ->
+          options.push(value)
           return
-      sessionStorage.setItem('duke-chat', html)
+        output_options(options)
+      else if value.response_type == "suggestion"
+        output_received_txt(value.title)
+        options = []
+        $.each value.suggestions, (index, value) ->
+          options.push(value)
+          return
+        output_options(options)
       return
-    ), 700
+    # And we add all the discussion history to sessionStorage
+    html = ''
+    $.each $('.msg_container_base').children(), (index, msg) ->
+        html += this.outerHTML;
+        return
+    sessionStorage.setItem('duke-chat', html)
     return
+  ), 700
+  return
 
-  # If response type comports options, or suggestion -> Output it as clickable buttons
-  output_options = (options, type="options") ->
-    # We first create the container
-    $('.msg_container_base').append('<div class="row msg_container options"/>')
-    # Then we add every button with it's label, and it's value, and the potential intent to redirect the user
-    $.each options, (index, op) ->
-      if op.hasOwnProperty('source_dialog_node')
-        if op.value.input.intents.length == 0
-          intent = "anything_else"
-        else 
-          intent = op.value.input.intents[0].intent
-        $('.row.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text+'\'data-intent= \''+intent+'\' class="gb-bordered hover-fill duke-option duke-suggestion ">'+op.label+'</button>')
+# If response type comports options, or suggestion -> Output it as clickable buttons
+output_options = (options, type="options") ->
+  # We first create the container
+  $('.msg_container_base').append('<div class="row msg_container options"/>')
+  # Then we add every button with it's label, and it's value, and the potential intent to redirect the user
+  $.each options, (index, op) ->
+    if op.hasOwnProperty('source_dialog_node')
+      if op.value.input.intents.length == 0
+        intent = "anything_else"
       else 
-        $('.row.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text+'\' class="gb-bordered hover-fill duke-option duke-message-option">'+op.label+'</button>')
-      return
-    $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
+        intent = op.value.input.intents[0].intent
+      $('.row.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text+'\'data-intent= \''+intent+'\' class="gb-bordered hover-fill duke-option duke-suggestion ">'+op.label+'</button>')
+    else 
+      $('.row.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text+'\' class="gb-bordered hover-fill duke-option duke-message-option">'+op.label+'</button>')
     return
+  $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
+  return
 
-  # If response type is plain text -> output it like this
-  output_received_txt = (msg) ->
-    # We create a received container, and we append the msg to it
-    $('.duke-received:last p:first').css("border-style", "unset");
-    $('.msg_container_base').append('<div class="msg-list msg-rcvd">
-                                      <div class="messenger-container duke-received">
+# If response type is plain text -> output it like this
+output_received_txt = (msg) ->
+  # We create a received container, and we append the msg to it
+  $('.duke-received:last p:first').css("border-style", "unset");
+  $('.msg_container_base').append('<div class="msg-list msg-rcvd">
+                                    <div class="messenger-container duke-received">
+                                      <p>'+msg+'</p>
+                                    </div>
+                                  </div>');
+  $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
+  return
+
+# Disables potential buttons above & output our message in a SentMessageContainer
+output_sent = (msg = $("#duke-input").val().replace(/\n/g, "")) ->
+  # Disable buttons if previous message had options selections enabled
+  if $('.msg_container_base').children().last().hasClass('options')
+    $.each $('.msg_container_base').children().last().children(), (index, option) ->
+      $(option).prop("disabled",true);
+      if !$(option).hasClass("selected")
+        $(option).toggleClass( "hover-fill disabled");
+      return
+  # Then display the message by creating a container, and appendind msg to it
+  if msg != ""
+    $('.msg_container_base').append('<div class="msg-list sender msg-sdd">
+                                      <div class="messenger-container">
                                         <p>'+msg+'</p>
                                       </div>
                                     </div>');
     $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
-    return
+  return
 
-  # Disables potential buttons above & output our message in a SentMessageContainer
-  output_sent = (msg = $("#duke-input").val().replace(/\n/g, "")) ->
-    # Disable buttons if previous message had options selections enabled
-    if $('.msg_container_base').children().last().hasClass('options')
-      $.each $('.msg_container_base').children().last().children(), (index, option) ->
-        $(option).prop("disabled",true);
-        if !$(option).hasClass("selected")
-          $(option).toggleClass( "hover-fill disabled");
+# TextArea is reset, Send button is disabled
+clear_textarea = ->
+  # TextArea gets cleared, and send-btn gets disabled
+  $('#btn-send').toggleClass("disabled-send", true)
+  $("#btn-send").toggleClass("send-enabled",false)
+  $("#duke-input").val("")
+  return
+
+reset_textarea = -> 
+  $('#duke-input').css('height', '60px')
+  $('.msg_container_base').css('height', $('#bottom_left').height() - 105)
+  return
+
+$(window).resize ->
+  $('.msg_container_base').css('height', $('#bottom_left').height() - 105)
+  return
+
+
+
+# OnButtonChatClik, we show the chat window, & restore the discussion if any, or show waiting sign until ready
+$(document).on 'click', '.btn-chat', (e) ->
+  # We open the webchat, and focus on the textArea
+  $('.btn-chat').hide()
+  $(".btn-chat").css("z-index","-10");
+  $('#bottom_left').css("z-index","100000");
+  $('#bottom_left').show()
+  if !global_vars.isMobile
+    $( "#duke-input" ).focus()
+  # If duke-id is stored, we restore the discussion, otherwise we create a new id, store it and start a discussion
+  $('.msg_container_base').children().remove()
+  $('.msg_container_base').append(sessionStorage.getItem('duke-chat'))
+  $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
+  return
+
+# Hiding the chat, and removing the current discussion from it. Will be reloaded from sessionStorage if we re-open the chat
+$(document).on 'click', '.minus-link', (e) ->
+  $('#bottom_left').hide()
+  $('#bottom_left').css("z-index","-10");
+  $(".btn-chat").css("z-index","100000");
+  $('.btn-chat').show()
+  return
+
+# Send message & clear text area
+$(document).on 'click', '#btn-send', (e) ->
+  # Send
+  output_sent()
+  send_msg()
+  if global_vars.stt.is_on 
+    stop_stt()
+  return
+
+# Sends message containing Option data-Value, but shows Option data-label
+$(document).on 'click', '.duke-message-option',  ->
+  target = event.target || event.srcElement;
+  $(this).toggleClass( "hover-fill selected")
+  output_sent(target.innerHTML)
+  event.stopImmediatePropagation
+  if event.stopPropagation then event.stopPropagation() else (event.cancelBubble = true)
+  send_msg($(this).data("value"))
+  return
+
+# Sends previous message to the functionnality the user chose when suggested
+$(document).on 'click', '.duke-suggestion',  ->
+  target = event.target || event.srcElement;
+  $(this).toggleClass( "hover-fill selected")
+  output_sent(target.innerHTML)
+  if event.stopPropagation then event.stopPropagation() else (event.cancelBubble = true)
+  send_msg($(this).data("value"), $(this).data("intent"))
+  return
+
+# STT integration
+global_vars.stt.stt_on = false
+$(document).on 'click', '#btn-mic', (e) ->
+  transcript = ""
+  # If stt is on, we stop the recognizer and send the message
+  if global_vars.stt.is_on 
+    stop_stt()
+    if $("#duke-input").val() != ""
+      output_sent()
+      send_msg()
+  else 
+    # If stt is off, we start recording and printing transcription to textarea
+    global_vars.stt.is_on = true
+    # Limiting speech recognition to 20 seconds
+    $(this).delay(20000).queue ->
+      if global_vars.stt.is_on 
+        stop_stt()
         return
-    # Then display the message by creating a container, and appendind msg to it
-    if msg != ""
-      $('.msg_container_base').append('<div class="msg-list sender msg-sdd">
-                                        <div class="messenger-container">
-                                          <p>'+msg+'</p>
-                                        </div>
-                                      </div>');
-      $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
-    return
+    # Creating STT config if non existent
+    if !("speechConfig" in global_vars.stt)
+      global_vars.stt.speechConfig = SpeechSDK.SpeechConfig.fromSubscription(global_vars.azure_key, global_vars.azure_region);
+      global_vars.stt.speechConfig.speechRecognitionLanguage = "fr-FR";
+      global_vars.stt.audioConfig  = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
+    # Launching recognition
+    global_vars.stt.recognizer = new (SpeechSDK.SpeechRecognizer)(global_vars.stt.speechConfig, global_vars.stt.audioConfig);
+    $("#btn-mic").toggleClass("send-enabled",true)
+    global_vars.stt.recognizer.startContinuousRecognitionAsync()
+    # On intermediate responses
+    global_vars.stt.recognizer.recognizing = (s, e) ->
+      $("#duke-input").val(transcript+" "+e.result.text)
+      $('#duke-input').css('height', 'auto')
+      height = $("#duke-input").prop('scrollHeight')
+      $('.msg_container_base').css('height', $('#bottom_left').height() - height - 45)
+      $('#duke-input').css('height', height + 'px')
+      $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight)
+      if !($( "#duke-input" ).hasClass( "send-enabled"))
+        $('#btn-send').toggleClass("disabled-send", false)
+        $("#btn-send").toggleClass("send-enabled",true)
+      return
+    # On final sentence recognition
+    global_vars.stt.recognizer.recognized = (s, e) ->
+      transcript += e.result.text.replace(/.$/," ")
+      return
 
-  # TextArea is reset, Send button is disabled
-  clear_textarea = ->
-    # TextArea gets cleared, and send-btn gets disabled
-    $('#btn-send').toggleClass("disabled-send", true)
-    $("#btn-send").toggleClass("send-enabled",false)
-    $("#duke-input").val("")
-    return
-  
-  reset_textarea = -> 
-    $('#duke-input').css('height', '60px')
-    $('.msg_container_base').css('height', $('#bottom_left').height() - 105)
-    return
+# Function used to stop STT, and remove recognizer Element
+stop_stt = ->
+  $("#btn-mic").toggleClass("send-enabled",false)
+  global_vars.stt.recognizer.stopContinuousRecognitionAsync ->
+  global_vars.stt.recognizer.close()
+  global_vars.stt.recognizer = undefined
+  global_vars.stt.is_on = false
+  return
 
-  $(window).resize ->
-    $('.msg_container_base').css('height', $('#bottom_left').height() - 105)
-    return
-
-
-
-  # OnButtonChatClik, we show the chat window, & restore the discussion if any, or show waiting sign until ready
-  $(document).on 'click', '.btn-chat', (e) ->
-    # We open the webchat, and focus on the textArea
-    $('.btn-chat').hide()
-    $(".btn-chat").css("z-index","-10");
-    $('#bottom_left').css("z-index","100000");
-    $('#bottom_left').show()
-    if !global_vars.isMobile
-      $( "#duke-input" ).focus()
-    # If duke-id is stored, we restore the discussion, otherwise we create a new id, store it and start a discussion
-    $('.msg_container_base').children().remove()
-    $('.msg_container_base').append(sessionStorage.getItem('duke-chat'))
-    $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
-    return
-
-  # Hiding the chat, and removing the current discussion from it. Will be reloaded from sessionStorage if we re-open the chat
-  $(document).on 'click', '.minus-link', (e) ->
-    $('#bottom_left').hide()
-    $('#bottom_left').css("z-index","-10");
-    $(".btn-chat").css("z-index","100000");
-    $('.btn-chat').show()
-    return
-
-  # Send message & clear text area
-  $(document).on 'click', '#btn-send', (e) ->
-    # Send
-    output_sent()
-    send_msg()
-    if global_vars.stt.is_on 
-      stop_stt()
-    return
-
-  # Sends message containing Option data-Value, but shows Option data-label
-  $(document).on 'click', '.duke-message-option',  ->
-    target = event.target || event.srcElement;
-    $(this).toggleClass( "hover-fill selected")
-    output_sent(target.innerHTML)
-    if event.stopPropagation then event.stopPropagation() else (event.cancelBubble = true)
-    send_msg($(this).data("value"))
-    return
-
-  # Sends previous message to the functionnality the user chose when suggested
-  $(document).on 'click', '.duke-suggestion',  ->
-    target = event.target || event.srcElement;
-    $(this).toggleClass( "hover-fill selected")
-    output_sent(target.innerHTML)
-    if event.stopPropagation then event.stopPropagation() else (event.cancelBubble = true)
-    send_msg($(this).data("value"), $(this).data("intent"))
-    return
-
-  $('#duke-input').focusin ->
-    base_color = $('#top_bar').css('background-color')
-    $('#btn-mic').css('border-color', base_color)
-    return
-
-  $('#duke-input').focusout ->
-    $('#btn-mic').css('border-color', 'lightgray')
-    return
-
-  # STT integration
-  global_vars.stt.stt_on = false
-  $(document).on 'click', '#btn-mic', (e) ->
-    transcript = ""
-    # If stt is on, we stop the recognizer and send the message
-    if global_vars.stt.is_on 
-      stop_stt()
-      if $("#duke-input").val() != ""
-        output_sent()
-        send_msg()
-    else 
-      # If stt is off, we start recording and printing transcription to textarea
-      global_vars.stt.is_on = true
-      # Limiting speech recognition to 20 seconds
-      $(this).delay(20000).queue ->
-        if global_vars.stt.is_on 
-          stop_stt()
-          return
-      # Creating STT config if non existent
-      if !("speechConfig" in global_vars.stt)
-        global_vars.stt.speechConfig = SpeechSDK.SpeechConfig.fromSubscription(global_vars.azure_key, global_vars.azure_region);
-        global_vars.stt.speechConfig.speechRecognitionLanguage = "fr-FR";
-        global_vars.stt.audioConfig  = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
-      # Launching recognition
-      global_vars.stt.recognizer = new (SpeechSDK.SpeechRecognizer)(global_vars.stt.speechConfig, global_vars.stt.audioConfig);
-      $("#btn-mic").toggleClass("send-enabled",true)
-      global_vars.stt.recognizer.startContinuousRecognitionAsync()
-      # On intermediate responses
-      global_vars.stt.recognizer.recognizing = (s, e) ->
-        $("#duke-input").val(transcript+" "+e.result.text)
-        $('#duke-input').css('height', 'auto')
-        height = $("#duke-input").prop('scrollHeight')
-        $('.msg_container_base').css('height', $('#bottom_left').height() - height - 45)
-        $('#duke-input').css('height', height + 'px')
-        $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight)
-        if !($( "#duke-input" ).hasClass( "send-enabled"))
-          $('#btn-send').toggleClass("disabled-send", false)
-          $("#btn-send").toggleClass("send-enabled",true)
-        return
-      # On final sentence recognition
-      global_vars.stt.recognizer.recognized = (s, e) ->
-        transcript += e.result.text.replace(/.$/," ")
-        return
-
-  # Function used to stop STT, and remove recognizer Element
-  stop_stt = ->
-      $("#btn-mic").toggleClass("send-enabled",false)
-      global_vars.stt.recognizer.stopContinuousRecognitionAsync ->
-      global_vars.stt.recognizer.close()
-      global_vars.stt.recognizer = undefined
-      global_vars.stt.is_on = false
-    return
+add_chat_btn = -> 
+  $(document.body).append('<submit class="btn-chat">
+                          <svg version="1.1" class="icon-chat" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            viewBox="0 0 200 200" style="enable-background:new 0 0 200 200;" xml:space="preserve">
+                            <g>
+                            <g>
+                              <path class="st0" d="M111.2,182.6l-11.1-6.4l25.4-44.5h38.1c7,0,12.7-5.7,12.7-12.7V42.8c0-7-5.7-12.7-12.7-12.7H36.5
+                                c-7,0-12.7,5.7-12.7,12.7v76.3c0,7,5.7,12.7,12.7,12.7h57.2v12.7H36.5c-14,0-25.4-11.4-25.4-25.4V42.8c0-14,11.4-25.4,25.4-25.4
+                                h127.1c14,0,25.4,11.4,25.4,25.4v76.3c0,14-11.4,25.4-25.4,25.4h-30.8L111.2,182.6z"/>
+                              <path class="st0" d="M49.2,55.5h101.7v12.7H49.2V55.5z M49.2,93.6h63.6v12.7H49.2V93.6z"/>
+                            </g>
+                          </g>
+                          </svg>
+                        </submit>');
+add_loading_icon = ->
+  $('.msg_container_base').append('<div class="msg-list msg-rcvd" id="waiting">
+                                    <div class="messenger-container">
+                                      <svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
+                                        <defs>
+                                            <linearGradient x1="8.042%" y1="0%" x2="65.682%" y2="23.865%" id="a">
+                                                <stop stop-color="black" stop-opacity="0" offset="0%"/>
+                                                <stop stop-color="black" stop-opacity=".631" offset="63.146%"/>
+                                                <stop stop-color="black" offset="100%"/>
+                                            </linearGradient>
+                                        </defs>
+                                        <g fill="none" fill-rule="evenodd">
+                                            <g transform="translate(1 1)">
+                                                <path d="M36 18c0-9.94-8.06-18-18-18" id="Oval-2" stroke="url(#a)" stroke-width="2">
+                                                    <animateTransform
+                                                        attributeName="transform"
+                                                        type="rotate"
+                                                        from="0 18 18"
+                                                        to="360 18 18"
+                                                        dur="0.5s"
+                                                        repeatCount="indefinite" />
+                                                </path>
+                                                <circle fill="black" cx="36" cy="18" r="1">
+                                                    <animateTransform
+                                                        attributeName="transform"
+                                                        type="rotate"
+                                                        from="0 18 18"
+                                                        to="360 18 18"
+                                                        dur="0.5s"
+                                                        repeatCount="indefinite" />
+                                                </circle>
+                                            </g>
+                                        </g>
+                                      </svg>
+                                    </div>
+                                  </div>')
