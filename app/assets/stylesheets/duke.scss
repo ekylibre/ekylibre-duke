@@ -1,3 +1,4 @@
+$duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
 @media only screen and (max-width: $small-screen) {
   #bottom_left {
     position: fixed;
@@ -10,8 +11,8 @@
     position: fixed;
     bottom: 3%;
     left: 5%;
-    height: 71%;
-    width: 20%;
+    height: 640px;
+    width: 360px;
   }
 }
 #bottom_left {
@@ -27,6 +28,7 @@
   left: 3%;
   background-color: transparent;
   z-index: 100000000;
+  display: none;
   cursor: pointer;
 }
 .btn-chat:hover {
@@ -36,7 +38,7 @@
 }
 .icon-mic{
   background-color: transparent;
-  fill : $base-color;
+  fill : $duke-color;
   height: 100%;
   width: 30px;
   box-sizing: content-box;
@@ -52,7 +54,7 @@
 }
 .icon-chat{
   filter: contrast(1); 
-  background-color:$base-color;
+  background-color:$duke-color;
   fill : white;
   padding: 10px;
   margin: 0px;
@@ -74,8 +76,8 @@
 .send-enabled{
   border-style: solid;
   border-width: 1px 1px 1px 1px;
-  border-color: $base-color !important;
-  background-color: $base-color;
+  border-color: $duke-color !important;
+  background-color: $duke-color;
   color: white;
   .icon-send{
     fill: white;
@@ -85,19 +87,19 @@
   }
 }
 .fa-microphone{
-  color: $base-color;
+  color: $duke-color;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .fa-caret-right{
-  color: $base-color;
+  color: $duke-color;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .fa-spin{
-  color: $base-color;
+  color: $duke-color;
 }
 .btn-mic{
   border-style: solid;
@@ -135,6 +137,7 @@
   height: 100%;
   min-height: 60px;
   border-style: solid;
+  border-radius: 0px;
   border-width: 1px 0px 1px 0px;
   border-color: lightgray;
   font-size: 15px;
@@ -145,7 +148,7 @@
     outline: none !important;
     border-style: solid;
     border-width: 1px 1px 1px 0px;
-    border-color: $base-color;
+    border-color: $duke-color;
     box-shadow: none;
 }
 .duke-input::-webkit-scrollbar {
@@ -161,7 +164,7 @@
   .input-flex {
     bottom: 3%;
     left: 5%;
-    width: 20%;
+    width: 360px;
   }
 }
 .input-flex {
@@ -177,7 +180,7 @@
 #top_bar {
     display: flex;
     flex-direction: row;
-    background-color: $base-color;
+    background-color: $duke-color;
     max-height: 45px;
     min-height: 45px;
     height: 45px;
@@ -239,7 +242,7 @@
   word-wrap: break-word; margin: 0;
   border-style: solid;
   border-left-width: 3px;
-  border-color: $base-color;
+  border-color: $duke-color;
 }
 .sender .messenger-container {
     float: right;
@@ -247,7 +250,7 @@
     border-radius: 10px;
     width: auto;
     padding-left: 13px;
-    background: $base-color;
+    background: $duke-color;
     margin-left: 70px;
     box-sizing: border-box;
 }
@@ -261,7 +264,7 @@
       height: 0px;
       border-top: 8px solid transparent;
       border-bottom: 8px solid transparent;
-      border-left: 15px solid $base-color;
+      border-left: 15px solid $duke-color;
       content: "";
       position: absolute;
       top: 9px;
@@ -274,7 +277,7 @@
 }
 .msg_container_base::-webkit-scrollbar-thumb
 {
-    background-color: $base-color;
+    background-color: $duke-color;
 }
 .gb-bordered {
   margin-right: 3%;
@@ -287,7 +290,7 @@
   border: 4px black;
   background-clip: padding-box;
   border-radius: 50px;
-  background-color: #c8c7c7;
+  background-color: lightgray;
   &:after {
     border-radius: 50px;
     transition: 1s all;
@@ -305,15 +308,16 @@
 .hover-fill{
   transition: 1s all;
   &:hover {
-    background-color: green;
+    background-color: $duke-color;
     color: white;
   }
 }
-.selected {
-  background-color: green;
+.duke-selected {
+  background-color: $duke-color;
+  color: white;
 }
-.disabled {
-  background-color: grey;
+.duke-disabled {
+  background-color: lightgray;
 }
 a.disabled-send {
   pointer-events: none;
