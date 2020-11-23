@@ -79,7 +79,6 @@
 
   # Check for msg, if no message, recheck every second
   waitforDukeMsg = ->
-    console.log("on est rentrés dans le watifor")
     if sessionStorage.getItem('duke-chat')
       $('.btn-chat').show()
     else
@@ -91,15 +90,13 @@
     reset_textarea() 
     clear_textarea()
     # Reconnect pusher and subscribe to our duke channel
-    vars.pusher = new Pusher(vars.pusher_key, cluster: 'eu')
+    if !vars.pusher
+      vars.pusher = new Pusher(vars.pusher_key, cluster: 'eu')
+      channel = vars.pusher.subscribe(sessionStorage.getItem('duke_id'))
+      channel.bind 'duke', (data) ->
+        integrate_received(data.message)
+        return
     # Maybe check pusher.connection.state
-    channel = vars.pusher.subscribe(sessionStorage.getItem('duke_id'))
-    channel.bind 'duke', (data) ->
-      # Add received message
-      integrate_received(data.message)
-      vars.pusher.disconnect();
-      vars.pusher = undefined
-      return
     $.ajax '/duke_send_msg',
       type: 'post'
       data:

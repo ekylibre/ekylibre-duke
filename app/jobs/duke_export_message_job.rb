@@ -7,7 +7,7 @@ class DukeExportMessageJob < ApplicationJob
     # HOTFIX: doing it only once because watson fires two webhooks at the time of writing
     # TODO : Stop Watson from sending two webhooks for a single event
     if item_id.even?
-      Pusher.trigger(session_id, 'my-event', {
+      Pusher.trigger(session_id, 'duke', {
         message: [{"response_type":"text","text": I18n.t("duke.exports.export_over" , id: item_id)}]
       })
     end 

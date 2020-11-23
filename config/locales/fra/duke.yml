@@ -21,6 +21,10 @@ fra:
       no_current_activity: "Vous n'avez pas d'activité de %{variety}, souhaitez-vous en créer une ?"
       not_finding: "Je ne comprends pas ce à quoi vous souhaitez accéder"
       found_tool: "Je vous redirige vers la page de l'outil %{tool}"
+      to_all_bills: "Je vous redirige vers vos factures redirect=/backend/purchase_invoices"
+      to_unpaid_bills: "Je vous redirige vers vos factures impayées redirect=/backend/purchase_invoices?utf8=✓&q=&nature=unpaid"
+      to_all_specific_bills: "Je vous redirige vers les factures de %{entity} redirect=/backend/purchase_invoices?&q=%{entity}"
+      to_unpaid_specific_bills: "Je vous redirige vers les factures impayées de %{entity} redirect=/backend/purchase_invoices?&q=%{entity}&nature=unpaid"
     issues: 
       tool_not_found: "Je n'ai le support de l'incident, j'annule."
       found_tool: "Je vous emmène saisir un incident sur l'outil %{tool}"

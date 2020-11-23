@@ -2,7 +2,7 @@ module Duke
   module Utils
     class DukeParsing
       @@fuzzloader = FuzzyStringMatch::JaroWinkler.create( :pure )
-      @@user_specific_types = [:cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :equipments, :workers, :inputs, :press] 
+      @@user_specific_types = [:entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :equipments, :workers, :inputs, :press] 
       @@month_hash = {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9, "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12 }
 
       def extract_duration(content)
@@ -314,11 +314,7 @@ module Duke
 
       def find_iterator(item_type, parsed)
         # Returns correct array to iterate over, given what item_type we're looking for
-        if item_type == :plant
-          iterator = Plant.availables(at: parsed[:date].to_datetime)
-        elsif [:land_parcel, :cultivation].include? (item_type)
-          iterator = LandParcel.availables(at: parsed[:date].to_datetime)
-        elsif item_type == :activity_variety
+        if item_type == :activity_variety
           # Get unique activities by cultivation_variety : TODO : do it cleanly
           activities = Activity.of_campaign(Campaign.current)
           Activity.all.each do |act|
@@ -327,12 +323,6 @@ module Duke
             end 
           end 
           iterator = activities
-        elsif item_type == :destination
-          iterator = Matter.availables(at: parsed[:date].to_datetime).where("variety='tank'")
-        elsif item_type == :cultivablezones 
-          iterator = CultivableZone.all
-        elsif item_type == :equipments
-          iterator = Equipment.availables(at: parsed[:date].to_datetime)
         elsif item_type == :inputs
           # For Inputs, check if procedure comports inputs
           if Procedo::Procedure.find(parsed[:procedure]).parameters_of_type(:input).empty?
@@ -340,8 +330,6 @@ module Duke
           else 
             iterator = Matter.availables(at: parsed[:date].to_datetime).of_expression(Procedo::Procedure.find(parsed[:procedure]).parameters_of_type(:input).collect(&:filter).join(" or "))
           end
-        elsif item_type == :workers
-          iterator = Worker.availables(at: parsed[:date].to_datetime).each
         elsif item_type == :crop_groups
           begin 
             iterator = CropGroup.all.where("target = 'plant'")
@@ -350,8 +338,34 @@ module Duke
           end 
         elsif item_type == :press
           iterator = Matter.availables(at: parsed[:date].to_datetime).can('press(grape)')
+        elsif item_type == :workers
+          iterator = Worker.availables(at: parsed[:date].to_datetime).each
+        elsif item_type == :entities 
+          iterator = Entity.all
+        elsif item_type == :destination
+          iterator = Matter.availables(at: parsed[:date].to_datetime).where("variety='tank'")
+        elsif item_type == :cultivablezones 
+          iterator = CultivableZone.all
+        elsif item_type == :equipments
+          iterator = Equipment.availables(at: parsed[:date].to_datetime)
+        elsif item_type == :plant
+          iterator = Plant.availables(at: parsed[:date].to_datetime)
+        elsif [:land_parcel, :cultivation].include? (item_type)
+          iterator = LandParcel.availables(at: parsed[:date].to_datetime)
         end
         return iterator
+      end 
+
+      def find_name_attribute(item_type)
+        # Returns correct attributes that display interesting name to iterate over, given what item_type we're looking for
+        if item_type == :activity_variety
+          attribute = :cultivation_variety_name
+        elsif item_type == :entities
+          attribute = :full_name
+        elsif [:workers, :crop_groups, :inputs, :press, :destination, :cultivablezones, :equipments, :plant, :land_parcel, :cultivation].include? (item_type)
+          attribute = :name
+        end
+        return attribute
       end 
 
       def find_ambiguity(parsed, content, level)
@@ -423,9 +437,9 @@ module Duke
         original_level = level
         user_specifics = parsed.select{ |key, value| @@user_specific_types.include?(key.to_sym)}
         # finding iterators only once
-        iterators = {}
+        attributes = {}
         user_specifics.keys.each do |itemType| 
-          iterators[itemType] = find_iterator(itemType, parsed)
+          attributes[itemType] = {:iterator => find_iterator(itemType, parsed), :name_attribute => find_name_attribute(itemType)}
         end 
         # Creating all combo_words from user_input
         create_words_combo(user_input).each do |index, combo|
@@ -435,17 +449,12 @@ module Duke
           matching_list = nil  
           level = original_level
           user_specifics.keys.each do |itemType|
-            iterators[itemType].each do |item|
+            attributes[itemType][:iterator].each do |item|
               # Check specifically for first name if worker
-              # TODO : Add Item to look for (name, first_name, cultivation_variety_name.. with iterator, to perform easy searches)
-              if itemType == :activity_variety 
-                level, matching_element, matching_list = compare_elements(combo, item.cultivation_variety_name, index, level, item[:id], parsed[itemType], matching_element, matching_list)
-              else 
-                if itemType == :workers
-                  level, matching_element, matching_list = compare_elements(combo, item[:name].split[0], index, level, item[:id], parsed[itemType], matching_element, matching_list)
-                end
-                level, matching_element, matching_list = compare_elements(combo, item[:name], index, level, item[:id], parsed[itemType], matching_element, matching_list)
+              if itemType == :workers
+                level, matching_element, matching_list = compare_elements(combo, item[:name].split.first, index, level, item[:id], parsed[itemType], matching_element, matching_list)
               end
+              level, matching_element, matching_list = compare_elements(combo, item.send(attributes[itemType][:name_attribute]), index, level, item[:id], parsed[itemType], matching_element, matching_list)
             end
           end
           # If we recognized something, we append it to the correct matching_list and we remove what matched from the user_input

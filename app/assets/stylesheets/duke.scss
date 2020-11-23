@@ -313,7 +313,7 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
   }
 }
 .duke-selected {
-  background-color: $duke-color;
+  background-color: mix($duke-color, lightgray, $weight: 75%);
   color: white;
 }
 .duke-disabled {
