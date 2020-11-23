@@ -1,6 +1,6 @@
-class DukeExportMessageWorker
+class DukeExportMessageJob < ApplicationJob
   include Pusher
-  include Sidekiq::Worker
+  queue_as :duke
 
   def perform(item_id, session_id)
     I18n.locale = :fra

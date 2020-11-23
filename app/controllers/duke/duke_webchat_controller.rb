@@ -38,7 +38,7 @@ module Duke
       else
         body = {"input":{"text": params[:msg], "intents":[{"intent": params[:user_intent],"confidence":1}]},"context":{"global":{"system":{"user_id":params[:user_id]}},"skills":{"main skill":{"user_defined":{"tenant": params[:tenant]}}}}}
       end
-      RequestWorker.perform_async(url, body, headers, params[:duke_id])
+      DukeRequestJob.perform_later(url, body, headers, params[:duke_id])
       render json: {}
     end
 
