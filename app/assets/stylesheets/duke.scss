@@ -10,7 +10,7 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
   #bottom_left {
     position: fixed;
     bottom: 3%;
-    left: 5%;
+    left: 3%;
     height: 640px;
     width: 360px;
   }
@@ -86,21 +86,6 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
     fill: white;
   }
 }
-.fa-microphone{
-  color: $duke-color;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.fa-caret-right{
-  color: $duke-color;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.fa-spin{
-  color: $duke-color;
-}
 .btn-mic{
   border-style: solid;
   border-width: 1px 1px 1px 1px;
@@ -117,9 +102,6 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
   box-sizing: border-box;
   height: auto;
   padding : 15px 0px;
-}
-.loader-gif{
-  background-image: image-url("loader.svg");
 }
 .duke-title{
   box-sizing: border-box;
@@ -163,7 +145,7 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
 @media only screen and (min-width: $small-screen + 1px) {
   .input-flex {
     bottom: 3%;
-    left: 5%;
+    left: 3%;
     width: 360px;
   }
 }
