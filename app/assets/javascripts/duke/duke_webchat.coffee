@@ -74,7 +74,7 @@
       success: (data, status, xhr) ->
         sessionStorage.setItem('duke_id', data.session_id)
         sessionStorage.setItem('assistant_id', data.assistant_id)
-        instanciate_pusher(send_msg(""))
+        instanciate_pusher(msg_callback())
         return
     return
   
@@ -82,15 +82,22 @@
   instanciate_pusher = (callback) -> 
     if typeof Pusher != 'undefined'
       vars.pusher = new Pusher(vars.pusher_key, cluster: 'eu')
-      vars.pusher.connection.bind('pusher_internal:subscription_succeeded', callback)
       vars.pusher_channel = vars.pusher.subscribe(sessionStorage.getItem('duke_id'))
       vars.pusher_channel.bind 'duke', (data) ->
         integrate_received(data.message)
         $('.btn-chat').show()
         return
+      vars.pusher.connection.bind('pusher_internal:subscription_succeeded', callback)
     else 
       setTimeout instanciate_pusher, 200
     return 
+  
+  msg_callback = -> 
+    setTimeout (->
+      send_msg("")
+      return
+    ), 2000
+    return
 
   # Send msg to backends methods that communicate with IBM, if intent is specified, msg goes straight to this functionnality (intent disambiguation)
   send_msg = (msg = $("#duke-input").val().replace(/\n/g, ""), user_intent=undefined) ->
@@ -209,11 +216,11 @@
 
   reset_textarea = -> 
     $('#duke-input').css('height', '60px')
-    $('.msg_container_base').css('height', $('#bottom_left').height() - 105)
+    $('.msg_container_base').css('height', $('#bottom_left').height() - $('.input-flex').height() - 45)
     return
 
   $(window).resize ->
-    $('.msg_container_base').css('height', $('#bottom_left').height() - 105)
+    $('.msg_container_base').css('height', $('#bottom_left').height() - $('.input-flex').height() - 45)
     return
 
   # OnButtonChatClik, we show the chat window, & restore the discussion if any, or show waiting sign until ready
@@ -296,16 +303,18 @@
       vars.stt.recognizer.startContinuousRecognitionAsync()
       # On intermediate responses
       vars.stt.recognizer.recognizing = (s, e) ->
-        $("#duke-input").val(transcript+" "+e.result.text)
-        $('#duke-input').css('height', 'auto')
-        height = $("#duke-input").prop('scrollHeight')
-        $('.msg_container_base').css('height', $('#bottom_left').height() - height - 45)
-        $('#duke-input').css('height', height + 'px')
-        $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight)
-        if !($( "#duke-input" ).hasClass( "send-enabled"))
-          $('#btn-send').toggleClass("disabled-send", false)
-          $("#btn-send").toggleClass("send-enabled",true)
-        return
+        console.log("le var stt : "+vars.stt.is_on)
+        if vars.stt.is_on
+          $("#duke-input").val(transcript+" "+e.result.text)
+          $('#duke-input').css('height', 'auto')
+          height = $("#duke-input").prop('scrollHeight')
+          $('.msg_container_base').css('height', $('#bottom_left').height() - height - 45)
+          $('#duke-input').css('height', height + 'px')
+          $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight)
+          if !($( "#duke-input" ).hasClass( "send-enabled"))
+            $('#btn-send').toggleClass("disabled-send", false)
+            $("#btn-send").toggleClass("send-enabled",true)
+          return
       # On final sentence recognition
       vars.stt.recognizer.recognized = (s, e) ->
         transcript += e.result.text.replace(/.$/," ")
