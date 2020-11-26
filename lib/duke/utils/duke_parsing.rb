@@ -2,7 +2,8 @@ module Duke
   module Utils
     class DukeParsing
       @@fuzzloader = FuzzyStringMatch::JaroWinkler.create( :pure )
-      @@user_specific_types = [:plant, :land_parcel, :cultivation, :destination, :crop_groups, :equipments, :workers, :inputs, :press] 
+      @@user_specific_types = [:entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :equipments, :workers, :inputs, :press] 
+      @@month_hash = {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9, "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12 }
 
       def extract_duration(content)
           #Function that finds the duration of the intervention & converts this value in minutes using regexes to have it stored into Ekylibre
@@ -53,7 +54,6 @@ module Duke
         # Extract date from a string, and returns a dateTime object with appropriate date & time
         # Default value is Datetime.now
         now = DateTime.now
-        month_hash = {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9, "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12 }
         full_date_regex = '(\d|\d{2}) *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)( *\d{4})?'
         slash_date_regex = '(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?'
         # Extract the hour at which intervention was done
@@ -75,7 +75,7 @@ module Duke
           if full_date
             content[full_date[0]] = ""
             day = full_date[1].to_i
-            month = month_hash[full_date[2]]
+            month = @@month_hash[full_date[2]]
             if full_date[3].to_i.between?(now.year - 5, now.year + 1)
               year = full_date[3].to_i
             else
@@ -86,12 +86,12 @@ module Duke
             content[slash_date[0]] = ""
             day = slash_date[1].to_i
             month = slash_date[2].to_i
-            if slash_date[4].nil?
-              year = now.year
-            elsif slash_date[4].to_i.between?(now.year - 2005, now.year - 1999)
+            if slash_date[4].to_i.between?(now.year - 2005, now.year - 1999)
               year = 2000 + slash_date[4].to_i
             elsif slash_date[4].to_i.between?(now.year - 5, now.year + 1)
               year = slash_date[4].to_i
+            else
+              year = now.year
             end
             return DateTime.new(year, month, day, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00")
           else
@@ -102,6 +102,60 @@ module Duke
         # If a d object is set, return the DateTime object with extracted time
         return DateTime.new(d.year, d.month, d.day, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00")
       end
+
+      def extract_time_interval(content)
+        # Extracting long duration time
+        now = DateTime.now
+        since_regex = '(depuis|à partir|a partir) *(du|de|le|la)? *(\d|\d{2}) *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)( *\d{4})?'
+        since_slash_regex = '(depuis|à partir|a partir) * (du|de|le|la)? *(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?'
+        since_month_regex = '(depuis|à partir|a partir) *(du|de|le|la)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)'
+        since_date = content.match(since_regex)
+        since_slash_date = content.match(since_slash_regex)
+        since_month_date = content.match(since_month_regex)
+        if content.include? "cette année"
+          content["cette année"] = ""
+          return DateTime.new(now.year, 1, 1, 0, 0, 0), now
+        elsif content.include? "ce mois"
+          content["ce mois"] = ""
+          return DateTime.new(now.year, now.month, 1, 0, 0, 0), now
+        elsif content.include? "cette semaine"
+          content["cette semaine"] = ""
+          return now - (now.wday - 1), now
+        elsif since_date 
+          content[since_date[0]] = ""
+          day = since_date[3].to_i
+          month = @@month_hash[since_date[4]]
+          if since_date[5].to_i.between?(now.year - 5, now.year + 1)
+            year = since_date[5].to_i
+          else
+            year = now.year
+          end
+          return DateTime.new(year, month, day, 0, 0, 0), now
+        elsif since_slash_date
+          content[since_slash_date[0]] = ""
+          day = since_slash_date[3].to_i
+          month = since_slash_date[4].to_i
+          if since_slash_date[6].to_i.between?(now.year - 2005, now.year - 1999)
+            year = 2000 + since_slash_date[4].to_i
+          elsif since_slash_date[6].to_i.between?(now.year - 5, now.year + 1)
+            year = since_slash_date[4].to_i
+          else
+            year = now.year
+          end
+          return DateTime.new(year, month, day, 0, 0, 0), now
+        elsif since_month_date
+          content[since_month_date[0]] = ""
+          month = @@month_hash[since_month_date[3]]
+          if month > now.month 
+            year = now.year - 1 
+          else 
+            year = now.year 
+          end 
+          return DateTime.new(year, month, 1, 0, 0, 0), now
+        else 
+          return now - 1.year, now
+        end 
+      end 
 
       def extract_hour(content)
         # Extract hour from a string, returns a DateTime object with appropriate date
@@ -210,15 +264,23 @@ module Duke
         return words_combos
       end
 
+      def is_number? string
+        true if Float(string) rescue false
+      end
+
       def compare_elements(string1, string2, indexes, level, key, append_list, saved_hash, rec_list)
         # We check the fuzz distance between two elements, if it's greater than the min_matching_level or the current best distance, this is the new recordman
         # We only compare with item_part before "|" if any delimiter is present
-        item_to_match = clear_string(string2).split(" | ")[0]
-        distance = @@fuzzloader.getDistance(string1, item_to_match)
-        if distance > level
-          return distance, { :key => key, :name => string2, :indexes => indexes , :distance => distance}, append_list
-        end
-        return level, saved_hash, rec_list
+        if string2.nil? 
+          return level, saved_hash, rec_list 
+        else 
+          item_to_match = clear_string(string2).split(" | ")[0]
+          distance = @@fuzzloader.getDistance(string1, item_to_match)
+          if distance > level
+            return distance, { :key => key, :name => string2, :indexes => indexes , :distance => distance}, append_list
+          end
+          return level, saved_hash, rec_list
+        end 
       end
 
       def better_corrected_distance?(a,b, content)
@@ -252,14 +314,15 @@ module Duke
 
       def find_iterator(item_type, parsed)
         # Returns correct array to iterate over, given what item_type we're looking for
-        if item_type == :plant
-          iterator = Plant.availables(at: parsed[:date].to_datetime)
-        elsif [:land_parcel, :cultivation].include? (item_type)
-          iterator = LandParcel.availables(at: parsed[:date].to_datetime)
-        elsif item_type == :destination
-          iterator = Matter.availables(at: parsed[:date].to_datetime).where("variety='tank'")
-        elsif item_type == :equipments
-          iterator = Equipment.availables(at: parsed[:date].to_datetime)
+        if item_type == :activity_variety
+          # Get unique activities by cultivation_variety : TODO : do it cleanly
+          activities = Activity.of_campaign(Campaign.current)
+          Activity.all.each do |act|
+            unless activities.any? {|curr_act| curr_act.cultivation_variety_name == act.cultivation_variety_name}
+              activities.push(act)
+            end 
+          end 
+          iterator = activities
         elsif item_type == :inputs
           # For Inputs, check if procedure comports inputs
           if Procedo::Procedure.find(parsed[:procedure]).parameters_of_type(:input).empty?
@@ -267,8 +330,6 @@ module Duke
           else 
             iterator = Matter.availables(at: parsed[:date].to_datetime).of_expression(Procedo::Procedure.find(parsed[:procedure]).parameters_of_type(:input).collect(&:filter).join(" or "))
           end
-        elsif item_type == :workers
-          iterator = Worker.availables(at: parsed[:date].to_datetime).each
         elsif item_type == :crop_groups
           begin 
             iterator = CropGroup.all.where("target = 'plant'")
@@ -277,8 +338,34 @@ module Duke
           end 
         elsif item_type == :press
           iterator = Matter.availables(at: parsed[:date].to_datetime).can('press(grape)')
+        elsif item_type == :workers
+          iterator = Worker.availables(at: parsed[:date].to_datetime).each
+        elsif item_type == :entities 
+          iterator = Entity.all
+        elsif item_type == :destination
+          iterator = Matter.availables(at: parsed[:date].to_datetime).where("variety='tank'")
+        elsif item_type == :cultivablezones 
+          iterator = CultivableZone.all
+        elsif item_type == :equipments
+          iterator = Equipment.availables(at: parsed[:date].to_datetime)
+        elsif item_type == :plant
+          iterator = Plant.availables(at: parsed[:date].to_datetime)
+        elsif [:land_parcel, :cultivation].include? (item_type)
+          iterator = LandParcel.availables(at: parsed[:date].to_datetime)
         end
         return iterator
+      end 
+
+      def find_name_attribute(item_type)
+        # Returns correct attributes that display interesting name to iterate over, given what item_type we're looking for
+        if item_type == :activity_variety
+          attribute = :cultivation_variety_name
+        elsif item_type == :entities
+          attribute = :full_name
+        elsif [:workers, :crop_groups, :inputs, :press, :destination, :cultivablezones, :equipments, :plant, :land_parcel, :cultivation].include? (item_type)
+          attribute = :name
+        end
+        return attribute
       end 
 
       def find_ambiguity(parsed, content, level)
@@ -349,18 +436,25 @@ module Duke
         # Find all types that we're gonna check, and their values
         original_level = level
         user_specifics = parsed.select{ |key, value| @@user_specific_types.include?(key.to_sym)}
+        # finding iterators only once
+        attributes = {}
+        user_specifics.keys.each do |itemType| 
+          attributes[itemType] = {:iterator => find_iterator(itemType, parsed), :name_attribute => find_name_attribute(itemType)}
+        end 
         # Creating all combo_words from user_input
         create_words_combo(user_input).each do |index, combo|
-          matching_element = nil # A Hash containing :key, :name, :indexes, :distance,
-          matching_list = nil  # A pointer, which will point to the list on which to add the matching element, if a match occurs, else points to nothing
+          # A Hash containing :key, :name, :indexes, :distance,
+          matching_element = nil 
+          # A pointer, which will point to the list on which to add the matching element, if a match occurs, else points to nothing
+          matching_list = nil  
           level = original_level
           user_specifics.keys.each do |itemType|
-            find_iterator(itemType, parsed).each do |item|
+            attributes[itemType][:iterator].each do |item|
               # Check specifically for first name if worker
               if itemType == :workers
-                level, matching_element, matching_list = compare_elements(combo, item[:name].split[0], index, level, item[:id], parsed[itemType], matching_element, matching_list)
+                level, matching_element, matching_list = compare_elements(combo, item[:name].split.first, index, level, item[:id], parsed[itemType], matching_element, matching_list)
               end
-              level, matching_element, matching_list = compare_elements(combo, item[:name], index, level, item[:id], parsed[itemType], matching_element, matching_list)
+              level, matching_element, matching_list = compare_elements(combo, item.send(attributes[itemType][:name_attribute]), index, level, item[:id], parsed[itemType], matching_element, matching_list)
             end
           end
           # If we recognized something, we append it to the correct matching_list and we remove what matched from the user_input

@@ -5,6 +5,7 @@ module Duke
       # First parsing inside interventions
       Ekylibre::Tenant.switch params['tenant'] do
         procedure = params[:procedure]
+        return if procedure.nil?
         # Check for | delimiter inside procedure type, if exists, it means it's Ekyviti and we have choice between vegetal & viti procedure
         unless procedure.scan(/[|]/).empty?
           # If there's no vegetal farming for the specific teant, we take viti procedure, otherwise we ask the user
