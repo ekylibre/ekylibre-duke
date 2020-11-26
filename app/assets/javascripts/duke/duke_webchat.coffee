@@ -92,11 +92,12 @@
       setTimeout instanciate_pusher, 200
     return 
   
+  # CallBack method once Pusher subscription is done, to send first message, we wait a second since pusher binding signal comes a few milliseconds before actual binding
   msg_callback = -> 
     setTimeout (->
       send_msg("")
       return
-    ), 2000
+    ), 1000
     return
 
   # Send msg to backends methods that communicate with IBM, if intent is specified, msg goes straight to this functionnality (intent disambiguation)
