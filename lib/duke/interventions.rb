@@ -27,11 +27,10 @@ module Duke
         unless (Procedo::Procedure.find(procedure).activity_families & [:vine_farming, :plant_farming]).any?
           return {:redirect => "non_supported_proc"}
         end 
-        # Finding when it happened and how long it lasted, + getting cleaned user_input
-        user_input = clear_string(params[:user_input])
+        # getting cleaned user_input
+        user_input = clear_string(params[:user_input].gsub(params[:procedure_word], ""))
+        # Finding when it happened and how long it lasted
         date, duration = extract_date_and_duration(user_input)
-        # Removing word that matched procedure type
-        user_input = user_input.gsub(params[:procedure_word], "")
         parsed = {:inputs => [],
                   :workers => [],
                   :equipments => [],

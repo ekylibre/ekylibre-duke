@@ -177,7 +177,11 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
   height: calc(100% - 105px);
 }
 .options{
+  box-sizing: border-box;
   padding-left: 5%;
+  padding-right: 5%;
+  height: auto ;
+  min-height: 34px;
   width: 100%;
   margin-left:0;
   display:inline-block;
@@ -192,7 +196,6 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
   height: auto;
   min-height: 34px;
   display: flex;
-
   flex-direction: row;
   .sender {
       justify-content: flex-end;
@@ -285,7 +288,6 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
     z-index: -1;
     border-radius: 4px;
   }
-
 }
 .hover-fill{
   transition: 1s all;
@@ -304,4 +306,60 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
 a.disabled-send {
   pointer-events: none;
   cursor: default;
+}
+.duke-select-wrap{
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: 5px;
+  background-color: transparent;
+  &.option{
+    display: flex;
+    align-items: center;
+    }
+  &:hover > .duke-default-option {
+    background: lightgray;
+  }
+  & .duke-default-option {
+    background: #fff;
+    position: relative;
+    cursor: pointer;
+    & li {
+      padding: 10px 20px;
+    }
+  }
+}
+.duke-select-wrap .duke-default-option:before{
+  content: "";
+  position: absolute;
+  top: 13px;
+  right: 18px;
+  width: 6px;
+  height: 6px;
+  border: 2px solid;
+  border-color: transparent transparent #3D3D3D #3D3D3D;
+  transform: rotate(-45deg);
+}
+.duke-select-wrap .duke-select-ul{
+  position: absolute;
+  top: 55px;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  display: none;
+}
+.duke-select-wrap .duke-select-ul li{
+  padding: 10px 20px;
+  cursor: pointer;
+  &:hover{
+    background: mix($duke-color, lightgray, $weight: 30%);
+  }
+}
+.duke-select-wrap.active .duke-select-ul{
+  display: block;
+  position: relative;
+  top: 0%;
+}
+.duke-select-wrap.active .duke-default-option:before{
+  top: 18px;
+  transform: rotate(-225deg);
 }

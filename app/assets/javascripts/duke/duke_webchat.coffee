@@ -161,18 +161,27 @@
   # If response type comports options, or suggestion -> Output it as clickable buttons
   output_options = (options, type="options") ->
     # We first create the container
-    $('.msg_container_base').append('<div class="row msg_container options"/>')
+    $('.msg_container_base').append('<div class="msg_container options"/>')
     # Then we add every button with it's label, and it's value, and the potential intent to redirect the user
-    $.each options, (index, op) ->
-      if op.hasOwnProperty('source_dialog_node')
-        if op.value.input.intents.length == 0
-          intent = "anything_else"
+    if options.length > 7 
+      $('.msg_container.options').last().append('<div class="duke-select-wrap"><ul class="duke-default-option"><li><div class="option">
+                                                  <p>Choisissez une option</p></div></li></ul><ul class="duke-select-ul"></ul>
+                                                 </div>')
+      $.each options, (index, op) -> 
+        $('.duke-select-ul').last().append('<li data-value= \''+op.value.input.text.replace("'",'"')+'\'><div class="option">
+                                          <p>'+op.label+'</p></div>
+                                       </li>')
+    else 
+      $.each options, (index, op) ->
+        if op.hasOwnProperty('source_dialog_node')
+          if op.value.input.intents.length == 0
+            intent = "anything_else"
+          else 
+            intent = op.value.input.intents[0].intent
+          $('.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text.replace("'",'"')+'\'data-intent= \''+intent+'\' class="gb-bordered hover-fill duke-option duke-suggestion ">'+op.label+'</button>')
         else 
-          intent = op.value.input.intents[0].intent
-        $('.row.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text.replace("'",'"')+'\'data-intent= \''+intent+'\' class="gb-bordered hover-fill duke-option duke-suggestion ">'+op.label+'</button>')
-      else 
-        $('.row.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text.replace("'",'"')+'\' class="gb-bordered hover-fill duke-option duke-message-option">'+op.label+'</button>')
-      return
+          $('.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text.replace("'",'"')+'\' class="gb-bordered hover-fill duke-option duke-message-option">'+op.label+'</button>')
+        return
     $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
     return
 
@@ -220,6 +229,9 @@
     $('.msg_container_base').css('height', $('#bottom_left').height() - $('.input-flex').height() - 45)
     return
 
+  reset_dropdown = -> 
+    return 
+
   $(window).resize ->
     $('.msg_container_base').css('height', $('#bottom_left').height() - $('.input-flex').height() - 45)
     return
@@ -247,9 +259,19 @@
     $('.btn-chat').show()
     return
 
+   $(document).on 'click', '.duke-default-option',  ->
+    $(this).parent().toggleClass 'active'
+    $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
+    return
+
+  $(document).on 'click', '.duke-select-ul li',  ->
+    $(this).parents('.msg_container').remove()
+    output_sent($(this).html())
+    send_msg($(this).data("value"))
+    return
+
   # Send message & clear text area
   $(document).on 'click', '#btn-send', (e) ->
-    # Send
     output_sent()
     send_msg()
     if vars.stt.is_on 
@@ -304,7 +326,6 @@
       vars.stt.recognizer.startContinuousRecognitionAsync()
       # On intermediate responses
       vars.stt.recognizer.recognizing = (s, e) ->
-        console.log("le var stt : "+vars.stt.is_on)
         if vars.stt.is_on
           $("#duke-input").val(transcript+" "+e.result.text)
           $('#duke-input').css('height', 'auto')
