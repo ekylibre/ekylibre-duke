@@ -2,35 +2,41 @@ module Duke
   class HarvestReceptions < Duke::Utils::HarvestReceptionUtils
 
     def handle_parse_sentence(params)
+      # First parsing inside harvest receptions
       Ekylibre::Tenant.switch params['tenant'] do
-        plant, crop_groups, destination = [], [], []
-        date, user_input = extract_date(clear_string(params[:user_input]))
-        user_input, parameters = extract_reception_parameters(user_input)
-        parsed = {:plant => plant,
-                  :crop_groups => crop_groups,
-                  :destination => destination,
+        # Extract date and parameters
+        user_input = clear_string(params[:user_input])
+        date = extract_date(user_input)
+        parameters = extract_reception_parameters(user_input)
+        parsed = {:plant => [],
+                  :crop_groups => [],
+                  :destination => [],
                   :parameters => parameters,
                   :date => date,
                   :user_input => params[:user_input],
                   :retry => 0}
-        extract_user_specifics(user_input, parsed)
-        plant, crop_groups = extract_plant_area(user_input, plant, crop_groups)
-        parsed[:ambiguities] = find_ambiguity(parsed, user_input)
+        # Then extract user_specifics (plant, crop_group & destination), and add plant_area %
+        extract_user_specifics(user_input, parsed, 0.89)
+        extract_plant_area(user_input, parsed[:plant], parsed[:crop_groups])
+        parsed[:ambiguities] = find_ambiguity(parsed, user_input, 0.02)
         # Find if crucials parameters haven't been given, to ask again to the user
         what_next, sentence, optional = redirect(parsed)
-        return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
+        return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
       end
     end
 
     def handle_parse_parameter(params)
+      # Parse parameters when modifying it
       parsed = params[:parsed]
+      # Parameter is the type of parameter to be checked
       parameter = params[:parameter]
+      # Look for its value (params[params[:parameter]])
       value = extract_number_parameter(params[parameter], params[:user_input])
       if value.nil?
         # If we couldn't find one, we cancel the functionnality
         parsed[:retry] += 1
         what_next, sentence, optional = redirect(parsed)
-        return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
+        return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
       end
       # If we are parsing a quantity, we search for an unit inside the user input
       if parameter == "quantity"
@@ -48,45 +54,50 @@ module Duke
       parsed[:user_input] += " - #{params[:user_input]}"
       parsed[:retry] = 0
       what_next, sentence, optional = redirect(parsed)
-      return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
+      return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
     end
 
     def handle_modify_quantity_tav(params)
+      # Modify tavp &/or quantity
       parsed = params[:parsed]
       new_params = {}
-      content = clear_string(params[:user_input])
-      content, new_params = extract_quantity(content, new_params)
-      content, new_params = extract_conflicting_degrees(content, new_params)
-      content, new_params = extract_tav(content, new_params)
+      user_input = clear_string(params[:user_input])
+      new_params = extract_quantity(user_input, new_params)
+      new_params = extract_conflicting_degrees(user_input, new_params)
+      new_params = extract_tav(user_input, new_params)
+      # Append new value if not null
       unless new_params['quantity'].nil?
         parsed[:parameters]['quantity'] = new_params['quantity']
       end
+      # Same for TAVP
       unless new_params['tav'].nil?
         parsed[:parameters]['tav'] = new_params['tav']
       end
       parsed[:user_input] += " - #{params[:user_input]}"
       what_next, sentence, optional = redirect(parsed)
-      return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
+      return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
     end
 
     def handle_modify_date(params)
+      # Modify date
       parsed = params[:parsed]
       user_input = clear_string(params[:user_input])
-      date, user_input = extract_date(user_input)
-      parsed[:date] = choose_date(date, parsed[:date])
-      parsed[:user_input] = params[:parsed][:user_input] << ' - ' << params[:user_input]
+      date = extract_date(user_input)
+      parsed[:date] = date
+      parsed[:user_input] += " - #{params[:user_input]}"
       what_next, sentence, optional = redirect(parsed)
-      return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
+      return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
     end
 
     def handle_parse_destination_quantity(params)
+      # Add quantity to a specific destination afer being asked to the user
       parsed = params[:parsed]
       parameter = params[:parameter]
       value = extract_number_parameter(params[parameter], params[:user_input])
       if value.nil?
         parsed[:retry] += 1
         what_next, sentence, optional = redirect(parsed)
-        return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
+        return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
       end
       if parameter == "destination"
         parsed[:destination][params[:optional]][:quantity] = value
@@ -96,21 +107,21 @@ module Duke
       parsed[:user_input] += " - (Quantité) #{params[:user_input]}"
       parsed[:retry] = 0
       what_next, sentence, optional = redirect(parsed)
-      return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
+      return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
     end
 
     def handle_parse_targets(params)
+      # Adding targets 
       parsed = params[:parsed]
       Ekylibre::Tenant.switch params['tenant'] do
-        plant, crop_groups = [], []
         user_input = clear_string(params[:user_input])
-        new_parsed = {:plant => plant,
-                      :crop_groups => crop_groups,
+        new_parsed = {:plant => [],
+                      :crop_groups => [],
                       :date => parsed[:date]}
-        extract_user_specifics(user_input, new_parsed)
-        plant, crop_groups = extract_plant_area(user_input, plant, crop_groups)
+        extract_user_specifics(user_input, new_parsed, 0.82)
+        extract_plant_area(user_input, new_parsed[:plant], new_parsed[:crop_groups])
         # If there's no new Target/Crop_group, But a percentage, it's the new area % foreach previous target
-        if crop_groups.empty? and plant.empty?
+        if new_parsed[:crop_groups].empty? and new_parsed[:plant].empty?
           pct_regex = user_input.match(/(\d{1,2}) *(%|pour( )?cent(s)?)/)
           if pct_regex
             parsed[:crop_groups].to_a.each { |crop_group| crop_group[:area] = pct_regex[1]}
@@ -119,80 +130,102 @@ module Duke
         else
           parsed[:plant] = new_parsed[:plant]
           parsed[:crop_groups] = new_parsed[:crop_groups]
-          parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
+          parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
         end
       end
-      parsed[:user_input] += " - (Cibles) #{params[:user_input]}"
+      parsed[:user_input] += " - #{params[:user_input]}"
       what_next, sentence, optional = redirect(parsed)
       if what_next == params[:current_asking]
         parsed[:retry] += 1
         what_next, sentence, optional = redirect(parsed)
-        return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
+        return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
       end
       parsed[:retry] = 0
-      return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
+      return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
     end
 
     def handle_parse_destination(params)
+      # Adding destination
       parsed = params[:parsed]
       Ekylibre::Tenant.switch params['tenant'] do
-        destination = []
         user_input = clear_string(params[:user_input]).gsub("que","cuve")
-        new_parsed = {:destination => destination,
+        new_parsed = {:destination => [],
                       :date => parsed[:date]}
-        extract_user_specifics(user_input, new_parsed)
+        extract_user_specifics(user_input, new_parsed, 0.82)
         parsed[:destination] = new_parsed[:destination]
-        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
+        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
       end
-      parsed[:user_input] += ' (Destination) ' << params[:user_input]
+      parsed[:user_input] += " - #{params[:user_input]}"
       what_next, sentence, optional = redirect(parsed)
       if what_next == params[:current_asking] and optional == params[:optional]
         parsed[:retry] += 1
         what_next, sentence, optional = redirect(parsed)
-        return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
+        return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
       end
       parsed[:retry] = 0
-      return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
+      return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
     end
 
     def handle_add_other(params)
-      parsed = params[:parsed]
+      # Used to add none and redirect to save interface
       what_next, sentence, optional = redirect(parsed)
-      return  { :parsed => params[:parsed], :asking_again => what_next, :sentence => sentence, :optional => optional}
+      return  { :parsed => params[:parsed], :redirect => what_next, :sentence => sentence, :optional => optional}
     end
 
     def handle_parse_disambiguation(params)
+      # Handle disambiguation when users returns a choice.
       parsed = params[:parsed]
-      ambElement = params[:optional][-2]
-      ambType, ambArray = parsed.find { |key, value| value.is_a?(Array) and key != "ambiguities" and value.any? { |subhash| subhash[:name] == ambElement[:name]}}
-      ambHash = ambArray.find {|hash| hash[:name] == ambElement[:name]}
+      # Retrieving id of element we'll modify
+      current_id = params[:optional].first['description']['id']
+      # Find the type of element (:input, :plant ..) and the corresponding array from the previously parsed items, then find the correct hash
+      current_type, current_array = parsed.find { |key, value| value.is_a?(Array) and value.any? { |subhash| subhash[:key] == current_id}}
+      current_hash = current_array.find {|hash| hash[:key] == current_id}
+      if ["SeeMore", "voire plus", "voir plus", "plus"].include? params[:user_input]
+        current_level = params[:optional].first[:description][:level]
+        what_matched = params[:optional].first[:description][:match]
+        # We recheck for an ambiguity on the specific element that can't be validated by the user, with a bigger level of incertitude
+        new_ambiguities = ambiguity_check(current_hash, what_matched, current_level + 0.25, [], find_iterator(current_type.to_sym, parsed), current_level)
+        # If we have no new ambiguities, remove the values that was added, alert the user, and redirect him to next step 
+        if new_ambiguities.first.nil?
+          current_array.delete(current_hash)
+          parsed[:ambiguities].shift
+          what_next, sentence, optional = redirect(parsed)
+          return {:parsed => parsed, :alert => "no_more_ambiguity", :redirect => what_next, :optional => optional, :sentence => sentence}
+        end 
+        parsed[:ambiguities][0]= new_ambiguities.first
+        return { :parsed => parsed, :redirect => "ask_ambiguity", :optional => parsed[:ambiguities].first}
+      end 
       begin
         chosen_one = eval(params[:user_input])
-        ambHash[:name] = chosen_one["name"]
-        ambHash[:key] = chosen_one["key"]
+        current_hash[:name] = chosen_one[:name]
+        current_hash[:key] = chosen_one[:key]
       rescue
         if params[:user_input] == "Tous"
-          params[:optional].each_with_index do |ambiguate, index|
-            # Last two values are the one that's already added, and the inSentenceName value -> useless
-            unless [1,2].include?(params[:optional].length - index)
-              hashClone = ambHash.clone()
-              hashClone[:name] = ambiguate[:name].to_s
-              hashClone[:key] = ambiguate[:key].to_s
-              ambArray.push(hashClone)
-            end
+          current_array.delete(current_hash)
+          params[:optional].first['options'].each_with_index do |ambiguate, index|
+            begin 
+              hashClone = current_hash.clone()
+              ambiguate_values = eval(ambiguate[:value][:input][:text])
+              hashClone[:name] = ambiguate_values[:name]
+              hashClone[:key] = ambiguate_values[:key]
+              current_array.push(hashClone)
+            end 
           end
         elsif params[:user_input] == "Aucun"
-          ambArray.delete(ambHash)
+          # On None -> We delete the previously chosen value from what was parsed
+          current_array.delete(current_hash)
         end
       ensure
         parsed[:ambiguities].shift
         what_next, sentence, optional = redirect(parsed)
-        return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
+        return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
       end
     end
 
     def handle_add_analysis(params)
-      user_input, new_parameters = extract_reception_parameters(clear_string(params[:user_input]))
+      # Add analysis elements, and concatenate with previous ones
+      user_input = clear_string(params[:user_input])
+      new_parameters = extract_reception_parameters(user_input)
       if new_parameters['tav'].nil?
         pressing_tavp = nil
       else
@@ -204,32 +237,33 @@ module Duke
       params[:parsed][:user_input] += " - (Analyse) #{params[:user_input]}"
       # Find if crucials parameters haven't been given, to ask again to the user
       what_next, sentence, optional = redirect(params[:parsed])
-      return  { :parsed => params[:parsed], :asking_again => what_next, :sentence => sentence, :optional => optional}
+      return  { :parsed => params[:parsed], :redirect => what_next, :sentence => sentence, :optional => optional}
     end
 
     def handle_add_pressing(params)
+      # Add a press
       parsed = params[:parsed]
       user_input = clear_string(params[:user_input])
       Ekylibre::Tenant.switch params['tenant'] do
-        press = []
-        new_parsed = {:press => press,
+        new_parsed = {:press => [],
                       :date => parsed[:date]}
-        extract_user_specifics(user_input, new_parsed)
+        extract_user_specifics(user_input, new_parsed, 0.82)
         parsed[:press] = new_parsed[:press]
-        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input)
+        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
       end
-      parsed[:user_input] += " (Pressoir) #{params[:user_input]}"
+      parsed[:user_input] += " - #{params[:user_input]}"
       what_next, sentence, optional = redirect(parsed)
       if what_next == params[:current_asking] and optional == params[:optional]
         parsed[:retry] += 1
         what_next, sentence, optional = redirect(parsed)
-        return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
+        return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
       end
       parsed[:retry] = 0
-      return  { :parsed => parsed, :asking_again => what_next, :sentence => sentence, :optional => optional}
+      return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
     end
 
     def handle_add_complementary(params)
+      # Add complementary parameters
       if params[:parsed][:parameters][:complementary].nil?
         complementary = {}
       else
@@ -239,10 +273,11 @@ module Duke
       params[:parsed][:parameters][:complementary] = complementary
       # Find if crucials parameters haven't been given, to ask again to the user
       what_next, sentence, optional = redirect(params[:parsed])
-      return  { :parsed => params[:parsed], :asking_again => what_next, :sentence => sentence, :optional => optional}
+      return  { :parsed => params[:parsed], :redirect => what_next, :sentence => sentence, :optional => optional}
     end
 
     def handle_save_harvest_reception(params)
+      # Finally save the harvest reception
       I18n.locale = :fra
       parsed = params[:parsed]
       Ekylibre::Tenant.switch params['tenant'] do
