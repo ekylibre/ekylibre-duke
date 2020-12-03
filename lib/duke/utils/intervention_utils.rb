@@ -39,7 +39,7 @@ module Duke
           sentence += "<br>&#8226 #{I18n.t("duke.interventions.input")} : "
           params[:inputs].each do |input|
             # For each input, if unit is population, display it, otherwise display the procedure-unit linked to the chosen handler
-            sentence += "#{input[:name]} (#{input[:rate][:value].to_f} #{(I18n.t("duke.interventions.units.#{Procedo::Procedure.find(params[:procedure]).parameters_of_type(:input).find {|inp| Matter.where("id = #{input[:key]}").first.of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name}") if input[:rate][:unit].to_sym != :population) || Matter.where("id = #{input[:key]}").first&.unit_name}), "
+            sentence += "#{input[:name]} (#{input[:rate][:value].to_f} #{(I18n.t("duke.interventions.units.#{Procedo::Procedure.find(params[:procedure]).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name}") if input[:rate][:unit].to_sym != :population) || Matter.find_by_id(input[:key])&.unit_name}), "
           end
         end
         sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{params[:date].to_datetime.strftime("%d/%m/%Y - %H:%M")}"
@@ -53,7 +53,7 @@ module Duke
         I18n.locale = :fra
         params[:inputs].each_with_index do |input, index|
           if input[:rate][:value].nil?
-            sentence = I18n.t("duke.interventions.ask.how_much_inputs_#{rand(0...2)}", input: input[:name], unit: (Procedo::Procedure.find(params[:procedure]).parameters_of_type(:input).find {|inp| Matter.where("id = #{input[:key]}").first.of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name if input[:rate][:unit].to_sym != :population) || Matter.where("id = #{input[:key]}").first&.unit_name)
+            sentence = I18n.t("duke.interventions.ask.how_much_inputs_#{rand(0...2)}", input: input[:name], unit: (Procedo::Procedure.find(params[:procedure]).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name if input[:rate][:unit].to_sym != :population) || Matter.find_by_id(input[:key])&.unit_name)
             return sentence, index
           end
         end
@@ -148,13 +148,13 @@ module Duke
           # We create a measure from what just got parsed
           measure = get_measure(rate.to_f, unit, area)
           # If measure in mass or volume , and procedure can handle this type of indicators for its inputs and net dimension exists for specific input
-          if [:mass, :volume].include? measure.base_dimension.to_sym and !Procedo::Procedure.find(procedure).parameters_of_type(:input).find {|inp| Matter.where("id = #{input[:key]}").first.of_expression(inp.filter)}.handler("net_#{measure.base_dimension}").nil? and !Matter.where("id = #{input[:key]}").first&.send("net_#{measure.base_dimension}").zero?
+          if [:mass, :volume].include? measure.base_dimension.to_sym and !Procedo::Procedure.find(procedure).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.handler("net_#{measure.base_dimension}").nil? and !Matter.find_by_id(input[:key])&.send("net_#{measure.base_dimension}").zero?
             # Check if distance has repartion unit & convert value in correct proc unit & modify rate entry in the input hash 
             if measure.repartition_unit.nil?
-              measure = measure.in(Procedo::Procedure.find(procedure).parameters_of_type(:input).find {|inp| Matter.where("id = #{input[:key]}").first.of_expression(inp.filter)}.handler("net_#{measure.base_dimension}").unit.name)
+              measure = measure.in(Procedo::Procedure.find(procedure).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.handler("net_#{measure.base_dimension}").unit.name)
               input[:rate] = {:value => measure.value.to_f, :unit => "net_#{measure.base_dimension}"}
             else 
-              measure = measure.in(Procedo::Procedure.find(procedure).parameters_of_type(:input).find {|inp| Matter.where("id = #{input[:key]}").first.of_expression(inp.filter)}.handler(measure.dimension).unit.name)
+              measure = measure.in(Procedo::Procedure.find(procedure).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.handler(measure.dimension).unit.name)
               input[:rate] = {:value => measure.value.to_f, :unit => measure.dimension}
             end 
           else 

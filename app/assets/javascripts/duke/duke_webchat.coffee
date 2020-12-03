@@ -163,7 +163,7 @@
     # We first create the container
     $('.msg_container_base').append('<div class="msg_container options"/>')
     # Then we add every button with it's label, and it's value, and the potential intent to redirect the user
-    if options.length > 7 
+    if options.length > 6
       $('.msg_container.options').last().append('<div class="duke-select-wrap"><ul class="duke-default-option"><li><div class="option">
                                                   <p>Choisissez une option</p></div></li></ul><ul class="duke-select-ul"></ul>
                                                  </div>')
@@ -175,7 +175,7 @@
       $.each options, (index, op) ->
         if op.hasOwnProperty('source_dialog_node')
           if op.value.input.intents.length == 0
-            intent = "anything_else"
+            intent = "none_of_the_above"
           else 
             intent = op.value.input.intents[0].intent
           $('.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text.replace("'",'"')+'\'data-intent= \''+intent+'\' class="gb-bordered hover-fill duke-option duke-suggestion ">'+op.label+'</button>')
@@ -302,7 +302,7 @@
   $(document).on 'click', '#btn-mic', (e) ->
     transcript = ""
     # If stt is on, we stop the recognizer and send the message
-    if vars.stt.is_on 
+    if vars.stt.is_on
       stop_stt()
       if $("#duke-input").val() != ""
         output_sent()
@@ -311,10 +311,11 @@
       # If stt is off, we start recording and printing transcription to textarea
       vars.stt.is_on = true
       # Limiting speech recognition to 20 seconds
-      $(this).delay(20000).queue ->
+      vars.stt_timeout = setTimeout((->
         if vars.stt.is_on 
           stop_stt()
           return
+      ), 20000)
       # Creating STT config if non existent
       if !("speechConfig" in vars.stt)
         vars.stt.speechConfig = SpeechSDK.SpeechConfig.fromSubscription(vars.azure_key, vars.azure_region);
@@ -344,6 +345,7 @@
 
   # Function used to stop STT, and remove recognizer Element
   stop_stt = ->
+    clearTimeout(vars.stt_timeout)
     $("#btn-mic").toggleClass("send-enabled",false)
     vars.stt.recognizer.stopContinuousRecognitionAsync ->
     vars.stt.recognizer.close()

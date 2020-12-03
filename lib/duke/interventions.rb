@@ -13,7 +13,7 @@ module Duke
             what_next, sentence, optional = disambiguate_procedure(procedure, "|")
             return {:parsed => params[:user_input], :redirect => what_next, :sentence => sentence, :optional => optional}
           else 
-            procedure = procedure.split(/[|]/)[0]
+            procedure = procedure.split(/[|]/).first
           end 
         end 
         # Check for ~ delimiter inside procedure type, if exists, it means there's an amibuity in the user asking (ex : weeding -> (steam ?, gaz ?)) and we ask him
@@ -152,7 +152,7 @@ module Duke
         current_hash[:key] = chosen_one[:key]
         # If the type of ambiguation is an input, make sure quantity handlers are concording with new input, otherwise remove rate infos
         if current_type.to_sym == :inputs 
-          if ([:net_mass, :mass_area_density].include? current_hash[:rate][:unit].to_sym and Matter.where("id = #{current_hash[:key]}").first&.net_mass.to_f == 0) || ([:net_volume, :volume_area_density].include? current_hash[:rate][:unit].to_sym and Matter.where("id = #{current_hash[:key]}").first&.net_volume.fo_f == 0)
+          if ([:net_mass, :mass_area_density].include? current_hash[:rate][:unit].to_sym and Matter.find_by_id(current_hash[:key])&.net_mass.to_f == 0) || ([:net_volume, :volume_area_density].include? current_hash[:rate][:unit].to_sym and Matter.find_by_id(current_hash[:key])&.net_volume.fo_f == 0)
             current_hash[:rate][:unit] = :population 
             current_hash[:rate][:value] = nil 
           end 
@@ -197,9 +197,9 @@ module Duke
         unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:tool).empty?
           # For each tool, append it with the correct reference name if exists, or with the first reference-name from proc
           params[:parsed][:equipments].to_a.each do |tool|
-            reference_name = Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:tool)[0].name
+            reference_name = Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:tool).first.name
             Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find_all {|param| param.type == :tool}.each do |tool_type|
-              if Equipment.of_expression(tool_type.filter).include? Equipment.where("id = #{tool[:key]}")[0]
+              if Equipment.of_expression(tool_type.filter).include? Equipment.find_by_id(tool[:key])
                 reference_name = tool_type.name
                 break 
               end 
@@ -211,7 +211,7 @@ module Duke
         doers_attributes = []
         unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:doer).empty?
           params[:parsed][:workers].to_a.each do |worker|
-            doers_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:doer)[0].name, "product_id" => worker[:key]})
+            doers_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:doer).first.name, "product_id" => worker[:key]})
           end
         end 
         # If procedure type can handle inputs
@@ -219,7 +219,7 @@ module Duke
         unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:input).empty?
           params[:parsed][:inputs].to_a.each do |input|
             # For each input, save it with the reference name from it's type of input which was detected in the proc
-            inputs_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:input).find {|inp| Matter.where("id = #{input[:key]}").first.of_expression(inp.filter)}.name,
+            inputs_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.name,
                                     "product_id" => input[:key],
                                     "quantity_value" => input[:rate][:value].to_f,
                                     "quantity_population" => input[:rate][:value].to_f,

@@ -175,6 +175,9 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
   overflow-x: hidden;
   max-height: calc(100% - 105px);
   height: calc(100% - 105px);
+  -moz-box-shadow: 0 0 3px #ccc;
+  -webkit-box-shadow: 0 0 3px #ccc;
+  box-shadow: 0 0 3px #ccc;
 }
 .options{
   box-sizing: border-box;
@@ -255,8 +258,7 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
       top: 9px;
       left: 99%;border-right: none;
 }
-.msg_container_base::-webkit-scrollbar
-{
+.msg_container_base::-webkit-scrollbar{
     width: 4px;
     background-color: #c6c6c6;
 }
@@ -310,12 +312,11 @@ a.disabled-send {
 .duke-select-wrap{
   width: 100%;
   box-sizing: border-box;
-  padding-bottom: 5px;
+  margin-bottom: 10px;
   background-color: transparent;
-  &.option{
-    display: flex;
-    align-items: center;
-    }
+  -moz-box-shadow: 0 0 3px #ccc;
+  -webkit-box-shadow: 0 0 3px #ccc;
+  box-shadow: 0 0 3px #ccc;
   &:hover > .duke-default-option {
     background: lightgray;
   }
@@ -325,6 +326,9 @@ a.disabled-send {
     cursor: pointer;
     & li {
       padding: 10px 20px;
+    }
+    & li .option p {
+      font-size: 16px;
     }
   }
 }
@@ -341,14 +345,26 @@ a.disabled-send {
 }
 .duke-select-wrap .duke-select-ul{
   position: absolute;
+  max-height: 331px;
+  flex-grow: 1;
+  overflow: auto;
   top: 55px;
   left: 0;
   width: 100%;
   background: #fff;
   display: none;
+  &::-webkit-scrollbar{
+    width: 3px;
+    background-color: #c6c6c6;
+  }
+  &::-webkit-scrollbar-thumb{
+    background-color: $duke-color;
+  }
 }
 .duke-select-wrap .duke-select-ul li{
   padding: 10px 20px;
+  border-spacing: 50px;
+  border-top: solid 1px #F3F3F3;
   cursor: pointer;
   &:hover{
     background: mix($duke-color, lightgray, $weight: 30%);
