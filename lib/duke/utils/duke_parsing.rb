@@ -274,7 +274,7 @@ module Duke
         if string2.nil? 
           return level, saved_hash, rec_list 
         else 
-          item_to_match = clear_string(string2).split(" | ")[0]
+          item_to_match = clear_string(string2).split(" | ").first
           distance = @@fuzzloader.getDistance(string1, item_to_match)
           if distance > level
             return distance, { :key => key, :name => string2, :indexes => indexes , :distance => distance}, append_list
@@ -289,8 +289,8 @@ module Duke
           return (true if a[:distance] >= b[:distance]) || false
         else
           # Finding the lenght of what matched for both elements
-          len_a = content.split()[a[:indexes][0]..a[:indexes][-1]].join(" ").split("").length
-          len_b = content.split()[b[:indexes][0]..b[:indexes][-1]].join(" ").split("").length
+          len_a = content.split(/[\s\']/)[a[:indexes][0]..a[:indexes][-1]].join(" ").length
+          len_b = content.split(/[\s\']/)[b[:indexes][0]..b[:indexes][-1]].join(" ").length
           # Multiply distance with exponential/70 => we favour longer elements even if match was lower
           aDist = a[:distance].to_f * Math.exp((len_a - len_b)/70.0)
           if aDist > b[:distance]
@@ -403,7 +403,7 @@ module Duke
             iterator = find_iterator(key, parsed)
             reco.each do |anItem|
               unless anItem[:distance] == 1
-                anItem_name = content.split()[anItem[:indexes][0]..anItem[:indexes][-1]].join(" ")
+                anItem_name = content.split(/[\s\']/)[anItem[:indexes][0]..anItem[:indexes][-1]].join(" ")
                 ambiguity_check(anItem, anItem_name, level, ambiguities, iterator)
               end
             end

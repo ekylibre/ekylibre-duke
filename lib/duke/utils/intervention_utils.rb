@@ -128,7 +128,7 @@ module Duke
       def add_input_rate(content, recognized_inputs, procedure)
         # Look for an input rate associated with each input and create a :rate entry for each input with value & unit
         recognized_inputs.each_with_index do |input, index|
-          recon_input = content.split()[input[:indexes][0]..input[:indexes][-1]].join(" ")
+          recon_input = content.split(/[\s\']/)[input[:indexes][0]..input[:indexes][-1]].join(" ")
           quantity = content.match(/(\d{1,3}(\.|,)\d{1,2}|\d{1,3}) *((g|gramme|kg|kilo|kilogramme|tonne|t|l|litre|hectolitre|hl)(s)? *(par hectare|\/ *hectare|\/ *ha)?) *(de|d\'|du)? *(la|le)? *#{recon_input}/)
           sec_quantity = content.match(/#{recon_input} *(à|a|avec)? *(\d{1,3}(\.|,)\d{1,2}|\d{1,3}) *((gramme|g|kg|kilo|kilogramme|tonne|t|hectolitre|hl|litre|l)(s)? *(par hectare|\/ *hectare|\/ *ha)?)/)
           # If we find a quantity, we parse it, otherwise we associate a "nil population"

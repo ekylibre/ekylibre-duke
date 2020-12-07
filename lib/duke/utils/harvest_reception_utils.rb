@@ -380,7 +380,7 @@ module Duke
         [targets, crop_groups].each do |crops|
           crops.each do |target|
             # Find the string that matched, ie "Jeunes Plants" when index is [3,4], then look for it in regex
-            recon_target = content.split()[target[:indexes][0]..target[:indexes][-1]].join(" ")
+            recon_target = content.split(/[\s\']/)[target[:indexes][0]..target[:indexes][-1]].join(" ")
             first_area_regex = /(\d{1,2}) *(%|pour( )?cent(s)?) *(de *(la|l\')?|du|des|sur|à|a|au)? #{recon_target}/
             second_area_regex = /(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) *((hect)?are(s)?) *(de *(la|l\')?|du|des|sur|à|a|au)? #{recon_target}/
             first_area = content.match(first_area_regex)
