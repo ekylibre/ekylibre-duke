@@ -3,26 +3,24 @@ module Duke
 
     def handle_parse_sentence(params)
       # First parsing inside harvest receptions
-      Ekylibre::Tenant.switch params['tenant'] do
-        # Extract date and parameters
-        user_input = clear_string(params[:user_input])
-        date = extract_date(user_input)
-        parameters = extract_reception_parameters(user_input)
-        parsed = {:plant => [],
-                  :crop_groups => [],
-                  :destination => [],
-                  :parameters => parameters,
-                  :date => date,
-                  :user_input => params[:user_input],
-                  :retry => 0}
-        # Then extract user_specifics (plant, crop_group & destination), and add plant_area %
-        extract_user_specifics(user_input, parsed, 0.89)
-        extract_plant_area(user_input, parsed[:plant], parsed[:crop_groups])
-        parsed[:ambiguities] = find_ambiguity(parsed, user_input, 0.02)
-        # Find if crucials parameters haven't been given, to ask again to the user
-        what_next, sentence, optional = redirect(parsed)
-        return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
-      end
+      # Extract date and parameters
+      user_input = clear_string(params[:user_input])
+      date = extract_date(user_input)
+      parameters = extract_reception_parameters(user_input)
+      parsed = {:plant => [],
+                :crop_groups => [],
+                :destination => [],
+                :parameters => parameters,
+                :date => date,
+                :user_input => params[:user_input],
+                :retry => 0}
+      # Then extract user_specifics (plant, crop_group & destination), and add plant_area %
+      extract_user_specifics(user_input, parsed, 0.89)
+      extract_plant_area(user_input, parsed[:plant], parsed[:crop_groups])
+      parsed[:ambiguities] = find_ambiguity(parsed, user_input, 0.02)
+      # Find if crucials parameters haven't been given, to ask again to the user
+      what_next, sentence, optional = redirect(parsed)
+      return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
     end
 
     def handle_parse_parameter(params)
@@ -113,25 +111,23 @@ module Duke
     def handle_parse_targets(params)
       # Adding targets 
       parsed = params[:parsed]
-      Ekylibre::Tenant.switch params['tenant'] do
-        user_input = clear_string(params[:user_input])
-        new_parsed = {:plant => [],
-                      :crop_groups => [],
-                      :date => parsed[:date]}
-        extract_user_specifics(user_input, new_parsed, 0.82)
-        extract_plant_area(user_input, new_parsed[:plant], new_parsed[:crop_groups])
-        # If there's no new Target/Crop_group, But a percentage, it's the new area % foreach previous target
-        if new_parsed[:crop_groups].empty? and new_parsed[:plant].empty?
-          pct_regex = user_input.match(/(\d{1,2}) *(%|pour( )?cent(s)?)/)
-          if pct_regex
-            parsed[:crop_groups].to_a.each { |crop_group| crop_group[:area] = pct_regex[1]}
-            parsed[:plant].to_a.each { |target| target[:area] = pct_regex[1]}
-          end
-        else
-          parsed[:plant] = new_parsed[:plant]
-          parsed[:crop_groups] = new_parsed[:crop_groups]
-          parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
+      user_input = clear_string(params[:user_input])
+      new_parsed = {:plant => [],
+                    :crop_groups => [],
+                    :date => parsed[:date]}
+      extract_user_specifics(user_input, new_parsed, 0.82)
+      extract_plant_area(user_input, new_parsed[:plant], new_parsed[:crop_groups])
+      # If there's no new Target/Crop_group, But a percentage, it's the new area % foreach previous target
+      if new_parsed[:crop_groups].empty? and new_parsed[:plant].empty?
+        pct_regex = user_input.match(/(\d{1,2}) *(%|pour( )?cent(s)?)/)
+        if pct_regex
+          parsed[:crop_groups].to_a.each { |crop_group| crop_group[:area] = pct_regex[1]}
+          parsed[:plant].to_a.each { |target| target[:area] = pct_regex[1]}
         end
+      else
+        parsed[:plant] = new_parsed[:plant]
+        parsed[:crop_groups] = new_parsed[:crop_groups]
+        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
       end
       parsed[:user_input] += " - #{params[:user_input]}"
       what_next, sentence, optional = redirect(parsed)
@@ -147,14 +143,12 @@ module Duke
     def handle_parse_destination(params)
       # Adding destination
       parsed = params[:parsed]
-      Ekylibre::Tenant.switch params['tenant'] do
-        user_input = clear_string(params[:user_input]).gsub("que","cuve")
-        new_parsed = {:destination => [],
-                      :date => parsed[:date]}
-        extract_user_specifics(user_input, new_parsed, 0.82)
-        parsed[:destination] = new_parsed[:destination]
-        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
-      end
+      user_input = clear_string(params[:user_input]).gsub("que","cuve")
+      new_parsed = {:destination => [],
+                    :date => parsed[:date]}
+      extract_user_specifics(user_input, new_parsed, 0.82)
+      parsed[:destination] = new_parsed[:destination]
+      parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
       parsed[:user_input] += " - #{params[:user_input]}"
       what_next, sentence, optional = redirect(parsed)
       if what_next == params[:current_asking] and optional == params[:optional]
@@ -244,13 +238,11 @@ module Duke
       # Add a press
       parsed = params[:parsed]
       user_input = clear_string(params[:user_input])
-      Ekylibre::Tenant.switch params['tenant'] do
-        new_parsed = {:press => [],
-                      :date => parsed[:date]}
-        extract_user_specifics(user_input, new_parsed, 0.82)
-        parsed[:press] = new_parsed[:press]
-        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
-      end
+      new_parsed = {:press => [],
+                    :date => parsed[:date]}
+      extract_user_specifics(user_input, new_parsed, 0.82)
+      parsed[:press] = new_parsed[:press]
+      parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
       parsed[:user_input] += " - #{params[:user_input]}"
       what_next, sentence, optional = redirect(parsed)
       if what_next == params[:current_asking] and optional == params[:optional]
@@ -280,61 +272,59 @@ module Duke
       # Finally save the harvest reception
       I18n.locale = :fra
       parsed = params[:parsed]
-      Ekylibre::Tenant.switch params['tenant'] do
-        # Checking recognized storages
-        storages_attributes = {}
-        if parsed[:destination].to_a.length == 1
-          # If there's only one destination, entry quantity is the destination quantity in hectoliters
-          storages_attributes["0"] = {"storage_id" => parsed[:destination][0][:key],"quantity_value" =>
-          unit_to_hectoliter(parsed[:parameters]['quantity']['rate'],parsed[:parameters]['quantity']['unit']),
-          "quantity_unit" => "hectoliter"}
-        else
-          parsed[:destination].to_a.each_with_index do |cuve, index|
-            storages_attributes[index] = {"storage_id"=> cuve[:key], "quantity_value"=>cuve[:quantity], "quantity_unit" => "hectoliter"}
-          end
+      # Checking recognized storages
+      storages_attributes = {}
+      if parsed[:destination].to_a.length == 1
+        # If there's only one destination, entry quantity is the destination quantity in hectoliters
+        storages_attributes["0"] = {"storage_id" => parsed[:destination][0][:key],"quantity_value" =>
+        unit_to_hectoliter(parsed[:parameters]['quantity']['rate'],parsed[:parameters]['quantity']['unit']),
+        "quantity_unit" => "hectoliter"}
+      else
+        parsed[:destination].to_a.each_with_index do |cuve, index|
+          storages_attributes[index] = {"storage_id"=> cuve[:key], "quantity_value"=>cuve[:quantity], "quantity_unit" => "hectoliter"}
         end
-        # Checking recognized targets & crop_groups
-        targets_attributes = {}
-        parsed[:plant].to_a.each_with_index do |target, index|
-          targets_attributes[index] = {"plant_id" => target[:key], "harvest_percentage_received" => target[:area].to_s}
-        end
-        parsed[:crop_groups].to_a.each_with_index do |cropgroup, index|
-          CropGroup.available_crops(cropgroup[:key], "is plant").each_with_index do |crop, index2|
-              targets_attributes["#{index}#{index2}"] = {"plant_id" => crop[:id], "harvest_percentage_received" => cropgroup[:area].to_s}
-          end
-        end
-        # Checking secondary parameters
-        date = params[:parsed][:date]
-        # If unit is "ton" multiply quantity by 1000
-        if parsed[:parameters]['quantity']['unit'] == "t"
-          parsed[:parameters]['quantity']['rate'] *= 1000
-        end
-        # Extract quantity per target in correlation with area harvested
-        # total_area = targets_attributes.values.inject(0) {|sum, tar| sum + Plant.find_by(id: tar["plant_id"])&.net_surface_area&.to_f* tar["harvest_percentage_received"].to_f/100  }
-        # targets_attributes.values.each do |tar|
-        #  tar["quantity"] = {"value" => parsed[:parameters]['quantity']['rate']* Plant.find_by(id: tar["plant_id"])&.net_surface_area&.to_f* tar["harvest_percentage_received"].to_f/(100 * total_area),
-        #                   "unit" => ("kilogram" if ["kg","t"].include?(parsed[:parameters]['quantity']['unit' ])) || "hectoliter" }
-        # end
-
-        analysis = Analysis.create!({
-         nature: "vine_harvesting_analysis",
-         analysed_at: Time.zone.parse(date),
-         sampled_at: Time.zone.parse(date),
-         items_attributes: create_analysis_attributes(parsed)}
-        )
-
-        harvest_dic = {
-          received_at: Time.zone.parse(date),
-          storages_attributes: storages_attributes,
-          quantity_value: parsed[:parameters]['quantity']['rate'].to_s,
-          quantity_unit: ("kilogram" if ["kg","t"].include?(parsed[:parameters]['quantity']['unit' ])) || "hectoliter",
-          analysis: analysis,
-          plants_attributes: targets_attributes}
-
-        incoming_harvest_dic = create_incoming_harvest_attr(harvest_dic, parsed)
-        incomingHarvest = WineIncomingHarvest.create!(incoming_harvest_dic)
-        return {"link" => "\\backend\\wine_incoming_harvests\\"+incomingHarvest['id'].to_s}
       end
+      # Checking recognized targets & crop_groups
+      targets_attributes = {}
+      parsed[:plant].to_a.each_with_index do |target, index|
+        targets_attributes[index] = {"plant_id" => target[:key], "harvest_percentage_received" => target[:area].to_s}
+      end
+      parsed[:crop_groups].to_a.each_with_index do |cropgroup, index|
+        CropGroup.available_crops(cropgroup[:key], "is plant").each_with_index do |crop, index2|
+            targets_attributes["#{index}#{index2}"] = {"plant_id" => crop[:id], "harvest_percentage_received" => cropgroup[:area].to_s}
+        end
+      end
+      # Checking secondary parameters
+      date = params[:parsed][:date]
+      # If unit is "ton" multiply quantity by 1000
+      if parsed[:parameters]['quantity']['unit'] == "t"
+        parsed[:parameters]['quantity']['rate'] *= 1000
+      end
+      # Extract quantity per target in correlation with area harvested
+      # total_area = targets_attributes.values.inject(0) {|sum, tar| sum + Plant.find_by(id: tar["plant_id"])&.net_surface_area&.to_f* tar["harvest_percentage_received"].to_f/100  }
+      # targets_attributes.values.each do |tar|
+      #  tar["quantity"] = {"value" => parsed[:parameters]['quantity']['rate']* Plant.find_by(id: tar["plant_id"])&.net_surface_area&.to_f* tar["harvest_percentage_received"].to_f/(100 * total_area),
+      #                   "unit" => ("kilogram" if ["kg","t"].include?(parsed[:parameters]['quantity']['unit' ])) || "hectoliter" }
+      # end
+
+      analysis = Analysis.create!({
+        nature: "vine_harvesting_analysis",
+        analysed_at: Time.zone.parse(date),
+        sampled_at: Time.zone.parse(date),
+        items_attributes: create_analysis_attributes(parsed)}
+      )
+
+      harvest_dic = {
+        received_at: Time.zone.parse(date),
+        storages_attributes: storages_attributes,
+        quantity_value: parsed[:parameters]['quantity']['rate'].to_s,
+        quantity_unit: ("kilogram" if ["kg","t"].include?(parsed[:parameters]['quantity']['unit' ])) || "hectoliter",
+        analysis: analysis,
+        plants_attributes: targets_attributes}
+
+      incoming_harvest_dic = create_incoming_harvest_attr(harvest_dic, parsed)
+      incomingHarvest = WineIncomingHarvest.create!(incoming_harvest_dic)
+      return {"link" => "\\backend\\wine_incoming_harvests\\"+incomingHarvest['id'].to_s}
     end
   end
 end

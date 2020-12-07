@@ -256,9 +256,9 @@ module Duke
         # Creating words combos with_index
         # "Je suis ton " becomes { [0] => "Je", [0,1] => "Je suis", [0,1,2] => "Je suis ton", [1] => "suis", [1,2] => "suis ton", [2] => "ton"}
         words_combos = {}
-        (0..user_input.split().length).to_a.combination(2).to_a.each do |index_combo|
+        (0..user_input.split(/[\s\']/).length).to_a.combination(2).to_a.each do |index_combo|
           if index_combo[0] + 4 >= index_combo[1]
-            words_combos[(index_combo[0]..index_combo[1]-1).to_a] = user_input.split()[index_combo[0]..index_combo[1]-1].join(" ")
+            words_combos[(index_combo[0]..index_combo[1]-1).to_a] = user_input.split(/[\s\']/)[index_combo[0]..index_combo[1]-1].join(" ")
           end
         end
         return words_combos

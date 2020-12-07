@@ -3,54 +3,52 @@ module Duke
 
     def handle_parse_sentence(params)
       # First parsing inside interventions
-      Ekylibre::Tenant.switch params['tenant'] do
-        procedure = params[:procedure]
-        return if procedure.nil?
-        # Check for | delimiter inside procedure type, if exists, it means it's Ekyviti and we have choice between vegetal & viti procedure
-        unless procedure.scan(/[|]/).empty?
-          # If there's no vegetal farming for the specific teant, we take viti procedure, otherwise we ask the user
-          if Activity.availables.any? {|act| act[:family] != :vine_farming}
-            what_next, sentence, optional = disambiguate_procedure(procedure, "|")
-            return {:parsed => params[:user_input], :redirect => what_next, :sentence => sentence, :optional => optional}
-          else 
-            procedure = procedure.split(/[|]/).first
-          end 
-        end 
-        # Check for ~ delimiter inside procedure type, if exists, it means there's an amibuity in the user asking (ex : weeding -> (steam ?, gaz ?)) and we ask him
-        unless procedure.scan(/[~]/).empty?
-          what_next, sentence, optional = disambiguate_procedure(procedure, "~")
+      procedure = params[:procedure]
+      return if procedure.nil?
+      # Check for | delimiter inside procedure type, if exists, it means it's Ekyviti and we have choice between vegetal & viti procedure
+      unless procedure.scan(/[|]/).empty?
+        # If there's no vegetal farming for the specific teant, we take viti procedure, otherwise we ask the user
+        if Activity.availables.any? {|act| act[:family] != :vine_farming}
+          what_next, sentence, optional = disambiguate_procedure(procedure, "|")
           return {:parsed => params[:user_input], :redirect => what_next, :sentence => sentence, :optional => optional}
+        else 
+          procedure = procedure.split(/[|]/).first
         end 
-        # If the procedure doesn't match anything -> We cancel the capture
-        return if Procedo::Procedure.find(procedure).nil?
-        # Temporary : Duke only supports vine_farming & plant_farming procedures
-        unless (Procedo::Procedure.find(procedure).activity_families & [:vine_farming, :plant_farming]).any?
-          return {:redirect => "non_supported_proc"}
-        end 
-        # getting cleaned user_input
-        user_input = clear_string(params[:user_input].gsub(params[:procedure_word], ""))
-        # Finding when it happened and how long it lasted
-        date, duration = extract_date_and_duration(user_input)
-        parsed = {:inputs => [],
-                  :workers => [],
-                  :equipments => [],
-                  :procedure => procedure,
-                  :duration => duration,
-                  :date => date,
-                  :user_input => params[:user_input],
-                  :retry => 0}
-        # Define the type of targets that needs to be checked, given the procedure type
-        tag_specific_targets(parsed)
-        # Then extract every possible user_specifics elements form the sentence (here : inputs, workers, equipments, targets)
-        extract_user_specifics(user_input, parsed, 0.89)
-        # Look for a specified rate for the input, or attribute nil
-        add_input_rate(user_input, parsed[:inputs], parsed[:procedure])
-        # Loof for ambiguities in what has been parsed
-        parsed[:ambiguities] = find_ambiguity(parsed, user_input, 0.02)
-        # Then redirect to what needs to be added, or to save-state
-        what_next, sentence, optional = redirect(parsed)
-        return  { :parsed => parsed, :sentence => sentence, :redirect => what_next, :optional => optional, :modifiable => modification_candidates(parsed) }
-      end
+      end 
+      # Check for ~ delimiter inside procedure type, if exists, it means there's an amibuity in the user asking (ex : weeding -> (steam ?, gaz ?)) and we ask him
+      unless procedure.scan(/[~]/).empty?
+        what_next, sentence, optional = disambiguate_procedure(procedure, "~")
+        return {:parsed => params[:user_input], :redirect => what_next, :sentence => sentence, :optional => optional}
+      end 
+      # If the procedure doesn't match anything -> We cancel the capture
+      return if Procedo::Procedure.find(procedure).nil?
+      # Temporary : Duke only supports vine_farming & plant_farming procedures
+      unless (Procedo::Procedure.find(procedure).activity_families & [:vine_farming, :plant_farming]).any?
+        return {:redirect => "non_supported_proc"}
+      end 
+      # getting cleaned user_input
+      user_input = clear_string(params[:user_input].gsub(params[:procedure_word], ""))
+      # Finding when it happened and how long it lasted
+      date, duration = extract_date_and_duration(user_input)
+      parsed = {:inputs => [],
+                :workers => [],
+                :equipments => [],
+                :procedure => procedure,
+                :duration => duration,
+                :date => date,
+                :user_input => params[:user_input],
+                :retry => 0}
+      # Define the type of targets that needs to be checked, given the procedure type
+      tag_specific_targets(parsed)
+      # Then extract every possible user_specifics elements form the sentence (here : inputs, workers, equipments, targets)
+      extract_user_specifics(user_input, parsed, 0.89)
+      # Look for a specified rate for the input, or attribute nil
+      add_input_rate(user_input, parsed[:inputs], parsed[:procedure])
+      # Loof for ambiguities in what has been parsed
+      parsed[:ambiguities] = find_ambiguity(parsed, user_input, 0.02)
+      # Then redirect to what needs to be added, or to save-state
+      what_next, sentence, optional = redirect(parsed)
+      return  { :parsed => parsed, :sentence => sentence, :redirect => what_next, :optional => optional, :modifiable => modification_candidates(parsed) }
     end
 
     def handle_modify_specific(params)
@@ -58,35 +56,33 @@ module Duke
       parsed = params[:parsed]
       # which_specific corresponds to the type of element to be modified (inputs, workers..)
       which_specific = params[:specific].to_sym
-      Ekylibre::Tenant.switch params['tenant'] do
-        user_input = clear_string(params[:user_input])
-        new_parsed = {which_specific => [],
-                      :procedure => parsed[:procedure],
-                      :date => parsed[:date],
-                      :user_input => user_input}
-        #Define the type of targets to check if we are modifying targets
-        if which_specific == :targets
-          tag_specific_targets(new_parsed)
-        end 
-        # Extract entites from new user-utterance
-        extract_user_specifics(user_input, new_parsed, 0.82)
-        # In case we are modifying inputs, we need to add input-rates
-        if which_specific == :inputs 
-          add_input_rate(user_input, new_parsed[:inputs], parsed[:procedure])
-        end 
-        # When modifying targets, modifying entries in parsed dic with correct target parameters linked to this procedure
-        if which_specific == :targets
-          parsed[:crop_groups] = new_parsed[:crop_groups]
-          parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] =  new_parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name]
-        else
-          # Otherwise, which_specific previously parsed with new value
-          parsed[which_specific] = new_parsed[which_specific]
-        end 
-        parsed[:user_input] += " -  #{params[:user_input]}"
-        parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
-        what_next, sentence, optional = redirect(parsed)
-        return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
-      end
+      user_input = clear_string(params[:user_input])
+      new_parsed = {which_specific => [],
+                    :procedure => parsed[:procedure],
+                    :date => parsed[:date],
+                    :user_input => user_input}
+      #Define the type of targets to check if we are modifying targets
+      if which_specific == :targets
+        tag_specific_targets(new_parsed)
+      end 
+      # Extract entites from new user-utterance
+      extract_user_specifics(user_input, new_parsed, 0.82)
+      # In case we are modifying inputs, we need to add input-rates
+      if which_specific == :inputs 
+        add_input_rate(user_input, new_parsed[:inputs], parsed[:procedure])
+      end 
+      # When modifying targets, modifying entries in parsed dic with correct target parameters linked to this procedure
+      if which_specific == :targets
+        parsed[:crop_groups] = new_parsed[:crop_groups]
+        parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] =  new_parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name]
+      else
+        # Otherwise, which_specific previously parsed with new value
+        parsed[which_specific] = new_parsed[which_specific]
+      end 
+      parsed[:user_input] += " -  #{params[:user_input]}"
+      parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
+      what_next, sentence, optional = redirect(parsed)
+      return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
     end
 
     def handle_modify_temporality(params)
@@ -191,70 +187,68 @@ module Duke
       # Function that's called when user press "save" button
       # Saves intervention & returns the link to it, to interface-redirect user
       I18n.locale = :fra
-      Ekylibre::Tenant.switch params['tenant'] do
-        # If procedure type can handle tools 
-        tools_attributes = []
-        unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:tool).empty?
-          # For each tool, append it with the correct reference name if exists, or with the first reference-name from proc
-          params[:parsed][:equipments].to_a.each do |tool|
-            reference_name = Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:tool).first.name
-            Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find_all {|param| param.type == :tool}.each do |tool_type|
-              if Equipment.of_expression(tool_type.filter).include? Equipment.find_by_id(tool[:key])
-                reference_name = tool_type.name
-                break 
-              end 
+      # If procedure type can handle tools 
+      tools_attributes = []
+      unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:tool).empty?
+        # For each tool, append it with the correct reference name if exists, or with the first reference-name from proc
+        params[:parsed][:equipments].to_a.each do |tool|
+          reference_name = Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:tool).first.name
+          Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find_all {|param| param.type == :tool}.each do |tool_type|
+            if Equipment.of_expression(tool_type.filter).include? Equipment.find_by_id(tool[:key])
+              reference_name = tool_type.name
+              break 
             end 
-            tools_attributes.push({"reference_name" => reference_name, 'product_id' => tool[:key]})
-          end
-        end
-        # If procedure type can handle workers, save each worker with first reference name from proc
-        doers_attributes = []
-        unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:doer).empty?
-          params[:parsed][:workers].to_a.each do |worker|
-            doers_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:doer).first.name, "product_id" => worker[:key]})
-          end
-        end 
-        # If procedure type can handle inputs
-        inputs_attributes = []
-        unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:input).empty?
-          params[:parsed][:inputs].to_a.each do |input|
-            # For each input, save it with the reference name from it's type of input which was detected in the proc
-            inputs_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.name,
-                                    "product_id" => input[:key],
-                                    "quantity_value" => input[:rate][:value].to_f,
-                                    "quantity_population" => input[:rate][:value].to_f,
-                                    "quantity_handler" => input[:rate][:unit]})
-          end
-        end
-        # If procedure type can handle targets
-        targets_attributes = []
-        unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.nil?
-          # Add each target 
-          params[:parsed][Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name].to_a.each do |target|
-            targets_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name, "product_id" => target[:key]})
           end 
-          # Add each target from specified cropgroups
-          params[:parsed][:crop_groups].to_a.each do |cropgroup|
-            CropGroup.available_crops(cropgroup[:key], "is plant").each do |crop|
-              targets_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name, "product_id" => crop[:id]})
-            end
-          end
-        end 
-        duration = params[:parsed][:duration].to_i
-        date = params[:parsed][:date]
-        # Finally save intervention
-        intervention = Intervention.create!(procedure_name: params[:parsed][:procedure],
-                                            description: 'Duke : ' << params[:parsed][:user_input],
-                                            state: 'done',
-                                            number: '50',
-                                            nature: 'record',
-                                            tools_attributes: tools_attributes,
-                                            doers_attributes: doers_attributes,
-                                            targets_attributes: targets_attributes,
-                                            inputs_attributes: inputs_attributes,
-                                            working_periods_attributes:   [ { "started_at": Time.zone.parse(date) , "stopped_at": Time.zone.parse(date) + duration.minutes}])
-        return {"link" => "\\backend\\interventions\\"+intervention['id'].to_s}
+          tools_attributes.push({"reference_name" => reference_name, 'product_id' => tool[:key]})
+        end
       end
+      # If procedure type can handle workers, save each worker with first reference name from proc
+      doers_attributes = []
+      unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:doer).empty?
+        params[:parsed][:workers].to_a.each do |worker|
+          doers_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:doer).first.name, "product_id" => worker[:key]})
+        end
+      end 
+      # If procedure type can handle inputs
+      inputs_attributes = []
+      unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:input).empty?
+        params[:parsed][:inputs].to_a.each do |input|
+          # For each input, save it with the reference name from it's type of input which was detected in the proc
+          inputs_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.name,
+                                  "product_id" => input[:key],
+                                  "quantity_value" => input[:rate][:value].to_f,
+                                  "quantity_population" => input[:rate][:value].to_f,
+                                  "quantity_handler" => input[:rate][:unit]})
+        end
+      end
+      # If procedure type can handle targets
+      targets_attributes = []
+      unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.nil?
+        # Add each target 
+        params[:parsed][Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name].to_a.each do |target|
+          targets_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name, "product_id" => target[:key]})
+        end 
+        # Add each target from specified cropgroups
+        params[:parsed][:crop_groups].to_a.each do |cropgroup|
+          CropGroup.available_crops(cropgroup[:key], "is plant").each do |crop|
+            targets_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name, "product_id" => crop[:id]})
+          end
+        end
+      end 
+      duration = params[:parsed][:duration].to_i
+      date = params[:parsed][:date]
+      # Finally save intervention
+      intervention = Intervention.create!(procedure_name: params[:parsed][:procedure],
+                                          description: 'Duke : ' << params[:parsed][:user_input],
+                                          state: 'done',
+                                          number: '50',
+                                          nature: 'record',
+                                          tools_attributes: tools_attributes,
+                                          doers_attributes: doers_attributes,
+                                          targets_attributes: targets_attributes,
+                                          inputs_attributes: inputs_attributes,
+                                          working_periods_attributes:   [ { "started_at": Time.zone.parse(date) , "stopped_at": Time.zone.parse(date) + duration.minutes}])
+      return {"link" => "\\backend\\interventions\\"+intervention['id'].to_s}
     end
   end
 end

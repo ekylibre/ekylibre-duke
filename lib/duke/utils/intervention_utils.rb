@@ -39,7 +39,7 @@ module Duke
           sentence += "<br>&#8226 #{I18n.t("duke.interventions.input")} : "
           params[:inputs].each do |input|
             # For each input, if unit is population, display it, otherwise display the procedure-unit linked to the chosen handler
-            sentence += "#{input[:name]} (#{input[:rate][:value].to_f} #{(I18n.t("duke.interventions.units.#{Procedo::Procedure.find(params[:procedure]).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name}") if input[:rate][:unit].to_sym != :population) || Matter.find_by_id(input[:key])&.unit_name}), "
+            sentence += "#{input[:name]} (#{input[:rate][:value].to_f} #{(I18n.t("duke.interventions.units.#{Procedo::Procedure.find(params[:procedure]).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name}") if input[:rate][:unit].to_sym != :population) || Matter.find_by_id(input[:key])&.unit_name} ), "
           end
         end
         sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{params[:date].to_datetime.strftime("%d/%m/%Y - %H:%M")}"
@@ -53,7 +53,7 @@ module Duke
         I18n.locale = :fra
         params[:inputs].each_with_index do |input, index|
           if input[:rate][:value].nil?
-            sentence = I18n.t("duke.interventions.ask.how_much_inputs_#{rand(0...2)}", input: input[:name], unit: (Procedo::Procedure.find(params[:procedure]).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name if input[:rate][:unit].to_sym != :population) || Matter.find_by_id(input[:key])&.unit_name)
+            sentence = I18n.t("duke.interventions.ask.how_much_inputs_#{rand(0...2)}", input: input[:name], unit: Matter.find_by_id(input[:key])&.unit_name)
             return sentence, index
           end
         end
