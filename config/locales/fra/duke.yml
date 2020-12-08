@@ -61,6 +61,7 @@ fra:
       date: "Date"
       duration: "Durée"
       mins: "mins"
+      hour: "h"
       cultivation: "Culture(s)"
       plant: "Culture(s)"
       land_parcel: "Parcelle(s)"

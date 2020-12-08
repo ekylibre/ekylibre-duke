@@ -1,5 +1,6 @@
 module Duke
   class DukeWebchatController < ApplicationController
+    skip_before_action :verify_authenticity_token
     before_filter :create_assistant
     include IBMWatson
 

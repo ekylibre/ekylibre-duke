@@ -43,7 +43,7 @@ module Duke
           end
         end
         sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{params[:date].to_datetime.strftime("%d/%m/%Y - %H:%M")}"
-        sentence += "<br>&#8226 #{I18n.t("duke.interventions.duration")} : #{params[:duration]} #{I18n.t("duke.interventions.mins")}"
+        sentence += "<br>&#8226 #{I18n.t("duke.interventions.duration")} : #{speak_duration(params[:duration])}"
         return sentence.gsub(/, <br>&#8226/, "<br>&#8226")
       end
 
@@ -58,6 +58,19 @@ module Duke
           end
         end
       end
+
+      def speak_duration(num_in_mins)
+        I18n.locale = :fra
+        if num_in_mins < 60 
+          return "#{num_in_mins} #{I18n.t("duke.interventions.mins")}"
+        else 
+          if num_in_mins.remainder(60) != 0
+            return "#{num_in_mins/60}#{I18n.t("duke.interventions.hour")}#{num_in_mins.remainder(60)}"
+          else 
+            return "#{num_in_mins/60}#{I18n.t("duke.interventions.hour")}"
+          end 
+        end 
+      end 
 
       def disambiguate_procedure(procs, delimiter)
         # Used to redirect the user to a choice between multiple procs. Each proc is defined in the optional array
