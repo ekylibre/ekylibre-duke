@@ -1,7 +1,6 @@
 module Duke
   class Issues < Duke::Utils::DukeParsing
     def handle_equipment_issues(params)
-      I18n.locale = :fra
       user_input = clear_string(params[:user_input])
       parsed = {:equipments => [],
                 :date => Time.now}

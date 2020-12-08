@@ -5,7 +5,6 @@ module Duke
       def speak_intervention(params)
         # Create validation sentence for InterventionSkill
         # Voulez vous valider cette intervention ? : -Procedure -CropGroup - Targets -Tool -Doer -Input -Date -Duration
-        I18n.locale = :fra
         sentence = I18n.t("duke.interventions.ask.save_intervention_#{rand(0...3)}")
         sentence += "<br>&#8226 #{I18n.t("duke.interventions.intervention")} : #{Procedo::Procedure.find(params[:procedure]).human_name}"
         unless params[:crop_groups].to_a.empty?
@@ -50,7 +49,6 @@ module Duke
       def speak_input_rate(params)
         # Creates "Combien de kg de bouillie bordelaise ont été utilisés ? "
         # Return the sentence, and the index of the destination inside params[:destination] to transfer as an optional value to IBM 
-        I18n.locale = :fra
         params[:inputs].each_with_index do |input, index|
           if input[:rate][:value].nil?
             sentence = I18n.t("duke.interventions.ask.how_much_inputs_#{rand(0...2)}", input: input[:name], unit: Matter.find_by_id(input[:key])&.unit_name)
@@ -60,7 +58,6 @@ module Duke
       end
 
       def speak_duration(num_in_mins)
-        I18n.locale = :fra
         if num_in_mins < 60 
           return "#{num_in_mins} #{I18n.t("duke.interventions.mins")}"
         else 
@@ -74,7 +71,6 @@ module Duke
 
       def disambiguate_procedure(procs, delimiter)
         # Used to redirect the user to a choice between multiple procs. Each proc is defined in the optional array
-        I18n.locale = :fra
         optional = []
         # If delimiter is from Ekyviti, ie -> Choice between viti & vegetal proc
         if delimiter == "|"
@@ -105,7 +101,6 @@ module Duke
 
       def modification_candidates(parsed)
         # Returns to IBM an array with all the entities the user can modify given the procedure, to create buttons
-        I18n.locale = :fra
         candidates = []
         candidates.push(optJsonify(I18n.t("duke.interventions.temporality")))
         unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.nil?

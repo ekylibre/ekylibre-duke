@@ -2,7 +2,7 @@ module Duke
   module Utils
     class DukeParsing
       @@fuzzloader = FuzzyStringMatch::JaroWinkler.create( :pure )
-      @@user_specific_types = [:entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :equipments, :workers, :inputs, :press] 
+      @@user_specific_types = [:financial_year, :entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :equipments, :workers, :inputs, :press] 
       @@month_hash = {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9, "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12 }
 
       def extract_duration(content)
@@ -336,6 +336,8 @@ module Duke
           rescue 
             iterator = [] 
           end 
+        elsif item_type == :financial_year 
+          iterator = FinancialYear.all
         elsif item_type == :press
           iterator = Matter.availables(at: parsed[:date].to_datetime).can('press(grape)')
         elsif item_type == :workers
@@ -353,7 +355,7 @@ module Duke
         elsif [:land_parcel, :cultivation].include? (item_type)
           iterator = LandParcel.availables(at: parsed[:date].to_datetime)
         end
-        return iterator
+        iterator
       end 
 
       def find_name_attribute(item_type)
@@ -362,10 +364,12 @@ module Duke
           attribute = :cultivation_variety_name
         elsif item_type == :entities
           attribute = :full_name
+        elsif item_type == :financial_year
+          attribute = :code 
         elsif [:workers, :crop_groups, :inputs, :press, :destination, :cultivablezones, :equipments, :plant, :land_parcel, :cultivation].include? (item_type)
           attribute = :name
         end
-        return attribute
+        attribute
       end 
 
       # Creates a Json for an option
@@ -413,7 +417,6 @@ module Duke
       end
 
       def ambiguity_check(item_hash, what_matched, level, ambiguities, iterator, min_level=0)
-        I18n.locale = :fra
         # Method to check ambiguity about a specific item
         ambig = []
         # For each element of the iterator (ex : for crop_groups => CropGroup.all ), if distances is close (+/-level) to item that matched it's part of the ambiguity possibilities
@@ -429,6 +432,7 @@ module Duke
           optDescription = {level: level, id: item_hash[:key], match: what_matched}
           optSentence = I18n.t("duke.ambiguities.ask", item: what_matched)
           optJson = dynamic_options(optSentence, ambig, optDescription)
+          puts "voici le optJson : #{optJson}"
           ambiguities.push(optJson)
         end
         return ambiguities

@@ -270,7 +270,6 @@ module Duke
 
     def handle_save_harvest_reception(params)
       # Finally save the harvest reception
-      I18n.locale = :fra
       parsed = params[:parsed]
       # Checking recognized storages
       storages_attributes = {}

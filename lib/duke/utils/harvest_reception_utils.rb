@@ -4,7 +4,6 @@ module Duke
 
       def speak_harvest_reception(params)
         # Create validation sentence for HarvestReceptionSkill
-        I18n.locale = :fra
         sentence = I18n.t("duke.harvest_reception.ask.save_harvest_reception_#{rand(0...2)}")
         unless params[:crop_groups].to_a.empty?
           sentence+= "<br>&#8226 #{I18n.t("duke.interventions.group")} : "
@@ -86,7 +85,6 @@ module Duke
       def speak_destination_hl(params)
         # Creates "How much hectoliters in Cuve 1 ?"
         # Return the sentence, and the index of the destination inside params[:destination] to transfer as an optional value to IBM
-        I18n.locale = :fra
         sentence = I18n.t("duke.harvest_reception.ask.how_much_to_#{rand(0...2)}")
         params[:destination].each_with_index do |cuve, index|
           unless cuve.key?("quantity")
@@ -99,7 +97,6 @@ module Duke
       def speak_pressing_hl(params)
         # Creates "How much hectoliters in Press 1 ?"
         # Return the sentence, and the index of the destination inside params[:destination] to transfer as an optional value to IBM
-        I18n.locale = :fra
         sentence = I18n.t("duke.harvest_reception.ask.how_much_to_#{rand(0...2)}")
         params[:press].each_with_index do |press, index|
           unless press.key?("quantity")
@@ -126,7 +123,6 @@ module Duke
 
       def create_incoming_harvest_attr(dic, parsed)
         # Creates additional incoming harveset attributes
-        I18n.locale = :fra
         unless parsed[:parameters]['pressing'].nil?
           dic[:pressing_schedule] = parsed[:parameters]['pressing']['program']
           unless parsed[:parameters]['pressing']['hour'].nil?

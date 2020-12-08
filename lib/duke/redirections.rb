@@ -1,7 +1,6 @@
 module Duke
   class Redirections < Duke::Utils::DukeParsing
     def handle_to_activity(params)
-      I18n.locale = :fra
       user_input = clear_string(params[:user_input])
       parsed = {:activity_variety => []}
       extract_user_specifics(user_input, parsed, 0.82)
@@ -21,7 +20,6 @@ module Duke
     end 
 
     def handle_to_tool(params)
-      I18n.locale = :fra
       user_input = clear_string(params[:user_input])
       parsed = {:equipments => [],
                 :date => Time.now}
@@ -37,7 +35,6 @@ module Duke
     end 
 
     def handle_to_bill(params)
-      I18n.locale = :fra
       user_input = clear_string(params[:user_input])
       parsed = {:entities => [],
                 :date => Time.now}

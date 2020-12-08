@@ -186,7 +186,6 @@ module Duke
     def handle_save_intervention(params)
       # Function that's called when user press "save" button
       # Saves intervention & returns the link to it, to interface-redirect user
-      I18n.locale = :fra
       # If procedure type can handle tools 
       tools_attributes = []
       unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters_of_type(:tool).empty?

@@ -12,9 +12,12 @@ fra:
     exports: 
       no_tool_found: "Je n'ai pas compris l'équipement pour lequel vous souhaitez avoir la fiche de côuts."
       no_var_found: "Je n'ai pas compris la variété du cahier de culture à exporter. Veuillez réessayer."
-      tool_export_started: "J'ai lancé l'export pour l'outil %{tool}, vous serez notifiés lorsque celui-ci sera terminé."
-      activity_export_started: "J'ai lancé l'export pour l'activité %{activity}, vous serez notifiés lorsque celui-ci sera terminé."
+      tool_export_started: "J'ai lancé l'export pour l'outil %{tool}, vous serez notifié lorsque celui-ci sera terminé."
+      activity_export_started: "J'ai lancé l'export pour l'activité %{activity}, vous serez notifié lorsque celui-ci sera terminé."
       export_over: "&#128221 L'export est terminé, vous pouvez le consulter <a href='#base-url/backend/documents/%{id}'>ici</a>"
+      balance_sheet_started: "J'ai lancé l'export du bilan comptable pour l'exercice %{year}, vous serez notifié lorsque celui-ci sera terminé"
+      income_statement_started: "J'ai lancé l'export du compte de résultats pour l'exercice %{year}, vous serez notifié lorsque celui-ci sera terminé"
+      which_financial_year: "Pour quel exercice comptable souhaitez-vous lancer l'export ?"
     redirections: 
       no_activity: "Je n'ai pas compris le type d'activité à laquelle vous souhaitez accéder. Réessayez"
       activity: "Je vous redirige vers votre activité de %{variety}"

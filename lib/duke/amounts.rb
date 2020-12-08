@@ -1,14 +1,12 @@
 module Duke
   class Amounts < Duke::Utils::DukeParsing
     def handle_unpaid_purchases(params)
-      I18n.locale = :fra
       c = Backend::Cells::TradeCountsCellsController.new
       sentence = I18n.t("duke.amounts.unpaid_purchases", amount: c.unpaid_purchases_amount.round_l(currency: Preference[:currency]))
       return {:sentence => sentence}
     end 
 
     def handle_insurance(params)
-      I18n.locale = :fra
       interval_start, interval_end = extract_time_interval(params[:user_input])
       n = Nomen::Account.find(:insurance_expenses)
       amount = 0
@@ -20,21 +18,18 @@ module Duke
     end 
 
     def handle_active_equipments(params)
-      I18n.locale = :fra
       amount = Equipment.all.map { |eq| eq.status }.count(:go)
       sentence = I18n.t("duke.amounts.active_eq", amount: amount)
       return {:sentence => sentence}
     end 
 
     def handle_stop_equipments(params)
-      I18n.locale = :fra
       amount = Equipment.all.map { |eq| eq.status }.count(:stop)
       sentence = I18n.t("duke.amounts.stopped_eq", amount: amount)
       return {:sentence => sentence}
     end 
 
     def handle_problem_equipments(params)
-      I18n.locale = :fra
       amount = Equipment.all.map { |eq| eq.status }.count(:caution)
       list = "&#8226 "
       all_caution = Equipment.all.select {|eq| eq.status == :caution}
@@ -50,7 +45,6 @@ module Duke
     end 
 
     def handle_average_oldness(params)
-      I18n.locale = :fra
       lifetimes = Equipment.all.map(&:current_life)
       amount = lifetimes.inject(0) {|sum, x| sum + x.to_f/365}/lifetimes.count
       sentence = I18n.t("duke.amounts.average_oldness", amount: amount.to_i)
