@@ -20,7 +20,10 @@
     vars.azure_region = $(this).data('azure-region')
     # If there's alreay some msg, we show the btn-chat otherwise we create a session, send msg and show btn on first message
     if sessionStorage.getItem('duke-chat')
-      $('.btn-chat').show()
+      if !vars.duke_subscription
+        cable_subscribe()
+      else 
+        $('.btn-chat').show()
     else 
       create_session()
     # Allowing TextArea autosize
@@ -71,16 +74,23 @@
       success: (data, status, xhr) ->
         sessionStorage.setItem('duke_id', data.session_id)
         sessionStorage.setItem('assistant_id', data.assistant_id)
-        vars.cable = Cable.createConsumer(vars.base_url.replace("http","ws")+vars.ws_port)
-        vars.duke_subscription = vars.cable.subscriptions.create('DukeChannel',
-          received: (data) ->
-            if data.room_id == sessionStorage.getItem('duke_id')
-              integrate_received(data.message)
-              $('.btn-chat').show()
-          connected: -> 
-            send_msg("")
-        )
+        cable_subscribe()
         return
+    return
+
+  cable_subscribe = -> 
+    vars.cable = Cable.createConsumer(vars.base_url.replace("http","ws")+vars.ws_port)
+    vars.duke_subscription = vars.cable.subscriptions.create('DukeChannel',
+      received: (data) ->
+        if data.room_id == sessionStorage.getItem('duke_id')
+          integrate_received(data.message)
+          $('.btn-chat').show()
+      connected: -> 
+        if !sessionStorage.getItem('duke-chat')
+          send_msg("")
+        else 
+          $('.btn-chat').show()
+    )
     return
 
   # Send msg to backends methods that communicate with IBM, if intent is specified, msg goes straight to this functionnality (intent disambiguation)
@@ -110,7 +120,7 @@
       $.each data, (index, value) ->
         if value.response_type == "text"
           if value.text.match(vars.redirection)
-            location.replace vars.base_url + value.text.match(vars.redirection)[1]
+            location.href = vars.base_url + value.text.match(vars.redirection)[1]
             value.text = value.text.replace(value.text.match(vars.redirection)[0], "")
           if value.text.indexOf('#base-url') >= 0
             value.text = value.text.replace('#base-url', vars.base_url)
