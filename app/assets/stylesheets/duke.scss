@@ -379,3 +379,93 @@ a.disabled-send {
   top: 18px;
   transform: rotate(-225deg);
 }
+.duke-checkbox-validation{
+  display: none;
+}
+.duke-centered{ 
+  display: flex;
+  justify-content: center;
+}
+.control {
+  box-sizing: content-box;
+  display:inline-block;
+  position: relative;
+  margin-bottom: 10px;
+  padding-left: 30px;
+  padding-right: 15px;
+  cursor: pointer;
+  font-size: 12px;
+  width: fit-content;
+}
+.control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.control__indicator {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  background: #F3F3F3;
+  border-style: solid;
+  border-width: 1px;
+  border-color: lightgray;
+}
+.control input:checked ~ .control__indicator {
+  transition: 1s all;
+  background: mix($duke-color, lightgray, $weight: 70%);
+  border-color: mix($duke-color, lightgray, $weight: 70%);
+}
+.control:hover input:not([disabled]):checked ~ .control__indicator,
+.control input:checked:focus ~ .control__indicator {
+  background: mix($duke-color, lightgray, $weight: 70%);
+}
+.control__indicator:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.control input:checked ~ .control__indicator:after {
+  display: block;
+}
+.control--checkbox .control__indicator:after {
+  left: 7px;
+  top: 2px;
+  width: 3px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.control.hover-fill {
+  cursor: default;
+  pointer-events: none;
+  background-color: #F3F3F3;
+  transition: none;
+  & .control__indicator.duke-checked{ 
+    left: 7px;
+    top: 2px;
+    width: 3px;
+    height: 8px;
+    border: solid $duke-color;
+    color: $duke-color;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  & .control__indicator{
+    background: #F3F3F3;
+    border-color: #F3F3F3;
+  }
+}
+.control__indicator.duke-checked{
+  left: 7px;
+  top: 2px;
+  width: 3px;
+  height: 8px;
+  border: solid $duke-color;
+  color: $duke-color;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}

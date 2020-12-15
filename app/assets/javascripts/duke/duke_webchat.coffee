@@ -131,7 +131,10 @@
           $.each value.options, (index, value) ->
             options.push(value)
             return
-          output_options(options)
+          multiple = false
+          if value.title.match(/validez/)
+            multiple = true
+          output_options(options, multiple=multiple)
         else if value.response_type == "suggestion"
           output_received_txt(value.title)
           options = []
@@ -151,11 +154,22 @@
     return
 
   # If response type comports options, or suggestion -> Output it as clickable buttons
-  output_options = (options, type="options") ->
+  output_options = (options, multiple=false) ->
     # We first create the container
-    $('.msg_container_base').append('<div class="msg_container options"/>')
+    $('.msg_container_base').append('<div class="msg_container options general"></div>')
     # Then we add every button with it's label, and it's value, and the potential intent to redirect the user
-    if options.length > 6
+    if multiple 
+      $.each options, (index, op) -> 
+        $()
+        $('.msg_container.options').last().append('<label data-value= \''+op.value.input.text.replace("'",'"')+'\'class="control control--checkbox">'+op.label+'
+                                                    <input type="checkbox"/>
+                                                    <div class="control__indicator"></div>
+                                                  </label>')
+      $('.msg_container.options').last().append('<div class="msg_container options duke-centered">
+                                                    <button type="button" class="gb-bordered hover-fill duke-option duke-checkbox-validation duke-cancelation ">Annuler</button>
+                                                    <button type="button" class="gb-bordered hover-fill duke-option duke-checkbox-validation duke-validation ">Valider</button>
+                                                  </div>')
+    else if options.length > 6
       $('.msg_container.options').last().append('<div class="duke-select-wrap"><ul class="duke-default-option"><li><div class="option">
                                                   <p>Choisissez une option</p></div></li></ul><ul class="duke-select-ul"></ul>
                                                  </div>')
@@ -192,6 +206,7 @@
   # Disables potential buttons above & output our message in a SentMessageContainer
   output_sent = (msg = $("#duke-input").val().replace(/\n/g, "")) ->
     # Disable buttons if previous message had options selections enabled
+    $('.duke-centered').last().remove()
     if $('.msg_container_base').children().last().hasClass('options') 
       $.each $('.msg_container_base').children().last().children(), (index, option) ->
         $(option).prop("disabled",true);
@@ -254,6 +269,29 @@
    $(document).on 'click', '.duke-default-option',  ->
     $(this).parent().toggleClass 'active'
     $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
+    return
+
+   $(document).on 'click', '.control--checkbox', (evt) ->
+    evt.stopPropagation();
+    evt.preventDefault();
+    $(this).children().last().toggleClass('duke-checked')
+    $('.duke-checkbox-validation').show()
+    $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight)
+    return
+  
+   $(document).on 'click', '.duke-cancelation',  ->
+    $('.duke-centered').last().remove()
+    output_sent($(this).html())
+    send_msg($(this).html())
+    return
+
+   $(document).on 'click', '.duke-validation',  ->
+    str = ""
+    $.each $('.msg_container.options.general').last().children(), (index, box) ->
+      if $(this).children().last().hasClass('duke-checked')
+        str += $(this).data('value')+"|"
+    output_sent($(this).html())
+    send_msg(str)
     return
 
   $(document).on 'click', '.duke-select-ul li',  ->

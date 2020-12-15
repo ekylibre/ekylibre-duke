@@ -41,6 +41,7 @@ fra:
         how_much_inputs_1: "Combien de %{unit} de %{input} avez-vous utilisé ?"
         which_procedure: "Quelle procédure souhaitez vous saisir ? "
         what_modify: "Quels éléments souhaitez-vous modifier ? "
+        what_targets: "Selectionnez les cibles de cette intervention, puis validez"
       units: 
         gram: "g"
         hectoliter: "hL"

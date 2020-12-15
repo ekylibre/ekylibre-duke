@@ -46,16 +46,25 @@ module Duke
         return sentence.gsub(/, <br>&#8226/, "<br>&#8226")
       end
 
-      def speak_input_rate(params)
+      def speak_input_rate(parsed)
         # Creates "Combien de kg de bouillie bordelaise ont été utilisés ? "
-        # Return the sentence, and the index of the destination inside params[:destination] to transfer as an optional value to IBM 
-        params[:inputs].each_with_index do |input, index|
+        parsed[:inputs].each_with_index do |input, index|
           if input[:rate][:value].nil?
             sentence = I18n.t("duke.interventions.ask.how_much_inputs_#{rand(0...2)}", input: input[:name], unit: Matter.find_by_id(input[:key])&.unit_name)
             return sentence, index
           end
         end
       end
+
+      def speak_targets(parsed) 
+        candidates = []
+        parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].each do |target|
+          if target.key? :potential 
+            candidates.push(optJsonify(target[:name], target[:key].to_s))
+          end 
+        end 
+        return dynamic_options(I18n.t("duke.interventions.ask.what_targets"),candidates)
+      end 
 
       def speak_duration(num_in_mins)
         if num_in_mins < 60 
@@ -93,10 +102,33 @@ module Duke
 
       def tag_specific_targets(parsed)
         # Creates entry for each proc-specific target type with empty array inside what's about to be parsed 
-        unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.nil?
+        if (Procedo::Procedure.find(parsed[:procedure]).activity_families & [:vine_farming]).any?
           parsed[:crop_groups] = []
           parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] = []
+        else
+          parsed[:crop_groups] = []
+          parsed[:cultivablezones] = []
+          parsed[:activity_variety] = []
         end 
+      end 
+
+      def targets_from_cz(parsed)
+        unless parsed[:cultivablezones].to_a.empty? and parsed[:activity_variety].to_a.empty? 
+          potentials = []
+          tarIterator = ActivityProduction.all
+          unless parsed[:activity_variety].to_a.empty? 
+            tarIterator = ActivityProduction.of_activity(Activity.select{|act| parsed[:activity_variety].map{ |var| var[:name]}.include? act.cultivation_variety_name})
+          end 
+          unless parsed[:cultivablezones].to_a.empty? 
+            tarIterator = tarIterator.select{|act| parsed[:cultivablezones].map{ |cz| cz[:key]}.include? act.cultivable_zone_id}
+          end 
+          tarIterator.each {|act| potentials.push(act.products.of_expression(Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.filter).first)}
+          parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] = []
+          potentials.each do |tar|
+            parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].push({key: tar.id, name: tar.name, potential: true})
+          end 
+        end 
+        return potentials
       end 
 
       def modification_candidates(parsed)
@@ -104,7 +136,7 @@ module Duke
         candidates = []
         candidates.push(optJsonify(I18n.t("duke.interventions.temporality")))
         unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.nil?
-          candidates.push(optJsonify(I18n.t("duke.interventions.cultivation")))
+          candidates.push(optJsonify(I18n.t("duke.interventions.plant")))
         end 
         unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :tool}.nil?
           candidates.push(optJsonify(I18n.t("duke.interventions.tool")))
@@ -205,7 +237,10 @@ module Duke
           # If there's an ambiguity, we solve it
           return "ask_ambiguity", nil, parsed[:ambiguities][0]
         end
-        parsed[:inputs].to_a.each do |input| 
+        unless parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].nil?
+          if parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].map{|tar| tar.key? :potential}.count(true) > 1
+            return "ask_which_targets", nil , speak_targets(parsed)
+          end 
         end 
         if parsed[:inputs].to_a.any? {|input| input[:rate][:value].nil?}
           # If there's an input without rate, we ask the user its rate
@@ -215,6 +250,6 @@ module Duke
         # Otherwise we can potentially save the intervention
         return "save", speak_intervention(parsed), nil
       end
-    end
+    end 
   end
 end

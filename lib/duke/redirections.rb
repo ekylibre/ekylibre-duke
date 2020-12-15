@@ -1,6 +1,8 @@
 module Duke
   class Redirections < Duke::Utils::DukeParsing
     def handle_to_activity(params)
+      # Not done correctly since DukeParsing Update on activities for interventions 
+      # TODO : Make sure activity is in current campaign before redirecting, allow user to create activity if not in current year
       user_input = clear_string(params[:user_input])
       parsed = {:activity_variety => []}
       extract_user_specifics(user_input, parsed, 0.82)

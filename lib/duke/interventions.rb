@@ -46,6 +46,7 @@ module Duke
       add_input_rate(user_input, parsed[:inputs], parsed[:procedure])
       # Loof for ambiguities in what has been parsed
       parsed[:ambiguities] = find_ambiguity(parsed, user_input, 0.02)
+      targets_from_cz(parsed)
       # Then redirect to what needs to be added, or to save-state
       what_next, sentence, optional = redirect(parsed)
       return  { :parsed => parsed, :sentence => sentence, :redirect => what_next, :optional => optional, :modifiable => modification_candidates(parsed) }
@@ -73,8 +74,15 @@ module Duke
       end 
       # When modifying targets, modifying entries in parsed dic with correct target parameters linked to this procedure
       if which_specific == :targets
-        parsed[:crop_groups] = new_parsed[:crop_groups]
-        parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] =  new_parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name]
+        if Procedo::Procedure.find(parsed[:procedure]).activity_families == :vine_farming
+          parsed[:crop_groups] = new_parsed[:crop_groups]
+          parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] =  new_parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name]
+        else 
+          parsed[:crop_groups] = new_parsed[:crop_groups]
+          parsed[:cultivablezones] = new_parsed[:cultivablezones]
+          parsed[:activity_variety] = new_parsed[:activity_variety]
+          targets_from_cz(parsed)
+        end 
       else
         # Otherwise, which_specific previously parsed with new value
         parsed[which_specific] = new_parsed[which_specific]
@@ -116,6 +124,31 @@ module Duke
       what_next, sentence, optional = redirect(parsed)
       return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
     end
+
+    def handle_parse_which_target(params) 
+      parsed = params[:parsed]
+      if params[:user_input].match(/^(\d{1,5}[|])*$/)
+        every_choices = params[:user_input].split(/[|]/).map{|num| num.to_i}
+        new_targets = []
+        parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].each do |target|
+          if every_choices.include? target[:key]
+            new_targets.push(target.except!(:potential))
+          elsif !target.key? :potential
+            new_targets.push(target)
+          end 
+        end 
+        parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] = new_targets
+      else 
+        new_targets = []
+        parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].each do |target|
+          unless target.key? :potential
+            new_targets.push(target)
+          end 
+        end 
+      end  
+      what_next, sentence, optional = redirect(parsed)
+      return  { :parsed => parsed, :redirect => what_next, :sentence => sentence, :optional => optional}
+    end 
 
     def handle_parse_disambiguation(params)
       # Handle disambiguation when users returns a choice.

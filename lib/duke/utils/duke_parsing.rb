@@ -274,7 +274,7 @@ module Duke
         if string2.nil? 
           return level, saved_hash, rec_list 
         else 
-          item_to_match = clear_string(string2).split(" | ").first
+          item_to_match = clear_string(string2)
           distance = @@fuzzloader.getDistance(string1, item_to_match)
           if distance > level
             return distance, { :key => key, :name => string2, :indexes => indexes , :distance => distance}, append_list
@@ -315,14 +315,7 @@ module Duke
       def find_iterator(item_type, parsed)
         # Returns correct array to iterate over, given what item_type we're looking for
         if item_type == :activity_variety
-          # Get unique activities by cultivation_variety : TODO : do it cleanly
-          activities = Activity.of_campaign(Campaign.current)
-          Activity.all.each do |act|
-            unless activities.any? {|curr_act| curr_act.cultivation_variety_name == act.cultivation_variety_name}
-              activities.push(act)
-            end 
-          end 
-          iterator = activities
+          iterator = Activity.select('distinct on (cultivation_variety) *')
         elsif item_type == :inputs
           # For Inputs, check if procedure comports inputs
           if Procedo::Procedure.find(parsed[:procedure]).parameters_of_type(:input).empty?
@@ -352,8 +345,10 @@ module Duke
           iterator = Equipment.availables(at: parsed[:date].to_datetime)
         elsif item_type == :plant
           iterator = Plant.availables(at: parsed[:date].to_datetime)
-        elsif [:land_parcel, :cultivation].include? (item_type)
+        elsif item_type == :land_parcel
           iterator = LandParcel.availables(at: parsed[:date].to_datetime)
+        elsif item_type == :cultivation
+          iterator = Product.availables(at: parsed[:date].to_datetime).of_expression("is land_parcel or is plant")
         end
         iterator
       end 
@@ -432,7 +427,6 @@ module Duke
           optDescription = {level: level, id: item_hash[:key], match: what_matched}
           optSentence = I18n.t("duke.ambiguities.ask", item: what_matched)
           optJson = dynamic_options(optSentence, ambig, optDescription)
-          puts "voici le optJson : #{optJson}"
           ambiguities.push(optJson)
         end
         return ambiguities
@@ -444,7 +438,7 @@ module Duke
         useless_dic.each do |rgx|
           fstr = fstr.gsub(rgx, "")
         end
-        return fstr.gsub(/\s+/, " ").downcase
+        return fstr.gsub(/\s+/, " ").downcase.split(" | ").first
       end
 
       def key_duplicate?(list, saved_hash)
