@@ -74,7 +74,7 @@ module Duke
       end 
       # When modifying targets, modifying entries in parsed dic with correct target parameters linked to this procedure
       if which_specific == :targets
-        if Procedo::Procedure.find(parsed[:procedure]).activity_families == :vine_farming
+        if Procedo::Procedure.find(parsed[:procedure]).activity_families.include? :vine_farming
           parsed[:crop_groups] = new_parsed[:crop_groups]
           parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] =  new_parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name]
         else 

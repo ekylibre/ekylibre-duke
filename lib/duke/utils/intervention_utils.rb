@@ -63,7 +63,7 @@ module Duke
             candidates.push(optJsonify(target[:name], target[:key].to_s))
           end 
         end 
-        return dynamic_options(I18n.t("duke.interventions.ask.what_targets"),candidates)
+        return dynamic_options(I18n.t("duke.interventions.ask.what_targets", tar: I18n.t("duke.interventions.#{Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name}").downcase),candidates)
       end 
 
       def speak_duration(num_in_mins)
