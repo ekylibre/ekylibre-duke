@@ -258,12 +258,12 @@ module Duke
       unless Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.nil?
         # Add each target 
         params[:parsed][Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name].to_a.each do |target|
-          targets_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name, "product_id" => target[:key]})
+          targets_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name, "product_id" => target[:key], "working_zone" => Product.find_by_id(target[:key]).shape})
         end 
         # Add each target from specified cropgroups
         params[:parsed][:crop_groups].to_a.each do |cropgroup|
           CropGroup.available_crops(cropgroup[:key], "is plant").each do |crop|
-            targets_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name, "product_id" => crop[:id]})
+            targets_attributes.push({"reference_name" => Procedo::Procedure.find(params[:parsed][:procedure]).parameters.find {|param| param.type == :target}.name, "product_id" => crop[:id], "working_zone" => Product.find_by_id(crop[:id]).shape})
           end
         end
       end 
@@ -271,7 +271,7 @@ module Duke
       date = params[:parsed][:date]
       # Finally save intervention
       intervention = Intervention.create!(procedure_name: params[:parsed][:procedure],
-                                          description: 'Duke : ' << params[:parsed][:user_input],
+                                          description: "Duke : #{params[:parsed][:user_input]}",
                                           state: 'done',
                                           number: '50',
                                           nature: 'record',
