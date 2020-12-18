@@ -125,7 +125,10 @@ module Duke
           tarIterator.each {|act| potentials.push(act.products.of_expression(Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.filter).first)}
           parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] = []
           potentials.each do |tar|
-            parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].push({key: tar.id, name: tar.name, potential: true})
+            # TODO : Find out Why there are some nil targets on Innovation ? # May be broken
+            unless tar.nil? 
+              parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].push({key: tar.id, name: tar.name, potential: true})
+            end 
           end 
         end 
         return potentials

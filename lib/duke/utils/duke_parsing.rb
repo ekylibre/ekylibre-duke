@@ -325,7 +325,7 @@ module Duke
           end
         elsif item_type == :crop_groups
           begin 
-            iterator = CropGroup.all.where("target = 'plant'")
+            iterator = CropGroup.all
           rescue 
             iterator = [] 
           end 
