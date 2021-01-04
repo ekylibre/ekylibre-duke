@@ -1,45 +1,28 @@
 module Duke
   class DukeWebchatController < ApplicationController
     skip_before_action :verify_authenticity_token
-    before_filter :create_assistant
-    include IBMWatson
 
-    def create_assistant 
-      @authenticator = Authenticators::IamAuthenticator.new(
-        apikey: WATSON_APIKEY
-      )
-      @assistant = AssistantV2.new(
-        version: WATSON_VERSION,
-        authenticator: @authenticator
-      )
-      @assistant.service_url = WATSON_URL
+    def create_assistant
+      Assistant.new(api_key: WATSON_APIKEY, version: WATSON_VERSION, url: WATSON_URL)
     end 
-    
+
     def create_session
-      if Activity.availables.any? {|act| act[:family] == :vine_farming}
-        assistant_id = WATSON_EKYVITI_ID
-      else 
-        assistant_id = WATSON_EKY_ID
-      end 
-      response = @assistant.create_session(
-        assistant_id: assistant_id
-      )
-      session_id = JSON.parse(JSON.pretty_generate(response.result))['session_id']
-      render json: {:session_id => session_id, :assistant_id => assistant_id}
+      assistant_id = if Activity.availables.any? {|act| act[:family] == :vine_farming}
+                       WATSON_EKYVITI_ID
+                     else
+                       WATSON_EKY_ID
+                     end
+      render(json: create_assistant.session_creation(assistant_id).to_json)
     end
 
     def send_msg
-      headers = {}.merge!(Common.new.get_sdk_headers("conversation", "V2", "message"))
-      headers["Accept"] = "application/json"
-      headers["Content-Type"] = "application/json" 
-      @authenticator.authenticate(headers)
-      url = "#{WATSON_URL}/v2/assistants/#{params[:assistant_id]}/sessions/#{params[:duke_id]}/message?version=#{WATSON_VERSION}"
-      if params[:user_intent].nil?
-        body = {"input":{"text": params[:msg]},"context":{"global":{"system":{"user_id":params[:user_id]}},"skills":{"main skill":{"user_defined":{"tenant": params[:tenant]}}}}}
+      assistant = create_assistant
+      auth = Assistant::Auth.new(session_id: params[:duke_id], assistant_id: params[:assistant_id])
+      if (intent = params[:user_intent]).present?
+        assistant.send_message_intent(auth: auth, intent: intent, message: params[:msg], user_id: params[:user_id])
       else
-        body = {"input":{"text": params[:msg], "intents":[{"intent": params[:user_intent],"confidence":1}]},"context":{"global":{"system":{"user_id":params[:user_id]}},"skills":{"main skill":{"user_defined":{"tenant": params[:tenant]}}}}}
+        assistant.send_message(auth: auth, message: params[:msg], user_id: params[:user_id])
       end
-      DukeRequestJob.perform_later(url, body, headers, params[:duke_id])
       render json: {}
     end
 
