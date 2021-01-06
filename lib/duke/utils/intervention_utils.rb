@@ -2,47 +2,52 @@ module Duke
   module Utils
     class InterventionUtils < Duke::Utils::DukeParsing
 
-      def speak_intervention(params)
+      def speak_intervention(parsed)
         # Create validation sentence for InterventionSkill
         # Voulez vous valider cette intervention ? : -Procedure -CropGroup - Targets -Tool -Doer -Input -Date -Duration
         sentence = I18n.t("duke.interventions.ask.save_intervention_#{rand(0...3)}")
-        sentence += "<br>&#8226 #{I18n.t("duke.interventions.intervention")} : #{Procedo::Procedure.find(params[:procedure]).human_name}"
-        unless params[:crop_groups].to_a.empty?
+        sentence += "<br>&#8226 #{I18n.t("duke.interventions.intervention")} : #{Procedo::Procedure.find(parsed[:procedure]).human_name}"
+        unless parsed[:crop_groups].to_a.empty?
           sentence += "<br>&#8226 #{I18n.t("duke.interventions.group")} : "
-          params[:crop_groups].each do |cg|
+          parsed[:crop_groups].each do |cg|
             sentence += "#{cg[:name]}, "
           end
         end
         # If proc has a target type and parsed[:tar] isn't empty, display targets
-        unless Procedo::Procedure.find(params[:procedure]).parameters.find {|param| param.type == :target}.nil?
-          unless params[Procedo::Procedure.find(params[:procedure]).parameters.find {|param| param.type == :target}.name].to_a.empty?
-            sentence += "<br>&#8226 #{I18n.t("duke.interventions.#{Procedo::Procedure.find(params[:procedure]).parameters.find {|param| param.type == :target}.name}")} : "
-            params[Procedo::Procedure.find(params[:procedure]).parameters.find {|param| param.type == :target}.name].each do |target|
+        unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.nil?
+          unless parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].to_a.empty?
+            sentence += "<br>&#8226 #{I18n.t("duke.interventions.#{Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name}")} : "
+            parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].each do |target|
               sentence += "#{target[:name]}, "
             end 
           end 
         end 
-        unless params[:equipments].to_a.empty?
+        unless parsed[:equipments].to_a.empty?
           sentence += "<br>&#8226 #{I18n.t("duke.interventions.tool")} : "
-          params[:equipments].each do |eq|
+          parsed[:equipments].each do |eq|
             sentence += "#{eq[:name]}, "
           end
         end
-        unless params[:workers].to_a.empty?
+        unless parsed[:workers].to_a.empty?
           sentence += "<br>&#8226 #{I18n.t("duke.interventions.worker")} : "
-          params[:workers].each do |worker|
+          parsed[:workers].each do |worker|
             sentence += "#{worker[:name]}, "
           end
         end
-        unless params[:inputs].to_a.empty?
+        unless parsed[:inputs].to_a.empty?
           sentence += "<br>&#8226 #{I18n.t("duke.interventions.input")} : "
-          params[:inputs].each do |input|
+          parsed[:inputs].each do |input|
             # For each input, if unit is population, display it, otherwise display the procedure-unit linked to the chosen handler
-            sentence += "#{input[:name]} (#{input[:rate][:value].to_f} #{(I18n.t("duke.interventions.units.#{Procedo::Procedure.find(params[:procedure]).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name}") if input[:rate][:unit].to_sym != :population) || Matter.find_by_id(input[:key])&.unit_name} ), "
+            sentence += "#{input[:name]} (#{input[:rate][:value].to_f} #{(I18n.t("duke.interventions.units.#{Procedo::Procedure.find(parsed[:procedure]).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name}") if input[:rate][:unit].to_sym != :population) || Matter.find_by_id(input[:key])&.unit_name} ), "
           end
         end
-        sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{params[:date].to_datetime.strftime("%d/%m/%Y - %H:%M")}"
-        sentence += "<br>&#8226 #{I18n.t("duke.interventions.duration")} : #{speak_duration(params[:duration])}"
+        parsed[:readings].each do |key, rd| 
+          rd.to_a.each do |rd_hash| 
+            sentence += "<br>&#8226 #{I18n.t("duke.interventions.readings.#{rd_hash[:indicator_name]}")} : #{(I18n.t("duke.interventions.readings.#{rd_hash.values.last}") if !is_number?(rd_hash.values.last))|| rd_hash.values.last}"
+          end  
+        end  
+        sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{parsed[:date].to_datetime.strftime("%d/%m/%Y - %H:%M")}"
+        sentence += "<br>&#8226 #{I18n.t("duke.interventions.duration")} : #{speak_duration(parsed[:duration])}" 
         return sentence.gsub(/, <br>&#8226/, "<br>&#8226")
       end
 
@@ -253,6 +258,40 @@ module Duke
         # Otherwise we can potentially save the intervention
         return "save", speak_intervention(parsed), nil
       end
+
+      def extract_intervention_readings(user_input, parsed)
+        # Given Procedure Type, check if readings exits, if so, and if extract_#{reading} method exitsts, try to extract it
+        parsed[:readings] = Hash[*Procedo::Procedure.find(parsed[:procedure]).product_parameters(true).flat_map {|param| [param.type, []]}]
+        Procedo::Procedure.find(parsed[:procedure]).product_parameters(true).map(&:readings).reject(&:empty?).flatten.each do |reading|
+          begin 
+            send("extract_#{reading.name}", user_input, parsed)
+          rescue NoMethodError
+          end 
+        end 
+      end
+
+      def extract_vine_pruning_system(content, parsed)
+        # Extract vine pruning system, for pruning procedures
+        pr = {"cordon_pruning" => /(royat|cordon)/, "formation_pruning" => /formation/, "gobelet_pruning" => /gobelet/, "guyot_double_pruning" => /guyot.*(doub|mult)/, "guyot_simple_pruning" => /guyot/}
+        pr.each do |key, regex|
+          if content.match(regex)
+            parsed[:readings][:target].push({indicator_name: :vine_pruning_system, indicator_datatype: :choice, choice_value: key})
+            break
+          end 
+        end 
+      end 
+
+      def extract_vine_stock_bud_charge(content, parsed)
+        # Extract vine stock bud charge, for pruning procedures
+        charge = content.match(/(\d{1,2}) *(bourgeons|yeux|oeil)/)
+        sec_charge = content.match(/charge *(de|à|avec|a)? *(\d{1,2})/)
+        if charge
+          parsed[:readings][:target].push({indicator_name: :vine_stock_bud_charge, indicator_datatype: :integer, integer_value: charge[1]})
+        elsif sec_charge 
+          parsed[:readings][:target].push({indicator_name: :vine_stock_bud_charge, indicator_datatype: :integer, integer_value: sec_charge[2]})
+        end 
+      end 
+    
     end 
   end
 end

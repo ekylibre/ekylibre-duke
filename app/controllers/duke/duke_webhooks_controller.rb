@@ -3,7 +3,7 @@ module Duke
     skip_before_action :verify_authenticity_token
 
     def handle_webhook
-      event = params[:main_param]
+      event = ActiveSupport::HashWithIndifferentAccess.new(params[:main_param])
       class_ = ("Duke::#{event[:hook_skill]}").constantize.new
       Ekylibre::Tenant.switch event[:tenant] do
         I18n.with_locale(:fra) do

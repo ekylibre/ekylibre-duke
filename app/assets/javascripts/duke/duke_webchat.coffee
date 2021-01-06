@@ -23,6 +23,8 @@
       # If channels are still defined, unbind duke subscription (we recreate it right after) to avoid duplicates
       if typeof vars.pusher_channel != "undefined" 
         vars.pusher_channel.unbind 'duke'
+      if typeof vars.pusher != "undefined" 
+        vars.pusher.disconnect()
       instanciate_pusher($('.btn-chat').show())
     else 
       create_session()
