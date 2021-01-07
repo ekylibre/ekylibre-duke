@@ -175,9 +175,16 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
   overflow-x: hidden;
   max-height: calc(100% - 105px);
   height: calc(100% - 105px);
+  -moz-box-shadow: 0 0 3px #ccc;
+  -webkit-box-shadow: 0 0 3px #ccc;
+  box-shadow: 0 0 3px #ccc;
 }
 .options{
+  box-sizing: border-box;
   padding-left: 5%;
+  padding-right: 5%;
+  height: auto ;
+  min-height: 34px;
   width: 100%;
   margin-left:0;
   display:inline-block;
@@ -192,7 +199,6 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
   height: auto;
   min-height: 34px;
   display: flex;
-
   flex-direction: row;
   .sender {
       justify-content: flex-end;
@@ -252,8 +258,7 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
       top: 9px;
       left: 99%;border-right: none;
 }
-.msg_container_base::-webkit-scrollbar
-{
+.msg_container_base::-webkit-scrollbar{
     width: 4px;
     background-color: #c6c6c6;
 }
@@ -285,7 +290,6 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
     z-index: -1;
     border-radius: 4px;
   }
-
 }
 .hover-fill{
   transition: 1s all;
@@ -304,4 +308,164 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
 a.disabled-send {
   pointer-events: none;
   cursor: default;
+}
+.duke-select-wrap{
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  background-color: transparent;
+  -moz-box-shadow: 0 0 3px #ccc;
+  -webkit-box-shadow: 0 0 3px #ccc;
+  box-shadow: 0 0 3px #ccc;
+  &:hover > .duke-default-option {
+    background: lightgray;
+  }
+  & .duke-default-option {
+    background: #fff;
+    position: relative;
+    cursor: pointer;
+    & li {
+      padding: 10px 20px;
+    }
+    & li .option p {
+      font-size: 16px;
+    }
+  }
+}
+.duke-select-wrap .duke-default-option:before{
+  content: "";
+  position: absolute;
+  top: 13px;
+  right: 18px;
+  width: 6px;
+  height: 6px;
+  border: 2px solid;
+  border-color: transparent transparent #3D3D3D #3D3D3D;
+  transform: rotate(-45deg);
+}
+.duke-select-wrap .duke-select-ul{
+  position: absolute;
+  max-height: 331px;
+  flex-grow: 1;
+  overflow: auto;
+  top: 55px;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  display: none;
+  &::-webkit-scrollbar{
+    width: 3px;
+    background-color: #c6c6c6;
+  }
+  &::-webkit-scrollbar-thumb{
+    background-color: $duke-color;
+  }
+}
+.duke-select-wrap .duke-select-ul li{
+  padding: 10px 20px;
+  border-spacing: 50px;
+  border-top: solid 1px #F3F3F3;
+  cursor: pointer;
+  &:hover{
+    background: mix($duke-color, lightgray, $weight: 30%);
+  }
+}
+.duke-select-wrap.active .duke-select-ul{
+  display: block;
+  position: relative;
+  top: 0%;
+}
+.duke-select-wrap.active .duke-default-option:before{
+  top: 18px;
+  transform: rotate(-225deg);
+}
+.duke-checkbox-validation{
+  display: none;
+}
+.duke-centered{ 
+  display: flex;
+  justify-content: center;
+}
+.control {
+  box-sizing: content-box;
+  display:inline-block;
+  position: relative;
+  margin-bottom: 10px;
+  padding-left: 30px;
+  padding-right: 15px;
+  cursor: pointer;
+  font-size: 12px;
+  width: fit-content;
+}
+.control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.control__indicator {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  height: 18px;
+  width: 18px;
+  background: #F3F3F3;
+  border-style: solid;
+  border-width: 1px;
+  border-color: lightgray;
+}
+.control input:checked ~ .control__indicator {
+  transition: 1s all;
+  background: mix($duke-color, lightgray, $weight: 70%);
+  border-color: mix($duke-color, lightgray, $weight: 70%);
+}
+.control:hover input:not([disabled]):checked ~ .control__indicator,
+.control input:checked:focus ~ .control__indicator {
+  background: mix($duke-color, lightgray, $weight: 70%);
+}
+.control__indicator:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.control input:checked ~ .control__indicator:after {
+  display: block;
+}
+.control--checkbox .control__indicator:after {
+  left: 7px;
+  top: 2px;
+  width: 3px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.control.hover-fill {
+  cursor: default;
+  pointer-events: none;
+  background-color: #F3F3F3;
+  transition: none;
+  & .control__indicator.duke-checked{ 
+    left: 7px;
+    top: 2px;
+    width: 3px;
+    height: 8px;
+    border: solid $duke-color;
+    color: $duke-color;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  & .control__indicator{
+    background: #F3F3F3;
+    border-color: #F3F3F3;
+  }
+}
+.control__indicator.duke-checked{
+  left: 7px;
+  top: 2px;
+  width: 3px;
+  height: 8px;
+  border: solid $duke-color;
+  color: $duke-color;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }

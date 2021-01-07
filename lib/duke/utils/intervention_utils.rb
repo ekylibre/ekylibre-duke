@@ -2,66 +2,89 @@ module Duke
   module Utils
     class InterventionUtils < Duke::Utils::DukeParsing
 
-      def speak_intervention(params)
+      def speak_intervention(parsed)
         # Create validation sentence for InterventionSkill
         # Voulez vous valider cette intervention ? : -Procedure -CropGroup - Targets -Tool -Doer -Input -Date -Duration
-        I18n.locale = :fra
         sentence = I18n.t("duke.interventions.ask.save_intervention_#{rand(0...3)}")
-        sentence += "<br>&#8226 #{I18n.t("duke.interventions.intervention")} : #{Procedo::Procedure.find(params[:procedure]).human_name}"
-        unless params[:crop_groups].to_a.empty?
+        sentence += "<br>&#8226 #{I18n.t("duke.interventions.intervention")} : #{Procedo::Procedure.find(parsed[:procedure]).human_name}"
+        unless parsed[:crop_groups].to_a.empty?
           sentence += "<br>&#8226 #{I18n.t("duke.interventions.group")} : "
-          params[:crop_groups].each do |cg|
+          parsed[:crop_groups].each do |cg|
             sentence += "#{cg[:name]}, "
           end
         end
         # If proc has a target type and parsed[:tar] isn't empty, display targets
-        unless Procedo::Procedure.find(params[:procedure]).parameters.find {|param| param.type == :target}.nil?
-          unless params[Procedo::Procedure.find(params[:procedure]).parameters.find {|param| param.type == :target}.name].to_a.empty?
-            sentence += "<br>&#8226 #{I18n.t("duke.interventions.#{Procedo::Procedure.find(params[:procedure]).parameters.find {|param| param.type == :target}.name}")} : "
-            params[Procedo::Procedure.find(params[:procedure]).parameters.find {|param| param.type == :target}.name].each do |target|
+        unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.nil?
+          unless parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].to_a.empty?
+            sentence += "<br>&#8226 #{I18n.t("duke.interventions.#{Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name}")} : "
+            parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].each do |target|
               sentence += "#{target[:name]}, "
             end 
           end 
         end 
-        unless params[:equipments].to_a.empty?
+        unless parsed[:equipments].to_a.empty?
           sentence += "<br>&#8226 #{I18n.t("duke.interventions.tool")} : "
-          params[:equipments].each do |eq|
+          parsed[:equipments].each do |eq|
             sentence += "#{eq[:name]}, "
           end
         end
-        unless params[:workers].to_a.empty?
+        unless parsed[:workers].to_a.empty?
           sentence += "<br>&#8226 #{I18n.t("duke.interventions.worker")} : "
-          params[:workers].each do |worker|
+          parsed[:workers].each do |worker|
             sentence += "#{worker[:name]}, "
           end
         end
-        unless params[:inputs].to_a.empty?
+        unless parsed[:inputs].to_a.empty?
           sentence += "<br>&#8226 #{I18n.t("duke.interventions.input")} : "
-          params[:inputs].each do |input|
+          parsed[:inputs].each do |input|
             # For each input, if unit is population, display it, otherwise display the procedure-unit linked to the chosen handler
-            sentence += "#{input[:name]} (#{input[:rate][:value].to_f} #{(I18n.t("duke.interventions.units.#{Procedo::Procedure.find(params[:procedure]).parameters_of_type(:input).find {|inp| Matter.where("id = #{input[:key]}").first.of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name}") if input[:rate][:unit].to_sym != :population) || Matter.where("id = #{input[:key]}").first&.unit_name}), "
+            sentence += "#{input[:name]} (#{input[:rate][:value].to_f} #{(I18n.t("duke.interventions.units.#{Procedo::Procedure.find(parsed[:procedure]).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name}") if input[:rate][:unit].to_sym != :population) || Matter.find_by_id(input[:key])&.unit_name} ), "
           end
         end
-        sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{params[:date].to_datetime.strftime("%d/%m/%Y - %H:%M")}"
-        sentence += "<br>&#8226 #{I18n.t("duke.interventions.duration")} : #{params[:duration]} #{I18n.t("duke.interventions.mins")}"
+        parsed[:readings].each do |key, rd| 
+          rd.to_a.each do |rd_hash| 
+            sentence += "<br>&#8226 #{I18n.t("duke.interventions.readings.#{rd_hash[:indicator_name]}")} : #{(I18n.t("duke.interventions.readings.#{rd_hash.values.last}") if !is_number?(rd_hash.values.last))|| rd_hash.values.last}"
+          end  
+        end  
+        sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{parsed[:date].to_datetime.strftime("%d/%m/%Y - %H:%M")}"
+        sentence += "<br>&#8226 #{I18n.t("duke.interventions.duration")} : #{speak_duration(parsed[:duration])}" 
         return sentence.gsub(/, <br>&#8226/, "<br>&#8226")
       end
 
-      def speak_input_rate(params)
+      def speak_input_rate(parsed)
         # Creates "Combien de kg de bouillie bordelaise ont été utilisés ? "
-        # Return the sentence, and the index of the destination inside params[:destination] to transfer as an optional value to IBM 
-        I18n.locale = :fra
-        params[:inputs].each_with_index do |input, index|
+        parsed[:inputs].each_with_index do |input, index|
           if input[:rate][:value].nil?
-            sentence = I18n.t("duke.interventions.ask.how_much_inputs_#{rand(0...2)}", input: input[:name], unit: (Procedo::Procedure.find(params[:procedure]).parameters_of_type(:input).find {|inp| Matter.where("id = #{input[:key]}").first.of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name if input[:rate][:unit].to_sym != :population) || Matter.where("id = #{input[:key]}").first&.unit_name)
+            sentence = I18n.t("duke.interventions.ask.how_much_inputs_#{rand(0...2)}", input: input[:name], unit: Matter.find_by_id(input[:key])&.unit_name)
             return sentence, index
           end
         end
       end
 
+      def speak_targets(parsed) 
+        candidates = []
+        parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].each do |target|
+          if target.key? :potential 
+            candidates.push(optJsonify(target[:name], target[:key].to_s))
+          end 
+        end 
+        return dynamic_options(I18n.t("duke.interventions.ask.what_targets", tar: I18n.t("duke.interventions.#{Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name}").downcase),candidates)
+      end 
+
+      def speak_duration(num_in_mins)
+        if num_in_mins < 60 
+          return "#{num_in_mins} #{I18n.t("duke.interventions.mins")}"
+        else 
+          if num_in_mins.remainder(60) != 0
+            return "#{num_in_mins/60}#{I18n.t("duke.interventions.hour")}#{num_in_mins.remainder(60)}"
+          else 
+            return "#{num_in_mins/60}#{I18n.t("duke.interventions.hour")}"
+          end 
+        end 
+      end 
+
       def disambiguate_procedure(procs, delimiter)
         # Used to redirect the user to a choice between multiple procs. Each proc is defined in the optional array
-        I18n.locale = :fra
         optional = []
         # If delimiter is from Ekyviti, ie -> Choice between viti & vegetal proc
         if delimiter == "|"
@@ -84,29 +107,55 @@ module Duke
 
       def tag_specific_targets(parsed)
         # Creates entry for each proc-specific target type with empty array inside what's about to be parsed 
-        unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.nil?
+        if (Procedo::Procedure.find(parsed[:procedure]).activity_families & [:vine_farming]).any?
           parsed[:crop_groups] = []
           parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] = []
+        else
+          parsed[:crop_groups] = []
+          parsed[:cultivablezones] = []
+          parsed[:activity_variety] = []
         end 
+      end 
+
+      def targets_from_cz(parsed)
+        unless parsed[:cultivablezones].to_a.empty? and parsed[:activity_variety].to_a.empty? 
+          potentials = []
+          tarIterator = ActivityProduction.all
+          unless parsed[:activity_variety].to_a.empty? 
+            tarIterator = ActivityProduction.of_activity(Activity.select{|act| parsed[:activity_variety].map{ |var| var[:name]}.include? act.cultivation_variety_name})
+          end 
+          unless parsed[:cultivablezones].to_a.empty? 
+            tarIterator = tarIterator.select{|act| parsed[:cultivablezones].map{ |cz| cz[:key]}.include? act.cultivable_zone_id}
+          end 
+          tarIterator.each {|act| potentials.push(act.products.of_expression(Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.filter).first)}
+          parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] = []
+          potentials.each do |tar|
+            # TODO : Find out Why there are some nil targets on Innovation ? # May be broken
+            unless tar.nil? 
+              parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].push({key: tar.id, name: tar.name, potential: true})
+            end 
+          end 
+        end 
+        return potentials
       end 
 
       def modification_candidates(parsed)
         # Returns to IBM an array with all the entities the user can modify given the procedure, to create buttons
-        I18n.locale = :fra
-        candidates = [I18n.t("duke.interventions.temporality")]
+        candidates = []
+        candidates.push(optJsonify(I18n.t("duke.interventions.temporality")))
         unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.nil?
-          candidates.push(I18n.t("duke.interventions.cultivation"))
+          candidates.push(optJsonify(I18n.t("duke.interventions.plant")))
         end 
         unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :tool}.nil?
-          candidates.push(I18n.t("duke.interventions.tool"))
+          candidates.push(optJsonify(I18n.t("duke.interventions.tool")))
         end 
         unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :doer}.nil?
-          candidates.push(I18n.t("duke.interventions.worker"))
+          candidates.push(optJsonify(I18n.t("duke.interventions.worker")))
         end 
         unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :input}.nil?
-          candidates.push(I18n.t("duke.interventions.input"))
+          candidates.push(optJsonify(I18n.t("duke.interventions.input")))
         end 
-        return candidates
+        return dynamic_options(I18n.t("duke.interventions.ask.what_modify"),candidates)
       end 
 
       def extract_date_and_duration(content)
@@ -127,7 +176,7 @@ module Duke
       def add_input_rate(content, recognized_inputs, procedure)
         # Look for an input rate associated with each input and create a :rate entry for each input with value & unit
         recognized_inputs.each_with_index do |input, index|
-          recon_input = content.split()[input[:indexes][0]..input[:indexes][-1]].join(" ")
+          recon_input = content.split(/[\s\']/)[input[:indexes][0]..input[:indexes][-1]].join(" ")
           quantity = content.match(/(\d{1,3}(\.|,)\d{1,2}|\d{1,3}) *((g|gramme|kg|kilo|kilogramme|tonne|t|l|litre|hectolitre|hl)(s)? *(par hectare|\/ *hectare|\/ *ha)?) *(de|d\'|du)? *(la|le)? *#{recon_input}/)
           sec_quantity = content.match(/#{recon_input} *(à|a|avec)? *(\d{1,3}(\.|,)\d{1,2}|\d{1,3}) *((gramme|g|kg|kilo|kilogramme|tonne|t|hectolitre|hl|litre|l)(s)? *(par hectare|\/ *hectare|\/ *ha)?)/)
           # If we find a quantity, we parse it, otherwise we associate a "nil population"
@@ -147,13 +196,13 @@ module Duke
           # We create a measure from what just got parsed
           measure = get_measure(rate.to_f, unit, area)
           # If measure in mass or volume , and procedure can handle this type of indicators for its inputs and net dimension exists for specific input
-          if [:mass, :volume].include? measure.base_dimension.to_sym and !Procedo::Procedure.find(procedure).parameters_of_type(:input).find {|inp| Matter.where("id = #{input[:key]}").first.of_expression(inp.filter)}.handler("net_#{measure.base_dimension}").nil? and !Matter.where("id = #{input[:key]}").first&.send("net_#{measure.base_dimension}").zero?
+          if [:mass, :volume].include? measure.base_dimension.to_sym and !Procedo::Procedure.find(procedure).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.handler("net_#{measure.base_dimension}").nil? and !Matter.find_by_id(input[:key])&.send("net_#{measure.base_dimension}").zero?
             # Check if distance has repartion unit & convert value in correct proc unit & modify rate entry in the input hash 
             if measure.repartition_unit.nil?
-              measure = measure.in(Procedo::Procedure.find(procedure).parameters_of_type(:input).find {|inp| Matter.where("id = #{input[:key]}").first.of_expression(inp.filter)}.handler("net_#{measure.base_dimension}").unit.name)
+              measure = measure.in(Procedo::Procedure.find(procedure).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.handler("net_#{measure.base_dimension}").unit.name)
               input[:rate] = {:value => measure.value.to_f, :unit => "net_#{measure.base_dimension}"}
             else 
-              measure = measure.in(Procedo::Procedure.find(procedure).parameters_of_type(:input).find {|inp| Matter.where("id = #{input[:key]}").first.of_expression(inp.filter)}.handler(measure.dimension).unit.name)
+              measure = measure.in(Procedo::Procedure.find(procedure).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.handler(measure.dimension).unit.name)
               input[:rate] = {:value => measure.value.to_f, :unit => measure.dimension}
             end 
           else 
@@ -196,7 +245,10 @@ module Duke
           # If there's an ambiguity, we solve it
           return "ask_ambiguity", nil, parsed[:ambiguities][0]
         end
-        parsed[:inputs].to_a.each do |input| 
+        unless parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].nil?
+          if parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].map{|tar| tar.key? :potential}.count(true) > 1
+            return "ask_which_targets", nil , speak_targets(parsed)
+          end 
         end 
         if parsed[:inputs].to_a.any? {|input| input[:rate][:value].nil?}
           # If there's an input without rate, we ask the user its rate
@@ -206,6 +258,40 @@ module Duke
         # Otherwise we can potentially save the intervention
         return "save", speak_intervention(parsed), nil
       end
-    end
+
+      def extract_intervention_readings(user_input, parsed)
+        # Given Procedure Type, check if readings exits, if so, and if extract_#{reading} method exitsts, try to extract it
+        parsed[:readings] = Hash[*Procedo::Procedure.find(parsed[:procedure]).product_parameters(true).flat_map {|param| [param.type, []]}]
+        Procedo::Procedure.find(parsed[:procedure]).product_parameters(true).map(&:readings).reject(&:empty?).flatten.each do |reading|
+          begin 
+            send("extract_#{reading.name}", user_input, parsed)
+          rescue NoMethodError
+          end 
+        end 
+      end
+
+      def extract_vine_pruning_system(content, parsed)
+        # Extract vine pruning system, for pruning procedures
+        pr = {"cordon_pruning" => /(royat|cordon)/, "formation_pruning" => /formation/, "gobelet_pruning" => /gobelet/, "guyot_double_pruning" => /guyot.*(doub|mult)/, "guyot_simple_pruning" => /guyot/}
+        pr.each do |key, regex|
+          if content.match(regex)
+            parsed[:readings][:target].push({indicator_name: :vine_pruning_system, indicator_datatype: :choice, choice_value: key})
+            break
+          end 
+        end 
+      end 
+
+      def extract_vine_stock_bud_charge(content, parsed)
+        # Extract vine stock bud charge, for pruning procedures
+        charge = content.match(/(\d{1,2}) *(bourgeons|yeux|oeil)/)
+        sec_charge = content.match(/charge *(de|à|avec|a)? *(\d{1,2})/)
+        if charge
+          parsed[:readings][:target].push({indicator_name: :vine_stock_bud_charge, indicator_datatype: :integer, integer_value: charge[1]})
+        elsif sec_charge 
+          parsed[:readings][:target].push({indicator_name: :vine_stock_bud_charge, indicator_datatype: :integer, integer_value: sec_charge[2]})
+        end 
+      end 
+    
+    end 
   end
 end

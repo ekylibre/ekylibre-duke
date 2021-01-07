@@ -12,9 +12,12 @@ fra:
     exports: 
       no_tool_found: "Je n'ai pas compris l'équipement pour lequel vous souhaitez avoir la fiche de côuts."
       no_var_found: "Je n'ai pas compris la variété du cahier de culture à exporter. Veuillez réessayer."
-      tool_export_started: "J'ai lancé l'export pour l'outil %{tool}, vous serez notifiés lorsque celui-ci sera terminé."
-      activity_export_started: "J'ai lancé l'export pour l'activité %{activity}, vous serez notifiés lorsque celui-ci sera terminé."
+      tool_export_started: "J'ai lancé l'export pour l'outil %{tool}, vous serez notifié lorsque celui-ci sera terminé."
+      activity_export_started: "J'ai lancé l'export pour l'activité %{activity}, vous serez notifié lorsque celui-ci sera terminé."
       export_over: "&#128221 L'export est terminé, vous pouvez le consulter <a href='#base-url/backend/documents/%{id}'>ici</a>"
+      balance_sheet_started: "J'ai lancé l'export du bilan comptable pour l'exercice %{year}, vous serez notifié lorsque celui-ci sera terminé"
+      income_statement_started: "J'ai lancé l'export du compte de résultats pour l'exercice %{year}, vous serez notifié lorsque celui-ci sera terminé"
+      which_financial_year: "Pour quel exercice comptable souhaitez-vous lancer l'export ?"
     redirections: 
       no_activity: "Je n'ai pas compris le type d'activité à laquelle vous souhaitez accéder. Réessayez"
       activity: "Je vous redirige vers votre activité de %{variety}"
@@ -37,6 +40,8 @@ fra:
         how_much_inputs_0: "Combien de %{unit} de %{input} ont été utilisés ?"
         how_much_inputs_1: "Combien de %{unit} de %{input} avez-vous utilisé ?"
         which_procedure: "Quelle procédure souhaitez vous saisir ? "
+        what_modify: "Quels éléments souhaitez-vous modifier ? "
+        what_targets: "Selectionnez les %{tar} de cette intervention, puis validez"
       units: 
         gram: "g"
         hectoliter: "hL"
@@ -50,6 +55,14 @@ fra:
         ton: "T"
         ton_per_hectare: "T/ha"
         population: "unités"
+      readings:
+        vine_stock_bud_charge: "Charge de la souche"
+        vine_pruning_system: "Système de taille"
+        cordon_pruning: "Cordon de royat"
+        formation_pruning: "Taille de formation"
+        gobelet_pruning: "Gobelet"
+        guyot_double_pruning: "Guyot double"
+        guyot_simple_pruning: "Guyot simple"
       temporality: "Date ou Durée"
       intervention: "Intervention"
       proc: "Procédure"
@@ -60,6 +73,7 @@ fra:
       date: "Date"
       duration: "Durée"
       mins: "mins"
+      hour: "h"
       cultivation: "Culture(s)"
       plant: "Culture(s)"
       land_parcel: "Parcelle(s)"
@@ -90,3 +104,5 @@ fra:
       reception_dock: "Quai de réception"
       vendange_nature: "Type de vendange"
       last_load: "Dernier chargement"
+    ambiguities: 
+      ask: "Veuillez préciser le terme '%{item}'"

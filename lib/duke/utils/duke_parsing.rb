@@ -2,7 +2,7 @@ module Duke
   module Utils
     class DukeParsing
       @@fuzzloader = FuzzyStringMatch::JaroWinkler.create( :pure )
-      @@user_specific_types = [:entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :equipments, :workers, :inputs, :press] 
+      @@user_specific_types = [:financial_year, :entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :equipments, :workers, :inputs, :press] 
       @@month_hash = {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9, "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12 }
 
       def extract_duration(content)
@@ -256,9 +256,9 @@ module Duke
         # Creating words combos with_index
         # "Je suis ton " becomes { [0] => "Je", [0,1] => "Je suis", [0,1,2] => "Je suis ton", [1] => "suis", [1,2] => "suis ton", [2] => "ton"}
         words_combos = {}
-        (0..user_input.split().length).to_a.combination(2).to_a.each do |index_combo|
+        (0..user_input.split(/[\s\']/).length).to_a.combination(2).to_a.each do |index_combo|
           if index_combo[0] + 4 >= index_combo[1]
-            words_combos[(index_combo[0]..index_combo[1]-1).to_a] = user_input.split()[index_combo[0]..index_combo[1]-1].join(" ")
+            words_combos[(index_combo[0]..index_combo[1]-1).to_a] = user_input.split(/[\s\']/)[index_combo[0]..index_combo[1]-1].join(" ")
           end
         end
         return words_combos
@@ -274,7 +274,7 @@ module Duke
         if string2.nil? 
           return level, saved_hash, rec_list 
         else 
-          item_to_match = clear_string(string2).split(" | ")[0]
+          item_to_match = clear_string(string2)
           distance = @@fuzzloader.getDistance(string1, item_to_match)
           if distance > level
             return distance, { :key => key, :name => string2, :indexes => indexes , :distance => distance}, append_list
@@ -289,8 +289,8 @@ module Duke
           return (true if a[:distance] >= b[:distance]) || false
         else
           # Finding the lenght of what matched for both elements
-          len_a = content.split()[a[:indexes][0]..a[:indexes][-1]].join(" ").split("").length
-          len_b = content.split()[b[:indexes][0]..b[:indexes][-1]].join(" ").split("").length
+          len_a = content.split(/[\s\']/)[a[:indexes][0]..a[:indexes][-1]].join(" ").length
+          len_b = content.split(/[\s\']/)[b[:indexes][0]..b[:indexes][-1]].join(" ").length
           # Multiply distance with exponential/70 => we favour longer elements even if match was lower
           aDist = a[:distance].to_f * Math.exp((len_a - len_b)/70.0)
           if aDist > b[:distance]
@@ -315,14 +315,7 @@ module Duke
       def find_iterator(item_type, parsed)
         # Returns correct array to iterate over, given what item_type we're looking for
         if item_type == :activity_variety
-          # Get unique activities by cultivation_variety : TODO : do it cleanly
-          activities = Activity.of_campaign(Campaign.current)
-          Activity.all.each do |act|
-            unless activities.any? {|curr_act| curr_act.cultivation_variety_name == act.cultivation_variety_name}
-              activities.push(act)
-            end 
-          end 
-          iterator = activities
+          iterator = Activity.select('distinct on (cultivation_variety) *')
         elsif item_type == :inputs
           # For Inputs, check if procedure comports inputs
           if Procedo::Procedure.find(parsed[:procedure]).parameters_of_type(:input).empty?
@@ -332,10 +325,12 @@ module Duke
           end
         elsif item_type == :crop_groups
           begin 
-            iterator = CropGroup.all.where("target = 'plant'")
+            iterator = CropGroup.all
           rescue 
             iterator = [] 
           end 
+        elsif item_type == :financial_year 
+          iterator = FinancialYear.all
         elsif item_type == :press
           iterator = Matter.availables(at: parsed[:date].to_datetime).can('press(grape)')
         elsif item_type == :workers
@@ -350,10 +345,12 @@ module Duke
           iterator = Equipment.availables(at: parsed[:date].to_datetime)
         elsif item_type == :plant
           iterator = Plant.availables(at: parsed[:date].to_datetime)
-        elsif [:land_parcel, :cultivation].include? (item_type)
+        elsif item_type == :land_parcel
           iterator = LandParcel.availables(at: parsed[:date].to_datetime)
+        elsif item_type == :cultivation
+          iterator = Product.availables(at: parsed[:date].to_datetime).of_expression("is land_parcel or is plant")
         end
-        return iterator
+        iterator
       end 
 
       def find_name_attribute(item_type)
@@ -362,10 +359,39 @@ module Duke
           attribute = :cultivation_variety_name
         elsif item_type == :entities
           attribute = :full_name
+        elsif item_type == :financial_year
+          attribute = :code 
         elsif [:workers, :crop_groups, :inputs, :press, :destination, :cultivablezones, :equipments, :plant, :land_parcel, :cultivation].include? (item_type)
           attribute = :name
         end
-        return attribute
+        attribute
+      end 
+
+      # Creates a Json for an option
+      def optJsonify(label, text=label)
+        {label: label,
+          value: {
+            input: {
+              text: text
+            }
+          }
+        }
+      end 
+
+      # Creates a dynamic options array that can be displayed as options to ibm
+      def dynamic_options(sentence, options, description = "")
+        optJson = {} 
+        unless description == ""
+          if options.length <= 4 
+            options.push(optJsonify("Tous"))
+          end 
+          options.push(optJsonify("Voir plus", "SeeMore"))
+        end  
+        optJson[:description] = description
+        optJson[:response_type] = "option"
+        optJson[:title] = sentence
+        optJson[:options] = options
+        return [optJson]
       end 
 
       def find_ambiguity(parsed, content, level)
@@ -376,7 +402,7 @@ module Duke
             iterator = find_iterator(key, parsed)
             reco.each do |anItem|
               unless anItem[:distance] == 1
-                anItem_name = content.split()[anItem[:indexes][0]..anItem[:indexes][-1]].join(" ")
+                anItem_name = content.split(/[\s\']/)[anItem[:indexes][0]..anItem[:indexes][-1]].join(" ")
                 ambiguity_check(anItem, anItem_name, level, ambiguities, iterator)
               end
             end
@@ -385,25 +411,23 @@ module Duke
         return ambiguities
       end
 
-      def ambiguity_check(item_hash, what_matched, level, ambiguities, iterator)
+      def ambiguity_check(item_hash, what_matched, level, ambiguities, iterator, min_level=0)
         # Method to check ambiguity about a specific item
         ambig = []
         # For each element of the iterator (ex : for crop_groups => CropGroup.all ), if distances is close (+/-level) to item that matched it's part of the ambiguity possibilities
         iterator.each do |product|
-          if item_hash[:key] != product[:id] and (item_hash[:distance] - @@fuzzloader.getDistance(clear_string(product[:name]), clear_string(what_matched))).between?(0,level)
-            ambig.push({"key" => product[:id].to_s, "name" => product[:name]})
+          if item_hash[:key] != product[:id] and (item_hash[:distance] - @@fuzzloader.getDistance(clear_string(product[:name]), clear_string(what_matched))).between?(min_level,level)
+            ambig.push(optJsonify(product[:name], "{:key => #{product[:id]}, :name => \"#{product[:name]}\"}"))
           end
         end
         # If ambiguous items, we add the current chosen element this ambig, and an element with what_matched do display to the user which words cuased problems
         unless ambig.empty?
-          ambig.push({"key" => item_hash[:key].to_s, "name" => item_hash[:name]})
-          ambig.push({"key" => "inSentenceName", "name" => what_matched})
-          # Only save ambiguities with max 7 elements if we're not in the "see more possibilities" (level < 0.05)
-          if level < 0.05
-            ambiguities.push(ambig.drop((ambig.length - 9 if ambig.length - 9 > 0 ) || 0))
-          else 
-            ambiguities.push(ambig)
-          end 
+          ambig.push(optJsonify(item_hash[:name], "{:key => #{item_hash[:key]}, :name => \"#{item_hash[:name]}\"}"))
+          ambig.push(optJsonify("Aucun"))
+          optDescription = {level: level, id: item_hash[:key], match: what_matched}
+          optSentence = I18n.t("duke.ambiguities.ask", item: what_matched)
+          optJson = dynamic_options(optSentence, ambig, optDescription)
+          ambiguities.push(optJson)
         end
         return ambiguities
       end 
@@ -414,7 +438,7 @@ module Duke
         useless_dic.each do |rgx|
           fstr = fstr.gsub(rgx, "")
         end
-        return fstr.gsub(/\s+/, " ").downcase
+        return fstr.gsub(/\s+/, " ").downcase.split(" | ").first
       end
 
       def key_duplicate?(list, saved_hash)

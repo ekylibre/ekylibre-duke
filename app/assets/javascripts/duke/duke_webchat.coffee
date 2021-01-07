@@ -23,6 +23,8 @@
       # If channels are still defined, unbind duke subscription (we recreate it right after) to avoid duplicates
       if typeof vars.pusher_channel != "undefined" 
         vars.pusher_channel.unbind 'duke'
+      if typeof vars.pusher != "undefined" 
+        vars.pusher.disconnect()
       instanciate_pusher($('.btn-chat').show())
     else 
       create_session()
@@ -139,7 +141,10 @@
           $.each value.options, (index, value) ->
             options.push(value)
             return
-          output_options(options)
+          multiple = false
+          if value.title.match(/validez/)
+            multiple = true
+          output_options(options, multiple=multiple)
         else if value.response_type == "suggestion"
           output_received_txt(value.title)
           options = []
@@ -159,20 +164,39 @@
     return
 
   # If response type comports options, or suggestion -> Output it as clickable buttons
-  output_options = (options, type="options") ->
+  output_options = (options, multiple=false) ->
     # We first create the container
-    $('.msg_container_base').append('<div class="row msg_container options"/>')
+    $('.msg_container_base').append('<div class="msg_container options general"></div>')
     # Then we add every button with it's label, and it's value, and the potential intent to redirect the user
-    $.each options, (index, op) ->
-      if op.hasOwnProperty('source_dialog_node')
-        if op.value.input.intents.length == 0
-          intent = "anything_else"
+    if multiple 
+      $.each options, (index, op) -> 
+        $('.msg_container.options').last().append('<label data-value= \''+op.value.input.text.replace("'",'"')+'\'class="control control--checkbox">'+op.label+'
+                                                    <input type="checkbox"/>
+                                                    <div class="control__indicator"></div>
+                                                  </label>')
+      $('.msg_container.options').last().append('<div class="msg_container options duke-centered">
+                                                    <button type="button" class="gb-bordered hover-fill duke-option duke-checkbox-validation duke-cancelation ">Annuler</button>
+                                                    <button type="button" class="gb-bordered hover-fill duke-option duke-checkbox-validation duke-validation ">Valider</button>
+                                                  </div>')
+    else if options.length > 6
+      $('.msg_container.options').last().append('<div class="duke-select-wrap"><ul class="duke-default-option"><li><div class="option">
+                                                  <p>Choisissez une option</p></div></li></ul><ul class="duke-select-ul"></ul>
+                                                 </div>')
+      $.each options, (index, op) -> 
+        $('.duke-select-ul').last().append('<li data-value= \''+op.value.input.text.replace("'",'"')+'\'><div class="option">
+                                          <p>'+op.label+'</p></div>
+                                       </li>')
+    else 
+      $.each options, (index, op) ->
+        if op.hasOwnProperty('source_dialog_node')
+          if op.value.input.intents.length == 0
+            intent = "none_of_the_above"
+          else 
+            intent = op.value.input.intents[0].intent
+          $('.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text.replace("'",'"')+'\'data-intent= \''+intent+'\' class="gb-bordered hover-fill duke-option duke-suggestion ">'+op.label+'</button>')
         else 
-          intent = op.value.input.intents[0].intent
-        $('.row.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text.replace("'",'"')+'\'data-intent= \''+intent+'\' class="gb-bordered hover-fill duke-option duke-suggestion ">'+op.label+'</button>')
-      else 
-        $('.row.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text.replace("'",'"')+'\' class="gb-bordered hover-fill duke-option duke-message-option">'+op.label+'</button>')
-      return
+          $('.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text.replace("'",'"')+'\' class="gb-bordered hover-fill duke-option duke-message-option">'+op.label+'</button>')
+        return
     $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
     return
 
@@ -192,6 +216,7 @@
   output_sent = (msg = $("#duke-input").val().replace(/\n/g, "")) ->
     # Disable buttons if previous message had options selections enabled
     if $('.msg_container_base').children().last().hasClass('options') 
+      $('.duke-centered').last().remove()
       $.each $('.msg_container_base').children().last().children(), (index, option) ->
         $(option).prop("disabled",true);
         if !$(option).hasClass("duke-selected")
@@ -247,9 +272,43 @@
     $('.btn-chat').show()
     return
 
+  $(document).on 'click', '.duke-default-option',  ->
+    $(this).parent().toggleClass 'active'
+    $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
+    return
+
+  $(document).on 'click', '.duke-select-ul li',  ->
+    $(this).parents('.msg_container').remove()
+    output_sent($(this).html())
+    send_msg($(this).data("value"))
+    return
+  
+  $(document).on 'click', '.control--checkbox', (evt) ->
+    evt.stopPropagation();
+    evt.preventDefault();
+    $(this).children().last().toggleClass('duke-checked')
+    $('.duke-checkbox-validation').show()
+    $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight)
+    return
+  
+  $(document).on 'click', '.duke-cancelation',  ->
+    $('.duke-centered').last().remove()
+    output_sent($(this).html())
+    send_msg($(this).html())
+    return
+
+  $(document).on 'click', '.duke-validation',  ->
+    str = ""
+    $.each $('.msg_container.options.general').last().children(), (index, box) ->
+      if $(this).children().last().hasClass('duke-checked')
+        str += $(this).data('value')+"|"
+    output_sent($(this).html())
+    send_msg(str)
+    return
+
+
   # Send message & clear text area
   $(document).on 'click', '#btn-send', (e) ->
-    # Send
     output_sent()
     send_msg()
     if vars.stt.is_on 
@@ -280,7 +339,7 @@
   $(document).on 'click', '#btn-mic', (e) ->
     transcript = ""
     # If stt is on, we stop the recognizer and send the message
-    if vars.stt.is_on 
+    if vars.stt.is_on
       stop_stt()
       if $("#duke-input").val() != ""
         output_sent()
@@ -289,10 +348,11 @@
       # If stt is off, we start recording and printing transcription to textarea
       vars.stt.is_on = true
       # Limiting speech recognition to 20 seconds
-      $(this).delay(20000).queue ->
+      vars.stt_timeout = setTimeout((->
         if vars.stt.is_on 
           stop_stt()
           return
+      ), 20000)
       # Creating STT config if non existent
       if !("speechConfig" in vars.stt)
         vars.stt.speechConfig = SpeechSDK.SpeechConfig.fromSubscription(vars.azure_key, vars.azure_region);
@@ -304,7 +364,6 @@
       vars.stt.recognizer.startContinuousRecognitionAsync()
       # On intermediate responses
       vars.stt.recognizer.recognizing = (s, e) ->
-        console.log("le var stt : "+vars.stt.is_on)
         if vars.stt.is_on
           $("#duke-input").val(transcript+" "+e.result.text)
           $('#duke-input').css('height', 'auto')
@@ -323,6 +382,7 @@
 
   # Function used to stop STT, and remove recognizer Element
   stop_stt = ->
+    clearTimeout(vars.stt_timeout)
     $("#btn-mic").toggleClass("send-enabled",false)
     vars.stt.recognizer.stopContinuousRecognitionAsync ->
     vars.stt.recognizer.close()
