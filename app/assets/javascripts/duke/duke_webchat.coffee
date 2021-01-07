@@ -245,9 +245,6 @@
     $('.msg_container_base').css('height', $('#bottom_left').height() - $('.input-flex').height() - 45)
     return
 
-  reset_dropdown = -> 
-    return 
-
   $(window).resize ->
     $('.msg_container_base').css('height', $('#bottom_left').height() - $('.input-flex').height() - 45)
     return
