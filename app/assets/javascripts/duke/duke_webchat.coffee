@@ -254,7 +254,7 @@
     # We open the webchat, and focus on the textArea
     $('.btn-chat').hide()
     $(".btn-chat").css("z-index","-10");
-    $('#bottom_left').css("z-index","100000");
+    $('#bottom_left').css("z-index","10000000");
     $('#bottom_left').show()
     if !vars.isMobile
       $( "#duke-input" ).focus()
@@ -268,7 +268,7 @@
   $(document).on 'click', '.minus-link', (e) ->
     $('#bottom_left').hide()
     $('#bottom_left').css("z-index","-10");
-    $(".btn-chat").css("z-index","100000");
+    $(".btn-chat").css("z-index","10000000");
     $('.btn-chat').show()
     return
 
