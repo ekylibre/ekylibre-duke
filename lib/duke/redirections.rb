@@ -44,15 +44,35 @@ module Duke
       # params : user_input    -> What the user said 
       #          purchase_type -> unpaid or all 
       user_input = clear_string(params[:user_input])
+      purchase_type = (:all if params[:purchase_type].nil?)|| :unpaid
       parsed = {entities: [],
                 date: Time.now}
       extract_user_specifics(user_input, parsed, 0.82)
       if parsed[:entities].empty? 
-        sentence = I18n.t("duke.redirections.to_#{params[:purchase_type]}_bills")
+        sentence = I18n.t("duke.redirections.to_#{purchase_type}_bills")
         return {sentence: sentence}
       else 
         max_matcher = parsed[:entities].max_by{|eq| eq[:distance]}
-        sentence =  I18n.t("duke.redirections.to_#{params[:purchase_type]}_specific_bills" , entity: max_matcher[:name])
+        sentence =  I18n.t("duke.redirections.to_#{purchase_type}_specific_bills" , entity: max_matcher[:name])
+        return {sentence: sentence}
+      end 
+    end 
+
+    def handle_to_sale(params) 
+      # Redirect to bill 
+      # params : user_input    -> What the user said 
+      #          purchase_type -> unpaid or all 
+      user_input = clear_string(params[:user_input])
+      sale_type = (:all if params[:sale_type].nil?)|| :unpaid
+      parsed = {entities: [],
+                date: Time.now}
+      extract_user_specifics(user_input, parsed, 0.82)
+      if parsed[:entities].empty? 
+        sentence = I18n.t("duke.redirections.to_#{sale_type}_sales")
+        return {sentence: sentence}
+      else 
+        max_matcher = parsed[:entities].max_by{|eq| eq[:distance]}
+        sentence =  I18n.t("duke.redirections.to_#{sale_type}_specific_sales" , entity: max_matcher[:name])
         return {sentence: sentence}
       end 
     end 
