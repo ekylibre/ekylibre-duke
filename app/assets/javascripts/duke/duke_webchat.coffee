@@ -156,7 +156,7 @@
     # Then we add every button with it's label, and it's value, and the potential intent to redirect the user
     if multiple 
       $.each options, (index, op) -> 
-        $('.msg_container.options').last().append('<label data-value= \''+op.value.input.text.replace("'",'"')+'\'class="control control--checkbox">'+op.label+'
+        $('.msg_container.options').last().append('<label data-value= \''+escapeHtml(op.value.input.text)+'\'class="control control--checkbox">'+escapeHtml(op.label)+'
                                                     <input type="checkbox"/>
                                                     <div class="control__indicator"></div>
                                                   </label>')
@@ -169,7 +169,7 @@
                                                   <p>Choisissez une option</p></div></li></ul><ul class="duke-select-ul"></ul>
                                                  </div>')
       $.each options, (index, op) -> 
-        $('.duke-select-ul').last().append('<li data-value= \''+op.value.input.text.replace("'",'"')+'\'><div class="option">
+        $('.duke-select-ul').last().append('<li data-value= \''+escapeHtml(op.value.input.text)+'\'><div class="option">
                                           <p>'+op.label+'</p></div>
                                        </li>')
     else 
@@ -179,9 +179,9 @@
             intent = "none_of_the_above"
           else 
             intent = op.value.input.intents[0].intent
-          $('.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text.replace("'",'"')+'\'data-intent= \''+intent+'\' class="gb-bordered hover-fill duke-option duke-suggestion ">'+op.label+'</button>')
+          $('.msg_container.options').last().append('<button type="button" data-value= \''+escapeHtml(op.value.input.text)+'\'data-intent= \''+escapeHtml(intent)+'\' class="gb-bordered hover-fill duke-option duke-suggestion ">'+escapeHtml(op.label)+'</button>')
         else 
-          $('.msg_container.options').last().append('<button type="button" data-value= \''+op.value.input.text.replace("'",'"')+'\' class="gb-bordered hover-fill duke-option duke-message-option">'+op.label+'</button>')
+          $('.msg_container.options').last().append('<button type="button" data-value= \''+escapeHtml(op.value.input.text)+'\' class="gb-bordered hover-fill duke-option duke-message-option">'+escapeHtml(op.label)+'</button>')
         return
     $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
     return
@@ -407,4 +407,18 @@
                                         </svg>
                                       </div>
                                     </div>')
+  toEscape = 
+  '&': '&amp;'
+  '<': '&lt;'
+  '>': '&gt;'
+  '"': '&quot;'
+  '\'': '&#39;'
+  '/': '&#x2F;'
+  '`': '&#x60;'
+  '=': '&#x3D;'
+
+  escapeHtml = (string) ->
+    String(string).replace /[&<>"'`=\/]/g, (s) ->
+      toEscape[s]
+
 )(jQuery, ekylibre)
