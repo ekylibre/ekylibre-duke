@@ -2,23 +2,31 @@ module Duke
   class Redirections < Duke::Utils::DukeParsing
     def handle_to_activity(params)
       # Not done correctly since DukeParsing Update on activities for interventions 
-      # TODO : Make sure activity is in current campaign before redirecting, allow user to create activity if not in current year
       # params : user_input -> What the user said
       user_input = clear_string(params[:user_input])
       parsed = {activity_variety: []}
       extract_user_specifics(user_input, parsed, 0.82)
       if parsed[:activity_variety].empty? 
-        sentence = I18n.t("duke.redirections.no_activity")
-        return {found: :no, sentence: sentence}
-      elsif Activity.of_campaign(Campaign.current).find_by_id(parsed[:activity_variety].first[:key]).nil?
-        # There is no current campaign of this type 
-        variety = Activity.find_by_id(parsed[:activity_variety].first[:key]).cultivation_variety_name
-        sentence = I18n.t("duke.redirections.no_current_activity", variety: variety)
-        return {found: :not_currently, sentence: sentence, variety: variety}
+        return {found: :no, sentence: I18n.t("duke.redirections.no_activity")}
       else 
-        variety = Activity.find_by_id(parsed[:activity_variety].first[:key]).cultivation_variety_name
-        sentence = I18n.t("duke.redirections.activity", variety: variety)
-        return {found: :yes, sentence: sentence, key: parsed[:activity_variety].first[:key]}
+        max_variety = parsed[:activity_variety].max_by{|act| act[:distance]}
+        iterator = Activity.of_cultivation_variety(Activity.find_by_id(max_variety[:key]).cultivation_variety)
+        if iterator.size > 1 
+          options = dynamic_options(I18n.t("duke.redirections.which_activity", variety: max_variety[:name]), iterator.map{|act| optJsonify(act[:name], act[:id].to_s)})
+          return {found: :multiple, optional: options}
+        else 
+          sentence = I18n.t("duke.redirections.activity", variety: max_variety[:name])
+          return {found: :yes, sentence: sentence, key: max_variety[:key]}
+        end 
+      end 
+    end 
+
+    def handle_which_activity(params)
+      begin 
+        act = Activity.find_by_id(params[:user_input].to_i)
+        return {found: :yes, sentence: I18n.t("duke.redirections.activity", variety: act.cultivation_variety_name), key: act.id}
+      rescue 
+        return {found: :no, sentence: I18n.t("duke.redirections.no_activity")}
       end 
     end 
 

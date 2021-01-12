@@ -21,6 +21,7 @@ fra:
     redirections: 
       no_activity: "Je n'ai pas compris le type d'activité à laquelle vous souhaitez accéder. Réessayez"
       activity: "Je vous redirige vers votre activité de %{variety}"
+      which_activity: "A quelle activité de %{variety} souhaitez vous accéder ?"
       no_current_activity: "Vous n'avez pas d'activité de %{variety}, souhaitez-vous en créer une ?"
       not_finding: "Je ne comprends pas ce à quoi vous souhaitez accéder"
       found_tool: "Je vous redirige vers la page de l'outil %{tool}"
@@ -80,6 +81,8 @@ fra:
       hour: "h"
       cultivation: "Culture(s)"
       plant: "Culture(s)"
+      target: "Culture(s)"
+      doer: "Opérateur(s)"
       land_parcel: "Parcelle(s)"
       vegetal_production: "Prod. Veg."
       viti_production: "Prod. Viti."
