@@ -82,11 +82,10 @@ module Duke
       end 
       # When modifying targets, modifying entries in parsed dic with correct target parameters linked to this procedure
       if which_specific == :targets
+        parsed[:crop_groups] = new_parsed[:crop_groups]
         if Procedo::Procedure.find(parsed[:procedure]).activity_families.include? :vine_farming
-          parsed[:crop_groups] = new_parsed[:crop_groups]
           parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] =  new_parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name]
         else 
-          parsed[:crop_groups] = new_parsed[:crop_groups]
           parsed[:cultivablezones] = new_parsed[:cultivablezones]
           parsed[:activity_variety] = new_parsed[:activity_variety]
           targets_from_cz(parsed)
@@ -144,29 +143,17 @@ module Duke
       # params : user_input -> Sentence inputed by the user 
       #          parsed     -> What was previously parsed 
       parsed = params[:parsed]
+      tar_type = Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name
       # If response type matches a multiple click response
       if params[:user_input].match(/^(\d{1,5}[|])*$/)
         # Creating a list with all integers corresponding to targets.ids chosen by the user
         every_choices = params[:user_input].split(/[|]/).map{|num| num.to_i}
-        new_targets = []
         # For each target, if the key is in every_choices, we append the key to the targets
-        parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].each do |target|
-          if every_choices.include? target[:key]
-            new_targets.push(target.except!(:potential))
-          elsif !target.key? :potential
-            new_targets.push(target)
-          end 
-        end 
-        parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] = new_targets
-      # Not an user multiple clicks response, we append every sure targets to the new_targets, and remove every potentiel
+        parsed[tar_type] = parsed[tar_type].map{|tar| tar.except!(:potential) if every_choices.include? tar[:key] }.compact
       else 
-        new_targets = []
-        parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].each do |target|
-          unless target.key? :potential
-            new_targets.push(target)
-          end 
-        end 
-      end  
+        # If user didn't validate a click answer, we remove every potential targets
+        parsed[tar_type] = []
+      end 
       what_next, sentence, optional = redirect(parsed)
       return  { parsed: parsed, redirect: what_next, sentence: sentence, optional: optional}
     end 
@@ -292,7 +279,7 @@ module Duke
         end
       end 
       # Add Readings to *_attributes if exists
-      params[:parsed][:readings].compact.each do |key, rd|
+      params[:parsed][:readings].delete_if{|k,v| !v.present?}.each do |key, rd|
         eval("#{key}_attributes").each do |attr|
           attr[:readings_attributes] = rd.map{|rding| ActiveSupport::HashWithIndifferentAccess.new(rding)}
         end 

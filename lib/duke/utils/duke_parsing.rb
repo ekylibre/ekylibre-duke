@@ -463,7 +463,7 @@ module Duke
         # finding iterators only once
         attributes = {}
         user_specifics.keys.each do |itemType| 
-          attributes[itemType] = {:iterator => find_iterator(itemType, parsed), :name_attribute => find_name_attribute(itemType)}
+          attributes[itemType] = {iterator: find_iterator(itemType, parsed), name_attribute: find_name_attribute(itemType)}
         end 
         # Creating all combo_words from user_input
         create_words_combo(user_input).each do |index, combo|

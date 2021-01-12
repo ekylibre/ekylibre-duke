@@ -62,13 +62,9 @@ module Duke
       end
 
       def speak_targets(parsed) 
-        candidates = []
-        parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].each do |target|
-          if target.key? :potential 
-            candidates.push(optJsonify(target[:name], target[:key].to_s))
-          end 
-        end 
-        return dynamic_options(I18n.t("duke.interventions.ask.what_targets", tar: I18n.t("duke.interventions.#{Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name}").downcase),candidates)
+        tar_type = Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name
+        candidates = parsed[tar_type].map{|tar| optJsonify(tar[:name], tar[:key].to_s) if tar.key? :potential}.compact
+        return dynamic_options(I18n.t("duke.interventions.ask.what_targets", tar: I18n.t("duke.interventions.#{tar_type}").downcase),candidates)
       end 
 
       def speak_duration(num_in_mins)
@@ -107,55 +103,44 @@ module Duke
 
       def tag_specific_targets(parsed)
         # Creates entry for each proc-specific target type with empty array inside what's about to be parsed 
+        parsed[:crop_groups] = []
         if (Procedo::Procedure.find(parsed[:procedure]).activity_families & [:vine_farming]).any?
-          parsed[:crop_groups] = []
           parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] = []
         else
-          parsed[:crop_groups] = []
           parsed[:cultivablezones] = []
           parsed[:activity_variety] = []
         end 
       end 
 
       def targets_from_cz(parsed)
-        unless parsed[:cultivablezones].to_a.empty? and parsed[:activity_variety].to_a.empty? 
-          potentials = []
-          tarIterator = ActivityProduction.all
+        tar_param = Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}
+        unless tar_param.nil? ||parsed[:cultivablezones].to_a.empty? and parsed[:activity_variety].to_a.empty?
+          tarIterator = ActivityProduction.at(parsed[:date].to_datetime)
           unless parsed[:activity_variety].to_a.empty? 
-            tarIterator = ActivityProduction.of_activity(Activity.select{|act| parsed[:activity_variety].map{ |var| var[:name]}.include? act.cultivation_variety_name})
+            tarIterator = ActivityProduction.at(parsed[:date].to_datetime).of_activity(Activity.select{|act| parsed[:activity_variety].map{ |var| var[:name]}.include? act.cultivation_variety_name})
           end 
           unless parsed[:cultivablezones].to_a.empty? 
             tarIterator = tarIterator.select{|act| parsed[:cultivablezones].map{ |cz| cz[:key]}.include? act.cultivable_zone_id}
           end 
-          tarIterator.each {|act| potentials.push(act.products.of_expression(Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.filter).first)}
-          parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] = []
-          potentials.each do |tar|
-            # TODO : Find out Why there are some nil targets on Innovation ? # May be broken
-            unless tar.nil? 
-              parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name].push({key: tar.id, name: tar.name, potential: true})
-            end 
-          end 
+          parsed[tar_param.name] = tarIterator.map {|act| act.products}
+                                  .flatten
+                                  .reject{|prod| !prod.available?||
+                                                 (prod.is_a?(Plant) && prod.dead_at.nil? && prod.activity_production&.support.present?) and prod.activity_production.support.dead_at < parsed[:date].to_datetime||
+                                                 !prod.of_expression(tar_param.filter)}
+                                  .map{|tar| {key: tar.id, name: tar.name, potential: :true}}
         end 
-        return potentials
-      end 
+      end
 
       def modification_candidates(parsed)
         # Returns to IBM an array with all the entities the user can modify given the procedure, to create buttons
         candidates = []
         candidates.push(optJsonify(I18n.t("duke.interventions.temporality")))
-        unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.nil?
-          candidates.push(optJsonify(I18n.t("duke.interventions.plant")))
+        [:target, :tool, :doer, :input].each do |parameter|
+          unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == parameter}.nil?
+            candidates.push(optJsonify(I18n.t("duke.interventions.#{parameter}")))
+          end 
         end 
-        unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :tool}.nil?
-          candidates.push(optJsonify(I18n.t("duke.interventions.tool")))
-        end 
-        unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :doer}.nil?
-          candidates.push(optJsonify(I18n.t("duke.interventions.worker")))
-        end 
-        unless Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :input}.nil?
-          candidates.push(optJsonify(I18n.t("duke.interventions.input")))
-        end 
-        return dynamic_options(I18n.t("duke.interventions.ask.what_modify"),candidates)
+        return dynamic_options(I18n.t("duke.interventions.ask.what_modify"), candidates)
       end 
 
       def extract_date_and_duration(content)

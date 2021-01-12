@@ -5,7 +5,8 @@ module Duke
       # params : user_input -> What the user said 
       #          nature     -> IBM potential match for a issue_nature_type
       user_input = clear_string(params[:user_input])
-      parsed = {equipments: [],
+      parsed = {cultivablezones: [],
+                equipments: [],
                 date: Time.now}
       extract_user_specifics(user_input, parsed, 0.82)
       # If we don't recognize an equipment, we return that we didn't understand the equipment
@@ -15,11 +16,7 @@ module Duke
       else 
         # Defining which parsed equipment matched the best by distance
         max_equipment = parsed[:equipments].max_by{|eq| eq[:distance]}
-        cz_parsed = {cultivablezones: [],
-                      date: Time.now }
-        # Try to match a potential cultivableZone
-        extract_user_specifics(user_input, cz_parsed, 0.82)
-        max_cz = cz_parsed[:cultivablezones].max_by{|eq| eq[:distance]}
+        max_cz = parsed[:cultivablezones].max_by{|cz| cz[:distance]}
         # Creating redirection url
         link = "/backend/issues/new?target_id=#{max_equipment[:key]}&description=#{params[:user_input].gsub(" ", "+")}&target_type=Equipment"
         # Adding issue nature if exists
