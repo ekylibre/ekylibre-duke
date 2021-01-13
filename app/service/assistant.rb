@@ -51,7 +51,7 @@ module Duke
       body = {
         input: { text: message },
         context: {
-          " global": {
+          global: {
             system: {
               user_id: user_id
             }
@@ -76,7 +76,7 @@ module Duke
                  intents: [{intent: intent,
                             confidence: 1 }]},
         context: {
-          " global": {
+          global: {
             system: {
               user_id: user_id
             }
