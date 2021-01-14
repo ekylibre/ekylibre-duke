@@ -145,7 +145,7 @@ module Duke
       parsed = params[:parsed]
       tar_type = Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name
       # If response type matches a multiple click response
-      if params[:user_input].match(/^(\d{1,5}[|])*$/)
+      if params[:user_input].match(/^(\d{1,5}(\||\b))*$/)
         # Creating a list with all integers corresponding to targets.ids chosen by the user
         every_choices = params[:user_input].split(/[|]/).map{|num| num.to_i}
         # For each target, if the key is in every_choices, we append the key to the targets

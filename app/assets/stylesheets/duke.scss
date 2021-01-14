@@ -192,7 +192,22 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
 .duke-option{
     margin-right: 5%;
     margin-bottom: 5%;
-    padding: 0 0 0 0
+    padding: 0 0 0 0;
+}
+.duke-dropdown{
+  width: 100%;
+  border-style: solid;
+  background-color: #f2f2f2;
+  border-width: 0px 1px 0px 0px;
+  border-color: lightgray;
+  outline: none;
+}
+.msg_container.dropdown-default{
+  padding-left: 0px;
+  padding-right: 30px;
+  border-style: solid;
+  border-color: lightgray;
+  border-width: 1px;
 }
 .msg-list {
   width: 100%;
@@ -248,15 +263,15 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
   padding-left: 0px;
 }
 .sender .messenger-container::before {
-      width: 0px;
-      height: 0px;
-      border-top: 8px solid transparent;
-      border-bottom: 8px solid transparent;
-      border-left: 15px solid $duke-color;
-      content: "";
-      position: absolute;
-      top: 9px;
-      left: 99%;border-right: none;
+  width: 0px;
+  height: 0px;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 15px solid $duke-color;
+  content: "";
+  position: absolute;
+  top: 9px;
+  left: 99%;border-right: none;
 }
 .msg_container_base::-webkit-scrollbar{
     width: 4px;
@@ -291,6 +306,10 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
     border-radius: 4px;
   }
 }
+.gb-bordered.dropdown{
+    margin-right: 8%;
+    margin-bottom: 0%;
+}
 .hover-fill{
   transition: 1s all;
   &:hover {
@@ -318,25 +337,32 @@ a.disabled-send {
   -webkit-box-shadow: 0 0 3px #ccc;
   box-shadow: 0 0 3px #ccc;
   &:hover > .duke-default-option {
-    background: lightgray;
+    background: #F3F3F3;
   }
   & .duke-default-option {
     background: #fff;
     position: relative;
     cursor: pointer;
     & li {
-      padding: 10px 20px;
+      padding: 0;
+      flex-direction: row;
     }
     & li .option p {
       font-size: 16px;
+      padding: 7px;
+    }
+    & .multiple-active{
+      & li .option p {
+        display: none;
+      }
     }
   }
 }
 .duke-select-wrap .duke-default-option:before{
   content: "";
   position: absolute;
-  top: 13px;
-  right: 18px;
+  top: 10px;
+  right: 11px;
   width: 6px;
   height: 6px;
   border: 2px solid;
@@ -362,13 +388,19 @@ a.disabled-send {
   }
 }
 .duke-select-wrap .duke-select-ul li{
-  padding: 10px 20px;
+  padding: 7px;
   border-spacing: 50px;
   border-top: solid 1px #F3F3F3;
   cursor: pointer;
   &:hover{
     background: mix($duke-color, lightgray, $weight: 30%);
   }
+}
+.mult_selected{
+  background: mix($duke-color, lightgray, $weight: 30%);
+}
+.duke-hidden{
+  display: none !important;
 }
 .duke-select-wrap.active .duke-select-ul{
   display: block;
@@ -377,6 +409,7 @@ a.disabled-send {
 }
 .duke-select-wrap.active .duke-default-option:before{
   top: 18px;
+  right: 11px;
   transform: rotate(-225deg);
 }
 .duke-checkbox-validation{
