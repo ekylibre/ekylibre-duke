@@ -79,28 +79,6 @@ module Duke
         end 
       end 
 
-      def disambiguate_procedure(procs, delimiter)
-        # Used to redirect the user to a choice between multiple procs. Each proc is defined in the optional array
-        optional = []
-        # If delimiter is from Ekyviti, ie -> Choice between viti & vegetal proc
-        if delimiter == "|"
-          family = :viti
-          procs.split(/[|]/).each do |proc| 
-            family = :vegetal if Procedo::Procedure.find(proc).activity_families.include? :plant_farming
-            # Pushing option hash with "key" & "human name - type of prod"
-            optional.push({:key => proc, :human => "#{Procedo::Procedure.find(proc).human_name} - #{I18n.t("duke.interventions.#{family}_production")}"})
-          end 
-          return :ask_proc, I18n.t("duke.interventions.ask.which_procedure"), optional
-        else 
-          # Global delimiter, user didn't say enough "ex : weeding ", could be steam_weeding, or manual_weeding 
-          procs.split(/[~]/).each do |proc|
-            # Pushing option hash with "key" & "human name"
-            optional.push({:key => proc, :human => "#{Procedo::Procedure.find(proc).human_name}"})
-          end 
-          return :ask_proc, I18n.t("duke.interventions.ask.which_procedure"), optional
-        end 
-      end 
-
       def tag_specific_targets(parsed)
         # Creates entry for each proc-specific target type with empty array inside what's about to be parsed 
         parsed[:crop_groups] = []
@@ -218,6 +196,66 @@ module Duke
           return Measure.new(value, "liter") if area.nil?
           return  Measure.new(value, "liter_per_hectare")
         end
+      end 
+      
+      def ok_procedure?(procedure) 
+        return [false, procedure] if procedure.nil?
+        return [true, procedure] if Procedo::Procedure.find(procedure).present? && (Procedo::Procedure.find(procedure).activity_families & [:vine_farming, :plant_farming]).any?
+        return [true, procedure.split(/[|]/).first] if procedure.scan(/[|]/).present? && !Activity.availables.any? {|act| act[:family] != :vine_farming}
+        [false, procedure]
+      end 
+
+      def guide_to_procedure(procedure, content) 
+        if procedure.nil?
+          return (suggest_categories_from_fam(exclusive_farming_type, content) if exclusive_farming_type.present?) ||asking_intervention_family(content)
+        elsif procedure.scan(/[&]/).present? 
+          return (suggest_categories_from_amb(procedure, content) if procedure.split(/[&]/).size > 1) ||suggest_proc_from_category(procedure.split(/[&]/).first, content)
+        end 
+        return suggest_categories_from_fam(procedure.to_sym, content) if [:plant_farming, :vine_farming].include? procedure.to_sym 
+        return suggest_viti_vegetal_proc(procedure, content) if procedure.scan(/[|]/).present?
+        return suggest_procedure_disambiguation(procedure, content) if procedure.scan(/[~]/).present?
+        return {redirect: :non_supported_proc} if Procedo::Procedure.find(procedure).present? && (Procedo::Procedure.find(procedure).activity_families & [:vine_farming, :plant_farming]).empty?
+        return {redirect: :cancel} if procedure.scan(/cancel/).present?
+        return {redirect: :not_understanding}
+      end 
+
+      def asking_intervention_family(content)
+        families = [:plant_farming, :vine_farming].map{|fam| optJsonify(Nomen::ActivityFamily[fam].human_name, fam) }
+        families.push(optJsonify(I18n.t("duke.interventions.cancel"), :cancel))
+        return {parsed: {user_input: content}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_family"), families)}
+      end 
+
+      def suggest_categories_from_fam(family, content) 
+        categories = Nomen::ProcedureCategory.select { |c| c.activity_family.include?(family.to_sym) and !Procedo::Procedure.of_main_category(c).empty? }.map{|cat|optJsonify(cat.human_name, "#{cat.name}&")}
+        return {parsed: {user_input: content}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_category"), categories)}
+      end 
+
+      def suggest_categories_from_amb(procedure, content)
+        categories = procedure.split(/[&]/).map{|c| optJsonify(Nomen::ProcedureCategory.find(c).human_name, "#{c}&")}
+        return {parsed: {user_input: content}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_category"), categories)}
+      end 
+
+      def suggest_proc_from_category(cat, content)
+        procs = Procedo::Procedure.of_main_category(cat).map {|proc| optJsonify(proc.human_name, proc.name)}
+        return {parsed: {user_input: content}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.which_procedure"), procs)}
+      end 
+
+      def suggest_viti_vegetal_proc(procedure, content)
+        procs = procedure.split(/[|]/).map{|p_name| Procedo::Procedure.find(p_name) }.map{|proc|optJsonify("#{proc.human_name} - #{I18n.t("duke.interventions.#{proc.of_activity_family?(:vine_farming)}_vine_production")} ", proc.name)}
+        return {parsed: {user_input: content}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.which_procedure"), procs)}
+      end 
+
+      def suggest_procedure_disambiguation(procedure, content)
+        procs = procedure.split(/[~]/).map{|p_name| optJsonify(Procedo::Procedure.find(p_name).human_name, p_name)}
+        return {parsed: {user_input: content}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.which_procedure"), procs)}
+      end 
+
+      def exclusive_farming_type() 
+        farming_types = Activity.availables.map{|act| act[:family] if [:vine_farming, :plant_farming].include? act[:family].to_sym}.compact.uniq
+        if farming_types.size == 1 
+          return farming_types.first 
+        end 
+        nil
       end 
 
       def redirect(parsed)

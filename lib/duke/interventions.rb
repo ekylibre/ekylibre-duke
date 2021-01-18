@@ -6,55 +6,37 @@ module Duke
       # params procedure      -> Procedure_name 
       #        user_input     -> Sentence inputed by the user 
       #        procedure_word -> Word in user_input that matched a procedure
-      procedure = params[:procedure]
-      return if procedure.nil?
-      # Check for | delimiter inside procedure type, if exists, it means it's Ekyviti and we have choice between vegetal & viti procedure
-      unless procedure.scan(/[|]/).empty?
-        # If there's no vegetal farming for the specific teant, we take viti procedure, otherwise we ask the user
-        if Activity.availables.any? {|act| act[:family] != :vine_farming}
-          what_next, sentence, optional = disambiguate_procedure(procedure, "|")
-          return {parsed: params[:user_input], redirect: what_next, sentence: sentence, optional: optional}
-        else 
-          procedure = procedure.split(/[|]/).first
-        end 
+      accepted_procedure, procedure = ok_procedure?(params[:procedure])
+      if accepted_procedure
+        # getting cleaned user_input
+        user_input = clear_string(params[:user_input].gsub(params[:procedure_word], ""))
+        # Finding when it happened and how long it lasted
+        date, duration = extract_date_and_duration(user_input)
+        parsed = {inputs: [],
+                  workers: [],
+                  equipments: [],
+                  procedure: procedure,
+                  duration: duration,
+                  date: date,
+                  user_input: params[:user_input],
+                  retry: 0}
+        # Define the type of targets that needs to be checked, given the procedure type
+        tag_specific_targets(parsed)
+        # Then extract every possible user_specifics elements form the sentence (here : inputs, workers, equipments, targets)
+        extract_user_specifics(user_input, parsed, 0.89)
+        # Look for a specified rate for the input, or attribute nil
+        add_input_rate(user_input, parsed[:inputs], parsed[:procedure])
+        # extract_readings 
+        extract_intervention_readings(user_input, parsed)
+        # Loof for ambiguities in what has been parsed
+        parsed[:ambiguities] = find_ambiguity(parsed, user_input, 0.02)
+        targets_from_cz(parsed)
+        # Then redirect to what needs to be added, or to save-state
+        what_next, sentence, optional = redirect(parsed)
+        return  { parsed: parsed, sentence: sentence, redirect: what_next, optional: optional, modifiable: modification_candidates(parsed) }
+      else 
+        return guide_to_procedure(procedure, params[:user_input])
       end 
-      # Check for ~ delimiter inside procedure type, if exists, it means there's an amibuity in the user asking (ex : weeding -> (steam ?, gaz ?)) and we ask him
-      unless procedure.scan(/[~]/).empty?
-        what_next, sentence, optional = disambiguate_procedure(procedure, "~")
-        return {parsed: params[:user_input], redirect: what_next, sentence: sentence, optional: optional}
-      end 
-      # If the procedure doesn't match anything -> We cancel the capture
-      return if Procedo::Procedure.find(procedure).nil?
-      # Temporary : Duke only supports vine_farming & plant_farming procedures
-      unless (Procedo::Procedure.find(procedure).activity_families & [:vine_farming, :plant_farming]).any?
-        return {redirect: "non_supported_proc"}
-      end 
-      # getting cleaned user_input
-      user_input = clear_string(params[:user_input].gsub(params[:procedure_word], ""))
-      # Finding when it happened and how long it lasted
-      date, duration = extract_date_and_duration(user_input)
-      parsed = {inputs: [],
-                workers: [],
-                equipments: [],
-                procedure: procedure,
-                duration: duration,
-                date: date,
-                user_input: params[:user_input],
-                retry: 0}
-      # Define the type of targets that needs to be checked, given the procedure type
-      tag_specific_targets(parsed)
-      # Then extract every possible user_specifics elements form the sentence (here : inputs, workers, equipments, targets)
-      extract_user_specifics(user_input, parsed, 0.89)
-      # Look for a specified rate for the input, or attribute nil
-      add_input_rate(user_input, parsed[:inputs], parsed[:procedure])
-      # extract_readings 
-      extract_intervention_readings(user_input, parsed)
-      # Loof for ambiguities in what has been parsed
-      parsed[:ambiguities] = find_ambiguity(parsed, user_input, 0.02)
-      targets_from_cz(parsed)
-      # Then redirect to what needs to be added, or to save-state
-      what_next, sentence, optional = redirect(parsed)
-      return  { parsed: parsed, sentence: sentence, redirect: what_next, optional: optional, modifiable: modification_candidates(parsed) }
     end
 
     def handle_modify_specific(params)
