@@ -127,7 +127,7 @@ module Duke
       parsed = params[:parsed]
       tar_type = Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name
       # If response type matches a multiple click response
-      if params[:user_input].match(/^(\d{1,5}(\||\b))*$/)
+      if params[:user_input].match(/^(\d{1,5}(\|{3}|\b))*$/)
         # Creating a list with all integers corresponding to targets.ids chosen by the user
         every_choices = params[:user_input].split(/[|]/).map{|num| num.to_i}
         # For each target, if the key is in every_choices, we append the key to the targets
@@ -151,56 +151,19 @@ module Duke
       # Find the type of element (:input, :plant ..) and the corresponding array from the previously parsed items, then find the correct hash
       current_type, current_array = parsed.find { |key, value| value.is_a?(Array) and value.any? { |subhash| subhash[:key] == current_id}}
       current_hash = current_array.find {|hash| hash[:key] == current_id}
-      # If user clicked on the "see more button"
-      if ["SeeMore", "voire plus", "voir plus", "plus"].include? params[:user_input]
-        current_level = params[:optional].first[:description][:level]
-        what_matched = params[:optional].first[:description][:match]
-        # We recheck for an ambiguity on the specific element that can't be validated by the user, with a bigger level of incertitude
-        new_ambiguities = ambiguity_check(current_hash, what_matched, current_level + 0.25, [], find_iterator(current_type.to_sym, parsed), current_level)
-        # If we have no new ambiguities, remove the values that was added, alert the user, and redirect him to next step 
-        if new_ambiguities.first.nil?
-          current_array.delete(current_hash)
-          parsed[:ambiguities].shift
-          what_next, sentence, optional = redirect(parsed)
-          return {parsed: parsed, alert: "no_more_ambiguity", redirect: what_next, optional: optional, sentence: sentence}
-        end 
-        parsed[:ambiguities][0]= new_ambiguities.first
-        return { parsed: parsed, redirect: "ask_ambiguity", optional: parsed[:ambiguities].first}
-      end 
+      current_array.delete(current_hash)
       begin
-        # If the user_input can be turned to an hash -> user clicked on a value, we replace the name & key from the previously chosen one
-        chosen_one = eval(params[:user_input])
-        current_hash[:name] = chosen_one[:name]
-        current_hash[:key] = chosen_one[:key]
-        # If the type of ambiguation is an input, make sure quantity handlers are concording with new input, otherwise remove rate infos
-        if current_type.to_sym == :inputs 
-          if ([:net_mass, :mass_area_density].include? current_hash[:rate][:unit].to_sym and Matter.find_by_id(current_hash[:key])&.net_mass.to_f == 0) || ([:net_volume, :volume_area_density].include? current_hash[:rate][:unit].to_sym and Matter.find_by_id(current_hash[:key])&.net_volume.fo_f == 0)
-            current_hash[:rate][:unit] = :population 
-            current_hash[:rate][:value] = nil 
+        # If the user_input can be turned to hash(es) splitted by ||| -> user clicked on value(s), we replace the name & key from the previously chosen one
+        params[:user_input].split(/[|]{3}/).map{|chosen| eval(chosen)}.each do |chosen_one| 
+          current_array.push(current_hash.merge(chosen_one))
+          # If the type of ambiguation is an input, make sure quantity handlers are concording with new input, otherwise remove rate infos
+          if current_type.to_sym == :inputs && (([:net_mass, :mass_area_density].include? current_hash[:rate][:unit].to_sym and Matter.find_by_id(current_hash[:key])&.net_mass.to_f == 0) || ([:net_volume, :volume_area_density].include? current_hash[:rate][:unit].to_sym and Matter.find_by_id(current_hash[:key])&.net_volume.fo_f == 0))
+              current_hash[:rate][:unit] = :population 
+              current_hash[:rate][:value] = nil 
           end 
         end 
       rescue
-        # If user clicked on "tous" button, we add every value that was suggested
-        if params[:user_input] == "Tous"
-          current_array.delete(current_hash)
-          params[:optional].first[:options].each_with_index do |ambiguate, index|
-            begin 
-              hashClone = current_hash.clone()
-              ambiguate_values = eval(ambiguate[:value][:input][:text])
-              hashClone[:name] = ambiguate_values[:name]
-              hashClone[:key] = ambiguate_values[:key]
-              current_array.push(hashClone)
-              # If ambiguation type is an input, and we add multiple, we ask how much quantity for each new input
-              if current_type.to_sym == :inputs 
-                hashClone[:rate][:unit] = :population 
-                hashClone[:rate][:value] = nil 
-              end 
-            end 
-          end
-        elsif params[:user_input] == "Aucun"
-          # On None -> We delete the previously chosen value from what was parsed
-          current_array.delete(current_hash)
-        end
+        nil
       ensure
         # This ambiguity has been take care of, we remove it from parsed[:ambiguities]
         parsed[:ambiguities].shift

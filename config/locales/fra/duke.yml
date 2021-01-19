@@ -70,6 +70,9 @@ fra:
         gobelet_pruning: "Gobelet"
         guyot_double_pruning: "Guyot double"
         guyot_simple_pruning: "Guyot simple"
+      help:
+        get_help: "Aide concernant les interventions"
+        example: "Vous pouvez saisir une intervention via Duke, avec ses différents paramètres.<br><br>Ex: &#9997 Intervention de labour sur le grand champ par Antoine ce matin pendant 4h30<br><br>A vous de jouer!"
       temporality: "Date ou Durée"
       intervention: "Intervention"
       proc: "Procédure"
@@ -115,4 +118,4 @@ fra:
       vendange_nature: "Type de vendange"
       last_load: "Dernier chargement"
     ambiguities: 
-      ask: "Veuillez préciser le terme '%{item}'"
+      ask: "Veuillez séléctionner les éléments correspondants au terme '%{item}', puis validez"

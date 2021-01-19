@@ -381,12 +381,6 @@ module Duke
       # Creates a dynamic options array that can be displayed as options to ibm
       def dynamic_options(sentence, options, description = "")
         optJson = {} 
-        unless description == ""
-          if options.length <= 4 
-            options.push(optJsonify("Tous"))
-          end 
-          options.push(optJsonify("Voir plus", "SeeMore"))
-        end  
         optJson[:description] = description
         optJson[:response_type] = "option"
         optJson[:title] = sentence
@@ -423,7 +417,6 @@ module Duke
         # If ambiguous items, we add the current chosen element this ambig, and an element with what_matched do display to the user which words cuased problems
         unless ambig.empty?
           ambig.push(optJsonify(item_hash[:name], "{:key => #{item_hash[:key]}, :name => \"#{item_hash[:name]}\"}"))
-          ambig.push(optJsonify("Aucun"))
           optDescription = {level: level, id: item_hash[:key], match: what_matched}
           optSentence = I18n.t("duke.ambiguities.ask", item: what_matched)
           optJson = dynamic_options(optSentence, ambig, optDescription)

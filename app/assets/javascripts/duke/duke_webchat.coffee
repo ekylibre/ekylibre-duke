@@ -154,7 +154,7 @@
     # We first create the container
     $('.msg_container_base').append('<div class="msg_container options general"></div>')
     # Then we add every button with it's label, and it's value, and the potential intent to redirect the user
-    if options.length > 6
+    if options.length > 7
       if multiple 
         $('.msg_container.options').last().append('<div class="duke-select-wrap"><ul class="duke-default-option multiple"><li><div class="option">
                                                     <p>Choisissez des options</p><div class="msg_container options duke-centered duke-hidden dropdown-default">
@@ -177,7 +177,7 @@
                                                       <div class="control__indicator"></div>
                                                     </label>')
         $('.msg_container.options').last().append('<div class="msg_container options duke-centered">
-                                                      <button type="button" class="gb-bordered hover-fill duke-option duke-checkbox-validation duke-cancelation ">Annuler</button>
+                                                      <button type="button" class="gb-bordered hover-fill duke-option duke-cancelation ">Annuler</button>
                                                       <button type="button" class="gb-bordered hover-fill duke-option duke-checkbox-validation duke-validation ">Valider</button>
                                                     </div>')
       else 
@@ -287,19 +287,20 @@
     return
   
   $(document).on 'click', '.duke-cancelation',  ->
+    $(".duke-centered").last().remove()
     output_sent($(this).html())
     send_msg($(this).html())
     return
 
   $(document).on 'click', '.dropdown-validation',  ->
-    str = (($(opt).data('value') if $(opt).hasClass('mult_selected')) for opt in $('.duke-select-ul').last().children() ).filter(Boolean).join("|")
+    str = (($(opt).data('value') if $(opt).hasClass('mult_selected')) for opt in $('.duke-select-ul').last().children() ).filter(Boolean).join("|||")
     output_sent($(this).html())
     send_msg(str)
     return
 
   $(document).on 'click', '.duke-validation',  ->
     $(".duke-centered").last().remove()
-    str = (($(opt).data('value') if $(opt).children().last().hasClass('duke-checked')) for opt in $('.msg_container.options.general').last().children() ).filter(Boolean).join("|")
+    str = (($(opt).data('value') if $(opt).children().last().hasClass('duke-checked')) for opt in $('.msg_container.options.general').last().children() ).filter(Boolean).join("|||")
     output_sent($(this).html())
     send_msg(str)
     return

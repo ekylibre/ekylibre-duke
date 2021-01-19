@@ -214,6 +214,7 @@ module Duke
         return suggest_categories_from_fam(procedure.to_sym, content) if [:plant_farming, :vine_farming].include? procedure.to_sym 
         return suggest_viti_vegetal_proc(procedure, content) if procedure.scan(/[|]/).present?
         return suggest_procedure_disambiguation(procedure, content) if procedure.scan(/[~]/).present?
+        return {redirect: :get_help, sentence: I18n.t("duke.interventions.help.example")} if procedure.match(/get_help/)
         return {redirect: :non_supported_proc} if Procedo::Procedure.find(procedure).present? && (Procedo::Procedure.find(procedure).activity_families & [:vine_farming, :plant_farming]).empty?
         return {redirect: :cancel} if procedure.scan(/cancel/).present?
         return {redirect: :not_understanding}
@@ -227,6 +228,7 @@ module Duke
 
       def suggest_categories_from_fam(family, content) 
         categories = Nomen::ProcedureCategory.select { |c| c.activity_family.include?(family.to_sym) and !Procedo::Procedure.of_main_category(c).empty? }.map{|cat|optJsonify(cat.human_name, "#{cat.name}&")}
+        categories.push(optJsonify(I18n.t("duke.interventions.help.get_help"), :get_help))
         return {parsed: {user_input: content}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_category"), categories)}
       end 
 
