@@ -221,19 +221,19 @@ module Duke
       end 
 
       def asking_intervention_family(content)
-        families = [:plant_farming, :vine_farming].map{|fam| optJsonify(Nomen::ActivityFamily[fam].human_name, fam) }
+        families = [:plant_farming, :vine_farming].map{|fam| optJsonify(Onoma::ActivityFamily[fam].human_name, fam) }
         families.push(optJsonify(I18n.t("duke.interventions.cancel"), :cancel))
         return {parsed: {user_input: content}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_family"), families)}
       end 
 
       def suggest_categories_from_fam(family, content) 
-        categories = Nomen::ProcedureCategory.select { |c| c.activity_family.include?(family.to_sym) and !Procedo::Procedure.of_main_category(c).empty? }.map{|cat|optJsonify(cat.human_name, "#{cat.name}&")}
+        categories = Onoma::ProcedureCategory.select { |c| c.activity_family.include?(family.to_sym) and !Procedo::Procedure.of_main_category(c).empty? }.map{|cat|optJsonify(cat.human_name, "#{cat.name}&")}
         categories.push(optJsonify(I18n.t("duke.interventions.help.get_help"), :get_help))
         return {parsed: {user_input: content}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_category"), categories)}
       end 
 
       def suggest_categories_from_amb(procedure, content)
-        categories = procedure.split(/[&]/).map{|c| optJsonify(Nomen::ProcedureCategory.find(c).human_name, "#{c}&")}
+        categories = procedure.split(/[&]/).map{|c| optJsonify(Onoma::ProcedureCategory.find(c).human_name, "#{c}&")}
         return {parsed: {user_input: content}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_category"), categories)}
       end 
 
