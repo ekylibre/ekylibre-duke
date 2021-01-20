@@ -1,60 +1,22 @@
 module Duke
-  class Interventions < Duke::Utils::InterventionUtils
+  class Interventions
 
     def handle_parse_sentence(params)
       # First parsing inside interventions
       # params procedure      -> Procedure_name 
       #        user_input     -> Sentence inputed by the user 
       #        procedure_word -> Word in user_input that matched a procedure
-      procedure = params[:procedure]
-      return if procedure.nil?
-      # Check for | delimiter inside procedure type, if exists, it means it's Ekyviti and we have choice between vegetal & viti procedure
-      unless procedure.scan(/[|]/).empty?
-        # If there's no vegetal farming for the specific teant, we take viti procedure, otherwise we ask the user
-        if Activity.availables.any? {|act| act[:family] != :vine_farming}
-          what_next, sentence, optional = disambiguate_procedure(procedure, "|")
-          return {parsed: params[:user_input], redirect: what_next, sentence: sentence, optional: optional}
-        else 
-          procedure = procedure.split(/[|]/).first
-        end 
-      end 
-      # Check for ~ delimiter inside procedure type, if exists, it means there's an amibuity in the user asking (ex : weeding -> (steam ?, gaz ?)) and we ask him
-      unless procedure.scan(/[~]/).empty?
-        what_next, sentence, optional = disambiguate_procedure(procedure, "~")
-        return {parsed: params[:user_input], redirect: what_next, sentence: sentence, optional: optional}
-      end 
-      # If the procedure doesn't match anything -> We cancel the capture
-      return if Procedo::Procedure.find(procedure).nil?
-      # Temporary : Duke only supports vine_farming & plant_farming procedures
-      unless (Procedo::Procedure.find(procedure).activity_families & [:vine_farming, :plant_farming]).any?
-        return {redirect: "non_supported_proc"}
-      end 
-      # getting cleaned user_input
-      user_input = clear_string(params[:user_input].gsub(params[:procedure_word], ""))
-      # Finding when it happened and how long it lasted
-      date, duration = extract_date_and_duration(user_input)
-      parsed = {inputs: [],
-                workers: [],
-                equipments: [],
-                procedure: procedure,
-                duration: duration,
-                date: date,
-                user_input: params[:user_input],
-                retry: 0}
-      # Define the type of targets that needs to be checked, given the procedure type
-      tag_specific_targets(parsed)
-      # Then extract every possible user_specifics elements form the sentence (here : inputs, workers, equipments, targets)
-      extract_user_specifics(user_input, parsed, 0.89)
-      # Look for a specified rate for the input, or attribute nil
-      add_input_rate(user_input, parsed[:inputs], parsed[:procedure])
-      # extract_readings 
-      extract_intervention_readings(user_input, parsed)
-      # Loof for ambiguities in what has been parsed
-      parsed[:ambiguities] = find_ambiguity(parsed, user_input, 0.02)
-      targets_from_cz(parsed)
-      # Then redirect to what needs to be added, or to save-state
-      what_next, sentence, optional = redirect(parsed)
-      return  { parsed: parsed, sentence: sentence, redirect: what_next, optional: optional, modifiable: modification_candidates(parsed) }
+      dukeInt = Duke::Utils::InterventionUtils.new(procedure: params[:procedure], user_input: params[:user_input])
+      return dukeInt.guide_to_procedure unless dukeInt.ok_procedure? # help user find his procedure if current_proc is not accepted
+      dukeInt.get_clean_sentence  # getting cleaned user_input
+      dukeInt.extract_date_and_duration  # Finding when it happened and how long it lasted
+      dukeInt.tag_specific_targets  # Tag the specific types of targets for this intervention
+      dukeInt.extract_specifics  # Then extract every possible user_specifics elements form the sentence (here : inputs, workers, equipments, targets)  
+      dukeInt.add_input_rate  # Look for a specified rate for the input, or attribute nil
+      dukeInt.extract_intervention_readings  # extract_readings 
+      dukeInt.check_for_ambiguities # Loof for ambiguities in what has been parsed
+      dukeInt.targets_from_cz # Try and create targets from cultivableZones and Varieties (for :plant_farming) 
+      return dukeInt.to_ibm(modifiable: dukeInt.modification_candidates)
     end
 
     def handle_modify_specific(params)
@@ -62,58 +24,32 @@ module Duke
       # params parsed     -> previously parsed items 
       #        user_input -> Sentence inputed by the user 
       #        specific   -> Type of specific to be parsed (target, input, doer ..)
-      parsed = params[:parsed]
-      # which_specific corresponds to the type of element to be modified (inputs, workers..)
-      which_specific = params[:specific].to_sym
-      user_input = clear_string(params[:user_input])
-      new_parsed = {which_specific => [],
-                    procedure: parsed[:procedure],
-                    date: parsed[:date],
-                    user_input: user_input}
-      #Define the type of targets to check if we are modifying targets
-      if which_specific == :targets
-        tag_specific_targets(new_parsed)
-      end 
-      # Extract entites from new user-utterance
-      extract_user_specifics(user_input, new_parsed, 0.82)
-      # In case we are modifying inputs, we need to add input-rates
-      if which_specific == :inputs 
-        add_input_rate(user_input, new_parsed[:inputs], parsed[:procedure])
-      end 
-      # When modifying targets, modifying entries in parsed dic with correct target parameters linked to this procedure
-      if which_specific == :targets
-        parsed[:crop_groups] = new_parsed[:crop_groups]
-        if Procedo::Procedure.find(parsed[:procedure]).activity_families.include? :vine_farming
-          parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name] =  new_parsed[Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name]
-        else 
-          parsed[:cultivablezones] = new_parsed[:cultivablezones]
-          parsed[:activity_variety] = new_parsed[:activity_variety]
-          targets_from_cz(parsed)
-        end 
-      else
-        # Otherwise, which_specific previously parsed with new value
-        parsed[which_specific] = new_parsed[which_specific]
-      end 
-      parsed[:user_input] += " -  #{params[:user_input]}"
-      parsed[:ambiguities] = find_ambiguity(new_parsed, user_input, 0.02)
-      what_next, sentence, optional = redirect(parsed)
-      return  { parsed: parsed, redirect: what_next, sentence: sentence, optional: optional}
+      dukeInt = Duke::Utils::InterventionUtils.new.recover_from_hash(params[:parsed])
+      tmpInt = Duke::Utils::InterventionUtils.new(procedure: dukeInt.procedure,  date: dukeInt.date, user_input: params[:user_input])
+      tmpInt.get_clean_sentence
+      tar_attributes = (tmpInt.tag_specific_targets if params[:specific].to_sym.eql? :targets)||nil
+      tmpInt.extract_specifics(jsonD: tmpInt.to_jsonD(tar_attributes, params[:specific], :procedure, :date, :user_input))
+      tmpInt.add_input_rate if params[:specific].to_sym == :inputs 
+      dukeInt.concatenate_int(tmpInt.to_jsonD(tar_attributes, params[:specific], :procedure, :date, :user_input))
+      dukeInt.targets_from_cz if tar_attributes.present? && Procedo::Procedure.find(dukeInt.procedure).activity_families.include?(:plant_farming)
+      dukeInt.check_for_ambiguities(jsonD: dukeInt.to_jsonD(tar_attributes, params[:specific], :procedure, :date, :user_input))
+      dukeInt.spoken += " - #{tmpInt.user_input}"
+      return dukeInt.to_ibm
     end
 
     def handle_modify_temporality(params)
       # Function called when user wants to modify his intervention's temporality
       # params : user_input -> Sentence inputed by the user 
       #          parsed     -> What was previously parsed
-      parsed = params[:parsed]
-      user_input = clear_string(params[:user_input])
-      date, duration = extract_date_and_duration(user_input)
+      dukeInt = Duke::Utils::InterventionUtils.new.recover_from_hash(params[:parsed])
+      tmpInt = Duke::Utils::InterventionUtils.new(procedure: dukeInt.procedure,  date: dukeInt.date, user_input: params[:user_input])
+      tmpInt.get_clen_sentence
+      tmpInt.extract_date_and_duration
       # Choose date & duration between previous value & new one
-      parsed[:date] = choose_date(date, parsed[:date])
-      parsed[:duration] = choose_duration(duration, parsed[:duration])
-      parsed[:user_input] += " - #{params[:user_input]}"
-      parsed[:ambiguities] = []
-      what_next, sentence, optional = redirect(parsed)
-      return  { parsed: parsed, redirect: what_next, sentence: sentence, optional: optional}
+      dukeInt.choose_date(tmpInt.date)
+      dukeInt.choose_duration(tmpInt.duration)
+      dukeInt.spoken += " - #{params[:user_input]}"
+      return dukeInt.to_ibm
     end
 
     def handle_parse_input_quantity(params)
@@ -122,30 +58,28 @@ module Duke
       #          parsed     -> What was previously parsed 
       #          quantity   -> Number parsed by IBM 
       #          optional   -> Index of input that needs modification inside parsed[:inputs], Integer
-      parsed = params[:parsed]
-      value = extract_number_parameter(params[:quantity], params[:user_input])
+      dukeInt = Duke::Utils::InterventionUtils.new.recover_from_hash(params[:parsed])
+      value = dukeInt.extract_number_parameter(params[:quantity], params[:user_input])
       # If there's no number, redirect
       if value.nil?
-        parsed[:retry] += 1
-        what_next, sentence, optional = redirect(parsed)
-        return  { parsed: parsed, redirect: what_next, sentence: sentence, optional: optional}
+        dukeInt.retry += 1
+        return dukeInt.to_ibm
       end
       # Otherwise add value for the given input (we get it via it's index in parsed[:inputs])
-      parsed[:inputs][params[:optional]][:rate][:value] = value
-      parsed[:user_input] += " - #{params[:user_input]}"
-      parsed[:retry] = 0
-      what_next, sentence, optional = redirect(parsed)
-      return  { parsed: parsed, redirect: what_next, sentence: sentence, optional: optional}
+      dukeInt.inputs[params[:optional]][:rate][:value] = value 
+      dukeInt.spoken += " - #{params[:user_input]}"
+      dukeInt.retry = 0
+      return dukeInt.to_ibm
     end
 
     def handle_parse_which_target(params) 
       # Function called to find which targets were selected by the user when multiple choice is available for vegetal procedures
       # params : user_input -> Sentence inputed by the user 
       #          parsed     -> What was previously parsed 
-      parsed = params[:parsed]
-      tar_type = Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name
+      dukeInt = Duke::Utils::InterventionUtils.new.recover_from_hash(params[:parsed])
+      tar_type = Procedo::Procedure.find(dukeInt.procedure).parameters.find {|param| param.type == :target}.name
       # If response type matches a multiple click response
-      if params[:user_input].match(/^(\d{1,5}[|])*$/)
+      if params[:user_input].match(/^(\d{1,5}(\|{3}|\b))*$/)
         # Creating a list with all integers corresponding to targets.ids chosen by the user
         every_choices = params[:user_input].split(/[|]/).map{|num| num.to_i}
         # For each target, if the key is in every_choices, we append the key to the targets
@@ -169,56 +103,19 @@ module Duke
       # Find the type of element (:input, :plant ..) and the corresponding array from the previously parsed items, then find the correct hash
       current_type, current_array = parsed.find { |key, value| value.is_a?(Array) and value.any? { |subhash| subhash[:key] == current_id}}
       current_hash = current_array.find {|hash| hash[:key] == current_id}
-      # If user clicked on the "see more button"
-      if ["SeeMore", "voire plus", "voir plus", "plus"].include? params[:user_input]
-        current_level = params[:optional].first[:description][:level]
-        what_matched = params[:optional].first[:description][:match]
-        # We recheck for an ambiguity on the specific element that can't be validated by the user, with a bigger level of incertitude
-        new_ambiguities = ambiguity_check(current_hash, what_matched, current_level + 0.25, [], find_iterator(current_type.to_sym, parsed), current_level)
-        # If we have no new ambiguities, remove the values that was added, alert the user, and redirect him to next step 
-        if new_ambiguities.first.nil?
-          current_array.delete(current_hash)
-          parsed[:ambiguities].shift
-          what_next, sentence, optional = redirect(parsed)
-          return {parsed: parsed, alert: "no_more_ambiguity", redirect: what_next, optional: optional, sentence: sentence}
-        end 
-        parsed[:ambiguities][0]= new_ambiguities.first
-        return { parsed: parsed, redirect: "ask_ambiguity", optional: parsed[:ambiguities].first}
-      end 
+      current_array.delete(current_hash)
       begin
-        # If the user_input can be turned to an hash -> user clicked on a value, we replace the name & key from the previously chosen one
-        chosen_one = eval(params[:user_input])
-        current_hash[:name] = chosen_one[:name]
-        current_hash[:key] = chosen_one[:key]
-        # If the type of ambiguation is an input, make sure quantity handlers are concording with new input, otherwise remove rate infos
-        if current_type.to_sym == :inputs 
-          if ([:net_mass, :mass_area_density].include? current_hash[:rate][:unit].to_sym and Matter.find_by_id(current_hash[:key])&.net_mass.to_f == 0) || ([:net_volume, :volume_area_density].include? current_hash[:rate][:unit].to_sym and Matter.find_by_id(current_hash[:key])&.net_volume.fo_f == 0)
-            current_hash[:rate][:unit] = :population 
-            current_hash[:rate][:value] = nil 
+        # If the user_input can be turned to hash(es) splitted by ||| -> user clicked on value(s), we replace the name & key from the previously chosen one
+        params[:user_input].split(/[|]{3}/).map{|chosen| eval(chosen)}.each do |chosen_one| 
+          current_array.push(current_hash.merge(chosen_one))
+          # If the type of ambiguation is an input, make sure quantity handlers are concording with new input, otherwise remove rate infos
+          if current_type.to_sym == :inputs && (([:net_mass, :mass_area_density].include? current_hash[:rate][:unit].to_sym and Matter.find_by_id(current_hash[:key])&.net_mass.to_f == 0) || ([:net_volume, :volume_area_density].include? current_hash[:rate][:unit].to_sym and Matter.find_by_id(current_hash[:key])&.net_volume.fo_f == 0))
+              current_hash[:rate][:unit] = :population 
+              current_hash[:rate][:value] = nil 
           end 
         end 
       rescue
-        # If user clicked on "tous" button, we add every value that was suggested
-        if params[:user_input] == "Tous"
-          current_array.delete(current_hash)
-          params[:optional].first[:options].each_with_index do |ambiguate, index|
-            begin 
-              hashClone = current_hash.clone()
-              ambiguate_values = eval(ambiguate[:value][:input][:text])
-              hashClone[:name] = ambiguate_values[:name]
-              hashClone[:key] = ambiguate_values[:key]
-              current_array.push(hashClone)
-              # If ambiguation type is an input, and we add multiple, we ask how much quantity for each new input
-              if current_type.to_sym == :inputs 
-                hashClone[:rate][:unit] = :population 
-                hashClone[:rate][:value] = nil 
-              end 
-            end 
-          end
-        elsif params[:user_input] == "Aucun"
-          # On None -> We delete the previously chosen value from what was parsed
-          current_array.delete(current_hash)
-        end
+        nil
       ensure
         # This ambiguity has been take care of, we remove it from parsed[:ambiguities]
         parsed[:ambiguities].shift
