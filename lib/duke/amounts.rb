@@ -8,7 +8,7 @@ module Duke
 
     def handle_insurance(params)
       interval_start, interval_end = extract_time_interval(params[:user_input])
-      n = Nomen::Account.find(:insurance_expenses)
+      n = Onoma::Account.find(:insurance_expenses)
       amount = 0
       Account.of_usage(n.name).each do |account|
           amount += account.journal_entry_items_calculate(:balance, interval_start, interval_end)

@@ -291,7 +291,7 @@ module Duke
       end 
 
       def suggest_proc_from_category()
-        procs = Procedo::Procedure.of_main_category(@procedure).map {|proc| optJsonify(proc.human_name, proc.name)}
+        procs = Procedo::Procedure.of_main_category(@procedure).sort_by(&:position).map {|proc| optJsonify(proc.human_name, proc.name)}
         return {parsed: {user_input: @user_input}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.which_procedure"), procs)}
       end 
 
