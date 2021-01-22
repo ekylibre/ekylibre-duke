@@ -1,6 +1,6 @@
 module Duke
-  module Utils
-    class HarvestReceptionUtils < Duke::Utils::DukeParsing
+  module Models
+    class DukeHarvestReception < Duke::Models::DukeArticle
 
       def speak_harvest_reception(params)
         # Create validation sentence for HarvestReceptionSkill

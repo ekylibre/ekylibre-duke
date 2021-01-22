@@ -1,5 +1,5 @@
 module Duke
-  class Amounts < Duke::Utils::DukeParsing
+  class Amounts < Duke::Models::DukeArticle
     def handle_unpaid_purchases(params)
       c = Backend::Cells::TradeCountsCellsController.new
       sentence = I18n.t("duke.amounts.unpaid_purchases", amount: c.unpaid_purchases_amount.round_l(currency: Preference[:currency]))

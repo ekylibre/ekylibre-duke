@@ -6,17 +6,11 @@ module Duke
       # params procedure      -> Procedure_name 
       #        user_input     -> Sentence inputed by the user 
       #        procedure_word -> Word in user_input that matched a procedure
-      dukeInt = Duke::Utils::InterventionUtils.new(procedure: params[:procedure], user_input: params[:user_input])
+      dukeInt = Duke::Models::DukeIntervention.new(procedure: params[:procedure], user_input: params[:user_input])
       return dukeInt.guide_to_procedure unless dukeInt.ok_procedure? # help user find his procedure if current_proc is not accepted
-      dukeInt.get_clean_sentence  # getting cleaned user_input
-      dukeInt.extract_date_and_duration  # Finding when it happened and how long it lasted
-      dukeInt.tag_specific_targets  # Tag the specific types of targets for this intervention
-      dukeInt.extract_specifics  # Then extract every possible user_specifics elements form the sentence (here : inputs, workers, equipments, targets)  
-      dukeInt.add_input_rate  # Look for a specified rate for the input, or attribute nil
-      dukeInt.extract_intervention_readings  # extract_readings 
-      dukeInt.check_for_ambiguities # Loof for ambiguities in what has been parsed
-      dukeInt.targets_from_cz # Try and create targets from cultivableZones and Varieties (for :plant_farming) 
-      return dukeInt.to_ibm(modifiable: dukeInt.modification_candidates)
+      dukeInt.parse_sentence(proc_word: params[:procedure_word]) # Parse user sentence
+      byebug
+      return dukeInt.to_ibm(modifiable: dukeInt.modification_candidates) # return Json with what'll be displayed on .click modify-btn
     end
 
     def handle_modify_specific(params)
@@ -24,16 +18,11 @@ module Duke
       # params parsed     -> previously parsed items 
       #        user_input -> Sentence inputed by the user 
       #        specific   -> Type of specific to be parsed (target, input, doer ..)
-      dukeInt = Duke::Utils::InterventionUtils.new.recover_from_hash(params[:parsed])
-      tmpInt = Duke::Utils::InterventionUtils.new(procedure: dukeInt.procedure,  date: dukeInt.date, user_input: params[:user_input])
-      tmpInt.get_clean_sentence
-      tar_attributes = (tmpInt.tag_specific_targets if params[:specific].to_sym.eql? :targets)||nil
-      tmpInt.extract_specifics(jsonD: tmpInt.to_jsonD(tar_attributes, params[:specific], :procedure, :date, :user_input))
-      tmpInt.add_input_rate if params[:specific].to_sym == :inputs 
-      dukeInt.concatenate_int(tmpInt.to_jsonD(tar_attributes, params[:specific], :procedure, :date, :user_input))
-      dukeInt.targets_from_cz if tar_attributes.present? && Procedo::Procedure.find(dukeInt.procedure).activity_families.include?(:plant_farming)
-      dukeInt.check_for_ambiguities(jsonD: dukeInt.to_jsonD(tar_attributes, params[:specific], :procedure, :date, :user_input))
-      dukeInt.spoken += " - #{tmpInt.user_input}"
+      byebug
+      dukeInt = Duke::Models::DukeIntervention.new.recover_from_hash(params[:parsed])
+      tmpInt = Duke::Models::DukeIntervention.new(procedure: dukeInt.procedure,  date: dukeInt.date, user_input: params[:user_input])
+      tmpInt.parse_specific(params[:specific])
+      dukeInt.join_specific(int: tmpInt, specific: params[:specific])
       return dukeInt.to_ibm
     end
 
@@ -41,14 +30,10 @@ module Duke
       # Function called when user wants to modify his intervention's temporality
       # params : user_input -> Sentence inputed by the user 
       #          parsed     -> What was previously parsed
-      dukeInt = Duke::Utils::InterventionUtils.new.recover_from_hash(params[:parsed])
-      tmpInt = Duke::Utils::InterventionUtils.new(procedure: dukeInt.procedure,  date: dukeInt.date, user_input: params[:user_input])
-      tmpInt.get_clen_sentence
-      tmpInt.extract_date_and_duration
-      # Choose date & duration between previous value & new one
-      dukeInt.choose_date(tmpInt.date)
-      dukeInt.choose_duration(tmpInt.duration)
-      dukeInt.spoken += " - #{params[:user_input]}"
+      dukeInt = Duke::Models::DukeIntervention.new.recover_from_hash(params[:parsed])
+      tmpInt = Duke::Models::DukeIntervention.new(procedure: dukeInt.procedure,  date: dukeInt.date, user_input: params[:user_input])
+      tmpInt.parse_temporality
+      dukeInt.join_temporality(tmpInt)
       return dukeInt.to_ibm
     end
 
@@ -58,17 +43,14 @@ module Duke
       #          parsed     -> What was previously parsed 
       #          quantity   -> Number parsed by IBM 
       #          optional   -> Index of input that needs modification inside parsed[:inputs], Integer
-      dukeInt = Duke::Utils::InterventionUtils.new.recover_from_hash(params[:parsed])
-      value = dukeInt.extract_number_parameter(params[:quantity], params[:user_input])
-      # If there's no number, redirect
-      if value.nil?
-        dukeInt.retry += 1
-        return dukeInt.to_ibm
-      end
-      # Otherwise add value for the given input (we get it via it's index in parsed[:inputs])
-      dukeInt.inputs[params[:optional]][:rate][:value] = value 
-      dukeInt.spoken += " - #{params[:user_input]}"
-      dukeInt.retry = 0
+      dukeInt = Duke::Models::DukeIntervention.new.recover_from_hash(params[:parsed])
+      value = dukeInt.extract_number_parameter(params[:quantity])
+      unless val.nil? 
+        # Otherwise add value for the given input (we get it via it's index in parsed[:inputs])
+        dukeInt.inputs[params[:optional]][:rate][:value] = value 
+        dukeInt.update_description(params[:user_input])
+        dukeInt.reset_retries
+      end 
       return dukeInt.to_ibm
     end
 
@@ -76,20 +58,10 @@ module Duke
       # Function called to find which targets were selected by the user when multiple choice is available for vegetal procedures
       # params : user_input -> Sentence inputed by the user 
       #          parsed     -> What was previously parsed 
-      dukeInt = Duke::Utils::InterventionUtils.new.recover_from_hash(params[:parsed])
-      tar_type = Procedo::Procedure.find(dukeInt.procedure).parameters.find {|param| param.type == :target}.name
-      # If response type matches a multiple click response
-      if params[:user_input].match(/^(\d{1,5}(\|{3}|\b))*$/)
-        # Creating a list with all integers corresponding to targets.ids chosen by the user
-        every_choices = params[:user_input].split(/[|]/).map{|num| num.to_i}
-        # For each target, if the key is in every_choices, we append the key to the targets
-        parsed[tar_type] = parsed[tar_type].map{|tar| tar.except!(:potential) if every_choices.include? tar[:key] }.compact
-      else 
-        # If user didn't validate a click answer, we remove every potential targets
-        parsed[tar_type] = []
-      end 
-      what_next, sentence, optional = redirect(parsed)
-      return  { parsed: parsed, redirect: what_next, sentence: sentence, optional: optional}
+      dukeInt = Duke::Models::DukeIntervention.new.recover_from_hash(params[:parsed])
+      dukeInt.user_input = params[:user_input] 
+      dukeInt.parse_multiple_targets
+      return dukeInt.to_ibm
     end 
 
     def handle_parse_disambiguation(params)
@@ -97,11 +69,12 @@ module Duke
       # params : user_input -> Sentence inputed by the user, or data the user clicked
       #          parsed     -> What was previously parsed 
       #          optional   -> The JSON with every ambiguity choices, the title, and the description
-      parsed = params[:parsed]
+      dukeInt = Duke::Models::DukeIntervention.new.recover_from_hash(params[:parsed])
+      # TODO : Create a OptJson object
       # Retrieving id of element we'll modify
       current_id = params[:optional].first[:description][:id]
       # Find the type of element (:input, :plant ..) and the corresponding array from the previously parsed items, then find the correct hash
-      current_type, current_array = parsed.find { |key, value| value.is_a?(Array) and value.any? { |subhash| subhash[:key] == current_id}}
+      current_type, current_array = dukeInt.to_jsonD.find { |key, value| value.is_a?(Array) and value.any? { |subhash| subhash[:key] == current_id}}
       current_hash = current_array.find {|hash| hash[:key] == current_id}
       current_array.delete(current_hash)
       begin

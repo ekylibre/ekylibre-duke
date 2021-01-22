@@ -1,12 +1,17 @@
 module Duke
-  module Utils
-    class InterventionUtils < Duke::Utils::DukeParsing
-      attr_accessor :procedure, :spoken, :inputs, :workers, :equipments, :duration, :date, :user_input, :retry, :plant, :cultivation, :crop_groups, :land_parcel, :cultivablezones, :activity_variety 
+  module Models
+    class DukeIntervention < Duke::Models::DukeArticle
+      
+      attr_accessor :procedure, :inputs, :workers, :equipments, :retry, :plant, :cultivation, :crop_groups, :land_parcel, :cultivablezones, :activity_variety
+      attr_reader :specific
+
       def initialize(**args)
-        @procedure, user_input = nil, nil
-        @inputs, @workers, @equipments, @crop_group = [], [], [], []
-        @retry, @duration, @date = 0, 0, 0
+        super()
+        @procedure = nil
+        @inputs, @workers, @equipments, @crop_group = Array.new(4, Duke::Models::DukeMatchingArray.new)
+        @retry = 0
         args.each{|k, v| instance_variable_set("@#{k}", v)}
+        @description = @user_input.clone
       end 
 
       def recover_from_hash(jsonD) 
@@ -18,27 +23,78 @@ module Duke
         return ActiveSupport::HashWithIndifferentAccess.new(self.as_json) if args.empty?
         return ActiveSupport::HashWithIndifferentAccess.new(Hash[args.flatten.map{|arg| [arg, self.send(arg)] if self.respond_to? arg}.compact])
       end 
+      
+      def update_description(ds)
+        @description += " - #{ds}"
+      end 
 
-      def concatenate_int(jsonD)
-        full_jsonD = self.to_jsonD.merge(jsonD)
+      def join_specific(int:, sp:)
+        full_jsonD = self.to_jsonD.merge(int.to_jsonD(int.specific, :ambiguities))
         self.recover_from_hash(full_jsonD)
+        self.targets_from_cz if int.specific != sp && Procedo::Procedure.find(@procedure).activity_families.include?(:plant_farming)
+        self.update_description(int.description)
+      end 
+
+      def parse_multiple_targets 
+        tar_type = Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name
+        if params[:user_input].match(/^(\d{1,5}(\|{3}|\b))*$/) # If response type matches a multiple click response
+          every_choices = @user_input.split(/[|]/).map{|num| num.to_i}  # Creating a list with all integers corresponding to targets.ids chosen by the user
+          new_tars = self.instance_variable_get("@#{tar_type}").map{|tar| tar.except!(:potential) if every_choices.include? tar[:key] }.compact  # if the key is in every_choices, we akeep it
+        else 
+          new_tars = Duke::Models::DukeMatchingArray.new
+        end 
+        self.instance_variable_set("@#{tar_type}", new_tars)
+      end 
+
+      def join_temporality(int)
+        self.choose_date(int.date)
+        self.choose_duration(int.duration)
+        self.update_description(int.description)
+      end 
+
+      def extract_number_parameter(value)
+        val = super(value) 
+        @retry += 1 if val.nil? 
+        val 
+      end 
+
+      def reset_retries
+        @retry = 0
+      end 
+
+      def parse_temporality(proc_word: nil)
+        self.get_clean_sentence(proc_word: proc_word)
+        self.extract_date_and_duration
       end 
 
       def get_clean_sentence(proc_word: nil)
-        @spoken = @user_input.clone
+        @description = @user_input.clone
         unless proc_word.nil?
           @user_input = @user_input.gsub(proc_word, "")
         end 
-        @user_input = clear_string(@user_input)
+        @user_input = clear_string
       end 
 
-      def extract_specifics(jsonD: self.to_jsonD, level: 0.89)
-        extract_user_specifics(@user_input, jsonD, level)
-        jsonD.each {|key, value| self.instance_variable_set("@#{key}", value)}
+      def parse_sentence(proc_word: nil)
+        self.parse_temporality(proc_word: proc_word)  # getting cleaned user_input and finding when it happened and how long it lasted
+        self.tag_specific_targets  # Tag the specific types of targets for this intervention
+        self.extract_user_specifics  # Then extract every possible user_specifics elements form the sentence (here : inputs, workers, equipments, targets)  
+        self.add_input_rate  # Look for a specified rate for the input, or attribute nil
+        self.extract_intervention_readings  # extract_readings 
+        self.check_for_ambiguities # Loof for ambiguities in what has been parsed
+        self.targets_from_cz # Try and create targets from cultivableZones and Varieties (for :plant_farming) 
       end 
 
-      def check_for_ambiguities(jsonD: self.to_jsonD, level: 0.05)
-        @ambiguities = find_ambiguity(jsonD, @user_input, level)
+      def parse_specific(sp)
+        self.get_clean_sentence
+        @specific = (self.tag_specific_targets if sp.to_sym.eql? :targets)||sp
+        self.extract_user_specifics(jsonD: self.to_jsonD(@specific, :procedure, :date, :user_input))
+        self.add_input_rate if sp.to_sym == :inputs 
+        self.check_for_ambiguities
+      end 
+
+      def check_for_ambiguities(level: 0.05)
+        find_ambiguity(level: level)
       end 
 
       def to_ibm(**opt)
@@ -128,13 +184,13 @@ module Duke
 
       def tag_specific_targets()
         # Creates entry for each proc-specific target type with empty array inside what's about to be parsed 
-        @crop_groups = [] 
+        @crop_groups = Duke::Models::DukeMatchingArray.new
         if (Procedo::Procedure.find(@procedure).activity_families & [:vine_farming]).any?
-          self.instance_variable_set("@#{Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name}".to_sym, [])
+          self.instance_variable_set("@#{Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name}".to_sym, Duke::Models::DukeMatchingArray.new)
           return Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name, :crop_groups
         else
-          @cultivablezones = [] 
-          @activity_variety = []
+          @cultivablezones = Duke::Models::DukeMatchingArray.new
+          @activity_variety = Duke::Models::DukeMatchingArray.new
           return :cultivablezones, :activity_variety, :crop_groups
         end 
       end 
@@ -169,17 +225,18 @@ module Duke
         return dynamic_options(I18n.t("duke.interventions.ask.what_modify"), candidates)
       end 
 
-      def extract_date_and_duration()
+      def extract_date_and_duration
         # Regrouping Date & Duration extraction, and adding a global regex that searches for both at the same time
         whole_temp = @user_input.match(/(de|à|a) *\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b *(jusqu\')?(a|à) *\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b/)
+        #TODO : fix this whole temp
         if whole_temp
           @user_input = @user_input.gsub(whole_temp[0], "")
-          day = extract_date(@user_input)
+          day = extract_date
           @date =  DateTime.new(day.year, day.month, day.day, hour.hour, hour.min, hour.sec, "+0#{Time.now.utc_offset / 3600}:00"),
           @duration =  ((extract_hour(whole_temp[0].split(/\b(a|à)/)[2]) - extract_hour(whole_temp[0].split(/\b(a|à)/)[0]))* 24 * 60).to_i
         end
-        @duration = extract_duration(@user_input)
-        @date = extract_date(@user_input)
+        self.extract_duration
+        self.extract_date
       end
 
       def add_input_rate()
@@ -244,7 +301,7 @@ module Duke
       end 
       
       def ok_procedure?() 
-        return false if @procedure.nil?
+        return false if @procedure.blank?
         return true if Procedo::Procedure.find(@procedure).present? && (Procedo::Procedure.find(@procedure).activity_families & [:vine_farming, :plant_farming]).any?
         if @procedure.scan(/[|]/).present? && !Activity.availables.any? {|act| act[:family] != :vine_farming}
           @procedure = @procedure.split(/[|]/).first
@@ -254,7 +311,7 @@ module Duke
       end 
 
       def guide_to_procedure() 
-        if @procedure.nil?
+        if @procedure.blank?
           return (suggest_categories_from_fam(exclusive_farming_type) if exclusive_farming_type.present?) ||asking_intervention_family
         elsif @procedure.scan(/[&]/).present? 
           if @procedure.split(/[&]/).size == 1 
@@ -274,19 +331,19 @@ module Duke
       end 
 
       def asking_intervention_family
-        families = [:plant_farming, :vine_farming].map{|fam| optJsonify(Nomen::ActivityFamily[fam].human_name, fam) }
+        families = [:plant_farming, :vine_farming].map{|fam| optJsonify(Onoma::ActivityFamily[fam].human_name, fam) }
         families.push(optJsonify(I18n.t("duke.interventions.cancel"), :cancel))
         return {parsed: {user_input: @user_input}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_family"), families)}
       end 
 
       def suggest_categories_from_fam(family) 
-        categories = Nomen::ProcedureCategory.select { |c| c.activity_family.include?(family.to_sym) and !Procedo::Procedure.of_main_category(c).empty? }.map{|cat|optJsonify(cat.human_name, "#{cat.name}&")}
+        categories = Onoma::ProcedureCategory.select { |c| c.activity_family.include?(family.to_sym) and !Procedo::Procedure.of_main_category(c).empty? }.map{|cat|optJsonify(cat.human_name, "#{cat.name}&")}
         categories.push(optJsonify(I18n.t("duke.interventions.help.get_help"), :get_help))
         return {parsed: {user_input: @user_input}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_category"), categories)}
       end 
 
       def suggest_categories_from_amb()
-        categories = @procedure.split(/[&]/).map{|c| optJsonify(Nomen::ProcedureCategory.find(c).human_name, "#{c}&")}
+        categories = @procedure.split(/[&]/).map{|c| optJsonify(Onoma::ProcedureCategory.find(c).human_name, "#{c}&")}
         return {parsed: {user_input: @user_input}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_category"), categories)}
       end 
 
@@ -313,20 +370,20 @@ module Duke
         nil
       end 
 
-      def redirect()
+      def redirect
         # Decide where to redirect the user
         # If user fails twice to specify a value, we cancel
         return ["cancel", nil, nil] if @retry == 2
-        return ["ask_ambiguity", nil, @ambiguities.first] unless @ambiguities.empty?
+        return ["ask_ambiguity", nil, @ambiguities.first] unless @ambiguities.blank?
         param_type = Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name
         return ["ask_which_targets", nil , self.speak_targets] if self.send(param_type).present? && self.send(param_type).map{|tar| tar.key? :potential}.count(true) > 1
-        return ["ask_input_rate", self.speak_input_rate] if @inputs.any? {|input| input[:rate][:value].nil?}
+        return ["ask_input_rate", self.speak_input_rate] if @inputs.to_a.any? {|input| input[:rate][:value].nil?}
         return "save", self.speak_intervention, nil
       end
 
       def extract_intervention_readings()
         # Given Procedure Type, check if readings exits, if so, and if extract_#{reading} method exitsts, try to extract it
-        @readings = Hash[*Procedo::Procedure.find(@procedure).product_parameters(true).flat_map {|param| [param.type, []]}]
+        @readings = Hash[*Procedo::Procedure.find(@procedure).product_parameters(true).flat_map {|param| [param.type, Duke::Models::DukeMatchingArray.new]}]
         Procedo::Procedure.find(@procedure).product_parameters(true).map(&:readings).reject(&:empty?).flatten.each do |reading|
           begin 
             send("extract_#{reading.name}")

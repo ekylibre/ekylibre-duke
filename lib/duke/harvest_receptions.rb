@@ -1,6 +1,5 @@
 module Duke
-  class HarvestReceptions < Duke::Utils::HarvestReceptionUtils
-
+  class HarvestReceptions < Duke::Models::DukeHarvestReception
     def handle_parse_sentence(params)
       # First parsing inside harvest receptions
       # Extract date and parameters

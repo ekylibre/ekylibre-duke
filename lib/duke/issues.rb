@@ -1,5 +1,5 @@
 module Duke
-  class Issues < Duke::Utils::DukeParsing
+  class Issues < Duke::Models::DukeArticle
     def handle_equipment_issues(params)
       # Redirect User to issue declaration of a specific tool
       # params : user_input -> What the user said 

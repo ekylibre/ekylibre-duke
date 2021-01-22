@@ -1,5 +1,5 @@
 module Duke
-  class Exports < Duke::Utils::DukeParsing
+  class Exports < Duke::Models::DukeArticle
     def handle_export_tool_costs(params)
       user_input = clear_string(params[:user_input])
       parsed = {equipments: [],

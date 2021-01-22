@@ -1,5 +1,5 @@
 module Duke
-  class Redirections < Duke::Utils::DukeParsing
+  class Redirections < Duke::Models::DukeArticle
     def handle_to_activity(params)
       # Not done correctly since DukeParsing Update on activities for interventions 
       # params : user_input -> What the user said
