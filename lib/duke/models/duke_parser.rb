@@ -2,7 +2,7 @@ module Duke
   module Models
     class DukeParser < DukeArticle
 
-      attr_accessor :matching_item, :matching_list, :level, :index, :combo, :attributes
+      attr_accessor :matching_item, :matching_list, :level, :index, :combo, :attributes, :ambiguity
       attr_reader :fuzzloader
 
       def initialize(word_combo:, level: 0.89, **args) 
@@ -12,6 +12,8 @@ module Duke
         @indexes = word_combo.first 
         @combo = word_combo.last
         @level = level
+        @ambig_level = 0.05
+        @ambiguity = []
         args.each{|k, v| instance_variable_set("@#{k}", v)}
       end 
 

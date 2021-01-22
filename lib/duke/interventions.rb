@@ -9,7 +9,6 @@ module Duke
       dukeInt = Duke::Models::DukeIntervention.new(procedure: params[:procedure], user_input: params[:user_input])
       return dukeInt.guide_to_procedure unless dukeInt.ok_procedure? # help user find his procedure if current_proc is not accepted
       dukeInt.parse_sentence(proc_word: params[:procedure_word]) # Parse user sentence
-      byebug
       return dukeInt.to_ibm(modifiable: dukeInt.modification_candidates) # return Json with what'll be displayed on .click modify-btn
     end
 
@@ -18,7 +17,6 @@ module Duke
       # params parsed     -> previously parsed items 
       #        user_input -> Sentence inputed by the user 
       #        specific   -> Type of specific to be parsed (target, input, doer ..)
-      byebug
       dukeInt = Duke::Models::DukeIntervention.new.recover_from_hash(params[:parsed])
       tmpInt = Duke::Models::DukeIntervention.new(procedure: dukeInt.procedure,  date: dukeInt.date, user_input: params[:user_input])
       tmpInt.parse_specific(params[:specific])
@@ -69,23 +67,22 @@ module Duke
       # params : user_input -> Sentence inputed by the user, or data the user clicked
       #          parsed     -> What was previously parsed 
       #          optional   -> The JSON with every ambiguity choices, the title, and the description
+      byebug
       dukeInt = Duke::Models::DukeIntervention.new.recover_from_hash(params[:parsed])
       # TODO : Create a OptJson object
       # Retrieving id of element we'll modify
-      current_id = params[:optional].first[:description][:id]
-      # Find the type of element (:input, :plant ..) and the corresponding array from the previously parsed items, then find the correct hash
-      current_type, current_array = dukeInt.to_jsonD.find { |key, value| value.is_a?(Array) and value.any? { |subhash| subhash[:key] == current_id}}
-      current_hash = current_array.find {|hash| hash[:key] == current_id}
-      current_array.delete(current_hash)
+      ds = params[:ambiguity_description]
+      current_hash = dukeInt.instance_variable_get("#{ds["itm_type"]}").find_by_key(ds["key"])
+      dukeInt.instance_variable_get("#{ds["itm_type"]}").delete(itm_to_change)
       begin
         # If the user_input can be turned to hash(es) splitted by ||| -> user clicked on value(s), we replace the name & key from the previously chosen one
         params[:user_input].split(/[|]{3}/).map{|chosen| eval(chosen)}.each do |chosen_one| 
-          current_array.push(current_hash.merge(chosen_one))
           # If the type of ambiguation is an input, make sure quantity handlers are concording with new input, otherwise remove rate infos
           if current_type.to_sym == :inputs && (([:net_mass, :mass_area_density].include? current_hash[:rate][:unit].to_sym and Matter.find_by_id(current_hash[:key])&.net_mass.to_f == 0) || ([:net_volume, :volume_area_density].include? current_hash[:rate][:unit].to_sym and Matter.find_by_id(current_hash[:key])&.net_volume.fo_f == 0))
-              current_hash[:rate][:unit] = :population 
-              current_hash[:rate][:value] = nil 
+              chosen_one[:rate][:unit] = :population 
+              chosen_one[:rate][:value] = nil 
           end 
+          dukeInt.instance_variable_get("#{ds["itm_type"]}").push(current_hash.merge(chosen_one))
         end 
       rescue
         nil

@@ -1,7 +1,7 @@
 module Duke
   module Models
     class DukeArticle
-
+      include Duke::BaseDuke
       attr_accessor :description, :date, :duration, :user_input
       @@user_specific_types = [:financial_year, :entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :equipments, :workers, :inputs, :press] 
       @@month_hash =  {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9, "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12 }
@@ -245,26 +245,45 @@ module Duke
         return Hash[idx_cb.map{|i1, i2| [(i1..i2-1).to_a, all_words[i1..i2-1].join(" ")] if 4>= i2 - i1}.compact]
       end
 
-      def is_number? string
-        true if Float(string) rescue false
-      end
-
+      #TODO : Rename :input, :tool and jsut do returnTrue if Procedo::Procedure.find...item_type.empty?
       def empty_iterator item_type 
         return true if item_type == :inputs && Procedo::Procedure.find(@procedure).parameters_of_type(:input).empty? 
         return true if item_type == :crop_groups && (defined? CropGroup).nil?
         return false
       end 
-        
-      def find_iterator(item_type)
+
+      def tar_from_procedure
+        if (Procedo::Procedure.find(@procedure).activity_families & [:vine_farming]).any?
+          return Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name, :crop_groups
+        else  
+          return :cultivablezones, :activity_variety, :crop_groups
+        end 
+      end 
+
+      def name_attr(item_type)
+        # Returns correct attributes that display interesting name to iterate over, given what item_type we're looking for
+        if item_type == :activity_variety
+          attribute = :cultivation_variety_name
+        elsif item_type == :entities
+          attribute = :full_name
+        elsif item_type == :financial_year
+          attribute = :code 
+        else 
+          attribute = :name
+        end
+        attribute
+      end 
+
+      def iterator(item_type) 
         # Returns correct array to iterate over, given what item_type we're looking 
         if empty_iterator(item_type)
-          iterator = []
+          iterator= []
         elsif item_type == :inputs
-          iterator = Matter.availables(at: @date.to_datetime).of_expression(Procedo::Procedure.find(@procedure).parameters_of_type(:input).collect(&:filter).join(" or "))
+          iterator= Matter.availables(at: @date.to_datetime).of_expression(Procedo::Procedure.find(@procedure).parameters_of_type(:input).collect(&:filter).join(" or "))
         elsif item_type == :crop_groups
-          iterator = CropGroup.all
+          iterator= CropGroup.all
         elsif item_type == :financial_year 
-          iterator = FinancialYear.all
+          iterator= FinancialYear.all
         elsif item_type == :activity_variety
           iterator = Activity.select('distinct on (cultivation_variety) *')
         elsif item_type == :press
@@ -286,96 +305,42 @@ module Duke
         elsif item_type == :cultivation
           iterator = Product.availables(at: @date.to_datetime).of_expression("is land_parcel or is plant")
         end
-        iterator
+        return iterator
       end 
 
-      def find_name_attribute(item_type)
-        # Returns correct attributes that display interesting name to iterate over, given what item_type we're looking for
-        if item_type == :activity_variety
-          attribute = :cultivation_variety_name
-        elsif item_type == :entities
-          attribute = :full_name
-        elsif item_type == :financial_year
-          attribute = :code 
-        else 
-          attribute = :name
-        end
-        attribute
-      end 
-
-      # Creates a Json for an option
-      def optJsonify(label, text=label)
-        {label: label,
-          value: {
-            input: {
-              text: text
-            }
-          }
-        }
-      end 
-
-      # Creates a dynamic options array that can be displayed as options to ibm
-      def dynamic_options(sentence, options, description = "")
-        optJson = {} 
-        optJson[:description] = description
-        optJson[:response_type] = "option"
-        optJson[:title] = sentence
-        optJson[:options] = options
-        return [optJson]
+      def ambiguities_attributes(item_type)
+        type =  if [:crop_groups, :plant, :land_parcel, :cultivation].include?(item_type)
+                  tar_from_procedure
+                else 
+                  [item_type]
+                end 
+        return type.map{|ty| [ty, iterator(ty), name_attr(ty)]}
       end 
       
       # TODO : Create groups of what to look for : targets -> [:plant, :crop_group, :...], make giga iterator, with bigger matching level
-      def find_ambiguity(level: 0.05)
-        # Find ambiguities in what's been parsed, ie items with close fuzzy match for the best words that matched
-        @ambiguities = []
+      def find_ambiguity
+        # Find ambiguities in what's been parsed, ie items with close fuzzy match the best words that matched
         self.as_json.each do |key, reco|
           if @@user_specific_types.include?(key.to_sym)
-            iterator = find_iterator(key.to_sym)
+            ambiguity_attr = ambiguities_attributes(key.to_sym)
             reco.each do |anItem|
-              unless anItem[:distance] == 1
-                anItem_name = @user_input.split(/\s+|\'/)[anItem[:indexes][0]..anItem[:indexes][-1]].join(" ")
-                ambiguity_check(anItem, anItem_name, level, ambiguities, iterator)
-              end
+              ambiguity_check(itm: anItem, ambiguity_attr: ambiguity_attr, itm_type: key) unless anItem.distance == 1
             end
           end
         end
       end
 
-      def ambiguity_check(item_hash, what_matched, level, ambiguities, iterator, min_level=0)
+      def ambiguity_check(itm:, ambiguity_attr:, itm_type:)
         # Method to check ambiguity about a specific item
-        ambig = []
-        # For each element of the iterator (ex : for crop_groups => CropGroup.all ), if distances is close (+/-level) to item that matched it's part of the ambiguity possibilities
-        iterator.each do |product|
-          if item_hash[:key] != product[:id] and (item_hash[:distance] - @@fuzzloader.getDistance(clear_string(product[:name]), clear_string(what_matched))).between?(min_level,level)
-            ambig.push(optJsonify(product[:name], "{:key => #{product[:id]}, :name => \"#{product[:name]}\"}"))
-          end
-        end
-        # If ambiguous items, we add the current chosen element this ambig, and an element with what_matched do display to the user which words cuased problems
-        unless ambig.empty?
-          ambig.push(optJsonify(item_hash[:name], "{:key => #{item_hash[:key]}, :name => \"#{item_hash[:name]}\"}"))
-          optDescription = {level: level, id: item_hash[:key], match: what_matched}
-          optSentence = I18n.t("duke.ambiguities.ask", item: what_matched)
-          optJson = dynamic_options(optSentence, ambig, optDescription)
-          ambiguities.push(optJson)
-        end
-        return ambiguities
+        ambiguity = Duke::Models::DukeAmbiguity.new(itm: itm, ambiguity_attr: ambiguity_attr, itm_type: itm_type).check_ambiguity
+        @ambiguities.push(ambiguity) unless ambiguity.empty?
       end 
-
-      def clear_string(fstr=@user_input)
-        # Remove useless elements from user sentence
-        useless_dic = [/\bnum(e|é)ro\b/, /n ?°/, /(#|-|_|\\)/]
-        useless_dic.each do |rgx|
-          fstr = fstr.gsub(rgx, "")
-        end
-        return fstr.gsub(/\s+/, " ").strip.downcase.split(" | ").first
-      end
 
       def extract_user_specifics(jsonD: self.to_jsonD, level: 0.89)
         # Function used for extracting specific elements of every type that's in parsed & @user_specifics, with minimum matching % level from user_input
         # Find all types that we're gonna check, and their values
-        byebug
         user_specifics = jsonD.select{ |key, value| @@user_specific_types.include?(key.to_sym)}
-        attributes = user_specifics.to_h{|key, mArr|[key, {iterator: find_iterator(key.to_sym), name_attribute: find_name_attribute(key.to_sym), list: mArr}]}
+        attributes = user_specifics.to_h{|key, mArr|[key, {iterator: iterator(key.to_sym), name_attribute: name_attr(key.to_sym), list: mArr}]}
         create_words_combo.each do |combo| # Creating all combo_words from user_input
           parser = Duke::Models::DukeParser.new(word_combo: combo, attributes: attributes)
           parser.parse

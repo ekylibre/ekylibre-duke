@@ -8,20 +8,23 @@ module Duke
         super()
       end 
 
-      def as_json() 
+      def as_json
         self
       end 
 
+      def find_by_key(key)
+        self.find{|hash| hash.key = key}
+      end 
+
       def add_to_recognized(new_mItem, all_lists)
-        byebug
         #Function that adds elements to a list of recognized items only if no other elements uses the same words to match or if this word has a lower fuzzmatch
         #If no element inside any of the lists has the same words used to match an element (overlapping indexes), and no duplicate => we push the hash to the list
         if not all_lists.any? {|aList| aList.any_overlap_or_duplicate? new_mItem}
           self.push(new_mItem)
         # Else if one or multiple elements uses the same words -> if the distance is greater for this hash -> Remove other ones and add this one
-        elsif not all_lists.any? {|aList| aList.any_overlap_and_lower}
+        elsif not all_lists.any? {|aList| aList.any_overlap_and_lower? new_mItem}
           # Check for duplicates in the list, if clear : -> remove value from any list with indexes overlapping and add current match to our list
-          unless self.key_duplicate?(new_mItem)
+          unless self.any_duplicate?(new_mItem)
             all_lists.find{|aList| aList.has_overlapping(new_mItem)}.delete_overlapping(new_mItem.indexes)
             self.push(new_mItem)
           end

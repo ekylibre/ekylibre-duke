@@ -2,7 +2,7 @@ module Duke
   module Models
     class DukeIntervention < Duke::Models::DukeArticle
       
-      attr_accessor :procedure, :inputs, :workers, :equipments, :retry, :plant, :cultivation, :crop_groups, :land_parcel, :cultivablezones, :activity_variety
+      attr_accessor :procedure, :inputs, :workers, :equipments, :retry, :plant, :cultivation, :crop_groups, :land_parcel, :cultivablezones, :activity_variety, :ambiguities
       attr_reader :specific
 
       def initialize(**args)
@@ -10,10 +10,12 @@ module Duke
         @procedure = nil
         @inputs, @workers, @equipments, @crop_group = Array.new(4, Duke::Models::DukeMatchingArray.new)
         @retry = 0
+        @ambiguities = []
         args.each{|k, v| instance_variable_set("@#{k}", v)}
         @description = @user_input.clone
       end 
 
+      # TODO : If key in :input, worker ,equipm, cropgr -> Create new DukeMatchingArrayObject with it, so create .from_json method inside method
       def recover_from_hash(jsonD) 
         jsonD.each{|key, value| self.instance_variable_set("@#{key}", value)}
         self
@@ -81,7 +83,7 @@ module Duke
         self.extract_user_specifics  # Then extract every possible user_specifics elements form the sentence (here : inputs, workers, equipments, targets)  
         self.add_input_rate  # Look for a specified rate for the input, or attribute nil
         self.extract_intervention_readings  # extract_readings 
-        self.check_for_ambiguities # Loof for ambiguities in what has been parsed
+        self.find_ambiguity # Loof for ambiguities in what has been parsed
         self.targets_from_cz # Try and create targets from cultivableZones and Varieties (for :plant_farming) 
       end 
 
@@ -90,15 +92,14 @@ module Duke
         @specific = (self.tag_specific_targets if sp.to_sym.eql? :targets)||sp
         self.extract_user_specifics(jsonD: self.to_jsonD(@specific, :procedure, :date, :user_input))
         self.add_input_rate if sp.to_sym == :inputs 
-        self.check_for_ambiguities
-      end 
-
-      def check_for_ambiguities(level: 0.05)
-        find_ambiguity(level: level)
+        self.find_ambiguity
       end 
 
       def to_ibm(**opt)
         what_next, sentence, optional = self.redirect
+        self.instance_variables.each do |attr| 
+          self.instance_variable_set(attr, self.instance_variable_get(attr).to_a) if self.instance_variable_get(attr).class.eql? Duke::Models::DukeMatchingArray
+        end 
         return { parsed: self.to_jsonD, sentence: sentence, redirect: what_next, optional: optional}.merge(opt)
       end 
 
@@ -182,16 +183,10 @@ module Duke
         return "#{@duration/60}#{I18n.t("duke.interventions.hour")}"
       end 
 
-      def tag_specific_targets()
-        # Creates entry for each proc-specific target type with empty array inside what's about to be parsed 
-        @crop_groups = Duke::Models::DukeMatchingArray.new
-        if (Procedo::Procedure.find(@procedure).activity_families & [:vine_farming]).any?
-          self.instance_variable_set("@#{Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name}".to_sym, Duke::Models::DukeMatchingArray.new)
-          return Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name, :crop_groups
-        else
-          @cultivablezones = Duke::Models::DukeMatchingArray.new
-          @activity_variety = Duke::Models::DukeMatchingArray.new
-          return :cultivablezones, :activity_variety, :crop_groups
+      def tag_specific_targets
+        # Creates entry for each proc-specific target type with empty array inside what's about to be parsed
+        tar_from_procedure.each do |targ|
+          self.instance_variable_set("@#{targ}", Duke::Models::DukeMatchingArray.new)
         end 
       end 
 
