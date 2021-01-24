@@ -45,7 +45,7 @@ module Duke
             end
           else
             # If nothing matched, we return the basic duration => 1 hour
-            delta_in_mins = 60
+            delta_in_mins = [[8, 12], [14, 17]]
           end 
           return delta_in_mins
       end
@@ -223,7 +223,7 @@ module Duke
 
       def choose_duration(duration1, duration2)
         #Default duration is 60, so select the first one if differents, otherwise the second
-        if duration1 != 60
+        if (!duration1.kind_of? Array)||(duration1.kind_of?(Array) && duration1.size < 2)
           return duration1
         else
           return duration2

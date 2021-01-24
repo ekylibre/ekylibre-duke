@@ -46,8 +46,8 @@ module Duke
             sentence += "<br>&#8226 #{I18n.t("duke.interventions.readings.#{rd_hash[:indicator_name]}")} : #{(I18n.t("duke.interventions.readings.#{rd_hash.values.last}") if !is_number?(rd_hash.values.last))|| rd_hash.values.last}"
           end  
         end  
-        sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{parsed[:date].to_datetime.strftime("%d/%m/%Y - %H:%M")}"
-        sentence += "<br>&#8226 #{I18n.t("duke.interventions.duration")} : #{speak_duration(parsed[:duration])}" 
+        sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{parsed[:date].to_datetime.strftime("%d/%m/%Y")}"
+        sentence += "<br>&#8226 #{I18n.t("duke.interventions.working_period")} : #{speak_working_periods(parsed[:date], parsed[:duration])}" 
         return sentence.gsub(/, <br>&#8226/, "<br>&#8226")
       end
 
@@ -65,6 +65,16 @@ module Duke
         tar_type = Procedo::Procedure.find(parsed[:procedure]).parameters.find {|param| param.type == :target}.name
         candidates = parsed[tar_type].map{|tar| optJsonify(tar[:name], tar[:key].to_s) if tar.key? :potential}.compact
         return dynamic_options(I18n.t("duke.interventions.ask.what_targets", tar: I18n.t("duke.interventions.#{tar_type}").downcase),candidates)
+      end 
+
+      def speak_working_periods(date, duration)
+        if duration.kind_of? Array 
+          return duration.map{|start, ending| I18n.t("duke.interventions.working_periods", start: "#{start}h", ending: "#{ending}h")}.join(", ")
+        else
+          starting_date = date.to_datetime.strftime("%H:%M")
+          ending_date = (date + duration.to_i.minutes).to_datetime.strftime("%H:%M")
+          return I18n.t("duke.interventions.working_periods", start: starting_date, ending: ending_date)
+        end 
       end 
 
       def speak_duration(num_in_mins)
@@ -122,9 +132,15 @@ module Duke
       end 
 
       def extract_date_and_duration(content)
-        # Regrouping Date & Duration extraction, and adding a global regex that searches for both at the same time
         whole_temp = content.match(/(de|à|a) *\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b *(jusqu\')?(a|à) *\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b/)
-        if whole_temp
+        if content.match("matin") 
+          day = extract_date(content)
+          return DateTime.new(day.year, day.month, day.day, 8, 0, 0, "+0#{Time.now.utc_offset / 3600}:00"), [[8, 12]]
+        elsif content.match("(apr(e|è)?s( |-)?midi|apr(e|è)m)")
+          day = extract_date(content)
+          return DateTime.new(day.year, day.month, day.day, 14, 0, 0, "+0#{Time.now.utc_offset / 3600}:00"), [[14, 17]]
+        # Regrouping Date & Duration extraction, and adding a global regex that searches for both at the same time
+        elsif whole_temp
           new_content = content.gsub(whole_temp[0], "")
           hour = extract_hour(whole_temp[0].split(/\b(a|à)/)[0])
           ending_hour = extract_hour(whole_temp[0].split(/\b(a|à)/)[2])
@@ -135,6 +151,20 @@ module Duke
         date = extract_date(content)
         return date, duration
       end
+
+      def change_hour(date, hour) 
+        date = date.to_datetime
+        return DateTime.new(date.year, date.month, date.day, hour, 0, 0, "+0#{Time.now.utc_offset / 3600}:00").to_s
+      end 
+
+      def working_periods_attributes(date, duration)
+        if duration.kind_of? Array 
+          wp_attr = duration.map{|start, ending| { started_at: Time.zone.parse(change_hour(date, start)) , stopped_at: Time.zone.parse(change_hour(date, ending))}}
+          return wp_attr 
+        else  
+          return [ { started_at: Time.zone.parse(date) , stopped_at: Time.zone.parse(date) + duration.to_i.minutes}]
+        end 
+      end 
 
       def add_input_rate(content, recognized_inputs, procedure)
         # Look for an input rate associated with each input and create a :rate entry for each input with value & unit

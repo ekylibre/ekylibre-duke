@@ -74,6 +74,8 @@ fra:
         get_help: "Aide concernant les interventions"
         example: "Vous pouvez saisir une intervention via Duke, avec ses différents paramètres.<br><br>Ex: &#9997 Intervention de labour sur le grand champ par Antoine ce matin pendant 4h30<br><br>A vous de jouer!"
       temporality: "Date ou Durée"
+      working_periods: "%{start}-%{ending}"
+      working_period: "Temps de travail"
       intervention: "Intervention"
       proc: "Procédure"
       group: "Groupement(s)"

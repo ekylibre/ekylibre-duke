@@ -149,7 +149,7 @@ module Duke
       # Retrieving id of element we'll modify
       current_id = params[:optional].first[:description][:id]
       # Find the type of element (:input, :plant ..) and the corresponding array from the previously parsed items, then find the correct hash
-      current_type, current_array = parsed.find { |key, value| value.is_a?(Array) and value.any? { |subhash| subhash[:key] == current_id}}
+      current_type, current_array = parsed.find { |key, value| key.to_sym != :duration && value.is_a?(Array) && value.any? { |subhash| subhash[:key] == current_id}}
       current_hash = current_array.find {|hash| hash[:key] == current_id}
       current_array.delete(current_hash)
       begin
@@ -229,7 +229,7 @@ module Duke
           attr[:readings_attributes] = rd.map{|rding| ActiveSupport::HashWithIndifferentAccess.new(rding)}
         end 
       end 
-      duration = params[:parsed][:duration].to_i
+      duration = params[:parsed][:duration]
       date = params[:parsed][:date]
       # Finally save intervention
       intervention = Intervention.create!(procedure_name: params[:parsed][:procedure],
@@ -241,7 +241,7 @@ module Duke
                                           doers_attributes: doer_attributes,
                                           targets_attributes: target_attributes,
                                           inputs_attributes: input_attributes,
-                                          working_periods_attributes:   [ { started_at: Time.zone.parse(date) , stopped_at: Time.zone.parse(date) + duration.minutes}])
+                                          working_periods_attributes: working_periods_attributes(date, duration))
       return {link: "/backend/interventions/#{intervention.id}"}
     end
   end
