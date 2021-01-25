@@ -4,11 +4,12 @@ module Duke
 
       attr_accessor :date, :duration, :user_input
 
-      def initialize 
+      def initialize(arr: nil)
         super()
+        arr.each{|item| self.push(Duke::Models::DukeMatchingItem.new(hash: item))} unless arr.nil?
       end 
 
-      def as_json
+      def as_json(*args)
         self
       end 
 

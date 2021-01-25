@@ -21,7 +21,7 @@ module Duke
       end 
 
       def amb_option(product: nil)
-        return optJsonify(@itm.name, "{:type => \"#{@type}\", :key => #{@itm.key}, :name => \"#{@itm.name}\"}") if product.nil?
+        return optJsonify(@itm.name, "{:type => \"#{@itm_type}\", :key => #{@itm.key}, :name => \"#{@itm.name}\"}") if product.nil?
         return optJsonify(product.name, "{:type => \"#{@type}\", :key => #{product.id}, :name => \"#{product.name}\"}")
       end 
 

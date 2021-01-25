@@ -17,7 +17,9 @@ module Duke
 
       # TODO : If key in :input, worker ,equipm, cropgr -> Create new DukeMatchingArrayObject with it, so create .from_json method inside method
       def recover_from_hash(jsonD) 
-        jsonD.each{|key, value| self.instance_variable_set("@#{key}", value)}
+        matchArrs = [:inputs, :workers, :equipments, :crop_group, :plant, :cultivation, :crop_groups, :land_parcel, :cultivablezones, :activity_variety]
+        jsonD.slice(*matchArrs).each{|k,v| self.instance_variable_set("@#{k}", Duke::Models::DukeMatchingArray.new(arr: v))}
+        jsonD.except(*matchArrs).each{|k,v| self.instance_variable_set("@#{k}", v)}
         self
       end 
 
@@ -46,6 +48,22 @@ module Duke
           new_tars = Duke::Models::DukeMatchingArray.new
         end 
         self.instance_variable_set("@#{tar_type}", new_tars)
+      end 
+
+      def correct_ambiguity(type:, key:)
+        current_hash = self.instance_variable_get("@#{type}").find_by_key(key)
+        self.instance_variable_get("@#{type}").delete(current_hash)
+        begin
+          @user_input.split(/[|]{3}/).map{|chosen| eval(chosen)}.each do |chosen_one| 
+            chosen_one[:rate] = {unit: :population, value: nil} if current_hash.needs_input_reinitialize?(chosen_one)
+            self.update_description(chosen_one[:name])
+            self.instance_variable_get("@#{chosen_one[:type]}").push(DukeMatchingItem.new(hash: current_hash.merge_h(chosen_one)))
+          end 
+        rescue
+          nil
+        ensure
+          @ambiguities.shift
+        end 
       end 
 
       def join_temporality(int)
@@ -179,7 +197,7 @@ module Duke
 
       def speak_duration()
         return "#{@duration} #{I18n.t("duke.interventions.mins")}" if @duration < 60 
-        return "#{@duration/60}#{I18n.t("duke.interventions.hour")}#{num_in_mins.remainder(60)}" if @duration.remainder(60) != 0
+        return "#{@duration/60}#{I18n.t("duke.interventions.hour")}#{@duration.remainder(60)}" if @duration.remainder(60) != 0
         return "#{@duration/60}#{I18n.t("duke.interventions.hour")}"
       end 
 
@@ -375,6 +393,77 @@ module Duke
         return ["ask_input_rate", self.speak_input_rate] if @inputs.to_a.any? {|input| input[:rate][:value].nil?}
         return "save", self.speak_intervention, nil
       end
+
+      def save_intervention
+        intervention_params = {procedure_name: @procedure,
+                               description: "Duke : #{@description}",
+                               state: 'done',
+                               number: '50',
+                               nature: 'record',
+                               tools_attributes: tool_attributes.to_a,
+                               doers_attributes: doer_attributes.to_a,
+                               targets_attributes: target_attributes.to_a,
+                               inputs_attributes: input_attributes.to_a,
+                               working_periods_attributes: working_periods_attributes.to_a}
+        add_readings_attributes(intervention_params)
+        it = Intervention.create!(intervention_params)
+        return it.id
+      end 
+
+      def working_periods_attributes
+        [{ started_at: Time.zone.parse(@date) , stopped_at: Time.zone.parse(@date) + @duration.minutes}]
+      end 
+
+      def add_readings_attributes params
+        @readings.delete_if{|k,v| !v.present?}.each do |key, rd|
+          params["#{key}_attributes".to_sym].each do |attr|
+            attr[:readings_attributes] = rd.map{|rding| ActiveSupport::HashWithIndifferentAccess.new(rding)}
+          end 
+        end 
+      end 
+
+      def target_attributes
+        reference_name = Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name
+        if Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.present?
+          tar = self.instance_variable_get("@#{reference_name}").map{|tar| {reference_name: reference_name, product_id: tar.key, working_zone: Product.find_by_id(tar.key).shape}}
+          cg = @crop_groups.map{|cg| CropGroup.available_crops(cg.key, "is plant or is land_parcel")}.flatten.map{|crop| {reference_name: reference_name, product_id: crop.id, working_zone: Product.find_by_id(crop.id).shape}}
+          return (tar + cg).uniq
+        end 
+      end 
+
+      def input_attributes 
+        if Procedo::Procedure.find(@procedure).parameters_of_type(:input).present?
+          return @inputs.map{|input| {reference_name: input_reference_name(input.key),
+                                      product_id: input.key,
+                                      quantity_value: input.rate[:value].to_f,
+                                      quantity_population: input.rate[:value].to_f,
+                                      quantity_handler: input.rate[:unit]}}
+        end
+      end 
+
+      def input_reference_name key 
+        Procedo::Procedure.find(@procedure).parameters_of_type(:input).find {|inp| Matter.find_by_id(key).of_expression(inp.filter)}.name
+      end 
+
+      def doer_attributes 
+        if Procedo::Procedure.find(@procedure).parameters_of_type(:doer).present?
+          return @workers.to_a.map{|wrk| {reference_name: Procedo::Procedure.find(@procedure).parameters_of_type(:doer).first.name, product_id: wrk.key}}
+        end 
+      end 
+
+      def tool_attributes 
+        if Procedo::Procedure.find(@procedure).parameters_of_type(:tool).present?
+          return @equipments.to_a.map{|tool| {reference_name: tool_reference_name(tool.key), product_id: tool.key}}
+        end 
+      end 
+
+      def tool_reference_name key
+        reference_name = Procedo::Procedure.find(@procedure).parameters_of_type(:tool).first.name
+        Procedo::Procedure.find(@procedure).parameters.find_all {|param| param.type == :tool}.each do |tool_type|
+          (reference_name = tool_type.name; break;) if Equipment.of_expression(tool_type.filter).include? Equipment.find_by_id(key)
+        end 
+        reference_name
+      end 
 
       def extract_intervention_readings()
         # Given Procedure Type, check if readings exits, if so, and if extract_#{reading} method exitsts, try to extract it

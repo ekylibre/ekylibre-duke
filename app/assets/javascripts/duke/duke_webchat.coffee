@@ -129,7 +129,7 @@
       $.each data, (index, value) ->
         if value.response_type == "text"
           if value.text.match(vars.redirection)
-            location.replace vars.base_url + value.text.match(vars.redirection)[1]
+            location.replace vars.base_url + ":3000" + value.text.match(vars.redirection)[1]
             value.text = value.text.replace(value.text.match(vars.redirection)[0], "")
             vars.empty_history = true
           if value.text.indexOf('#base-url') >= 0
