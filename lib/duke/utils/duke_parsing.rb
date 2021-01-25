@@ -45,7 +45,7 @@ module Duke
             end
           else
             # If nothing matched, we return the basic duration => 1 hour
-            delta_in_mins = 60
+            delta_in_mins = [[8, 12], [14, 17]]
           end 
           return delta_in_mins
       end
@@ -54,7 +54,7 @@ module Duke
         # Extract date from a string, and returns a dateTime object with appropriate date & time
         # Default value is Datetime.now
         now = DateTime.now
-        full_date_regex = '(\d|\d{2}) *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)( *\d{4})?'
+        full_date_regex = '(\d|\d{2})(er|eme|ème)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)( *\d{4})?'
         slash_date_regex = '(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?'
         # Extract the hour at which intervention was done
         time = extract_hour(content)
@@ -75,7 +75,7 @@ module Duke
           if full_date
             content[full_date[0]] = ""
             day = full_date[1].to_i
-            month = @@month_hash[full_date[2]]
+            month = @@month_hash[full_date[3]]
             if full_date[3].to_i.between?(now.year - 5, now.year + 1)
               year = full_date[3].to_i
             else
@@ -223,7 +223,7 @@ module Duke
 
       def choose_duration(duration1, duration2)
         #Default duration is 60, so select the first one if differents, otherwise the second
-        if duration1 != 60
+        if (!duration1.kind_of? Array)||(duration1.kind_of?(Array) && duration1.size < 2)
           return duration1
         else
           return duration2
@@ -381,12 +381,6 @@ module Duke
       # Creates a dynamic options array that can be displayed as options to ibm
       def dynamic_options(sentence, options, description = "")
         optJson = {} 
-        unless description == ""
-          if options.length <= 4 
-            options.push(optJsonify("Tous"))
-          end 
-          options.push(optJsonify("Voir plus", "SeeMore"))
-        end  
         optJson[:description] = description
         optJson[:response_type] = "option"
         optJson[:title] = sentence
@@ -423,7 +417,6 @@ module Duke
         # If ambiguous items, we add the current chosen element this ambig, and an element with what_matched do display to the user which words cuased problems
         unless ambig.empty?
           ambig.push(optJsonify(item_hash[:name], "{:key => #{item_hash[:key]}, :name => \"#{item_hash[:name]}\"}"))
-          ambig.push(optJsonify("Aucun"))
           optDescription = {level: level, id: item_hash[:key], match: what_matched}
           optSentence = I18n.t("duke.ambiguities.ask", item: what_matched)
           optJson = dynamic_options(optSentence, ambig, optDescription)

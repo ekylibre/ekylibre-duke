@@ -47,6 +47,8 @@ fra:
         which_procedure: "Quelle procédure souhaitez vous saisir ? "
         what_modify: "Quels éléments souhaitez-vous modifier ? "
         what_targets: "Selectionnez les %{tar} de cette intervention, puis validez"
+        what_family: "Je n'ai pas saisi le type d'intervention.<br>Choisissez le type de production, ou réessayez de me donner le nom exact de la procédure"
+        what_category: "Choisissez la catégorie de l'intervention, ou réessayez de me donner le nom exact de la procédure."
       units: 
         gram: "g"
         hectoliter: "hL"
@@ -68,7 +70,12 @@ fra:
         gobelet_pruning: "Gobelet"
         guyot_double_pruning: "Guyot double"
         guyot_simple_pruning: "Guyot simple"
+      help:
+        get_help: "Aide concernant les interventions"
+        example: "Vous pouvez saisir une intervention via Duke, avec ses différents paramètres.<br><br>Ex: &#9997 Intervention de labour sur le grand champ par Antoine ce matin pendant 4h30<br><br>A vous de jouer!"
       temporality: "Date ou Durée"
+      working_periods: "%{start}-%{ending}"
+      working_period: "Temps de travail"
       intervention: "Intervention"
       proc: "Procédure"
       group: "Groupement(s)"
@@ -84,8 +91,9 @@ fra:
       target: "Culture(s)"
       doer: "Opérateur(s)"
       land_parcel: "Parcelle(s)"
-      vegetal_production: "Prod. Veg."
-      viti_production: "Prod. Viti."
+      false_vine_production: "Prod. Veg."
+      true_vine_production: "Prod. Viti."
+      cancel: "Je ne souhaite pas saisir une intervention"
     harvest_reception:
       ask:
         save_harvest_reception_0: "Validez vous cette réception de vendange"
@@ -112,4 +120,4 @@ fra:
       vendange_nature: "Type de vendange"
       last_load: "Dernier chargement"
     ambiguities: 
-      ask: "Veuillez préciser le terme '%{item}'"
+      ask: "Veuillez séléctionner les éléments correspondants au terme '%{item}', puis validez"

@@ -46,8 +46,8 @@ module Duke
             sentence += "<br>&#8226 #{I18n.t("duke.interventions.readings.#{rd_hash[:indicator_name]}")} : #{(I18n.t("duke.interventions.readings.#{rd_hash.values.last}") if !is_number?(rd_hash.values.last))|| rd_hash.values.last}"
           end  
         end  
-        sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{parsed[:date].to_datetime.strftime("%d/%m/%Y - %H:%M")}"
-        sentence += "<br>&#8226 #{I18n.t("duke.interventions.duration")} : #{speak_duration(parsed[:duration])}" 
+        sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{parsed[:date].to_datetime.strftime("%d/%m/%Y")}"
+        sentence += "<br>&#8226 #{I18n.t("duke.interventions.working_period")} : #{speak_working_periods(parsed[:date], parsed[:duration])}" 
         return sentence.gsub(/, <br>&#8226/, "<br>&#8226")
       end
 
@@ -67,6 +67,16 @@ module Duke
         return dynamic_options(I18n.t("duke.interventions.ask.what_targets", tar: I18n.t("duke.interventions.#{tar_type}").downcase),candidates)
       end 
 
+      def speak_working_periods(date, duration)
+        if duration.kind_of? Array 
+          return duration.map{|start, ending| I18n.t("duke.interventions.working_periods", start: "#{start}h", ending: "#{ending}h")}.join(", ")
+        else
+          starting_date = date.to_datetime.strftime("%H:%M")
+          ending_date = (date + duration.to_i.minutes).to_datetime.strftime("%H:%M")
+          return I18n.t("duke.interventions.working_periods", start: starting_date, ending: ending_date)
+        end 
+      end 
+
       def speak_duration(num_in_mins)
         if num_in_mins < 60 
           return "#{num_in_mins} #{I18n.t("duke.interventions.mins")}"
@@ -76,28 +86,6 @@ module Duke
           else 
             return "#{num_in_mins/60}#{I18n.t("duke.interventions.hour")}"
           end 
-        end 
-      end 
-
-      def disambiguate_procedure(procs, delimiter)
-        # Used to redirect the user to a choice between multiple procs. Each proc is defined in the optional array
-        optional = []
-        # If delimiter is from Ekyviti, ie -> Choice between viti & vegetal proc
-        if delimiter == "|"
-          family = :viti
-          procs.split(/[|]/).each do |proc| 
-            family = :vegetal if Procedo::Procedure.find(proc).activity_families.include? :plant_farming
-            # Pushing option hash with "key" & "human name - type of prod"
-            optional.push({:key => proc, :human => "#{Procedo::Procedure.find(proc).human_name} - #{I18n.t("duke.interventions.#{family}_production")}"})
-          end 
-          return :ask_proc, I18n.t("duke.interventions.ask.which_procedure"), optional
-        else 
-          # Global delimiter, user didn't say enough "ex : weeding ", could be steam_weeding, or manual_weeding 
-          procs.split(/[~]/).each do |proc|
-            # Pushing option hash with "key" & "human name"
-            optional.push({:key => proc, :human => "#{Procedo::Procedure.find(proc).human_name}"})
-          end 
-          return :ask_proc, I18n.t("duke.interventions.ask.which_procedure"), optional
         end 
       end 
 
@@ -144,19 +132,39 @@ module Duke
       end 
 
       def extract_date_and_duration(content)
-        # Regrouping Date & Duration extraction, and adding a global regex that searches for both at the same time
         whole_temp = content.match(/(de|à|a) *\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b *(jusqu\')?(a|à) *\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b/)
-        if whole_temp
+        if content.match("matin") 
+          day = extract_date(content)
+          return DateTime.new(day.year, day.month, day.day, 8, 0, 0, "+0#{Time.at(day).utc_offset / 3600}:00"), [[8, 12]]
+        elsif content.match("(apr(e|è)?s( |-)?midi|apr(e|è)m|apm)")
+          day = extract_date(content)
+          return DateTime.new(day.year, day.month, day.day, 14, 0, 0, "+0#{Time.at(day).utc_offset / 3600}:00"), [[14, 17]]
+        # Regrouping Date & Duration extraction, and adding a global regex that searches for both at the same time
+        elsif whole_temp
           new_content = content.gsub(whole_temp[0], "")
           hour = extract_hour(whole_temp[0].split(/\b(a|à)/)[0])
           ending_hour = extract_hour(whole_temp[0].split(/\b(a|à)/)[2])
           day = extract_date(content)
-          return DateTime.new(day.year, day.month, day.day, hour.hour, hour.min, hour.sec, "+0#{Time.now.utc_offset / 3600}:00"), ((ending_hour - hour)* 24 * 60).to_i
+          return DateTime.new(day.year, day.month, day.day, hour.hour, hour.min, hour.sec, "+0#{Time.at(day).utc_offset / 3600}:00"), ((ending_hour - hour)* 24 * 60).to_i
         end
         duration = extract_duration(content)
         date = extract_date(content)
         return date, duration
       end
+
+      def change_hour(date, hour) 
+        date = date.to_datetime
+        return DateTime.new(date.year, date.month, date.day, hour, 0, 0, "+0#{Time.at(date).utc_offset / 3600}:00").to_s
+      end 
+
+      def working_periods_attributes(date, duration)
+        if duration.kind_of? Array 
+          wp_attr = duration.map{|start, ending| { started_at: Time.zone.parse(change_hour(date, start)) , stopped_at: Time.zone.parse(change_hour(date, ending))}}
+          return wp_attr 
+        else  
+          return [ { started_at: Time.zone.parse(date) , stopped_at: Time.zone.parse(date) + duration.to_i.minutes}]
+        end 
+      end 
 
       def add_input_rate(content, recognized_inputs, procedure)
         # Look for an input rate associated with each input and create a :rate entry for each input with value & unit
@@ -218,6 +226,68 @@ module Duke
           return Measure.new(value, "liter") if area.nil?
           return  Measure.new(value, "liter_per_hectare")
         end
+      end 
+      
+      def ok_procedure?(procedure) 
+        return [false, procedure] if procedure.nil?
+        return [true, procedure] if Procedo::Procedure.find(procedure).present? && (Procedo::Procedure.find(procedure).activity_families & [:vine_farming, :plant_farming]).any?
+        return [true, procedure.split(/[|]/).first] if procedure.scan(/[|]/).present? && !Activity.availables.any? {|act| act[:family] != :vine_farming}
+        [false, procedure]
+      end 
+
+      def guide_to_procedure(procedure, content) 
+        if procedure.nil?
+          return (suggest_categories_from_fam(exclusive_farming_type, content) if exclusive_farming_type.present?) ||asking_intervention_family(content)
+        elsif procedure.scan(/[&]/).present? 
+          return (suggest_categories_from_amb(procedure, content) if procedure.split(/[&]/).size > 1) ||suggest_proc_from_category(procedure.split(/[&]/).first, content)
+        end 
+        return suggest_categories_from_fam(procedure.to_sym, content) if [:plant_farming, :vine_farming].include? procedure.to_sym 
+        return suggest_viti_vegetal_proc(procedure, content) if procedure.scan(/[|]/).present?
+        return suggest_procedure_disambiguation(procedure, content) if procedure.scan(/[~]/).present?
+        return {redirect: :get_help, sentence: I18n.t("duke.interventions.help.example")} if procedure.match(/get_help/)
+        return {redirect: :non_supported_proc} if Procedo::Procedure.find(procedure).present? && (Procedo::Procedure.find(procedure).activity_families & [:vine_farming, :plant_farming]).empty?
+        return {redirect: :cancel} if procedure.scan(/cancel/).present?
+        return {redirect: :not_understanding}
+      end 
+
+      def asking_intervention_family(content)
+        families = [:plant_farming, :vine_farming].map{|fam| optJsonify(Onoma::ActivityFamily[fam].human_name, fam) }
+        families.push(optJsonify(I18n.t("duke.interventions.cancel"), :cancel))
+        return {parsed: {user_input: content}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_family"), families)}
+      end 
+
+      def suggest_categories_from_fam(family, content) 
+        categories = Onoma::ProcedureCategory.select { |c| c.activity_family.include?(family.to_sym) and !Procedo::Procedure.of_main_category(c).empty? }.map{|cat|optJsonify(cat.human_name, "#{cat.name}&")}
+        categories.push(optJsonify(I18n.t("duke.interventions.help.get_help"), :get_help))
+        return {parsed: {user_input: content}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_category"), categories)}
+      end 
+
+      def suggest_categories_from_amb(procedure, content)
+        categories = procedure.split(/[&]/).map{|c| optJsonify(Onoma::ProcedureCategory.find(c).human_name, "#{c}&")}
+        return {parsed: {user_input: content}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_category"), categories)}
+      end 
+
+      def suggest_proc_from_category(cat, content)
+        procs = Procedo::Procedure.of_main_category(cat).sort_by(&:position).map {|proc| optJsonify(proc.human_name, proc.name)}
+        return {parsed: {user_input: content}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.which_procedure"), procs)}
+      end 
+
+      def suggest_viti_vegetal_proc(procedure, content)
+        procs = procedure.split(/[|]/).map{|p_name| Procedo::Procedure.find(p_name) }.map{|proc|optJsonify("#{proc.human_name} - #{I18n.t("duke.interventions.#{proc.of_activity_family?(:vine_farming)}_vine_production")} ", proc.name)}
+        return {parsed: {user_input: content}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.which_procedure"), procs)}
+      end 
+
+      def suggest_procedure_disambiguation(procedure, content)
+        procs = procedure.split(/[~]/).map{|p_name| optJsonify(Procedo::Procedure.find(p_name).human_name, p_name)}
+        return {parsed: {user_input: content}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.which_procedure"), procs)}
+      end 
+
+      def exclusive_farming_type() 
+        farming_types = Activity.availables.map{|act| act[:family] if [:vine_farming, :plant_farming].include? act[:family].to_sym}.compact.uniq
+        if farming_types.size == 1 
+          return farming_types.first 
+        end 
+        nil
       end 
 
       def redirect(parsed)
