@@ -135,17 +135,17 @@ module Duke
         whole_temp = content.match(/(de|à|a) *\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b *(jusqu\')?(a|à) *\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b/)
         if content.match("matin") 
           day = extract_date(content)
-          return DateTime.new(day.year, day.month, day.day, 8, 0, 0, "+0#{Time.now.utc_offset / 3600}:00"), [[8, 12]]
-        elsif content.match("(apr(e|è)?s( |-)?midi|apr(e|è)m)")
+          return DateTime.new(day.year, day.month, day.day, 8, 0, 0, "+0#{Time.at(day).utc_offset / 3600}:00"), [[8, 12]]
+        elsif content.match("(apr(e|è)?s( |-)?midi|apr(e|è)m|apm)")
           day = extract_date(content)
-          return DateTime.new(day.year, day.month, day.day, 14, 0, 0, "+0#{Time.now.utc_offset / 3600}:00"), [[14, 17]]
+          return DateTime.new(day.year, day.month, day.day, 14, 0, 0, "+0#{Time.at(day).utc_offset / 3600}:00"), [[14, 17]]
         # Regrouping Date & Duration extraction, and adding a global regex that searches for both at the same time
         elsif whole_temp
           new_content = content.gsub(whole_temp[0], "")
           hour = extract_hour(whole_temp[0].split(/\b(a|à)/)[0])
           ending_hour = extract_hour(whole_temp[0].split(/\b(a|à)/)[2])
           day = extract_date(content)
-          return DateTime.new(day.year, day.month, day.day, hour.hour, hour.min, hour.sec, "+0#{Time.now.utc_offset / 3600}:00"), ((ending_hour - hour)* 24 * 60).to_i
+          return DateTime.new(day.year, day.month, day.day, hour.hour, hour.min, hour.sec, "+0#{Time.at(day).utc_offset / 3600}:00"), ((ending_hour - hour)* 24 * 60).to_i
         end
         duration = extract_duration(content)
         date = extract_date(content)
@@ -154,7 +154,7 @@ module Duke
 
       def change_hour(date, hour) 
         date = date.to_datetime
-        return DateTime.new(date.year, date.month, date.day, hour, 0, 0, "+0#{Time.now.utc_offset / 3600}:00").to_s
+        return DateTime.new(date.year, date.month, date.day, hour, 0, 0, "+0#{Time.at(date).utc_offset / 3600}:00").to_s
       end 
 
       def working_periods_attributes(date, duration)
