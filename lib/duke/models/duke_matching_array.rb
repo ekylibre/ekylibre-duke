@@ -9,60 +9,61 @@ module Duke
         arr.each{|item| self.push(Duke::Models::DukeMatchingItem.new(hash: item))} unless arr.nil?
       end 
 
+      # @returns Array as json
       def as_json(*args)
         self
       end 
 
+      # @returns Item by key
       def find_by_key(key)
-        self.find{|hash| hash.key = key}
+        self.find{|hash| hash.key == key}
       end 
 
-      def add_to_recognized(new_mItem, all_lists)
-        #Function that adds elements to a list of recognized items only if no other elements uses the same words to match or if this word has a lower fuzzmatch
-        #If no element inside any of the lists has the same words used to match an element (overlapping indexes), and no duplicate => we push the hash to the list
-        if not all_lists.any? {|aList| aList.any_overlap_or_duplicate? new_mItem}
-          self.push(new_mItem)
-        # Else if one or multiple elements uses the same words -> if the distance is greater for this hash -> Remove other ones and add this one
-        elsif not all_lists.any? {|aList| aList.any_overlap_and_lower? new_mItem}
-          # Check for duplicates in the list, if clear : -> remove value from any list with indexes overlapping and add current match to our list
-          unless self.any_duplicate?(new_mItem)
-            all_lists.find{|aList| aList.has_overlapping(new_mItem)}.delete_overlapping(new_mItem.indexes)
-            self.push(new_mItem)
-          end
+      # @param [DukeMatchingItem] itm 
+      # @param [Array] all_lists, Array of all DukeMatchingArrays
+      # @returns nil, (don't) push itm to self
+      def add_to_recognized(itm, all_lists)
+         if all_lists.none? {|aList| aList.any_overlap_or_duplicate? itm} #If no overlap or duplicate, we append
+          self.push(itm)
+        elsif all_lists.none? {|aList| aList.any_overlap_and_lower? itm} #If overlap with lower distance, we append
+          self.push(itm) unless self.any_duplicate?(itm)
         end
       end
 
-      def any_duplicate?(new_mItem)
-        # Is there a duplicate in the list ? + List we want to keep using. List Mutation allows us to persist modification
-        # ie. No Duplicate -> false + current list, Duplicate -> Distance(+/-)=False/True + Current list (with/without duplicate)
-        return false if not self.any? {|mItem| mItem.key == new_mItem.key}
-        return true if not self.any? {|mItem| mItem.key == new_mItem.key and mItem.has_lower_match?(new_mItem)}
-        self.delete(self.find {|mItem| mItem[:key] == new_mItem[:key]})
+      # @param [DukeMatchingItem] itm
+      # @returns bln, list mutation on self if duplicate with lower distance
+      def any_duplicate? itm
+        return false if not self.any? {|mItem| mItem.key == itm.key}
+        return true if not self.any? {|mItem| mItem.key == itm.key and mItem.has_lower_match?(itm)}
+        self.delete(self.find {|mItem| mItem[:key] == itm[:key]})
         return false
       end
 
+      # @returns bln, checks overlapping matches in self
       def any_overlap?(itm)
         return self.any?{|mItem| (mItem.indexes & itm.indexes).present?}
       end 
 
+      # @returns bln, checks overlap or duplicate in self
       def any_overlap_or_duplicate? itm
         return true if self.any_duplicate? itm
         return (true if self.any_overlap? itm)||false
       end 
 
+      # @returns bln, checks overlap with lower distance
       def any_overlap_and_lower? itm
         overlap = self.find{|mItem| (mItem.indexes & itm.indexes).present?}
         return false if overlap.nil? 
-        return (true if overlap.has_lower_match? itm)||false
+        if overlap.has_lower_match?(itm)
+          self.delete(overlap)
+          return false 
+        end 
+        return true 
       end 
 
-      def delete_overlapping itm
-        to_rem = self.find{|mItem| (mItem.indexes & itm.indexes).present? }
-        self.delete(to_rem) unless to_rem.blank?
-      end 
-
+      # @param [DukeMatchingArray] mArr
+      # @returns concatenated DukeMatchingArray
       def uniq_concat(mArr)
-        # Concatenate two "recognized items" arrays, by making sure there's not 2 values with the same key
         mArr.each{|mItem| self.push(mItem) unless self.any_duplicate?(mItem)}
         self
       end

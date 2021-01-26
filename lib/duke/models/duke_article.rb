@@ -12,6 +12,8 @@ module Duke
         @duration = 60 
       end 
 
+      private 
+
       def extract_duration
           #Function that finds the duration of the intervention & converts this value in minutes using regexes to have it stored into Ekylibre
           delta_in_mins = 0
@@ -58,6 +60,7 @@ module Duke
           @duration = delta_in_mins
       end
 
+      # TODO : refacto dates/duration.. extraction
       def extract_date
         # Extract date from a string, and returns a dateTime object with appropriate date & time
         # Default value is Datetime.now
@@ -114,19 +117,13 @@ module Duke
         @date = DateTime.new(d.year, d.month, d.day, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00")
       end
 
+      # @return [Datetime(start), Datetime(end)]
       def extract_time_interval
-        # Extracting long duration time
         now = DateTime.now
-        since_regex = '(depuis|à partir|a partir) *(du|de|le|la)? *(\d|\d{2}) *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)( *\d{4})?'
-        since_slash_regex = '(depuis|à partir|a partir) * (du|de|le|la)? *(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?'
-        since_month_regex = '(depuis|à partir|a partir) *(du|de|le|la)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)'
-        since_date = @user_input.match(since_regex)
-        since_slash_date = @user_input.match(since_slash_regex)
-        since_month_date = @user_input.match(since_month_regex)
-        if @user_input.include? "cette année"
-          @user_input["cette année"] = ""
-          return DateTime.new(now.year, 1, 1, 0, 0, 0), now
-        elsif @user_input.include? "ce mois"
+        since_date = @user_input.match('(depuis|à partir|a partir) *(du|de|le|la)? *(\d|\d{2}) *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)( *\d{4})?')
+        since_slash_date = @user_input.match('(depuis|à partir|a partir) * (du|de|le|la)? *(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?')
+        since_month_date = @user_input.match('(depuis|à partir|a partir) *(du|de|le|la)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)')
+        if @user_input.include? "ce mois"
           @user_input["ce mois"] = ""
           return DateTime.new(now.year, now.month, 1, 0, 0, 0), now
         elsif @user_input.include? "cette semaine"
@@ -134,18 +131,10 @@ module Duke
           return now - (now.wday - 1), now
         elsif since_date 
           @user_input[since_date[0]] = ""
-          day = since_date[3].to_i
-          month = @@month_hash[since_date[4]]
-          if since_date[5].to_i.between?(now.year - 5, now.year + 1)
-            year = since_date[5].to_i
-          else
-            year = now.year
-          end
-          return DateTime.new(year, month, day, 0, 0, 0), now
+          year = (since_date[5].to_i if since_date[5].to_i.between?(now.year - 5, now.year + 1))||now.year
+          return DateTime.new(year, @@month_hash[since_date[4]], since_date[3].to_i, 0, 0, 0), now
         elsif since_slash_date
           @user_input[since_slash_date[0]] = ""
-          day = since_slash_date[3].to_i
-          month = since_slash_date[4].to_i
           if since_slash_date[6].to_i.between?(now.year - 2005, now.year - 1999)
             year = 2000 + since_slash_date[4].to_i
           elsif since_slash_date[6].to_i.between?(now.year - 5, now.year + 1)
@@ -153,105 +142,81 @@ module Duke
           else
             year = now.year
           end
-          return DateTime.new(year, month, day, 0, 0, 0), now
+          return DateTime.new(year, since_slash_date[4].to_i, since_slash_date[3].to_i, 0, 0, 0), now
         elsif since_month_date
           @user_input[since_month_date[0]] = ""
           month = @@month_hash[since_month_date[3]]
-          if month > now.month 
-            year = now.year - 1 
-          else 
-            year = now.year 
-          end 
-          return DateTime.new(year, month, 1, 0, 0, 0), now
+          year = (now.year - 1 if month > now.month)||now.year
+          return DateTime.new(year, @@month_hash[since_month_date[3]], 1, 0, 0, 0), now
         else 
-          return now - 1.year, now
+          return DateTime.new(now.year, 1, 1, 0, 0, 0), now
         end 
       end 
 
+      # @param [String] content
+      # @return Datetime
       def extract_hour(content = @user_input)
-        # Extract hour from a string, returns a DateTime object with appropriate date
-        # Default value is Time.now
         now = DateTime.now
         time_regex = '\b(00|[0-9]|1[0-9]|2[0-3]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b'
-        # Try to match the time regex & Return DateTime with todays date and correct time
-        time = content.match(time_regex)
-        if time
-          if time[4].nil?
-            content[time[0]] = ""
-            return DateTime.new(now.year, now.month, now.day, time[1].to_i, 0, 0)
-          else
-            content[time[0]] = ""
-            return DateTime.new(now.year, now.month, now.day, time[1].to_i, time[4].to_i, 0)
-          end
-        # Otherwise try to match keywords
-        elsif content.include? "matin"
-          content["matin"] = ""
-          return DateTime.new(now.year, now.month, now.day, 10, 0, 0)
-        elsif content.include? "après-midi"
-          content["après-midi"] = ""
-          return DateTime.new(now.year, now.month, now.day, 17, 0, 0)
-        elsif content.include? "midi"
-          content["midi"] = ""
-          return DateTime.new(now.year, now.month, now.day, 12, 0, 0)
-        elsif content.include? "soir"
-          content["soir"] = ""
-          return DateTime.new(now.year, now.month, now.day, 20, 0, 0)
-        elsif content.include? "minuit"
-          content["minuit"] = ""
-          return DateTime.new(now.year, now.month, now.day, 0, 0, 0)
-        else
-          return DateTime.now
-        end
+        time = content.match(time_regex) # matching time regex
+        if time # if we match, we return correct hour
+          content[time[0]] = ""
+          mins = (0 if time[4].nil?)||time[4].to_i
+          return DateTime.new(now.year, now.month, now.day, time[1].to_i, mins, 0)
+        end 
+        {10 => "matin", 17 => "après-midi", 12 => "midi", 20 => "soir", 0 => "minuit"}.each do |hour, val| # if any_word matches, we return correct hour
+          if content.include? val 
+            content[val] = "" 
+            return DateTime.new(now.year, now.month, now.day, hour, 0, 0)
+          end 
+        end 
+        return DateTime.now # If nothing matches, we return current hour
       end
 
-      # TODO : Refacto this fn 
+      # @param [Integer] value : Integer extracted by ibm
+      # @return [Stringified float or integer] || [nilType]
       def extract_number_parameter(value)
-        # Extract a value from a sentence. A value can already be specified, in this case, we look for a float with values int
-        match_to_float = @user_input.match(/#{value}((\.|,)\d{1,2})/) unless value.nil?
+        match_to_float = @user_input.match(/#{value}((\.|,)\d{1,2})/) unless value.nil? #check for float when watson returns integer
+        hasNumbers = @user_input.match('\d{1,4}((\.|,)\d{1,2})?') #check for number inside user_input
         if value.nil?
-          # If we don't have a value, we search for an integer/float inside the user input
-          hasNumbers = @user_input.match('\d{1,4}((\.|,)\d{1,2})?')
-          if hasNumbers
-            value = hasNumbers[0].gsub(',','.').gsub(' ','')
-          else
-            return value
-          end
-        # If we have a value, we should check if watson didn't return an integer instead of a float
+          value = hasNumbers[0].gsub(',','.').gsub(' ','') if hasNumbers
+          return nil unless hasNumbers
         elsif match_to_float
           value = match_to_float[0]
         end
-        # Return the value as a string
-        return value.to_s.gsub(',','.')
+        return value.to_s.gsub(',','.') # returning value as a string
       end
 
+      # Choose between new_date & @date
       def choose_date new_date
-        #Date.now is the default value, so if the value returned is more than 15 min away from now, we select it
         @date = new_date if (new_date.to_datetime - DateTime.now).abs > 0.010
       end
 
+      # Choose between new_duration and @duration
       def choose_duration new_duration
-        #Default duration is 60, so select the first one if differents, otherwise the second
         @duration = new_duration unless new_duration.eql? 60
       end
 
+      # @returns [String] every word from @user_input
       def all_words
         return @user_input.split /\s+|\'/
       end 
 
+      # @returns { [0]: "Je", [0,1]: "Je suis", [0,1,2]: "Je suis ton", [1]: "suis", [1,2]: "suis ton", [2]: "ton"} for @user_input = "Je suis ton"
       def create_words_combo
-        # Creating words combos with_index
-        # "Je suis ton " becomes { [0] => "Je", [0,1] => "Je suis", [0,1,2] => "Je suis ton", [1] => "suis", [1,2] => "suis ton", [2] => "ton"}
         idx_cb = (0..all_words.size).to_a.combination(2)
         return Hash[idx_cb.map{|i1, i2| [(i1..i2-1).to_a, all_words[i1..i2-1].join(" ")] if 4>= i2 - i1}.compact]
       end
 
       #TODO : Rename :input, :tool and jsut do returnTrue if Procedo::Procedure.find...item_type.empty?
+      # @return true if there's nothing to iterate over
       def empty_iterator item_type 
         return true if item_type == :inputs && Procedo::Procedure.find(@procedure).parameters_of_type(:input).empty? 
         return true if item_type == :crop_groups && (defined? CropGroup).nil?
         return false
       end 
 
+      # @return target_type given procedure_family
       def tar_from_procedure
         if (Procedo::Procedure.find(@procedure).activity_families & [:vine_farming]).any?
           return Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name, :crop_groups
@@ -260,8 +225,9 @@ module Duke
         end 
       end 
 
+      # @param [str] item_type 
+      # @return item iterator for this type
       def name_attr(item_type)
-        # Returns correct attributes that display interesting name to iterate over, given what item_type we're looking for
         if item_type == :activity_variety
           attribute = :cultivation_variety_name
         elsif item_type == :entities
@@ -275,7 +241,6 @@ module Duke
       end 
 
       def iterator(item_type) 
-        # Returns correct array to iterate over, given what item_type we're looking 
         if empty_iterator(item_type)
           iterator= []
         elsif item_type == :inputs
@@ -308,6 +273,8 @@ module Duke
         return iterator
       end 
 
+      # @param [str] item_type 
+      # @return Array of Arrays with each type, and it's iterator & name_attr
       def ambiguities_attributes(item_type)
         type =  if [:crop_groups, :plant, :land_parcel, :cultivation].include?(item_type)
                   tar_from_procedure
@@ -317,9 +284,8 @@ module Duke
         return type.map{|ty| [ty, iterator(ty), name_attr(ty)]}
       end 
       
-      # TODO : Create groups of what to look for : targets -> [:plant, :crop_group, :...], make giga iterator, with bigger matching level
+      # Find ambiguities in what's been parsed
       def find_ambiguity
-        # Find ambiguities in what's been parsed, ie items with close fuzzy match the best words that matched
         self.as_json.each do |key, reco|
           if @@user_specific_types.include?(key.to_sym)
             ambiguity_attr = ambiguities_attributes(key.to_sym)
@@ -330,22 +296,26 @@ module Duke
         end
       end
 
+      # @param [DukeMatchingItem] itm 
+      # @param [Array] ambiguity_attr : [[type, iterator, name_attr].foreach ambig_types]
+      # @param [String] itm_type : Current itm type
+      # Checks ambiguity for one item
       def ambiguity_check(itm:, ambiguity_attr:, itm_type:)
-        # Method to check ambiguity about a specific item
         ambiguity = Duke::Models::DukeAmbiguity.new(itm: itm, ambiguity_attr: ambiguity_attr, itm_type: itm_type).check_ambiguity
         @ambiguities.push(ambiguity) unless ambiguity.empty?
       end 
 
+      # @param [json] jsonD : DukeArticle.as_json
+      # @param [Float] level : min_match_level
+      # Extract user specifics & recreates DukeArticle
       def extract_user_specifics(jsonD: self.to_jsonD, level: 0.89)
-        # Function used for extracting specific elements of every type that's in parsed & @user_specifics, with minimum matching % level from user_input
-        # Find all types that we're gonna check, and their values
         user_specifics = jsonD.select{ |key, value| @@user_specific_types.include?(key.to_sym)}
         attributes = user_specifics.to_h{|key, mArr|[key, {iterator: iterator(key.to_sym), name_attribute: name_attr(key.to_sym), list: mArr}]}
         create_words_combo.each do |combo| # Creating all combo_words from user_input
-          parser = Duke::Models::DukeParser.new(word_combo: combo, attributes: attributes)
-          parser.parse
+          parser = Duke::Models::DukeParser.new(word_combo: combo, attributes: attributes) # create new DukeParser
+          parser.parse # parse user_specifics
         end
-        self.recover_from_hash(jsonD)
+        self.recover_from_hash(jsonD) # recreate DukeArticle
       end
 
     end
