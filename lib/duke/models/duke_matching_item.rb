@@ -2,7 +2,7 @@ module Duke
   module Models
     class DukeMatchingItem < HashWithIndifferentAccess
 
-      attr_accessor :name, :distance, :indexes, :key, :matched, :rate
+      attr_accessor :name, :distance, :indexes, :key, :matched, :rate, :area
 
       def initialize(hash: nil, **args) 
         super()
@@ -37,6 +37,17 @@ module Duke
         return false unless (item.key?(:rate) && self.key?(:rate))
         return true if ([:net_mass, :mass_area_density].include? self.rate[:unit].to_sym and Matter.find_by_id(item.key)&.net_mass.to_f == 0)
         return true if ([:net_volume, :volume_area_density].include? self.rate[:unit].to_sym and Matter.find_by_id(item.key)&.net_volume.fo_f == 0)
+        return false
+      end 
+
+      # @param [String] procedure
+      # @param [Measure] measure
+      # @returns boolean
+      def is_measure_coherent measure, procedure
+        input_param = Procedo::Procedure.find(procedure).parameters_of_type(:input).find{|param| Matter.find_by_id(@key).of_expression(param.filter)}
+        dim = measure.base_dimension.to_sym
+        # True If measure in mass or volume , and procedure can handle this type of indicators for its inputs and net dimension exists for specific input
+        return true if [:mass, :volume].include? dim && input_param.handler("net_#{dim}").present? && !Matter.find_by_id(input.key)&.send("net_#{dim}").zero?
         return false
       end 
       

@@ -1,5 +1,5 @@
 module Duke
-  class Amounts < Duke::Models::DukeArticle
+  class Amounts
     def handle_unpaid_purchases(params)
       c = Backend::Cells::TradeCountsCellsController.new
       sentence = I18n.t("duke.amounts.unpaid_purchases", amount: c.unpaid_purchases_amount.round_l(currency: Preference[:currency]))
@@ -7,7 +7,8 @@ module Duke
     end 
 
     def handle_insurance(params)
-      interval_start, interval_end = extract_time_interval(params[:user_input])
+      dukeArt = Duke::Models::DukeArticle.new(user_input: user_input)
+      interval_start, interval_end = dukeArt.extract_time_interval
       n = Onoma::Account.find(:insurance_expenses)
       amount = 0
       Account.of_usage(n.name).each do |account|
@@ -31,16 +32,15 @@ module Duke
 
     def handle_problem_equipments(params)
       amount = Equipment.all.map { |eq| eq.status }.count(:caution)
-      list = "&#8226 "
-      all_caution = Equipment.all.select {|eq| eq.status == :caution}
-      list += all_caution.collect(&:name).join("<br>&#8226 ")
-      if amount == 0
-        sentence = I18n.t("duke.amounts.no_problem_eq")
-      elsif amount == 1 
-        sentence = I18n.t("duke.amounts.one_problem_eq", name: all_caution.first.name)
-      else   
-        sentence = I18n.t("duke.amounts.multiple_problem_eq", amount: amount)
-      end 
+      cautions = Equipment.all.select{|eq|eq.status == :caution}
+      list = "&#8226 " + cautions.map(&:name).join('<br>&#8226 ')
+      sentence =  if amount == 0
+                    I18n.t("duke.amounts.no_problem_eq")
+                  elsif amount == 1 
+                    I18n.t("duke.amounts.one_problem_eq", name: cautions.first.name)
+                  else   
+                    I18n.t("duke.amounts.multiple_problem_eq", amount: amount)
+                  end 
       return {amount: amount, sentence: sentence, equipments: list}
     end 
 

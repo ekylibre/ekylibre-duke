@@ -35,5 +35,6 @@ module Duke
       return fstr.gsub(/\s+/, " ").strip.downcase.split(" | ").first
     end
 
+
   end 
 end 

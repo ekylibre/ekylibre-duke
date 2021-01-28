@@ -5,9 +5,6 @@ module Duke
       attr_accessor :procedure, :inputs, :workers, :equipments, :retry, :plant, :cultivation, :crop_groups, :land_parcel, :cultivablezones, :activity_variety, :ambiguities
       attr_reader :specific
 
-      @@matchArrs = [:inputs, :workers, :equipments, :crop_group, :plant, :cultivation, :crop_groups, :land_parcel, :cultivablezones, :activity_variety]
-
-
       def initialize(**args)
         super()
         @procedure = nil
@@ -16,17 +13,18 @@ module Duke
         @ambiguities = []
         args.each{|k, v| instance_variable_set("@#{k}", v)}
         @description = @user_input.clone
+        @matchArrs = [:inputs, :workers, :equipments, :crop_group, :plant, :cultivation, :crop_groups, :land_parcel, :cultivablezones, :activity_variety]
       end 
 
       # @creates intervention from json
       # @returns DukeIntervention
       def recover_from_hash(jsonD) 
-        jsonD.slice(*@@matchArrs).each{|k,v| self.instance_variable_set("@#{k}", Duke::Models::DukeMatchingArray.new(arr: v))}
-        jsonD.except(*@@matchArrs).each{|k,v| self.instance_variable_set("@#{k}", v)}
+        jsonD.slice(*@matchArrs).each{|k,v| self.instance_variable_set("@#{k}", Duke::Models::DukeMatchingArray.new(arr: v))}
+        jsonD.except(*@matchArrs).each{|k,v| self.instance_variable_set("@#{k}", v)}
         self
       end 
 
-      # @returns DukeIntervention toJson with given parameters
+      # @returns DukeIntervention to_json with given parameters
       def to_jsonD(*args) 
         return ActiveSupport::HashWithIndifferentAccess.new(self.as_json) if args.empty?
         return ActiveSupport::HashWithIndifferentAccess.new(Hash[args.flatten.map{|arg| [arg, self.send(arg)] if self.respond_to? arg}.compact])
@@ -41,14 +39,6 @@ module Duke
           end 
         end 
         return dynamic_options(I18n.t("duke.interventions.ask.what_modify"), candidates)
-      end 
-      
-      def update_description(ds)
-        @description += " - #{ds}"
-      end 
-
-      def reset_retries
-        @retry = 0
       end 
 
       # @returns bln, is procedure_parseable?
@@ -138,29 +128,11 @@ module Duke
         tar_type = Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name
         if @user_input.match(/^(\d{1,5}(\|{3}|\b))*$/) # If response type matches a multiple click response
           every_choices = @user_input.split(/[|]/).map{|num| num.to_i}  # Creating a list with all integers corresponding to targets.ids chosen by the user
-          new_tars = self.instance_variable_get("@#{tar_type}").map{|tar| tar.except!(:potential) if every_choices.include? tar[:key] }.compact  # if the key is in every_choices, we keep it
+          new_tars = self.instance_variable_get("@#{tar_type}").map{|tar| tar.except!(:potential) if every_choices.include? tar.key }.compact  # if the key is in every_choices, we keep it
         else 
           new_tars = Duke::Models::DukeMatchingArray.new
         end 
         self.instance_variable_set("@#{tar_type}", new_tars)
-      end 
-      
-      # @params [String] type : type of ambiguity to be corrected 
-      # @params [Integer] key : key of ambiguous item
-      def correct_ambiguity(type:, key:)
-        current_hash = self.instance_variable_get("@#{type}").find_by_key(key)
-        self.instance_variable_get("@#{type}").delete(current_hash)
-        begin
-          @user_input.split(/[|]{3}/).map{|chosen| eval(chosen)}.each do |chosen_one| 
-            chosen_one[:rate] = {unit: :population, value: nil} if current_hash.needs_input_reinitialize?(chosen_one)
-            self.update_description(chosen_one[:name])
-            self.instance_variable_get("@#{chosen_one[:type]}").push(DukeMatchingItem.new(hash: current_hash.merge_h(chosen_one)))
-          end 
-        rescue
-          nil
-        ensure
-          @ambiguities.shift
-        end 
       end 
 
       # @returns [Integer] newly created intervention id
@@ -178,15 +150,6 @@ module Duke
         add_readings_attributes(intervention_params)
         it = Intervention.create!(intervention_params)
         return it.id
-      end 
-
-      # TODO : check if really usefull
-      def to_ibm(**opt)
-        what_next, sentence, optional = redirect
-        self.instance_variables.each do |attr| 
-          self.instance_variable_set(attr, self.instance_variable_get(attr).to_a) if self.instance_variable_get(attr).class.eql? Duke::Models::DukeMatchingArray
-        end 
-        return { parsed: self.to_jsonD, sentence: sentence, redirect: what_next, optional: optional}.merge(opt)
       end 
 
       private
@@ -266,7 +229,7 @@ module Duke
         sentence += "<br>&#8226 #{I18n.t("duke.interventions.#{tar_type.name}")} : #{self.send(tar_type.name).map{|tar| tar.name}.join(", ")}" unless (tar_type.nil?||self.send(tar_type.name).to_a.empty?)
         sentence += "<br>&#8226 #{I18n.t("duke.interventions.tool")} : #{@equipments.map{|eq| eq.name}.join(", ")}" unless @equipments.to_a.empty?
         sentence += "<br>&#8226 #{I18n.t("duke.interventions.worker")} : #{@workers.map{|wk| wk.name}.join(", ")}" unless @workers.to_a.empty?
-        sentence += "<br>&#8226 #{I18n.t("duke.interventions.input")} : #{@inputs.map{|input| "#{input[:name]} (#{input[:rate][:value].to_f} #{(I18n.t("duke.interventions.units.#{Procedo::Procedure.find(@procedure).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name}") if input[:rate][:unit].to_sym != :population) || Matter.find_by_id(input[:key])&.unit_name} )"}.join(", ")}" unless @inputs.to_a.empty?
+        sentence += "<br>&#8226 #{I18n.t("duke.interventions.input")} : #{@inputs.map{|input| "#{input.name} (#{input[:rate][:value].to_f} #{(I18n.t("duke.interventions.units.#{Procedo::Procedure.find(@procedure).parameters_of_type(:input).find {|inp| Matter.find_by_id(input.key).of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name}") if input[:rate][:unit].to_sym != :population) || Matter.find_by_id(input.key)&.unit_name} )"}.join(", ")}" unless @inputs.to_a.empty?
         @readings.each do |key, rd| 
           rd.to_a.each do |rd_hash| 
             sentence += "<br>&#8226 #{I18n.t("duke.interventions.readings.#{rd_hash[:indicator_name]}")} : #{(I18n.t("duke.interventions.readings.#{rd_hash.values.last}") if !is_number?(rd_hash.values.last))|| rd_hash.values.last}"
@@ -281,7 +244,7 @@ module Duke
       def speak_input_rate
         @inputs.each_with_index do |input, index|
           if input[:rate][:value].nil?
-            sentence = I18n.t("duke.interventions.ask.how_much_inputs_#{rand(0...2)}", input: input[:name], unit: Matter.find_by_id(input[:key])&.unit_name)
+            sentence = I18n.t("duke.interventions.ask.how_much_inputs_#{rand(0...2)}", input: input.name, unit: Matter.find_by_id(input.key)&.unit_name)
             return sentence, index
           end
         end
@@ -290,7 +253,7 @@ module Duke
       # @returns json Option understandable via IBM to display buttons
       def speak_targets
         tar_type = Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name
-        candidates = self.send(tar_type).map{|tar| optJsonify(tar[:name], tar[:key].to_s) if tar.key? :potential}.compact
+        candidates = self.send(tar_type).map{|tar| optJsonify(tar.name, tar.key.to_s) if tar.key? :potential}.compact
         return dynamic_options(I18n.t("duke.interventions.ask.what_targets", tar: I18n.t("duke.interventions.#{tar_type}").downcase),candidates)
       end 
 
@@ -315,10 +278,10 @@ module Duke
         unless tar_param.nil? ||@cultivablezones.to_a.empty? and @activity_variety.to_a.empty?
           tarIterator = ActivityProduction.at(@date.to_datetime)
           unless @activity_variety.to_a.empty? 
-            tarIterator = ActivityProduction.at(@date.to_datetime).of_activity(Activity.select{|act| @activity_variety.map{ |var| var[:name]}.include? act.cultivation_variety_name})
+            tarIterator = ActivityProduction.at(@date.to_datetime).of_activity(Activity.select{|act| @activity_variety.map{ |var| var.name}.include? act.cultivation_variety_name})
           end 
           unless @cultivablezones.to_a.empty? 
-            tarIterator = tarIterator.select{|act| @cultivablezones.map{ |cz| cz[:key]}.include? act.cultivable_zone_id}
+            tarIterator = tarIterator.select{|act| @cultivablezones.map{ |cz| cz.key}.include? act.cultivable_zone_id}
           end 
           self.instance_variable_set("@#{tar_param.name}", tarIterator.map {|act| act.products}
                                                                       .flatten
@@ -342,23 +305,17 @@ module Duke
 
       # Extract vine_pruning_system reading
       def extract_vine_pruning_system
-        # Extract vine pruning system, for pruning procedures
         pr = {"cordon_pruning" => /(royat|cordon)/, "formation_pruning" => /formation/, "gobelet_pruning" => /gobelet/, "guyot_double_pruning" => /guyot.*(doub|mult)/, "guyot_simple_pruning" => /guyot/}
         pr.each do |key, regex|
-          if @user_input.match(regex)
-            @readings[:target].push({indicator_name: :vine_pruning_system, indicator_datatype: :choice, choice_value: key})
-            break
-          end 
+          (@readings[:target].push({indicator_name: :vine_pruning_system, indicator_datatype: :choice, choice_value: key}); break) if @user_input.matchdel(regex)
         end 
       end 
 
       # Extract vine stock bud charge reading
       def extract_vine_stock_bud_charge()
-        charge = @user_input.match(/(\d{1,2}) *(bourgeons|yeux|oeil)/)
-        sec_charge = @user_input.match(/charge *(de|à|avec|a)? *(\d{1,2})/)
-        if charge
+        if charge = @user_input.match(/(\d{1,2}) *(bourgeons|yeux|oeil)/)
           @readings[:target].push({indicator_name: :vine_stock_bud_charge, indicator_datatype: :integer, integer_value: charge[1]})
-        elsif sec_charge 
+        elsif sec_charge = @user_input.match(/charge *(de|à|avec|a)? *(\d{1,2})/) 
           @readings[:target].push({indicator_name: :vine_stock_bud_charge, indicator_datatype: :integer, integer_value: sec_charge[2]})
         end 
       end 
@@ -377,42 +334,26 @@ module Duke
         extract_date
       end
 
-      # TODO : refacto this
-      # Adds input rate for every inputs
+      # Adds input rate to input DukeMatchingItem
       def add_input_rate
         @inputs.each_with_index do |input, index|
-          recon_input = @user_input.split(/[\s\']/)[input[:indexes][0]..input[:indexes][-1]].join(" ")
-          quantity = @user_input.match(/(\d{1,3}(\.|,)\d{1,2}|\d{1,3}) *((g|gramme|kg|kilo|kilogramme|tonne|t|l|litre|hectolitre|hl)(s)? *(par hectare|\/ *hectare|\/ *ha)?) *(de|d\'|du)? *(la|le)? *#{recon_input}/)
-          sec_quantity = @user_input.match(/#{recon_input} *(à|a|avec)? *(\d{1,3}(\.|,)\d{1,2}|\d{1,3}) *((gramme|g|kg|kilo|kilogramme|tonne|t|hectolitre|hl|litre|l)(s)? *(par hectare|\/ *hectare|\/ *ha)?)/)
-          # If we find a quantity, we parse it, otherwise we associate a "nil population"
-          if quantity
-            unit = quantity[4]
-            rate = quantity[1].gsub(',','.')
-            area = (true unless quantity[6].nil?)
-          elsif sec_quantity
-            unit = sec_quantity[5]
-            rate = sec_quantity[2].gsub(',','.')
-            area = (true unless sec_quantity[7].nil?)
-          else
-            unit = :population
-            rate = nil
-            area = nil
+          if quantity = @user_input.matchdel(/(\d{1,3}(\.|,)\d{1,2}|\d{1,3}) *((g|gramme|kg|kilo|kilogramme|tonne|t|l|litre|hectolitre|hl)(s)? *(par hectare|\/ *hectare|\/ *ha)?) *(de|d\'|du)? *(la|le)? *#{input.matched}/)
+            measure = get_measure(quantity[1].gsub(',','.').to_f, quantity[4], (true unless quantity[6].nil?))
+          elsif sec_quantity = @user_input.matchdel(/#{input.matched} *(à|a|avec)? *(\d{1,3}(\.|,)\d{1,2}|\d{1,3}) *((gramme|g|kg|kilo|kilogramme|tonne|t|hectolitre|hl|litre|l)(s)? *(par hectare|\/ *hectare|\/ *ha)?)/)
+            measure = get_measure(sec_quantity[2].gsub(',','.').to_f, sec_quantity[5], (true unless sec_quantity[7].nil?))
+          else # Associate a nil population rate if we don't find a quantity
+            measure = get_measure(nil.to_f, :population, nil)
           end
-          # We create a measure from what just got parsed
-          measure = get_measure(rate.to_f, unit, area)
-          # If measure in mass or volume , and procedure can handle this type of indicators for its inputs and net dimension exists for specific input
-          if [:mass, :volume].include? measure.base_dimension.to_sym and !Procedo::Procedure.find(@procedure).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.handler("net_#{measure.base_dimension}").nil? and !Matter.find_by_id(input[:key])&.send("net_#{measure.base_dimension}").zero?
-            # Check if distance has repartion unit & convert value in correct proc unit & modify rate entry in the input hash 
-            if measure.repartition_unit.nil?
-              measure = measure.in(Procedo::Procedure.find(@procedure).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.handler("net_#{measure.base_dimension}").unit.name)
+          if input.has_coherent_measure(measure, @procedure) # Check for coherent unit
+            if measure.repartition_unit.nil? #Check for repartition_unit
+              measure = measure.in(Procedo::Procedure.find(@procedure).parameters_of_type(:input).find {|inp| Matter.find_by_id(input.key).of_expression(inp.filter)}.handler("net_#{measure.base_dimension}").unit.name)
               input[:rate] = {:value => measure.value.to_f, :unit => "net_#{measure.base_dimension}"}
             else 
-              measure = measure.in(Procedo::Procedure.find(@procedure).parameters_of_type(:input).find {|inp| Matter.find_by_id(input[:key]).of_expression(inp.filter)}.handler(measure.dimension).unit.name)
+              measure = measure.in(Procedo::Procedure.find(@procedure).parameters_of_type(:input).find {|inp| Matter.find_by_id(input.key).of_expression(inp.filter)}.handler(measure.dimension).unit.name)
               input[:rate] = {:value => measure.value.to_f, :unit => measure.dimension}
             end 
           else 
-            # Otherwise, return a nil population rate, that the user will be ask to change
-            input[:rate] = {:value => nil, :unit => :population}
+            input[:rate] = {:value => nil, :unit => :population} # Otherwise, return a nil population rate, that the user will be ask to change
           end 
         end
       end

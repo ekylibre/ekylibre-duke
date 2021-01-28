@@ -12,140 +12,131 @@ module Duke
         @duration = 60 
       end 
 
-      private 
+      # @creates intervention from json
+      # @returns DukeIntervention
+      def recover_from_hash(jsonD) 
+        jsonD.slice(*@matchArrs).each{|k,v| self.instance_variable_set("@#{k}", Duke::Models::DukeMatchingArray.new(arr: v))}
+        jsonD.except(*@matchArrs).each{|k,v| self.instance_variable_set("@#{k}", v)}
+        self
+      end 
 
-      def extract_duration
-          #Function that finds the duration of the intervention & converts this value in minutes using regexes to have it stored into Ekylibre
-          delta_in_mins = 0
-          regex = '\d+\s(\w*minute\w*|mins)'
-          regex2 = '(de|pendant|durée) *(\d{1,2})\s?(heures|h|heure)\s?(\d\d)'
-          regex3 = '(de|pendant|durée) *(\d{1,2})\s?(h\b|h\s|heure)'
-          # If @user_input includes a non numeric value, we catch it & return this duration
-          if @user_input.include? "trois quarts d'heure"
-            @user_input["trois quart d'heure"] = ""
-            @duration = 45
-            return
-          elsif @user_input.include? "quart d'heure"
-            @user_input["quart d'heure"] = ""
-            @duration = 15
-            return
-          elsif @user_input.include? "demi heure"
-            @user_input["demi heure"] = ""
-            @duration = 30
-            return
-          end
-          min_time = @user_input.match(regex)
-          hour_min_time = @user_input.match(regex2)
-          hour_time = @user_input.match(regex3)
-          # If any regex matches, we extract the min value
-          if min_time
-            delta_in_mins += min_time[0].to_i
-            @user_input[min_time[0]] = ""
-          elsif hour_min_time
-            delta_in_mins += hour_min_time[2].to_i*60
-            delta_in_mins += hour_min_time[4].to_i
-            @user_input[hour_min_time[0]] = ""
-          elsif hour_time
-            delta_in_mins += hour_time[2].to_i*60
-            @user_input[hour_time[0]] = ""
-            # If "et demi" in sentence, we add 30min to what's already parsed
-            if @user_input.include? "et demi"
-              delta_in_mins += 30
-              @user_input["et demi"] = ""
-            end
-          else
-            # If nothing matched, we return the basic duration => 1 hour
-            delta_in_mins = 60
-          end 
-          @duration = delta_in_mins
-      end
+      # @returns DukeIntervention to_json with given parameters
+      def to_jsonD(*args) 
+        return ActiveSupport::HashWithIndifferentAccess.new(self.as_json) if args.empty?
+        return ActiveSupport::HashWithIndifferentAccess.new(Hash[args.flatten.map{|arg| [arg, self.send(arg)] if self.respond_to? arg}.compact])
+      end 
+            
+      def update_description(ds)
+        @description += " - #{ds}"
+      end 
 
-      # TODO : refacto dates/duration.. extraction
-      def extract_date
-        # Extract date from a string, and returns a dateTime object with appropriate date & time
-        # Default value is Datetime.now
-        now = DateTime.now
-        full_date_regex = '(\d|\d{2})(er|eme|ème)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)( *\d{4})?'
-        slash_date_regex = '(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?'
-        # Extract the hour at which intervention was done
-        time = extract_hour(@user_input)
-        # Search for keywords and define a d=DateTime if match
-        if @user_input.include? "avant-hier"
-          @user_input["avant-hier"] = ""
-          d = Date.yesterday.prev_day
-        elsif @user_input.include? "hier"
-          @user_input["hier"] = ""
-          d = Date.yesterday
-        elsif @user_input.include? "demain"
-          @user_input["demain"] = ""
-          d = Date.tomorrow
-        else
-          # If no keyword, try to match regexes and return 
-          full_date = @user_input.match(full_date_regex)
-          slash_date = @user_input.match(slash_date_regex)
-          if full_date
-            @user_input[full_date[0]] = ""
-            day = full_date[1].to_i
-            month = @@month_hash[full_date[3]]
-            if full_date[3].to_i.between?(now.year - 5, now.year + 1)
-              year = full_date[3].to_i
-            else
-              year = now.year
+      def reset_retries
+        @retry = 0
+      end 
+
+        # Find ambiguities in what's been parsed
+        def find_ambiguity
+          self.as_json.each do |key, reco|
+            if @@user_specific_types.include?(key.to_sym)
+              ambiguity_attr = ambiguities_attributes(key.to_sym)
+              reco.each do |anItem|
+                ambiguity_check(itm: anItem, ambiguity_attr: ambiguity_attr, itm_type: key) unless anItem.distance == 1
+              end
             end
-            @date = DateTime.new(year, month, day, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00")
-            return 
-          elsif slash_date
-            @user_input[slash_date[0]] = ""
-            day = slash_date[1].to_i
-            month = slash_date[2].to_i
-            if slash_date[4].to_i.between?(now.year - 2005, now.year - 1999)
-              year = 2000 + slash_date[4].to_i
-            elsif slash_date[4].to_i.between?(now.year - 5, now.year + 1)
-              year = slash_date[4].to_i
-            else
-              year = now.year
-            end
-            @date = DateTime.new(year, month, day, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00")
-            return
-          else
-            # If nothing matches, we return DateTime.now item, with extracted time
-            @date = DateTime.new(now.year, now.month, now.day, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00")
-            return
           end
         end
-        # If a d object is set, return the DateTime object with extracted time
-        @date = DateTime.new(d.year, d.month, d.day, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00")
+
+      # @params [String] type : type of ambiguity to be corrected 
+      # @params [Integer] key : key of ambiguous item
+      def correct_ambiguity(type:, key:)
+        current_hash = self.instance_variable_get("@#{type}").find_by_key(key)
+        self.instance_variable_get("@#{type}").delete(current_hash)
+        begin
+          @user_input.split(/[|]{3}/).map{|chosen| eval(chosen)}.each do |chosen_one| 
+            chosen_one[:rate] = {unit: :population, value: nil} if current_hash.needs_input_reinitialize?(chosen_one)
+            self.update_description(chosen_one[:name])
+            self.instance_variable_get("@#{chosen_one[:type]}").push(DukeMatchingItem.new(hash: current_hash.merge_h(chosen_one)))
+          end 
+        rescue
+          nil
+        ensure
+          @ambiguities.shift
+        end 
+      end 
+
+      # TODO : check if really usefull
+      def to_ibm(**opt)
+        what_next, sentence, optional = redirect
+        self.instance_variables.each do |attr| 
+          self.instance_variable_set(attr, self.instance_variable_get(attr).to_a) if self.instance_variable_get(attr).class.eql? Duke::Models::DukeMatchingArray
+        end 
+        return { parsed: self.to_jsonD, sentence: sentence, redirect: what_next, optional: optional}.merge(opt)
+      end 
+
+      # Extracts date with correct hour from @user_input
+      # @return nil, but set @date
+      def extract_date
+        now = DateTime.now
+        time = extract_hour(@user_input) # Extract hour from user_input
+        if @user_input.matchdel("avant( |-)?hier") # Look for specific keywords
+          d = Date.yesterday.prev_day
+        elsif @user_input.matchdel("hier")
+          d = Date.yesterday
+        elsif @user_input.matchdel("demain")
+          d = Date.tomorrow
+        else
+          if full_date = @user_input.matchdel('(\d|\d{2})(er|eme|ème)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre) ?(\d{4})?')
+            @date = DateTime.new(year_from_str(full_date[3]), @@month_hash[full_date[3]], full_date[1].to_i, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00"); return 
+          elsif slash_date = @user_input.matchdel('(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?')
+            @date = DateTime.new(year_from_str(slash_date[4]), slash_date[2].to_i, slash_date[1].to_i, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00"); return
+          else # If nothing matched, we return todays date
+            @date = DateTime.new(now.year, now.month, now.day, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00"); return
+          end
+        end
+        @date = DateTime.new(d.year, d.month, d.day, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00") # Set correct time to date if match
+      end
+
+      private 
+
+      # Extracts duration from user_input
+      # @return nil but set @duration in minutes
+      def extract_duration
+          if @user_input.matchdel("trois quarts d'heure") # Look for non-numeric values
+            @duration = 45 ; return
+          elsif @user_input.matchdel("quart d'heure")
+            @duration = 15; return
+          elsif @user_input.matchdel("demi heure")
+            @duration = 30; return
+          end
+          delta_in_mins = 0
+          if min_time = @user_input.matchdel('\d+\s(\w*minute\w*|mins)') # Extract MM regex
+            delta_in_mins += min_time[0].to_i
+          elsif hour_min_time = @user_input.matchdel('(de|pendant|durée) *(\d{1,2})\s?(heures|h|heure)\s?(\d\d)') # Extract HH:MM regex
+            delta_in_mins += hour_min_time[2].to_i*60 + hour_min_time[4].to_i
+          elsif hour_time = @user_input.matchdel('(de|pendant|durée) *(\d{1,2})\s?(h\b|h\s|heure)')  # Extract HH: regex
+            delta_in_mins += hour_time[2].to_i*60
+            delta_in_mins += 30 if @user_input.matchdel("et demi") # Check for "et demi" in user_input
+          else
+            delta_in_mins = 60 # Set duration to 60 by default
+          end 
+          @duration = delta_in_mins
       end
 
       # @return [Datetime(start), Datetime(end)]
       def extract_time_interval
         now = DateTime.now
-        since_date = @user_input.match('(depuis|à partir|a partir) *(du|de|le|la)? *(\d|\d{2}) *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)( *\d{4})?')
-        since_slash_date = @user_input.match('(depuis|à partir|a partir) * (du|de|le|la)? *(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?')
-        since_month_date = @user_input.match('(depuis|à partir|a partir) *(du|de|le|la)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)')
-        if @user_input.include? "ce mois"
-          @user_input["ce mois"] = ""
+        since_date = @user_input.matchdel('(depuis|à partir|a partir) *(du|de|le|la)? *(\d|\d{2}) *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)( *\d{4})?')
+        since_slash_date = @user_input.matchdel('(depuis|à partir|a partir) * (du|de|le|la)? *(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?')
+        since_month_date = @user_input.matchdel('(depuis|à partir|a partir) *(du|de|le|la)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)')
+        if @user_input.matchdel("ce mois")
           return DateTime.new(now.year, now.month, 1, 0, 0, 0), now
-        elsif @user_input.include? "cette semaine"
-          @user_input["cette semaine"] = ""
+        elsif @user_input.matchdel("cette semaine")
           return now - (now.wday - 1), now
         elsif since_date 
-          @user_input[since_date[0]] = ""
-          year = (since_date[5].to_i if since_date[5].to_i.between?(now.year - 5, now.year + 1))||now.year
-          return DateTime.new(year, @@month_hash[since_date[4]], since_date[3].to_i, 0, 0, 0), now
+          return DateTime.new(year_from_str(since_date[5]), @@month_hash[since_date[4]], since_date[3].to_i, 0, 0, 0), now
         elsif since_slash_date
-          @user_input[since_slash_date[0]] = ""
-          if since_slash_date[6].to_i.between?(now.year - 2005, now.year - 1999)
-            year = 2000 + since_slash_date[4].to_i
-          elsif since_slash_date[6].to_i.between?(now.year - 5, now.year + 1)
-            year = since_slash_date[4].to_i
-          else
-            year = now.year
-          end
-          return DateTime.new(year, since_slash_date[4].to_i, since_slash_date[3].to_i, 0, 0, 0), now
-        elsif since_month_date
-          @user_input[since_month_date[0]] = ""
-          month = @@month_hash[since_month_date[3]]
+          return DateTime.new(year_from_str(since_slash_date[6]), since_slash_date[4].to_i, since_slash_date[3].to_i, 0, 0, 0), now
+        elsif since_month_date 
           year = (now.year - 1 if month > now.month)||now.year
           return DateTime.new(year, @@month_hash[since_month_date[3]], 1, 0, 0, 0), now
         else 
@@ -157,21 +148,22 @@ module Duke
       # @return Datetime
       def extract_hour(content = @user_input)
         now = DateTime.now
-        time_regex = '\b(00|[0-9]|1[0-9]|2[0-3]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b'
-        time = content.match(time_regex) # matching time regex
-        if time # if we match, we return correct hour
-          content[time[0]] = ""
-          mins = (0 if time[4].nil?)||time[4].to_i
-          return DateTime.new(now.year, now.month, now.day, time[1].to_i, mins, 0)
-        end 
+        time = content.matchdel('\b(00|[0-9]|1[0-9]|2[0-3]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b') # matching time regex
+        return DateTime.new(now.year, now.month, now.day, time[1].to_i, (0 if time[4].nil?)||time[4].to_i, 0) if time # if we match, we return correct hour
         {10 => "matin", 17 => "après-midi", 12 => "midi", 20 => "soir", 0 => "minuit"}.each do |hour, val| # if any_word matches, we return correct hour
-          if content.include? val 
-            content[val] = "" 
-            return DateTime.new(now.year, now.month, now.day, hour, 0, 0)
-          end 
+          return DateTime.new(now.year, now.month, now.day, hour, 0, 0) if content.matchdel(val) 
         end 
         return DateTime.now # If nothing matches, we return current hour
       end
+
+      # @param [Str|Integer|Float] year
+      # @return [Integer] parsed year
+      def year_from_str year
+        now = Datetime.now
+        return 2000 + year.to_i if year.to_i.between?(now.year - 2005, now.year - 1999)
+        return year.to_i if year.to_i.between?(now.year - 5, now.year + 1)
+        return now.year
+      end 
 
       # @param [Integer] value : Integer extracted by ibm
       # @return [Stringified float or integer] || [nilType]
@@ -208,7 +200,6 @@ module Duke
         return Hash[idx_cb.map{|i1, i2| [(i1..i2-1).to_a, all_words[i1..i2-1].join(" ")] if 4>= i2 - i1}.compact]
       end
 
-      #TODO : Rename :input, :tool and jsut do returnTrue if Procedo::Procedure.find...item_type.empty?
       # @return true if there's nothing to iterate over
       def empty_iterator item_type 
         return true if item_type == :inputs && Procedo::Procedure.find(@procedure).parameters_of_type(:input).empty? 
@@ -276,25 +267,15 @@ module Duke
       # @param [str] item_type 
       # @return Array of Arrays with each type, and it's iterator & name_attr
       def ambiguities_attributes(item_type)
-        type =  if [:crop_groups, :plant, :land_parcel, :cultivation].include?(item_type)
+        type =  if ([:crop_groups, :plant, :land_parcel, :cultivation].include?(item_type) && @procedure.present?)
                   tar_from_procedure
-                else 
+                elsif [:crop_groups, :plant, :land_parcel, :cultivation].include?(item_type)
+                  [:plant, :crop_groups]
+                else  
                   [item_type]
                 end 
         return type.map{|ty| [ty, iterator(ty), name_attr(ty)]}
       end 
-      
-      # Find ambiguities in what's been parsed
-      def find_ambiguity
-        self.as_json.each do |key, reco|
-          if @@user_specific_types.include?(key.to_sym)
-            ambiguity_attr = ambiguities_attributes(key.to_sym)
-            reco.each do |anItem|
-              ambiguity_check(itm: anItem, ambiguity_attr: ambiguity_attr, itm_type: key) unless anItem.distance == 1
-            end
-          end
-        end
-      end
 
       # @param [DukeMatchingItem] itm 
       # @param [Array] ambiguity_attr : [[type, iterator, name_attr].foreach ambig_types]

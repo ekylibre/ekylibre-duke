@@ -45,15 +45,12 @@ module Duke
       # checks every @attribute.type for ambiguous items
       # @return self as an array 
       def check_ambiguity
-        # Method to check ambiguity about a specific item
-        # For each element of the iterator (ex : crop_groups => CropGroup.all ), distances is close (+/-level) to item that matched it's part of the ambiguity possibilities
         @attributes.each do |type, iterator, name_attr|
           @name_attr = name_attr
           @type = type
           iterator.each do |product|
             @options.push(amb_option(product: product)) if is_ambiguous(product)
           end
-          # If ambiguous items, we add the current chosen element this ambig, and an element with what_matched do display to the user which words cuased problems
         end
         return push_amb 
       end 

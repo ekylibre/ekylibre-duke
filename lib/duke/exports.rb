@@ -1,6 +1,8 @@
 module Duke
   class Exports < Duke::Models::DukeArticle
+    
     def handle_export_tool_costs(params)
+      dukeArt = Duke::Models::DukeArticle.new(user_input: params[:user_input])
       user_input = clear_string(params[:user_input])
       parsed = {equipments: [],
                 date: Time.now}
