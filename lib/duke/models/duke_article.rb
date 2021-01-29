@@ -86,7 +86,7 @@ module Duke
           d = Date.tomorrow
         else
           if full_date = @user_input.matchdel('(\d|\d{2})(er|eme|ème)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre) ?(\d{4})?')
-            @date = DateTime.new(year_from_str(full_date[3]), @@month_hash[full_date[3]], full_date[1].to_i, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00"); return 
+            @date = DateTime.new(year_from_str(full_date[4]), @@month_hash[full_date[3]], full_date[1].to_i, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00"); return 
           elsif slash_date = @user_input.matchdel('(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?')
             @date = DateTime.new(year_from_str(slash_date[4]), slash_date[2].to_i, slash_date[1].to_i, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00"); return
           else # If nothing matched, we return todays date
@@ -113,7 +113,7 @@ module Duke
             delta_in_mins += min_time[0].to_i
           elsif hour_min_time = @user_input.matchdel('(de|pendant|durée) *(\d{1,2})\s?(heures|h|heure)\s?(\d\d)') # Extract HH:MM regex
             delta_in_mins += hour_min_time[2].to_i*60 + hour_min_time[4].to_i
-          elsif hour_time = @user_input.matchdel('(de|pendant|durée) *(\d{1,2})\s?(h\b|h\s|heure)')  # Extract HH: regex
+          elsif hour_time = @user_input.matchdel('(de|pendant|durée) *(\d{1,2})\s?(h\b|h\s|heure)') # Extract HH: regex
             delta_in_mins += hour_time[2].to_i*60
             delta_in_mins += 30 if @user_input.matchdel("et demi") # Check for "et demi" in user_input
           else
@@ -159,7 +159,7 @@ module Duke
       # @param [Str|Integer|Float] year
       # @return [Integer] parsed year
       def year_from_str year
-        now = Datetime.now
+        now = DateTime.now
         return 2000 + year.to_i if year.to_i.between?(now.year - 2005, now.year - 1999)
         return year.to_i if year.to_i.between?(now.year - 5, now.year + 1)
         return now.year

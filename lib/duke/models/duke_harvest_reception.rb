@@ -48,6 +48,7 @@ module Duke
         harvest_dic = {received_at: Time.zone.parse(@date),
                        storages_attributes: storages_attributes,
                        plants_attributes: targets_attributes,
+                       analysis: analysis,
                        quantity_value: @parameters['quantity']['rate'].to_s,
                        quantity_unit: ("kilogram" if ["kg","t"].include?(@parameters['quantity']['unit'])) || "hectoliter"}
         iH = WineIncomingHarvest.create!(create_incoming_harvest_attr(harvest_dic))
@@ -195,7 +196,7 @@ module Duke
 
       # Extracting TAV value in @user_input
       def extract_tav
-        tav = @user_input.matchdel('(\d{1,2}|\d{1,2}(\.|,)\d{1,2}) ((degré(s)?|°|%)|(de|en|d\')? *(tavp|t avp|tav|(t)? *avp|(t)? *svp|t avait|thé avait|thé à l\'épée|alcool|(entea|mta) *vp))')
+        tav = @user_input.matchdel('(\d{1,2}|\d{1,2}(\.|,)\d{1,2}) ?((degré(s)?|°|%)|(de|en|d\')? *(tavp|t avp|tav|(t)? *avp|(t)? *svp|t avait|thé avait|thé à l\'épée|alcool|(entea|mta) *vp))')
         unless @parameters.key?('tav')
           @parameters['tav'] = (tav[1].gsub(',','.') if tav)||nil
         end

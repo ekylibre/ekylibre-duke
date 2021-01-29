@@ -41,6 +41,7 @@ module Duke
     # @param [Json] parsed 
     def handle_modify_date(params)
       dukeHarv = Duke::Models::DukeHarvestReception.new.recover_from_hash(params[:parsed])
+      dukeHarv.user_input = params[:user_input]
       dukeHarv.extract_date
       dukeHarv.update_description(params[:user_input])
       return dukeHarv.to_ibm
