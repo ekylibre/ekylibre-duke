@@ -83,16 +83,13 @@ module Duke
       # TODO : check if really usefull
       def to_ibm(**opt)
         what_next, sentence, optional = redirect
-        self.instance_variables.each do |attr| 
-          self.instance_variable_set(attr, self.instance_variable_get(attr).to_a) if self.instance_variable_get(attr).class.eql? Duke::Models::DukeMatchingArray
-        end 
         return { parsed: self.to_jsonD, sentence: sentence, redirect: what_next, optional: optional}.merge(opt)
       end 
 
       # Extracts date with correct hour from @user_input
       # @return nil, but set @date
       def extract_date
-        now = DateTime.now
+        now = Time.now
         time = extract_hour(@user_input) # Extract hour from user_input
         if @user_input.matchdel("avant( |-)?hier") # Look for specific keywords
           d = Date.yesterday.prev_day
@@ -102,35 +99,35 @@ module Duke
           d = Date.tomorrow
         else
           if full_date = @user_input.matchdel('(\d|\d{2})(er|eme|ème)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre) ?(\d{4})?')
-            @date = DateTime.new(year_from_str(full_date[4]), @@month_hash[full_date[3]], full_date[1].to_i, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00"); return 
+            @date = Time.new(year_from_str(full_date[4]), @@month_hash[full_date[3]], full_date[1].to_i, time.hour, time.min, time.sec); return 
           elsif slash_date = @user_input.matchdel('(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?')
-            @date = DateTime.new(year_from_str(slash_date[4]), slash_date[2].to_i, slash_date[1].to_i, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00"); return
+            @date = Time.new(year_from_str(slash_date[4]), slash_date[2].to_i, slash_date[1].to_i, time.hour, time.min, time.sec); return
           else # If nothing matched, we return todays date
-            @date = DateTime.new(now.year, now.month, now.day, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00"); return
+            @date = Time.new(now.year, now.month, now.day, time.hour, time.min, time.sec); return
           end
         end
-        @date = DateTime.new(d.year, d.month, d.day, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00") # Set correct time to date if match
+        @date = Time.new(d.year, d.month, d.day, time.hour, time.min, time.sec) # Set correct time to date if match
       end
 
       # @return [Datetime(start), Datetime(end)]
       def extract_time_interval
-        now = DateTime.now
+        now = Time.now
         since_date = @user_input.matchdel('(depuis|à partir|a partir) *(du|de|le|la)? *(\d|\d{2}) *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)( *\d{4})?')
         since_slash_date = @user_input.matchdel('(depuis|à partir|a partir) * (du|de|le|la)? *(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?')
         since_month_date = @user_input.matchdel('(depuis|à partir|a partir) *(du|de|le|la)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)')
         if @user_input.matchdel("ce mois")
-          return DateTime.new(now.year, now.month, 1, 0, 0, 0), now
+          return Time.new(now.year, now.month, 1, 0, 0, 0), now
         elsif @user_input.matchdel("cette semaine")
           return now - (now.wday - 1), now
         elsif since_date 
-          return DateTime.new(year_from_str(since_date[5]), @@month_hash[since_date[4]], since_date[3].to_i, 0, 0, 0), now
+          return Time.new(year_from_str(since_date[5]), @@month_hash[since_date[4]], since_date[3].to_i, 0, 0, 0), now
         elsif since_slash_date
-          return DateTime.new(year_from_str(since_slash_date[6]), since_slash_date[4].to_i, since_slash_date[3].to_i, 0, 0, 0), now
+          return Time.new(year_from_str(since_slash_date[6]), since_slash_date[4].to_i, since_slash_date[3].to_i, 0, 0, 0), now
         elsif since_month_date 
           year = (now.year - 1 if month > now.month)||now.year
-          return DateTime.new(year, @@month_hash[since_month_date[3]], 1, 0, 0, 0), now
+          return Time.new(year, @@month_hash[since_month_date[3]], 1, 0, 0, 0), now
         else 
-          return DateTime.new(now.year, 1, 1, 0, 0, 0), now
+          return Time.new(now.year, 1, 1, 0, 0, 0), now
         end 
       end 
 
@@ -155,7 +152,7 @@ module Duke
             delta_in_mins += hour_time[2].to_i*60
             delta_in_mins += 30 if @user_input.matchdel("et demi") # Check for "et demi" in user_input
           else
-            delta_in_mins = 60 # Set duration to 60 by default
+            delta_in_mins = [[8, 12], [14, 17]] # Set duration to Array of working periods by default
           end 
           @duration = delta_in_mins
       end
@@ -163,19 +160,19 @@ module Duke
       # @param [String] content
       # @return Datetime
       def extract_hour(content = @user_input)
-        now = DateTime.now
+        now = Time.now
         time = content.matchdel('\b(00|[0-9]|1[0-9]|2[0-3]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b') # matching time regex
-        return DateTime.new(now.year, now.month, now.day, time[1].to_i, (0 if time[4].nil?)||time[4].to_i, 0) if time # if we match, we return correct hour
-        {10 => "matin", 17 => "après-midi", 12 => "midi", 20 => "soir", 0 => "minuit"}.each do |hour, val| # if any_word matches, we return correct hour
-          return DateTime.new(now.year, now.month, now.day, hour, 0, 0) if content.matchdel(val) 
+        return Time.new(now.year, now.month, now.day, time[1].to_i, (0 if time[4].nil?)||time[4].to_i, 0) if time # if we match, we return correct hour
+        {8 => "matin", 14 => "après-midi", 12 => "midi", 20 => "soir", 0 => "minuit"}.each do |hour, val| # if any_word matches, we return correct hour
+          return Time.new(now.year, now.month, now.day, hour, 0, 0) if content.matchdel(val) 
         end 
-        return DateTime.now # If nothing matches, we return current hour
+        return Time.now # If nothing matches, we return current hour
       end
 
       # @param [Str|Integer|Float] year
       # @return [Integer] parsed year
       def year_from_str year
-        now = DateTime.now
+        now = Time.now
         return 2000 + year.to_i if year.to_i.between?(now.year - 2005, now.year - 1999)
         return year.to_i if year.to_i.between?(now.year - 5, now.year + 1)
         return now.year
@@ -197,12 +194,12 @@ module Duke
 
       # Choose between new_date & @date
       def choose_date new_date
-        @date = new_date if (new_date.to_datetime - DateTime.now).abs > 0.010
+        @date = new_date if (new_date.to_time - Time.now).abs > 300
       end
 
       # Choose between new_duration and @duration
       def choose_duration new_duration
-        @duration = new_duration unless new_duration.eql? 60
+        @duration = new_duration unless new_duration.kind_of?(Array) && new_duration.size.eql?(2)
       end
 
       # @returns [String] every word from @user_input
@@ -253,7 +250,7 @@ module Duke
         if empty_iterator(item_type)
           iterator= []
         elsif item_type == :inputs
-          iterator= Matter.availables(at: @date.to_datetime).of_expression(Procedo::Procedure.find(@procedure).parameters_of_type(:input).collect(&:filter).join(" or "))
+          iterator= Matter.availables(at: @date.to_time).of_expression(Procedo::Procedure.find(@procedure).parameters_of_type(:input).collect(&:filter).join(" or "))
         elsif item_type == :crop_groups
           iterator= CropGroup.all
         elsif item_type == :financial_year 
@@ -261,23 +258,23 @@ module Duke
         elsif item_type == :activity_variety
           iterator = Activity.select('distinct on (cultivation_variety) *')
         elsif item_type == :press
-          iterator = Matter.availables(at: @date.to_datetime).can('press(grape)')
+          iterator = Matter.availables(at: @date.to_time).can('press(grape)')
         elsif item_type == :workers
-          iterator = Worker.availables(at: @date.to_datetime).each
+          iterator = Worker.availables(at: @date.to_time).each
         elsif item_type == :entities 
           iterator = Entity.all
         elsif item_type == :destination
-          iterator = Matter.availables(at: @date.to_datetime).where("variety='tank'")
+          iterator = Matter.availables(at: @date.to_time).where("variety='tank'")
         elsif item_type == :cultivablezones 
           iterator = CultivableZone.all
         elsif item_type == :equipments
-          iterator = Equipment.availables(at: @date.to_datetime)
+          iterator = Equipment.availables(at: @date.to_time)
         elsif item_type == :plant
-          iterator = Plant.availables(at: @date.to_datetime)
+          iterator = Plant.availables(at: @date.to_time)
         elsif item_type == :land_parcel
-          iterator = LandParcel.availables(at: @date.to_datetime)
+          iterator = LandParcel.availables(at: @date.to_time)
         elsif item_type == :cultivation
-          iterator = Product.availables(at: @date.to_datetime).of_expression("is land_parcel or is plant")
+          iterator = Product.availables(at: @date.to_time).of_expression("is land_parcel or is plant")
         end
         return iterator
       end 

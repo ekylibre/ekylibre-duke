@@ -359,7 +359,7 @@ module Duke
         sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.quantity")} : #{@parameters['quantity']['rate'].to_s} #{@parameters['quantity']['unit']}"
         sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.tavp")} : #{@parameters['tav']} % vol"
         sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.destination")} : #{@destination.map{|des| "#{des.name}#{" (#{des[:quantity].to_s} hl)" if des.key?('quantity')}"}.join(", ")}"
-        sentence+= "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{@date.to_datetime.strftime("%d/%m/%Y - %H:%M")}"
+        sentence+= "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{@date.to_time.strftime("%d/%m/%Y - %H:%M")}"
         sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.temp")} : #{@parameters['temperature']} °C" unless @parameters['temperature'].nil?
         sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.sanitary_specified")}" unless @parameters['sanitarystate'].nil?
         sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.ph")} : #{@parameters['ph']}" unless @parameters['ph'].nil?
@@ -411,7 +411,7 @@ module Duke
       def create_incoming_harvest_attr dic
         unless @parameters['pressing'].nil? #add pressing items
           dic[:pressing_schedule] = @parameters['pressing']['program']
-          dic[:pressing_started_at] = @parameters['pressing']['hour'].to_datetime.strftime("%H:%M") unless @parameters['pressing']['hour'].nil?
+          dic[:pressing_started_at] = @parameters['pressing']['hour'].to_time.strftime("%H:%M") unless @parameters['pressing']['hour'].nil?
         end
         unless @parameters['complementary'].blank? #add complementary if exists
           dic[:sedimentation_duration] = @parameters['complementary']['ComplementaryDecantation'].delete("^0-9") if @parameters['complementary'].key?('ComplementaryDecantation')

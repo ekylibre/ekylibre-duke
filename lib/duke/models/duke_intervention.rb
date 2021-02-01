@@ -54,9 +54,9 @@ module Duke
       
       # @return json with next_step if procedure is not parseable
       def guide_to_procedure
-        if @procedure.blank?
+        if @procedure.blank? # Suggest categories if family.uniq, family
           return (suggest_categories_from_fam(exclusive_farming_type) if exclusive_farming_type.present?) ||asking_intervention_family
-        elsif @procedure.scan(/[&]/).present? 
+        elsif @procedure.scan(/[&]/).present? # (One or multiple category(ies) matched
           if @procedure.split(/[&]/).size == 1 
             @procedure = @procedure.split(/[&]/).first 
             return suggest_proc_from_category
@@ -64,8 +64,8 @@ module Duke
             return suggest_categories_from_amb
           end 
         end 
-        return suggest_categories_from_fam if [:plant_farming, :vine_farming].include? @procedure.to_sym 
-        return suggest_viti_vegetal_proc if @procedure.scan(/[|]/).present?
+        return suggest_categories_from_fam if [:plant_farming, :vine_farming].include? @procedure.to_sym # Received a family
+        return suggest_viti_vegetal_proc if @procedure.scan(/[|]/).present? # Ambiguity between vegetal & viti proc
         return suggest_procedure_disambiguation if @procedure.scan(/[~]/).present?
         return {redirect: :get_help, sentence: I18n.t("duke.interventions.help.example")} if @procedure.match(/get_help/)
         return {redirect: :non_supported_proc} if Procedo::Procedure.find(@procedure).present? && (Procedo::Procedure.find(@procedure).activity_families & [:vine_farming, :plant_farming]).empty?
@@ -89,7 +89,7 @@ module Duke
       def parse_specific(sp)
         get_clean_sentence
         @specific = (tag_specific_targets if sp.to_sym.eql? :targets)||sp
-        extract_user_specifics(jsonD: self.to_jsonD(@specific, :procedure, :date, :user_input))
+        extract_user_specifics(jsonD: self.to_jsonD(@specific, :procedure, :date, :user_input), level: 0.79)
         add_input_rate if sp.to_sym == :inputs 
         find_ambiguity
       end 
@@ -137,6 +137,7 @@ module Duke
 
       # @returns [Integer] newly created intervention id
       def save_intervention
+        byebug
         intervention_params = {procedure_name: @procedure,
                                description: "Duke : #{@description}",
                                state: 'done',
@@ -210,16 +211,6 @@ module Duke
         @user_input = clear_string
       end 
 
-      # @params [Datetime] new_date
-      def select_date(new_date)
-        @date = choose_date(@date, new_date)
-      end 
-
-      # @params [Integer] new_duration
-      def select_duration(new_dur)
-        @duration= choose_duration(@duration, new_dur)
-      end 
-
       # Create Sentence describing current intervention
       def speak_intervention
         tar_type = Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}
@@ -235,10 +226,19 @@ module Duke
             sentence += "<br>&#8226 #{I18n.t("duke.interventions.readings.#{rd_hash[:indicator_name]}")} : #{(I18n.t("duke.interventions.readings.#{rd_hash.values.last}") if !is_number?(rd_hash.values.last))|| rd_hash.values.last}"
           end  
         end  
-        sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{@date.to_datetime.strftime("%d/%m/%Y - %H:%M")}"
-        sentence += "<br>&#8226 #{I18n.t("duke.interventions.duration")} : #{speak_duration}" 
+        sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{@date.to_time.strftime("%d/%m/%Y")}"
+        sentence += "<br>&#8226 #{I18n.t("duke.interventions.working_period")} : #{speak_working_periods}" 
         return sentence.gsub(/, <br>&#8226/, "<br>&#8226")
       end
+
+      def speak_working_periods 
+        if @duration.kind_of? Array 
+          return @duration.map{|start, ending| I18n.t("duke.interventions.working_periods", start: "#{start}h", ending: "#{ending}h")}.join(", ")
+        else
+          ending_date = (@date.to_time + @duration.to_i.minutes).to_time.strftime("%H:%M")
+          return I18n.t("duke.interventions.working_periods", start: @date.to_time.strftime("%H:%M"), ending: ending_date)
+        end 
+      end  
 
       # @returns [String, Integer] Sentence to ask how much input, and input index inside @inputs
       def speak_input_rate
@@ -256,13 +256,6 @@ module Duke
         candidates = self.send(tar_type).map{|tar| optJsonify(tar.name, tar.key.to_s) if tar.key? :potential}.compact
         return dynamic_options(I18n.t("duke.interventions.ask.what_targets", tar: I18n.t("duke.interventions.#{tar_type}").downcase),candidates)
       end 
-
-      # @returns [String] duration in hours/mins
-      def speak_duration()
-        return "#{@duration} #{I18n.t("duke.interventions.mins")}" if @duration < 60 
-        return "#{@duration/60}#{I18n.t("duke.interventions.hour")}#{@duration.remainder(60)}" if @duration.remainder(60) != 0
-        return "#{@duration/60}#{I18n.t("duke.interventions.hour")}"
-      end 
       
       # Create instance_variable with tar_names 
       def tag_specific_targets
@@ -276,9 +269,9 @@ module Duke
       def targets_from_cz
         tar_param = Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}
         unless tar_param.nil? ||@cultivablezones.to_a.empty? and @activity_variety.to_a.empty?
-          tarIterator = ActivityProduction.at(@date.to_datetime)
+          tarIterator = ActivityProduction.at(@date.to_time)
           unless @activity_variety.to_a.empty? 
-            tarIterator = ActivityProduction.at(@date.to_datetime).of_activity(Activity.select{|act| @activity_variety.map{ |var| var.name}.include? act.cultivation_variety_name})
+            tarIterator = ActivityProduction.at(@date.to_time).of_activity(Activity.select{|act| @activity_variety.map{ |var| var.name}.include? act.cultivation_variety_name})
           end 
           unless @cultivablezones.to_a.empty? 
             tarIterator = tarIterator.select{|act| @cultivablezones.map{ |cz| cz.key}.include? act.cultivable_zone_id}
@@ -286,7 +279,7 @@ module Duke
           self.instance_variable_set("@#{tar_param.name}", tarIterator.map {|act| act.products}
                                                                       .flatten
                                                                       .reject{|prod| !prod.available?||
-                                                                              (prod.is_a?(Plant) && prod.dead_at.nil? && prod.activity_production&.support.present?) and prod.activity_production.support.dead_at < @date.to_datetime||
+                                                                              (prod.is_a?(Plant) && prod.dead_at.nil? && prod.activity_production&.support.present?) and prod.activity_production.support.dead_at < @date.to_time||
                                                                               !prod.of_expression(tar_param.filter)}
                                                                       .map{|tar| {key: tar.id, name: tar.name, potential: :true}})
         end 
@@ -322,17 +315,31 @@ module Duke
 
       # Extract both date_and duration
       def extract_date_and_duration
-        whole_temp = @user_input.match(/(de|à|a) *\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b *(jusqu\')?(a|à) *\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b/)
-        #TODO : fix this whole temp
-        if whole_temp
-          @user_input = @user_input.gsub(whole_temp[0], "")
-          day = extract_date
-          @date =  DateTime.new(day.year, day.month, day.day, hour.hour, hour.min, hour.sec, "+0#{Time.now.utc_offset / 3600}:00"),
-          @duration =  ((extract_hour(whole_temp[0].split(/\b(a|à)/)[2]) - extract_hour(whole_temp[0].split(/\b(a|à)/)[0]))* 24 * 60).to_i
-        end
+        input_clone = @user_input.clone 
+        whole_temp = @user_input.matchdel(/(de|à|a) *\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b *(jusqu\')?(a|à) *\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b/)
         extract_duration
         extract_date
+        if input_clone.match("matin") 
+          @duration = [[8, 12]]
+        elsif input_clone.match("(apr(e|è)?s( |-)?midi|apr(e|è)m|apm)")
+          @duration = [[14, 17]]
+        elsif input_clone.match("journ(é|e)e")
+          @duration = [[8, 12], [14, 17]]
+        elsif whole_temp
+          starting_hour = extract_hour(whole_temp[0].split(/\b(a|à)/)[0])
+          @date = @date.change(hour: starting_hour.hour, min: starting_hour.min)
+          @duration =  ((extract_hour(whole_temp[0].split(/\b(a|à)/)[2]) - starting_hour)* 24 * 60).to_i
+        elsif not_current_time?
+          @duration = 60
+        end
       end
+
+      # Checks if HH:MM corresponds to Time.now.HH:MM
+      def not_current_time?
+        now = Time.now 
+        return true if (@date.change(year: now.year, month: now.month, day: now.day) - now).abs > 300
+        false 
+      end 
 
       # Adds input rate to input DukeMatchingItem
       def add_input_rate
@@ -393,9 +400,13 @@ module Duke
         return "save", speak_intervention, nil
       end
 
-      # @returns Array
       def working_periods_attributes
-        [{ started_at: Time.zone.parse(@date) , stopped_at: Time.zone.parse(@date) + @duration.minutes}]
+        offset = "+0#{Time.at(@date.to_time).utc_offset / 3600}:00"
+        if @duration.kind_of? Array 
+          return @duration.map{|start, ending| { started_at: @date.to_time.change(hour: start, min: 0, offset: offset) , stopped_at: @date.to_time.change(hour: ending, min: 0, offset: offset)}}
+        else  
+          return [{started_at: @date.to_time.change(offset: offset), stopped_at: @date.to_time.change(offset: offset) + @duration.to_i.minutes}]
+        end 
       end 
 
       # @params [hash] params : Intervention_parameters
