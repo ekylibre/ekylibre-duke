@@ -68,6 +68,10 @@ module Duke
         self
       end
 
+      def max 
+        return self.max_by{|item| item.distance}
+      end 
+
     end 
   end 
 end 

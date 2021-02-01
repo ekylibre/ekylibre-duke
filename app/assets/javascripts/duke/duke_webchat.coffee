@@ -101,7 +101,7 @@
 
   # Send msg to backends methods that communicate with IBM, if intent is specified, msg goes straight to this functionnality (intent disambiguation)
   send_msg = (msg = $("#duke-input").val().replace(/\n/g, ""), user_intent=undefined) ->
-    if msg.match(vars.cancelation)
+    if msg.toString().match(vars.cancelation)
       user_intent = "quick_exit"
     reset_textarea() 
     clear_textarea()

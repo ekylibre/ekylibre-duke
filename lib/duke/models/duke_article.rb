@@ -2,14 +2,16 @@ module Duke
   module Models
     class DukeArticle
       include Duke::BaseDuke
-      attr_accessor :description, :date, :duration, :user_input
+
+      attr_accessor :description, :date, :duration, :user_input, :activity_variety, :equipments, :cultivablezones, :financial_year, :entities
       @@user_specific_types = [:financial_year, :entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :equipments, :workers, :inputs, :press] 
       @@month_hash =  {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9, "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12 }
       
-      def initialize 
+      def initialize(**args)
         @description, @user_input = "", ""
         @date = Time.now
         @duration = 60 
+        args.each{|k, v| instance_variable_set("@#{k}", v)}
       end 
 
       # @creates intervention from json
@@ -25,6 +27,20 @@ module Duke
         return ActiveSupport::HashWithIndifferentAccess.new(self.as_json) if args.empty?
         return ActiveSupport::HashWithIndifferentAccess.new(Hash[args.flatten.map{|arg| [arg, self.send(arg)] if self.respond_to? arg}.compact])
       end 
+
+      # @param [json] jsonD : DukeArticle.as_json
+      # @param [Float] level : min_match_level
+      # Extract user specifics & recreates DukeArticle
+      def extract_user_specifics(jsonD: self.to_jsonD, level: 0.89)
+        @user_input = self.clear_string # Get clean string before parsing
+        user_specifics = jsonD.select{ |key, value| @@user_specific_types.include?(key.to_sym)}
+        attributes = user_specifics.to_h{|key, mArr|[key, {iterator: iterator(key.to_sym), name_attribute: name_attr(key.to_sym), list: mArr}]}
+        create_words_combo.each do |combo| # Creating all combo_words from user_input
+          parser = Duke::Models::DukeParser.new(word_combo: combo, attributes: attributes) # create new DukeParser
+          parser.parse # parse user_specifics
+        end
+        self.recover_from_hash(jsonD) # recreate DukeArticle
+      end
             
       def update_description(ds)
         @description += " - #{ds}"
@@ -96,6 +112,28 @@ module Duke
         @date = DateTime.new(d.year, d.month, d.day, time.hour, time.min, time.sec, "+0#{Time.now.utc_offset / 3600}:00") # Set correct time to date if match
       end
 
+      # @return [Datetime(start), Datetime(end)]
+      def extract_time_interval
+        now = DateTime.now
+        since_date = @user_input.matchdel('(depuis|à partir|a partir) *(du|de|le|la)? *(\d|\d{2}) *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)( *\d{4})?')
+        since_slash_date = @user_input.matchdel('(depuis|à partir|a partir) * (du|de|le|la)? *(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?')
+        since_month_date = @user_input.matchdel('(depuis|à partir|a partir) *(du|de|le|la)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)')
+        if @user_input.matchdel("ce mois")
+          return DateTime.new(now.year, now.month, 1, 0, 0, 0), now
+        elsif @user_input.matchdel("cette semaine")
+          return now - (now.wday - 1), now
+        elsif since_date 
+          return DateTime.new(year_from_str(since_date[5]), @@month_hash[since_date[4]], since_date[3].to_i, 0, 0, 0), now
+        elsif since_slash_date
+          return DateTime.new(year_from_str(since_slash_date[6]), since_slash_date[4].to_i, since_slash_date[3].to_i, 0, 0, 0), now
+        elsif since_month_date 
+          year = (now.year - 1 if month > now.month)||now.year
+          return DateTime.new(year, @@month_hash[since_month_date[3]], 1, 0, 0, 0), now
+        else 
+          return DateTime.new(now.year, 1, 1, 0, 0, 0), now
+        end 
+      end 
+
       private 
 
       # Extracts duration from user_input
@@ -121,28 +159,6 @@ module Duke
           end 
           @duration = delta_in_mins
       end
-
-      # @return [Datetime(start), Datetime(end)]
-      def extract_time_interval
-        now = DateTime.now
-        since_date = @user_input.matchdel('(depuis|à partir|a partir) *(du|de|le|la)? *(\d|\d{2}) *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)( *\d{4})?')
-        since_slash_date = @user_input.matchdel('(depuis|à partir|a partir) * (du|de|le|la)? *(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?')
-        since_month_date = @user_input.matchdel('(depuis|à partir|a partir) *(du|de|le|la)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)')
-        if @user_input.matchdel("ce mois")
-          return DateTime.new(now.year, now.month, 1, 0, 0, 0), now
-        elsif @user_input.matchdel("cette semaine")
-          return now - (now.wday - 1), now
-        elsif since_date 
-          return DateTime.new(year_from_str(since_date[5]), @@month_hash[since_date[4]], since_date[3].to_i, 0, 0, 0), now
-        elsif since_slash_date
-          return DateTime.new(year_from_str(since_slash_date[6]), since_slash_date[4].to_i, since_slash_date[3].to_i, 0, 0, 0), now
-        elsif since_month_date 
-          year = (now.year - 1 if month > now.month)||now.year
-          return DateTime.new(year, @@month_hash[since_month_date[3]], 1, 0, 0, 0), now
-        else 
-          return DateTime.new(now.year, 1, 1, 0, 0, 0), now
-        end 
-      end 
 
       # @param [String] content
       # @return Datetime
@@ -217,7 +233,7 @@ module Duke
       end 
 
       # @param [str] item_type 
-      # @return item iterator for this type
+      # @return item iname_attr for this item
       def name_attr(item_type)
         if item_type == :activity_variety
           attribute = :cultivation_variety_name
@@ -231,6 +247,8 @@ module Duke
         attribute
       end 
 
+      # @param [str] item_type 
+      # @return iterator for this item
       def iterator(item_type) 
         if empty_iterator(item_type)
           iterator= []
@@ -285,19 +303,6 @@ module Duke
         ambiguity = Duke::Models::DukeAmbiguity.new(itm: itm, ambiguity_attr: ambiguity_attr, itm_type: itm_type).check_ambiguity
         @ambiguities.push(ambiguity) unless ambiguity.empty?
       end 
-
-      # @param [json] jsonD : DukeArticle.as_json
-      # @param [Float] level : min_match_level
-      # Extract user specifics & recreates DukeArticle
-      def extract_user_specifics(jsonD: self.to_jsonD, level: 0.89)
-        user_specifics = jsonD.select{ |key, value| @@user_specific_types.include?(key.to_sym)}
-        attributes = user_specifics.to_h{|key, mArr|[key, {iterator: iterator(key.to_sym), name_attribute: name_attr(key.to_sym), list: mArr}]}
-        create_words_combo.each do |combo| # Creating all combo_words from user_input
-          parser = Duke::Models::DukeParser.new(word_combo: combo, attributes: attributes) # create new DukeParser
-          parser.parse # parse user_specifics
-        end
-        self.recover_from_hash(jsonD) # recreate DukeArticle
-      end
 
     end
   end
