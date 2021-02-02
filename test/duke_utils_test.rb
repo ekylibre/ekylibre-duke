@@ -5,13 +5,11 @@ require "lib/duke/utils/intervention_utils"
 require "lib/duke/utils/harvest_reception_utils"
 
 module Duke
-  class DukeParsingTest < MiniTest::Unit::TestCase
-    DukeParsing = Duke::Utils::DukeParsing.new
-    DukeInterventionUtils = Duke::Utils::InterventionUtils.new
-    DukeHarvestReceptionUtils = Duke::Utils::HarvestReceptionUtils.new
+  class DukeArticleTest < MiniTest::Unit::TestCase
+    dukeArt = Duke::Models::DukeArticle.new(user_input: "J'ai labouré sur bouleytreau et bernessard")
     def test_create_words_combos
       # Should return exactly 30 combos of words
-      assert_equal(30, DukeParsing.create_words_combo("This is a sentence written to test the function").length, "Number of created words-combos is not exact")
+      assert_equal(30, dukeArt.create_words_combo.length, "Number of created words-combos is not exact")
       assert_equal({[0]=>"this",
                     [1]=>"is",
                     [2]=>"a",

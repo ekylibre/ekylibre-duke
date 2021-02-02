@@ -118,6 +118,8 @@ fra:
       transport_dur: "Durée de transport"
       reception_dock: "Quai de réception"
       vendange_nature: "Type de vendange"
+      mechanical: 'mécanique'
+      manual_f: 'manuelle'
       last_load: "Dernier chargement"
     ambiguities: 
       ask: "Veuillez séléctionner les éléments correspondants au terme '%{item}', puis validez"
