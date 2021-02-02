@@ -162,7 +162,7 @@ module Duke
 
     # @returns json
     def suggest_categories_from_fam 
-      categories = Onoma::ProcedureCategory.select { |c| c.activity_family.include?(@procedure.to_sym.to_sym) and !Procedo::Procedure.of_main_category(c).empty? }.map{|cat|optJsonify(cat.human_name, "#{cat.name}&")}
+      categories = Onoma::ProcedureCategory.select { |c| c.activity_family.include?(@procedure.to_sym.to_sym) and !Procedo::Procedure.of_main_category(c).empty? }.sort{|a,b| a.human_name <=> b.human_name }.map{|cat|optJsonify(cat.human_name, "#{cat.name}&")}
       categories.push(optJsonify(I18n.t("duke.interventions.help.get_help"), :get_help))
       return {parsed: {user_input: @user_input}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_category"), categories)}
     end 

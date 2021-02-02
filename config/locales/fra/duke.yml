@@ -21,7 +21,7 @@ fra:
     redirections: 
       no_activity: "Je n'ai pas compris le type d'activité à laquelle vous souhaitez accéder. Réessayez"
       activity: "Je vous redirige vers votre activité de %{variety}"
-      which_activity: "A quelle activité de %{variety} souhaitez vous accéder ?"
+      which_activity: "A quelle activité de %{variety} souhaitez-vous accéder ?"
       no_current_activity: "Vous n'avez pas d'activité de %{variety}, souhaitez-vous en créer une ?"
       not_finding: "Je ne comprends pas ce à quoi vous souhaitez accéder"
       found_tool: "Je vous redirige vers la page de l'outil %{tool}"
@@ -39,16 +39,16 @@ fra:
       export_over: "L'export de votre fiche de côuts est terminée. Vous pouvez la consulter ici"
     interventions:
       ask:
-        save_intervention_0: "Voulez vous enregistrer cette intervention"
-        save_intervention_1: "Validez vous la saisie de cette intervention"
-        save_intervention_2: "Confirmez vous l'enregistrement de cette intervention"
+        save_intervention_0: "Voulez-vous enregistrer cette intervention"
+        save_intervention_1: "Validez-vous la saisie de cette intervention"
+        save_intervention_2: "Confirmez-vous l'enregistrement de cette intervention"
         how_much_inputs_0: "Combien de %{unit} de %{input} ont été utilisés ?"
         how_much_inputs_1: "Combien de %{unit} de %{input} avez-vous utilisé ?"
-        which_procedure: "Quelle procédure souhaitez vous saisir ? "
+        which_procedure: "Quelle intervention souhaitez-vous saisir ? "
         what_modify: "Quels éléments souhaitez-vous modifier ? "
         what_targets: "Selectionnez les %{tar} de cette intervention, puis validez"
         what_family: "Je n'ai pas saisi le type d'intervention.<br>Choisissez le type de production, ou réessayez de me donner le nom exact de la procédure"
-        what_category: "Choisissez la catégorie de l'intervention, ou réessayez de me donner le nom exact de la procédure."
+        what_category: "Choisissez la catégorie de l’intervention, ou réessayez de me donner le nom exact de l’intervention."
       units: 
         gram: "g"
         hectoliter: "hL"
@@ -79,7 +79,7 @@ fra:
       intervention: "Intervention"
       proc: "Procédure"
       group: "Groupement(s)"
-      tool: "Equipement(s)"
+      tool: "Équipement(s)"
       worker: "Opérateur(s)"
       input: "Intrant(s)"
       date: "Date"
@@ -96,8 +96,8 @@ fra:
       cancel: "Je ne souhaite pas saisir une intervention"
     harvest_reception:
       ask:
-        save_harvest_reception_0: "Validez vous cette réception de vendange"
-        save_harvest_reception_1: "Voulez vous saisir la réception de vendange suivante"
+        save_harvest_reception_0: "Validez-vous cette réception de vendange"
+        save_harvest_reception_1: "Voulez-vous saisir la réception de vendange suivante"
         how_much_to_0: "Combien d'hectolitres de vendanges sont allés dans la "
         how_much_to_1: "Combien d'hectolitres ont été transférés vers la "
       quantity: "Quantité"
