@@ -119,7 +119,7 @@ fra:
       reception_dock: "Quai de réception"
       vendange_nature: "Type de vendange"
       mechanical: 'mécanique'
-      manual: 'manuelle'
+      manual_f: 'manuelle'
       last_load: "Dernier chargement"
     ambiguities: 
       ask: "Veuillez séléctionner les éléments correspondants au terme '%{item}', puis validez"

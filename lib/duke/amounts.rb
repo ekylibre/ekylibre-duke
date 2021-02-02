@@ -1,5 +1,6 @@
 module Duke
   class Amounts
+    include Duke::BaseDuke
 
     # @param [String] user_input
     def handle_unpaid_purchases(params)
@@ -10,7 +11,7 @@ module Duke
 
     # @param [String] user_input
     def handle_insurance(params)
-      dukeArt = Duke::Models::DukeArticle.new(user_input: params[:user_input])
+      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input])
       interval_start, interval_end = dukeArt.extract_time_interval
       n = Onoma::Account.find(:insurance_expenses)
       amount = 0

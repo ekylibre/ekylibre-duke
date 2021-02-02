@@ -1,10 +1,11 @@
 module Duke
-  class Issues < Duke::Models::DukeArticle
+  class Issues
+    include Duke::BaseDuke
 
     # @params [String] user_input 
     # @params [String] nature : Match (optional) for a issue_nature_type
     def handle_equipment_issues(params)
-      dukeArt = Duke::Models::DukeArticle.new(user_input: params[:user_input], cultivablezones: Duke::Models::DukeMatchingArray.new, equipments: Duke::Models::DukeMatchingArray.new)
+      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], cultivablezones: Duke::DukeMatchingArray.new, equipments: Duke::DukeMatchingArray.new)
       dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:cultivablezones, :equipments, :date))
       return {found: :no, sentence: I18n.t("duke.issues.no_tool_found")} if dukeArt.equipments.empty? 
       link = "/backend/issues/new?target_id=#{dukeArt.equipments.max.key}&description=#{params[:user_input].gsub(" ", "+")}&target_type=Equipment" # Creating redirection url

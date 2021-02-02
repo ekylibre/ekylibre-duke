@@ -1,10 +1,11 @@
 module Duke
-  class Redirections < Duke::Models::DukeArticle
+  class Redirections
+    include Duke::BaseDuke
 
     # @param [String] user_input 
     # @return [Json] hasfound: bln|multiple, sentence & optional
     def handle_to_activity(params)
-      dukeArt = Duke::Models::DukeArticle.new(user_input: params[:user_input], activity_variety: Duke::Models::DukeMatchingArray.new)
+      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], activity_variety: Duke::DukeMatchingArray.new)
       dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:activity_variety, :date))
       return {found: :no, sentence: I18n.t("duke.redirections.no_activity")} if dukeArt.activity_variety.empty? # Return if no activity matched
       max_variety = dukeArt.activity_variety.max
@@ -29,7 +30,7 @@ module Duke
 
     # @param [String] user_input
     def handle_to_tool(params)
-      dukeArt = Duke::Models::DukeArticle.new(user_input: params[:user_input], equipments: Duke::Models::DukeMatchingArray.new)
+      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], equipments: Duke::DukeMatchingArray.new)
       dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:equipments, :date))
       return {found: :no, sentence: I18n.t("duke.redirections.not_finding")} if dukeArt.equipments.empty?
       return {found: :yes, sentence: I18n.t("duke.redirections.found_tool" , tool: dukeArt.equipments.max.name), key: dukeArt.equipments.max.key}
@@ -38,7 +39,7 @@ module Duke
     # @param [String] user_input 
     # @param [String] purchase_type : unpaid|nil
     def handle_to_bill(params)
-      dukeArt = Duke::Models::DukeArticle.new(user_input: params[:user_input], entities: Duke::Models::DukeMatchingArray.new)
+      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], entities: Duke::DukeMatchingArray.new)
       dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:entities, :date))
       purchase_type = (:all if params[:purchase_type].nil?)|| :unpaid
       return {sentence: I18n.t("duke.redirections.to_#{purchase_type}_bills")} if dukeArt.entities.empty?
@@ -48,7 +49,7 @@ module Duke
     # @param [String] user_input 
     # @param [String] sale_type : unpaid|nil
     def handle_to_sale(params) 
-      dukeArt = Duke::Models::DukeArticle.new(user_input: params[:user_input], entities: Duke::Models::DukeMatchingArray.new)
+      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], entities: Duke::DukeMatchingArray.new)
       dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:entities, :date))
       sale_type = (:all if params[:sale_type].nil?)|| :unpaid
       return {sentence: I18n.t("duke.redirections.to_#{sale_type}_sales")} if dukeArt.entities.empty?

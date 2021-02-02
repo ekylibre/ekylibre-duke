@@ -1,13 +1,13 @@
 module Duke
-  class Exports < Duke::Models::DukeArticle
+  class Exports
+    include Duke::BaseDuke
     
     # @params [String] user_input
     # @params [Stirng] user_id = user.email
     # @params [String] session_id = duke_id
     # Finds Tool, and launches PrinterJob
-    # TODO : get notification
     def handle_export_tool_costs(params)
-      dukeArt = Duke::Models::DukeArticle.new(user_input: params[:user_input], equipments: Duke::Models::DukeMatchingArray.new)
+      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], equipments: Duke::DukeMatchingArray.new)
       dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:equipments, :date))
       return {status: :no_tool, sentence: I18n.t("duke.exports.no_tool_found")} if dukeArt.equipments.empty?
       ToolCostExportJob.perform_later(equipment_ids: [dukeArt.equipments.max.key], campaign_ids: Campaign.current.ids, user: User.find_by(email: params[:user_id]), duke_id: params[:session_id])
@@ -20,7 +20,7 @@ module Duke
     # @params [Stirng] user_id = user.email
     # @params [String] session_id = duke_id
     def handle_export_balance_sheet(params)
-      dukeArt = Duke::Models::DukeArticle.new(user_input: params[:user_input], financial_year: Duke::Models::DukeMatchingArray.new)
+      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], financial_year: Duke::DukeMatchingArray.new)
       dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:financial_year, :date), level: 0.72)
       if dukeArt.financial_year.empty? && FinancialYear.all.length > 1
         options = dynamic_options(I18n.t("duke.exports.which_financial_year"), FinancialYear.all.map{|fY| optJsonify(fY.code, fY.id.to_s)})
@@ -56,7 +56,7 @@ module Duke
     # @params [String] session_id = duke_id
     def handle_export_activity_traca(params)
       # WIP : Can't Cherrypick correct activity by it's cultivation_variety_name, must think of another way
-      dukeArt = Duke::Models::DukeArticle.new(user_input: params[:user_input], activity_variety: Duke::Models::DukeMatchingArray.new)
+      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], activity_variety: Duke::DukeMatchingArray.new)
       dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:activity_variety, :date))
       return {status: :no_cultivation, sentence: I18n.t("duke.exports.no_var_found")} if dukeArt.activity_variety.empty? 
       max_activity = dukeArt.activity_variety.max
