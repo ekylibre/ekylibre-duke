@@ -32,7 +32,8 @@ module Duke
       useless_dic.each do |rgx|
         fstr = fstr.gsub(rgx, "")
       end
-      return fstr.gsub(/\s+/, " ").strip.downcase.split(" | ").first
+      str = fstr.gsub(/\s+/, " ").strip.downcase.split(" | ").first
+      return (str unless str.nil?)||" "
     end
 
 

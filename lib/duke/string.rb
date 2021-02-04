@@ -5,5 +5,10 @@ class String
     self[match[0]] = "" if match 
     return match
   end 
-  
+
+  def del substr 
+    self[substr] = ""  if substr.present? && self.include?(substr)
+    return self
+  end 
+
 end 

@@ -67,6 +67,10 @@ module Duke
       self
     end
 
+    def uniq_by_key
+      self.uniq{|it|it[:key]}
+    end 
+
     def max 
       return self.max_by{|item| item.distance}
     end 

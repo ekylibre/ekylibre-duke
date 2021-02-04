@@ -4,6 +4,7 @@ module Duke
 
     attr_accessor :description, :date, :duration, :user_input, :activity_variety, :equipments, :cultivablezones, :financial_year, :entities
     @@user_specific_types = [:financial_year, :entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :equipments, :workers, :inputs, :press] 
+    @@ambiguities_types = [:plant, :land_parcel, :cultivation, :destination, :crop_groups, :equipments, :workers, :inputs, :press]
     @@month_hash =  {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9, "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12 }
     
     def initialize(**args)
@@ -49,17 +50,17 @@ module Duke
       @retry = 0
     end 
 
-      # Find ambiguities in what's been parsed
-      def find_ambiguity
-        self.as_json.each do |key, reco|
-          if @@user_specific_types.include?(key.to_sym)
-            ambiguity_attr = ambiguities_attributes(key.to_sym)
-            reco.each do |anItem|
-              ambiguity_check(itm: anItem, ambiguity_attr: ambiguity_attr, itm_type: key) unless anItem.distance == 1
-            end
+    # Find ambiguities in what's been parsed
+    def find_ambiguity
+      self.as_json.each do |key, reco|
+        if @@ambiguities_types.include?(key.to_sym)
+          ambiguity_attr = ambiguities_attributes(key.to_sym)
+          reco.each do |anItem|
+            ambiguity_check(itm: anItem, ambiguity_attr: ambiguity_attr, itm_type: key) unless anItem.distance == 1
           end
         end
       end
+    end
 
     # @params [String] type : type of ambiguity to be corrected 
     # @params [Integer] key : key of ambiguous item
