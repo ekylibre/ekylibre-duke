@@ -1,6 +1,6 @@
 module Duke
   class DukeMatchingItem < HashWithIndifferentAccess
-
+    include BaseDuke
     attr_accessor :name, :distance, :indexes, :key, :matched, :rate, :area, :potential
 
     def initialize(hash: nil, **args) 
@@ -16,7 +16,7 @@ module Duke
       if item.key == @key # only compare distance when same item
         return (true if item.distance > @distance)||false
       else # apply exp(diff/70) to have item-length correction
-        aDist = item.distance.to_f * Math.exp((item.matched.size - @matched.size)/100.0)
+        aDist = item.distance.to_f * Math.exp((item.matched.size - @matched.size)/120.0)
       end           
       return (true if aDist > @distance)||false 
     end
@@ -48,6 +48,20 @@ module Duke
       # True If measure in mass or volume , and procedure can handle this type of indicators for its inputs and net dimension exists for specific input
       return true if ([:mass, :volume].include? dim) && (input_param.handler("net_#{dim}").present?) && (!Matter.find_by_id(key)&.send("net_#{dim}").zero?)
       return false
+    end 
+
+    def longest_substring otherstr
+      substrs = clear_string(self.name.clone).substrings 
+      return substrs.find{|sub| otherstr.include? sub[1]}.last
+    end 
+
+    def has_something_more_than? otherstr
+      pure = FuzzyStringMatch::JaroWinkler.create( :pure )
+      common = self.longest_substring(clear_string(otherstr))
+      match_rest = self.matched.clone.del(self.matched.better_match common)
+      our_rest = clear_string(self.name.clone).del common
+      oth_rest = clear_string(otherstr.clone).del common
+      return (true if pure.getDistance(our_rest, match_rest) - pure.getDistance(oth_rest, match_rest) > 0.30)||false
     end 
     
   end 

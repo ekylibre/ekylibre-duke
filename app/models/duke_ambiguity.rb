@@ -7,7 +7,7 @@ module Duke
     def initialize(itm:, ambiguity_attr:, itm_type:) 
       super()
       @fuzzloader = FuzzyStringMatch::JaroWinkler.create( :pure )
-      @ambig_level = 0.05
+      @ambig_level = 0.10
       @options = []
       @itm = itm 
       @attributes = ambiguity_attr
@@ -17,7 +17,7 @@ module Duke
     # @param [ActiveRecord] product
     # @return bln, check if product is ambiguous with self
     def is_ambiguous(product)
-      return true if (@itm.key != product.id && (@itm.distance - @fuzzloader.getDistance(clear_string(product.send(@name_attr)), @itm.matched)).between?(0,@ambig_level))
+      return true if (@itm.key != product.id && (@itm.distance - @fuzzloader.getDistance(clear_string(product.send(@name_attr)), @itm.matched)).between?(0,@ambig_level) && !@itm.has_something_more_than?(product.send(@name_attr)))
       return false
     end 
 

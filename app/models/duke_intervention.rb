@@ -95,6 +95,7 @@ module Duke
         prods = @user_input.split(/\|{3}/).map{|num| Product.find_by_id(num.to_i)}  # Creating a list with all chosen products
         prods.each{|prod| self.instance_variable_get("@#{sp}").push(DukeMatchingItem.new(name: prod.name, key: prod.id, distance: 1, matched: prod.name)) unless prod.nil?}
         @specific = sp.to_sym
+        @description = prods.map{|prod| prod.name}.join(", ")
       else
         parse_specific(sp)
       end 
@@ -167,7 +168,9 @@ module Duke
     def optionAll type 
       iterator = Product.availables(at: @date.to_time).of_expression(Procedo::Procedure.find(@procedure).parameters_of_type(type.to_sym).collect(&:filter).join(" or "))
       items = iterator.map{|item| optJsonify(item.name, item.id)}
-      return dynamic_options(I18n.t("duke.interventions.ask.what_complement"), items)
+      return dynamic_text(I18n.t("duke.interventions.ask.no_complement")) if items.empty?
+      return dynamic_options(I18n.t("duke.interventions.ask.one_complement"), items) if items.size == 1
+      return dynamic_options(I18n.t("duke.interventions.ask.what_complement_#{type}"), items)
     end 
 
     # @set new instance variables with clicked targets
@@ -325,7 +328,7 @@ module Duke
         items = tarIterator.map {|act| act.products}
                            .flatten
                            .reject{|prod| !prod.available?||
-                                   (prod.is_a?(Plant) && prod.dead_at.nil? && prod.activity_production&.support.present?) and prod.activity_production.support.dead_at < @date.to_time||
+                                   (prod.is_a?(Plant) && prod.dead_at.nil? && prod.activity_production&.support.present?) and (prod.activity_production.support.dead_at.nil?||prod.activity_production.support.dead_at < @date.to_time)||
                                    !prod.of_expression(tar_param.filter)}
                            .map{|tar| DukeMatchingItem.new(key: tar.id, name: tar.name, potential: :true, distance: 1, matched: tar.name)}
         self.instance_variable_set("@#{tar_param.name}", DukeMatchingArray.new(arr: items))

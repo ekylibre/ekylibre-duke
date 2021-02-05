@@ -213,6 +213,7 @@
   output_sent = (msg = $("#duke-input").val().replace(/\n/g, "")) ->
     # Disable buttons if previous message had options selections enabled
     $(".duke-select-wrap").last().parent().remove()
+    $(".duke-centered").last().remove()
     if $('.msg_container_base').children().last().hasClass('options') 
       $.each $('.msg_container_base').children().last().children(), (index, option) ->
         $(option).prop("disabled",true);
@@ -290,7 +291,6 @@
     return
   
   $(document).on 'click', '.duke-cancelation',  ->
-    $(".duke-centered").last().remove()
     output_sent($(this).html())
     send_msg('cancel')
     return
@@ -302,7 +302,6 @@
     return
 
   $(document).on 'click', '.duke-validation',  ->
-    $(".duke-centered").last().remove()
     str = (($(opt).data('value') if $(opt).children().last().hasClass('duke-checked')) for opt in $('.msg_container.options.general').last().children() ).filter(Boolean).join("|||")
     output_sent($(this).html())
     send_msg(str)

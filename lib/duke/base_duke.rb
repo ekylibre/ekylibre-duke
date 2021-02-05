@@ -26,6 +26,13 @@ module Duke
       return [optJson]
     end 
 
+    def dynamic_text(sentence)
+      optJson = {} 
+      optJson[:response_type] = "text"
+      optJson[:text] = sentence
+      return [optJson]
+    end 
+
     def clear_string(fstr=@user_input)
       # Remove useless elements from user sentence
       useless_dic = [/\bnum(e|é)ro\b/, /n ?°/, /(#|-|_|\\)/]
