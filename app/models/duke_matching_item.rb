@@ -51,8 +51,9 @@ module Duke
     end 
 
     def longest_substring otherstr
-      substrs = clear_string(self.name.clone).substrings 
-      return substrs.find{|sub| otherstr.include? sub[1]}.last
+      substrs = clear_string(self.name.clone).substrings
+      biggest = substrs.find{|sub| otherstr.include? sub[1]}
+      return (biggest.last if biggest)||nil
     end 
 
     def has_something_more_than? otherstr

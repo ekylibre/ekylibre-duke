@@ -36,11 +36,12 @@ module Duke
     def clear_string(fstr=@user_input)
       # Remove useless elements from user sentence
       useless_dic = [/\bnum(e|é)ro\b/, /n ?°/, /(#|-|_|\\)/]
+      deburr_dic = {"é"=>"e"}
       useless_dic.each do |rgx|
         fstr = fstr.gsub(rgx, "")
       end
       str = fstr.gsub(/\s+/, " ").strip.downcase.split(" | ").first
-      return (str unless str.nil?)||" "
+      return (I18n.transliterate(str) unless str.nil?)||" "
     end
 
 

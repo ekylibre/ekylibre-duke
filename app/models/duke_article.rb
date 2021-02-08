@@ -65,10 +65,12 @@ module Duke
     # @params [String] type : type of ambiguity to be corrected 
     # @params [Integer] key : key of ambiguous item
     def correct_ambiguity(type:, key:)
+      byebug
       current_hash = self.instance_variable_get("@#{type}").find_by_key(key)
       self.instance_variable_get("@#{type}").delete(current_hash)
       begin
         @user_input.split(/[|]{3}/).map{|chosen| eval(chosen)}.each do |chosen_one| 
+          byebug
           chosen_one[:rate] = {unit: :population, value: nil} if current_hash.needs_input_reinitialize?(chosen_one)
           self.update_description(chosen_one[:name])
           self.instance_variable_get("@#{chosen_one[:type]}").push(DukeMatchingItem.new(hash: current_hash.merge_h(chosen_one)))

@@ -18,6 +18,7 @@ module Duke
       dukeInt = Duke::DukeIntervention.new.recover_from_hash(params[:parsed])
       tmpInt = Duke::DukeIntervention.new(procedure: dukeInt.procedure,  date: dukeInt.date, user_input: params[:user_input])
       tmpInt.parse_specific(params[:specific])
+      byebug
       dukeInt.replace_specific(int: tmpInt)
       return dukeInt.to_ibm
     end
@@ -30,9 +31,11 @@ module Duke
       tmpInt = Duke::DukeIntervention.new(procedure: dukeInt.procedure,  date: dukeInt.date, user_input: params[:user_input])
       tmpInt.parse_specific_buttons(params[:specific]) 
       dukeInt.concat_specific(int: tmpInt)
-      return dukeInt.to_ibm
+      return dukeInt.to_ibm(modifiable: dukeInt.modification_candidates)
     end 
 
+    # @params [Json] parsed : Previously parsed
+    # @params [String] user_input : User Utterance
     def handle_get_complement_items params 
       dukeInt = Duke::DukeIntervention.new.recover_from_hash(params[:parsed])
       return dukeInt.to_ibm(optionAll: dukeInt.optionAll(params[:type]))
@@ -45,7 +48,7 @@ module Duke
       tmpInt = Duke::DukeIntervention.new(procedure: dukeInt.procedure,  date: dukeInt.date, user_input: params[:user_input])
       tmpInt.parse_sentence
       dukeInt.concat_specific(int: tmpInt)
-      return dukeInt.to_ibm
+      return dukeInt.to_ibm(modifiable: dukeInt.modification_candidates)
     end 
 
     # @params [Json] parsed : Previously parsed
@@ -91,6 +94,7 @@ module Duke
     def handle_parse_disambiguation params
       dukeInt = Duke::DukeIntervention.new.recover_from_hash(params[:parsed])
       dukeInt.user_input = params[:user_input]
+      byebug
       dukeInt.correct_ambiguity(type: params[:amb_type], key: params[:amb_key])
       return dukeInt.to_ibm
     end

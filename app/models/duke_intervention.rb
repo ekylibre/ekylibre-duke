@@ -42,7 +42,7 @@ module Duke
     def complement_candidates 
       candidates = [:target, :tool, :doer, :input].select{|type| Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == type}.present?}
                                                   .map{|type| optJsonify(I18n.t("duke.interventions.#{type}"))}
-      return dynamic_options(I18n.t("duke.interventions.ask.what_modify"), candidates)
+      return dynamic_options(I18n.t("duke.interventions.ask.what_add"), candidates)
     end 
 
     # @returns bln, is procedure_parseable?
@@ -79,7 +79,6 @@ module Duke
 
     # Parse every Intervention Parameters
     def parse_sentence(proc_word: nil)
-      byebug
       @user_input = @user_input.del(proc_word)
       extract_date_and_duration  # getting cleaned user_input and finding when it happened and how long it lasted
       tag_specific_targets  # Tag the specific types of targets for this intervention
@@ -106,7 +105,6 @@ module Duke
       get_clean_sentence
       @specific = (tag_specific_targets if sp.to_sym.eql?(:targets))||sp
       extract_user_specifics(jsonD: self.to_jsonD(@specific, :procedure, :date, :user_input), level: 0.79)
-      @specific = Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name if sp.to_sym.eql?(:targets)
       add_input_rate if sp.to_sym == :inputs 
       find_ambiguity
     end 
@@ -204,9 +202,8 @@ module Duke
 
     private
 
-    def extract_user_specifics(jsonD: self.to_jsonD, level: 0.89)
+    def extract_user_specifics(jsonD: self.to_jsonD, level: 0.85)
       super(jsonD: jsonD, level: level)
-      byebug
       targets_from_cz if Procedo::Procedure.find(@procedure).activity_families.include?(:plant_farming)
     end 
 
@@ -324,7 +321,6 @@ module Duke
         tarIterator = ActivityProduction.at(@date.to_time)
         tarIterator = ActivityProduction.at(@date.to_time).of_activity(Activity.select{|act| @activity_variety.map{ |var| var.name}.include? act.cultivation_variety_name}) unless @activity_variety.to_a.empty? 
         tarIterator = tarIterator.select{|act| @cultivablezones.map{ |cz| cz.key}.include? act.cultivable_zone_id} unless @cultivablezones.to_a.empty? 
-        byebug
         items = tarIterator.map {|act| act.products}
                            .flatten
                            .reject{|prod| !prod.available?||

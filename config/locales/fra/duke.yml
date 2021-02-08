@@ -46,6 +46,7 @@ fra:
         how_much_inputs_1: "Combien de %{unit} de %{input} avez-vous utilisé ?"
         which_procedure: "Quelle intervention souhaitez-vous saisir ? "
         what_modify: "Quels éléments souhaitez-vous modifier ? "
+        what_add: "Quels éléments souhaitez-vous ajouter ?"
         no_complement: "Je ne trouve rien en stock en lien avec l'intervention en cours. Essayez de me donner le nom d'un autre élément"
         one_complement: "Il n'y a qu'un élément en stock lié à l'intervention en cours. Séléctionnez le, ou donnez moi le nom d'un autre élément"
         what_complement_tool: "Donnez moi le nom d'autre(s) équipement(s), ou validez à partir de la liste ci-dessous liée à l'intervention en cours"

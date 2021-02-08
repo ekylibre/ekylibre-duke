@@ -7,7 +7,7 @@ module Duke
     def initialize(itm:, ambiguity_attr:, itm_type:) 
       super()
       @fuzzloader = FuzzyStringMatch::JaroWinkler.create( :pure )
-      @ambig_level = 0.10
+      @ambig_level = 0.20
       @options = []
       @itm = itm 
       @attributes = ambiguity_attr

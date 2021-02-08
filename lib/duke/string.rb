@@ -17,6 +17,7 @@ class String
   end 
 
   def better_match ostr 
+    return nil if ostr.nil?
     level, val, pure = [0.0, nil, FuzzyStringMatch::JaroWinkler.create( :pure )]
     self.substrings.each do |key, value|
       if (dist=pure.getDistance(value, ostr)) > level
