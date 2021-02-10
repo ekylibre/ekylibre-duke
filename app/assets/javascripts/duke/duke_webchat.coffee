@@ -157,25 +157,24 @@
     # We first create the container
     $('.msg_container_base').append('<div class="msg_container options general"></div>')
     # Then we add every button with it's label, and it's value, and the potential intent to redirect the user
-    if options.length > 11
+    count = ((opt if opt.hasOwnProperty('global_label')) for opt in options).filter(Boolean).length
+    if options.length - count > 7
       if multiple 
         $('.msg_container.options').last().append('<div class="duke-select-wrap"><ul class="duke-default-option multiple"><li><div class="option">
                                                     <p>Choisissez des options</p><div class="msg_container options duke-centered duke-hidden dropdown-default">
                                                       <button type="button" class="hover-fill duke-dropdown duke-cancelation ">Annuler</button>
                                                       <button type="button" class="hover-fill duke-dropdown dropdown-validation ">Valider</button>
-                                                    </div></div></li></ul><ul class="duke-select-ul duke-global multiple"></ul></div>')
+                                                    </div></div></li></ul><ul class="duke-select-ul multiple"></ul></div>')
       else 
         $('.msg_container.options').last().append('<div class="duke-select-wrap"><ul class="duke-default-option"><li><div class="option">
                                         <p>Choisissez une option</p></div></li></ul><ul class="duke-select-ul label"></ul>
                                         </div>')
       $.each options, (index, op) -> 
         if op.hasOwnProperty('global_label')
-          $('.duke-select-ul.duke-global').last().append('<div class="duke-select-wrap duke-select-label"><ul class="duke-default-label multiple"><li><div class="option">
-                                                    <p>'+op.global_label+'</p></div></li></ul><ul class="duke-select-ul multiple"></ul></div>')
-          #$('.duke-select-ul').last().append('<ul class="duke-select-ul multiple"><p class = "duke-dropdown-label">'+op.global_label+'</p></ul>')
+          $('.duke-select-ul').last().append('<p class="duke-dropdown-label">'+op.global_label+'</p>')
         else 
           $('.duke-select-ul').last().append('<li data-value= \''+escapeHtml(op.value.input.text)+'\'><div class="option">
-                                            <p>'+op.label+'</p></div>
+                                            <p>'+escapeHtml(op.label)+'</p></div>
                                         </li>')
     else 
       if multiple 
@@ -276,20 +275,13 @@
 
   $(document).on 'click', '.duke-default-option',  ->
     $(this).parent().toggleClass 'active'
-    alert()
     if $(this).hasClass('multiple')
       $(".msg_container").last().toggleClass("duke-hidden")
       $(".duke-default-option li .option p").toggleClass("duke-hidden")
     $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
     return
 
-  $(document).on 'click', '.duke-default-label', -> 
-    $(this).parent().toggleClass 'active'
-    alert()
-    $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
-    return 
-
-  $(document).on 'click', '.duke-select-ul.duke-global li',  ->
+  $(document).on 'click', '.duke-select-ul li',  ->
     if $(this).parent().hasClass('multiple')
       $(this).toggleClass('mult_selected')
     else 

@@ -52,6 +52,7 @@ fra:
         what_complement_tool: "Donnez moi le nom d'autre(s) équipement(s), ou validez à partir de la liste ci-dessous liée à l'intervention en cours"
         what_complement_input: "Donnez moi le nom d'autre(s) intrant(s), ou validez à partir de la liste ci-dessous liée à l'intervention en cours"
         what_complement_doer: "Donnez moi le nom d'autre(s) opérateur(s), ou validez à partir de la liste ci-dessous liée à l'intervention en cours"
+        what_complement_target: "Donnez moi le nom d'autre(s) culture(s), ou validez à partir de la liste ci-dessous liée à l'intervention en cours"
         what_targets: "Selectionnez les %{tar} de cette intervention, puis validez"
         what_family: "Je n'ai pas saisi le type d'intervention.<br>Choisissez le type de production, ou réessayez de me donner le nom exact de la procédure"
         what_category: "Choisissez la catégorie de l’intervention, ou réessayez de me donner le nom exact de l’intervention."

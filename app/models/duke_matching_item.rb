@@ -62,7 +62,7 @@ module Duke
       match_rest = self.matched.clone.del(self.matched.better_match common)
       our_rest = clear_string(self.name.clone).del common
       oth_rest = clear_string(otherstr.clone).del common
-      return (true if pure.getDistance(our_rest, match_rest) - pure.getDistance(oth_rest, match_rest) > 0.40)||false
+      return (true if pure.getDistance(our_rest, match_rest) - pure.getDistance(oth_rest, match_rest) > 0.60)||false
     end 
     
   end 

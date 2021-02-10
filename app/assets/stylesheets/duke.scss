@@ -339,7 +339,7 @@ a.disabled-send {
   &:hover > .duke-default-option {
     background: #F3F3F3;
   }
-  & .duke-default-option, .duke-default-label {
+  & .duke-default-option {
     background: #fff;
     position: relative;
     cursor: pointer;
@@ -358,11 +358,7 @@ a.disabled-send {
     }
   }
 }
-.duke-select-wrap.duke-select-label {
-  margin-bottom: 0px;
-  
-}
-.duke-select-wrap .duke-default-option:before, .duke-select-wrap .duke-default-label:before{
+.duke-select-wrap .duke-default-option:before{
   content: "";
   position: absolute;
   top: 10px;
@@ -406,12 +402,12 @@ a.disabled-send {
 .duke-hidden{
   display: none !important;
 }
-.duke-select-wrap.active .duke-select-ul.duke-global, .duke-select-wrap.duke-select-label.active .duke-select-ul{
+.duke-select-wrap.active .duke-select-ul{
   display: block;
   position: relative;
   top: 0%;
 }
-.duke-select-wrap.active .duke-default-option:before, .duke-select-wrap.duke-select-label.active .duke-default-label:before{
+.duke-select-wrap.active .duke-default-option:before{
   top: 18px;
   right: 11px;
   transform: rotate(-225deg);
@@ -508,14 +504,15 @@ a.disabled-send {
 }
 .duke-multi-label, .duke-multi-label.hover-fill{
   font-size: 14px;
-  padding: 10px 0px;
+  padding: 7px 0px;
+  margin-bottom: 5px;
   color: #3D3D3D;
   background-color:#F3F3F3;
-  border-top: solid 1px lightgray;
+  border-top: solid lightgray 1px;
 }
 .duke-dropdown-label{
   font-size: 16px;
   padding: 7px;
   color: white;
-  background-color: $duke-color;
+  background-color: mix($duke-color, lightgray, $weight: 80%);
 }

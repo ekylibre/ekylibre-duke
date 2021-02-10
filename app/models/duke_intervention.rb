@@ -162,13 +162,14 @@ module Duke
     end
 
     # @param [String] type : Type of item for which display all
-    # @return [Json] OptJson for Ibm to display clickable buttons with every item
+    # @return [Json] OptJson for Ibm to display clickable buttons with every item & labels
     def optionAll type 
-      iterator = Product.availables(at: @date.to_time).of_expression(Procedo::Procedure.find(@procedure).parameters_of_type(type.to_sym).collect(&:filter).join(" or "))
-      items = iterator.map{|item| optJsonify(item.name, item.id)}
-      return dynamic_text(I18n.t("duke.interventions.ask.no_complement")) if items.empty?
-      return dynamic_options(I18n.t("duke.interventions.ask.one_complement"), items) if items.size == 1
-      return dynamic_options(I18n.t("duke.interventions.ask.what_complement_#{type}"), items)
+      pars = Procedo::Procedure.find(@procedure).parameters_of_type(type.to_sym).select{|param| Product.availables(at: @date.to_time).of_expression(param.filter).present?}
+      items = pars.map{|param| [{global_label: param.human_name}, Product.availables(at: @date.to_time).of_expression(param.filter)]}.flatten
+      options = items.map{|itm| (itm if itm.kind_of?(Hash))||optJsonify(itm.name, itm.id)}
+      return dynamic_text(I18n.t("duke.interventions.ask.no_complement")) if options.empty?
+      return dynamic_options(I18n.t("duke.interventions.ask.one_complement"), options) if options.size == 1
+      return dynamic_options(I18n.t("duke.interventions.ask.what_complement_#{type}"), options)
     end 
 
     # @set new instance variables with clicked targets

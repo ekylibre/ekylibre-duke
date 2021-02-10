@@ -18,7 +18,6 @@ module Duke
       dukeInt = Duke::DukeIntervention.new.recover_from_hash(params[:parsed])
       tmpInt = Duke::DukeIntervention.new(procedure: dukeInt.procedure,  date: dukeInt.date, user_input: params[:user_input])
       tmpInt.parse_specific(params[:specific])
-      byebug
       dukeInt.replace_specific(int: tmpInt)
       return dukeInt.to_ibm
     end
@@ -94,7 +93,6 @@ module Duke
     def handle_parse_disambiguation params
       dukeInt = Duke::DukeIntervention.new.recover_from_hash(params[:parsed])
       dukeInt.user_input = params[:user_input]
-      byebug
       dukeInt.correct_ambiguity(type: params[:amb_type], key: params[:amb_key])
       return dukeInt.to_ibm
     end
