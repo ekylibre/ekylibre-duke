@@ -1,7 +1,7 @@
 module Duke
   class DukeHarvestReception < DukeArticle
 
-    attr_accessor :plant, :crop_groups, :destination, :press, :retry, :ambiguities, :parameters, :description, :user_input
+    attr_accessor :plant, :crop_groups, :destination, :press, :retry, :ambiguities, :parameters, :description, :user_input, :id
 
     def initialize(**args)
       super() 
@@ -40,18 +40,19 @@ module Duke
     # @Returns [Integer] newly created IncomingHarvest id
     def save_harvest_reception
       @parameters['quantity']['rate'] *= 1000 if @parameters['quantity']['unit'].eql?("t")
-      analysis = Analysis.create!({nature: "vine_harvesting_analysis",
-                                    analysed_at: Time.zone.parse(date),
-                                    sampled_at: Time.zone.parse(date),
-                                    items_attributes: create_analysis_attributes})
-      harvest_dic = {received_at: Time.zone.parse(@date),
-                      storages_attributes: storages_attributes,
-                      plants_attributes: targets_attributes,
-                      analysis: analysis,
+      harvest_dic = { received_at: Time.zone.parse(@date),
                       quantity_value: @parameters['quantity']['rate'].to_s,
                       quantity_unit: ("kilogram" if ["kg","t"].include?(@parameters['quantity']['unit'])) || "hectoliter"}
-      iH = WineIncomingHarvest.create!(create_incoming_harvest_attr(harvest_dic))
-      return iH.id
+      iH = WineIncomingHarvest.create(create_incoming_harvest_attr(harvest_dic))
+      @id = iH.id
+      analysis = Analysis.create!({nature: "vine_harvesting_analysis",
+                                   analysed_at: Time.zone.parse(date),
+                                   sampled_at: Time.zone.parse(date),
+                                   items_attributes: create_analysis_attributes,
+                                   wine_incoming_harvest: iH})
+      targets_attributes.each{|wihT| WineIncomingHarvestPlant.create(wihT)}
+      storages_attributes.each{|wihS| WineIncomingHarvestStorage.create(wihS)}
+      press_attributes.each{|wihP| WineIncomingHarvestPress.create(wihP)}
     end 
 
     # @param [SplatArray] args : Every instance variable we'll try to extract
@@ -438,17 +439,22 @@ module Duke
 
     # @return [Hash] storage_attributes
     def storages_attributes
-      return {"0" => {storage_id: @destination.first.key,
-                    quantity_value: unit_to_hectoliter(@parameters['quantity']['rate'],@parameters['quantity']['unit']),
-                    quantity_unit: "hectoliter"}} if @destination.to_a.size.eql? 1
-      return Hash[*@destination.each_with_index.map{|cuve, index| [index.to_s, {storage_id: cuve.key, quantity_value: cuve['quantity'], quantity_unit: "hectoliter"}]}.flatten]
+      return [{storage_id: @destination.first.key,
+              quantity_value: unit_to_hectoliter(@parameters['quantity']['rate'],@parameters['quantity']['unit']),
+              quantity_unit: "hectoliter",
+              wine_incoming_harvest_id: @id}] if @destination.to_a.size.eql? 1
+      return @destination.map{|cuve| {storage_id: cuve.key, quantity_value: cuve['quantity'], quantity_unit: "hectoliter", wine_incoming_harvest_id: @id}}
     end 
     
     # @return [Array] target_attributes
     def targets_attributes 
-      tar = @plant.map{|tar| {plant_id: tar.key, harvest_percentage_received: tar[:area].to_s}}
-      cg = @crop_groups.map{|cg| CropGroup.available_crops(cg.key, "is plant or is land_parcel").flatten.map{|crop| {plant_id: crop[:id], harvest_percentage_received: cg[:area].to_s}}}.flatten
-      return Hash[*(tar + cg).uniq{|t| t[:plant_id]}.each_with_index.map{|val, ind|[ind.to_s, val]}.flatten]
+      tar = @plant.map{|tar| {plant_id: tar.key, harvest_percentage_received: tar[:area].to_s, wine_incoming_harvest_id: @id}}
+      cg = @crop_groups.map{|cg| CropGroup.available_crops(cg.key, "is plant or is land_parcel").flatten.map{|crop| {plant_id: crop[:id], harvest_percentage_received: cg[:area].to_s, wine_incoming_harvest_id: @id}}}.flatten
+      return (tar + cg).uniq{|t| t[:plant_id]}
+    end 
+
+    def press_attributes 
+      return [] 
     end 
 
   end

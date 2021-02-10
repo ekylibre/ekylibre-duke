@@ -141,8 +141,8 @@ module Duke
     # @param [Json] parsed 
     def handle_save_harvest_reception(params)
       dukeHarv = Duke::DukeHarvestReception.new.recover_from_hash(params[:parsed])
-      id = dukeHarv.save_harvest_reception
-      return {link: "/backend/wine_incoming_harvests/#{id}"}
+      dukeHarv.save_harvest_reception
+      return {link: "/backend/wine_incoming_harvests/#{dukeHarv.id}"}
     end
   end
 end
