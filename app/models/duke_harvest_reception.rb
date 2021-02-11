@@ -5,7 +5,7 @@ module Duke
 
     def initialize(**args)
       super() 
-      @plant, @crop_groups, @destination= Array.new(3, DukeMatchingArray.new)
+      @plant, @crop_groups, @destination, @press= Array.new(4, DukeMatchingArray.new)
       @retry = 0
       @ambiguities = []
       @parameters = {complementary: {}}
@@ -43,7 +43,7 @@ module Duke
       harvest_dic = { received_at: Time.zone.parse(@date),
                       quantity_value: @parameters['quantity']['rate'].to_s,
                       quantity_unit: ("kilogram" if ["kg","t"].include?(@parameters['quantity']['unit'])) || "hectoliter"}
-      iH = WineIncomingHarvest.create(create_incoming_harvest_attr(harvest_dic))
+      iH = WineIncomingHarvest.create(iH_attr(harvest_dic))
       @id = iH.id
       analysis = Analysis.create!({nature: "vine_harvesting_analysis",
                                    analysed_at: Time.zone.parse(date),
@@ -52,7 +52,7 @@ module Duke
                                    wine_incoming_harvest: iH})
       targets_attributes.each{|wihT| WineIncomingHarvestPlant.create(wihT)}
       storages_attributes.each{|wihS| WineIncomingHarvestStorage.create(wihS)}
-      press_attributes.each{|wihP| WineIncomingHarvestPress.create(wihP)}
+      press_attributes.each{|wihP|WineIncomingHarvestPress.create(wihP)}
     end 
 
     # @param [SplatArray] args : Every instance variable we'll try to extract
@@ -347,7 +347,7 @@ module Duke
 
     def speak_pressing_hl
       @press.each_with_index do |press, index|
-        return ["#{I18n.t("duke.harvest_reception.ask.how_much_to_#{rand(0...2)}")} #{cuve[:name]}", index] unless press.key?("quantity")
+        return ["#{I18n.t("duke.harvest_reception.ask.how_much_to_#{rand(0...2)}")} #{press[:name]}", index] unless press.key?("quantity")
       end
     end
 
@@ -359,6 +359,7 @@ module Duke
       sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.quantity")} : #{@parameters['quantity']['rate'].to_s} #{@parameters['quantity']['unit']}"
       sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.tavp")} : #{@parameters['tav']} % vol"
       sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.destination")} : #{@destination.map{|des| "#{des.name}#{" (#{des[:quantity].to_s} hl)" if des.key?('quantity')}"}.join(", ")}"
+      sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.press")} : #{@press.map{|press| "#{press.name}#{" (#{press[:quantity].to_s} hl)" if press.key?('quantity')}"}.join(", ")}"
       sentence+= "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{@date.to_time.strftime("%d/%m/%Y - %H:%M")}"
       sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.temp")} : #{@parameters['temperature']} °C" unless @parameters['temperature'].nil?
       sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.sanitary_specified")}" unless @parameters['sanitarystate'].nil?
@@ -408,11 +409,7 @@ module Duke
     end
 
     # @returns [Hash] incoming_harvest_attrs with press & ComplementaryItems
-    def create_incoming_harvest_attr dic
-      unless @parameters['pressing'].nil? #add pressing items
-        dic[:pressing_schedule] = @parameters['pressing']['program']
-        dic[:pressing_started_at] = @parameters['pressing']['hour'].to_time.strftime("%H:%M") unless @parameters['pressing']['hour'].nil?
-      end
+    def iH_attr dic
       unless @parameters['complementary'].blank? #add complementary if exists
         dic[:sedimentation_duration] = @parameters['complementary']['ComplementaryDecantation'].delete("^0-9") if @parameters['complementary'].key?('ComplementaryDecantation')
         dic[:vehicle_trailer] = @parameters['complementary']['ComplementaryTrailer'] if @parameters['complementary'].key?('ComplementaryTrailer')
@@ -453,8 +450,24 @@ module Duke
       return (tar + cg).uniq{|t| t[:plant_id]}
     end 
 
+    # @return [Array] press_attributes
     def press_attributes 
-      return [] 
+      add_pressing_program
+      return [{press_id: @press.first.key,
+              quantity_value: unit_to_hectoliter(@parameters['quantity']['rate'],@parameters['quantity']['unit']),
+              quantity_unit: "hectoliter",
+              pressing_schedule: @press.first[:pressing_schedule], 
+              pressing_started_at: @press.first[:pressing_started_at],
+              wine_incoming_harvest_id: @id}] if @press.to_a.size.eql? 1
+      return @press.map{|press| {press_id: press.key, quantity_value: press['quantity'], quantity_unit: "hectoliter", wine_incoming_harvest_id: @id, pressing_schedule: press[:pressing_schedule], pressing_started_at: press[:pressing_started_at]}}
+    end 
+    
+    # adds pressing_program and pressing_hour to each @press
+    def add_pressing_program
+      @press.each do |press|
+        press[:pressing_schedule] = (@parameters['pressing']['program'] if parameters['pressing'].present?)||""
+        press[:pressing_started_at] = (@parameters['pressing']['hour'].to_time.strftime("%H:%M") if @parameters.dig(:pressing, :hour).present?)||""
+      end 
     end 
 
   end

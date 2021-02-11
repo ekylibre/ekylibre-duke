@@ -76,6 +76,7 @@ module Duke
       rescue
         nil
       ensure
+        self.instance_variable_set("@#{type}", self.instance_variable_get("@#{type}").uniq_by_key)
         @ambiguities.shift
       end 
     end 
@@ -258,7 +259,7 @@ module Duke
       elsif item_type == :activity_variety
         iterator = Activity.select('distinct on (cultivation_variety) *')
       elsif item_type == :press
-        iterator = Matter.availables(at: @date.to_time).can('press(grape)')
+        iterator = Matter.availables(at: @date.to_time).can('press(grape)', 'press(juice)', 'press(fermented_juice)', 'press(wine)')
       elsif item_type == :workers
         iterator = Worker.availables(at: @date.to_time).each
       elsif item_type == :entities 
