@@ -167,7 +167,7 @@
                                                     </div></div></li></ul><ul class="duke-select-ul multiple"></ul></div>')
       else 
         $('.msg_container.options').last().append('<div class="duke-select-wrap"><ul class="duke-default-option"><li><div class="option">
-                                        <p>Choisissez une option</p></div></li></ul><ul class="duke-select-ul label"></ul>
+                                        <p>Choisissez une option</p></div></li></ul><ul class="duke-select-ul"></ul>
                                         </div>')
       $.each options, (index, op) -> 
         if op.hasOwnProperty('global_label')

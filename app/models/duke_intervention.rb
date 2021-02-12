@@ -12,7 +12,7 @@ module Duke
       @ambiguities = []
       args.each{|k, v| instance_variable_set("@#{k}", v)}
       @description = @user_input.clone
-      @matchArrs = [:inputs, :workers, :equipments, :crop_groups, :plant, :cultivation,  :land_parcel, :cultivablezones, :activity_variety]
+      @matchArrs = [:inputs, :workers, :equipments, :crop_groups, :plant, :cultivation, :land_parcel, :cultivablezones, :activity_variety]
     end 
 
     # @creates intervention from json
@@ -68,7 +68,7 @@ module Duke
           return suggest_categories_from_amb
         end 
       end 
-      return suggest_categories_from_fam if [:plant_farming, :vine_farming].include? @procedure.to_sym # Received a family
+      return suggest_categories_from_fam(@procedure) if [:plant_farming, :vine_farming].include? @procedure.to_sym # Received a family
       return suggest_viti_vegetal_proc if @procedure.scan(/[|]/).present? # Ambiguity between vegetal & viti proc
       return suggest_procedure_disambiguation if @procedure.scan(/[~]/).present?
       return {redirect: :get_help, sentence: I18n.t("duke.interventions.help.example")} if @procedure.match(/get_help/)
@@ -216,8 +216,8 @@ module Duke
     end 
 
     # @returns json
-    def suggest_categories_from_fam 
-      categories = Onoma::ProcedureCategory.select { |c| c.activity_family.include?(@procedure.to_sym.to_sym) and !Procedo::Procedure.of_main_category(c).empty? }.sort{|a,b| a.human_name <=> b.human_name }.map{|cat|optJsonify(cat.human_name, "#{cat.name}&")}
+    def suggest_categories_from_fam(farming_type)
+      categories = Onoma::ProcedureCategory.select { |c| c.activity_family.include?(farming_type.to_sym) and !Procedo::Procedure.of_main_category(c).empty? }.sort{|a,b| a.human_name <=> b.human_name }.map{|cat|optJsonify(cat.human_name, "#{cat.name}&")}
       categories.push(optJsonify(I18n.t("duke.interventions.help.get_help"), :get_help))
       return {parsed: {user_input: @user_input}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_category"), categories)}
     end 
@@ -230,7 +230,7 @@ module Duke
 
     # @returns json
     def suggest_proc_from_category
-      procs = Procedo::Procedure.of_main_category(@procedure).sort_by(&:position).map {|proc| optJsonify(proc.human_name, proc.name)}
+      procs = Procedo::Procedure.of_main_category(@procedure).sort_by(&:position).map {|proc| optJsonify(proc.human_name.to_sym, proc.name)}
       return {parsed: {user_input: @user_input}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.which_procedure"), procs)}
     end 
 
@@ -249,9 +249,7 @@ module Duke
     # @returns exclusive farming type :vine_farming || :plant_farming if exists
     def exclusive_farming_type
       farming_types = Activity.availables.map{|act| act[:family] if [:vine_farming, :plant_farming].include? act[:family].to_sym}.compact.uniq
-      if farming_types.size == 1 
-        return farming_types.first 
-      end 
+      return farming_types.first if farming_types.size.eql? 1 
       nil
     end 
 
@@ -451,6 +449,7 @@ module Duke
     # @return Array with target_attributes
     def target_attributes
       reference_name = Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name
+      return [] if self.instance_variable_get("@#{reference_name}").blank? && @crop_groups.blank?
       if Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.present?
         tar = self.instance_variable_get("@#{reference_name}").map{|tar| {reference_name: reference_name, product_id: tar.key, working_zone: Product.find_by_id(tar.key).shape}}
         cg = @crop_groups.map{|cg| CropGroup.available_crops(cg.key, "is plant or is land_parcel")}.flatten.map{|crop| {reference_name: reference_name, product_id: crop.id, working_zone: Product.find_by_id(crop.id).shape}}
@@ -460,6 +459,7 @@ module Duke
 
     # @return Array with input_attributes
     def input_attributes 
+      return [] if @inputs.blank?
       if Procedo::Procedure.find(@procedure).parameters_of_type(:input).present?
         return @inputs.map{|input| {reference_name: input_reference_name(input.key),
                                     product_id: input.key,
@@ -476,6 +476,7 @@ module Duke
     
     # @return Array with doer_attributes
     def doer_attributes 
+      return [] if @workers.blank?
       if Procedo::Procedure.find(@procedure).parameters_of_type(:doer).present?
         return @workers.to_a.map{|wrk| {reference_name: Procedo::Procedure.find(@procedure).parameters_of_type(:doer).first.name, product_id: wrk.key}}
       end 
@@ -483,6 +484,7 @@ module Duke
 
     # @return Array with tool_attributes
     def tool_attributes 
+      return [] if @equipments.blank?
       if Procedo::Procedure.find(@procedure).parameters_of_type(:tool).present?
         return @equipments.to_a.map{|tool| {reference_name: tool_reference_name(tool.key), product_id: tool.key}}
       end 
