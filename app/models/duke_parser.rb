@@ -20,7 +20,7 @@ module Duke
     def parse
       @attributes.map{|k, val| [k, val[:iterator], val[:list], val[:name_attribute]]}.each do |type, iterator, list, name_attr|
         iterator.each do |item| # iterate over every Item from given iterator
-          compare_elements(item.name.split.first, item.id, list) if type.to_sym == :workers # Check first name worker
+          compare_elements(item.name.split.first, item.id, list) if type.to_sym == :doer # Check first name worker
           compare_elements(item.send(name_attr), item.id, list) # Check given name_attr for *
         end 
       end

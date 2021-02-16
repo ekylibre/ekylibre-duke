@@ -2,9 +2,9 @@ module Duke
   class DukeArticle
     include Duke::BaseDuke
 
-    attr_accessor :description, :date, :duration, :user_input, :activity_variety, :equipments, :cultivablezones, :financial_year, :entities
-    @@user_specific_types = [:financial_year, :entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :equipments, :workers, :inputs, :press] 
-    @@ambiguities_types = [:plant, :land_parcel, :cultivation, :destination, :crop_groups, :equipments, :workers, :inputs, :press]
+    attr_accessor :description, :date, :duration, :user_input, :activity_variety, :tool, :cultivablezones, :financial_year, :entities
+    @@user_specific_types = [:financial_year, :entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press] 
+    @@ambiguities_types = [:plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press]
     @@month_hash =  {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9, "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12 }
     
     def initialize(**args)
@@ -73,8 +73,8 @@ module Duke
           self.update_description(chosen_one[:name])
           self.instance_variable_get("@#{chosen_one[:type]}").push(DukeMatchingItem.new(hash: current_hash.merge_h(chosen_one)))
         end 
-      rescue
-        nil
+      rescue SyntaxError, StandardError
+        puts "User didn't click Buttons grrr"
       ensure
         self.instance_variable_set("@#{type}", self.instance_variable_get("@#{type}").uniq_by_key)
         @ambiguities.shift
@@ -170,6 +170,8 @@ module Duke
       return Time.now # If nothing matches, we return current hour
     end
 
+
+
     # @param [Str|Integer|Float] year
     # @return [Integer] parsed year
     def year_from_str year
@@ -216,7 +218,7 @@ module Duke
 
     # @return true if there's nothing to iterate over
     def empty_iterator item_type 
-      return true if item_type == :inputs && Procedo::Procedure.find(@procedure).parameters_of_type(:input).empty? 
+      return true if item_type == :input && Procedo::Procedure.find(@procedure).parameters_of_type(:input).empty? 
       return true if item_type == :crop_groups && (defined? CropGroup).nil?
       return false
     end 
@@ -250,7 +252,7 @@ module Duke
     def iterator(item_type) 
       if empty_iterator(item_type)
         iterator= []
-      elsif item_type == :inputs
+      elsif item_type == :input
         iterator= Matter.availables(at: @date.to_time).of_expression(Procedo::Procedure.find(@procedure).parameters_of_type(:input).collect(&:filter).join(" or "))
       elsif item_type == :crop_groups
         iterator= CropGroup.all
@@ -260,7 +262,7 @@ module Duke
         iterator = Activity.select('distinct on (cultivation_variety) *')
       elsif item_type == :press
         iterator = Matter.availables(at: @date.to_time).can('press(grape)', 'press(juice)', 'press(fermented_juice)', 'press(wine)')
-      elsif item_type == :workers
+      elsif item_type == :doer
         iterator = Worker.availables(at: @date.to_time).each
       elsif item_type == :entities 
         iterator = Entity.all
@@ -268,7 +270,7 @@ module Duke
         iterator = Matter.availables(at: @date.to_time).where("variety='tank'")
       elsif item_type == :cultivablezones 
         iterator = CultivableZone.all
-      elsif item_type == :equipments
+      elsif item_type == :tool
         iterator = Equipment.availables(at: @date.to_time)
       elsif item_type == :plant
         iterator = Plant.availables(at: @date.to_time)

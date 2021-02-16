@@ -69,8 +69,8 @@ module Duke
       dukeInt.user_input = params[:user_input]
       value = dukeInt.extract_number_parameter(params[:quantity])
       unless value.nil? 
-        # Otherwise add value for the given input (we get it via it's index in parsed[:inputs])
-        dukeInt.inputs[params[:optional]][:rate][:value] = value 
+        # Otherwise add value for the given input (we get it via it's index in parsed[:input])
+        dukeInt.input[params[:optional]][:rate][:value] = value 
         dukeInt.update_description(params[:user_input])
         dukeInt.reset_retries
       end 

@@ -1,18 +1,18 @@
 module Duke
   class DukeIntervention < DukeArticle
     
-    attr_accessor :procedure, :inputs, :workers, :equipments, :retry, :plant, :cultivation, :crop_groups, :land_parcel, :cultivablezones, :activity_variety, :ambiguities
+    attr_accessor :procedure, :input, :doer, :tool, :retry, :plant, :cultivation, :crop_groups, :land_parcel, :cultivablezones, :activity_variety, :ambiguities
     attr_reader :specific
 
     def initialize(**args)
       super()
       @procedure = nil
-      @inputs, @workers, @equipments, @crop_group = Array.new(4, DukeMatchingArray.new)
+      @input, @doer, @tool, @crop_group = Array.new(4, DukeMatchingArray.new)
       @retry = 0
       @ambiguities = []
       args.each{|k, v| instance_variable_set("@#{k}", v)}
       @description = @user_input.clone
-      @matchArrs = [:inputs, :workers, :equipments, :crop_groups, :plant, :cultivation, :land_parcel, :cultivablezones, :activity_variety]
+      @matchArrs = [:input, :doer, :tool, :crop_groups, :plant, :cultivation, :land_parcel, :cultivablezones, :activity_variety]
     end 
 
     # @creates intervention from json
@@ -32,7 +32,7 @@ module Duke
     # @returns json Option with all clickable buttons understandable by IBM
     def modification_candidates
 
-      candidates = [:equipments, :workers, :inputs].select{|type| self.instance_variable_get("@#{type}").present? }
+      candidates = [:tool, :doer, :input].select{|type| self.instance_variable_get("@#{type}").present? }
                                                    .map{|type| optJsonify(I18n.t("duke.interventions.#{type}"))}
       candidates.push(optJsonify(I18n.t("duke.interventions.temporality")))
       candidates.push(optJsonify(I18n.t("duke.interventions.target"))) if @plant.present?||@crop_groups.present?||@cultivation.present?||@land_parcel.present?
@@ -82,7 +82,7 @@ module Duke
       @user_input = @user_input.del(proc_word)
       extract_date_and_duration  # getting cleaned user_input and finding when it happened and how long it lasted
       tag_specific_targets  # Tag the specific types of targets for this intervention
-      extract_user_specifics  # Then extract every possible user_specifics elements form the sentence (here : inputs, workers, equipments, targets)  
+      extract_user_specifics  # Then extract every possible user_specifics elements form the sentence (here : input, doer, tool, targets)  
       add_input_rate  # Look for a specified rate for the input, or attribute nil
       extract_intervention_readings  # extract_readings 
       find_ambiguity # Loof for ambiguities in what has been parsed
@@ -93,6 +93,7 @@ module Duke
       if @user_input.match(/^(\d{1,5}(\|{3}|\b))*$/) # If response type matches a multiple click response
         prods = @user_input.split(/\|{3}/).map{|num| Product.find_by_id(num.to_i)}  # Creating a list with all chosen products
         prods.each{|prod| self.instance_variable_get("@#{sp}").push(DukeMatchingItem.new(name: prod.name, key: prod.id, distance: 1, matched: prod.name)) unless prod.nil?}
+        add_input_rate if sp.to_sym == :input 
         @specific = sp.to_sym
         @description = prods.map{|prod| prod.name}.join(", ")
       else
@@ -105,7 +106,7 @@ module Duke
       get_clean_sentence
       @specific = (tag_specific_targets if sp.to_sym.eql?(:targets))||sp
       extract_user_specifics(jsonD: self.to_jsonD(@specific, :procedure, :date, :user_input), level: 0.79)
-      add_input_rate if sp.to_sym == :inputs 
+      add_input_rate if sp.to_sym == :input 
       find_ambiguity
     end 
 
@@ -115,7 +116,7 @@ module Duke
         self.instance_variable_set("@#{var}", DukeMatchingArray.new(arr: (self.instance_variable_get("@#{var}").to_a + int.instance_variable_get("@#{var}").to_a)).uniq_by_key)
       end
       @ambiguities = @ambiguities.to_a + int.ambiguities
-      self.update_description(int.description)
+      self.update_description(int.description) unless int.description.eql?("*cancel*")
     end 
 
     # @param [DukeIntervention] int : previous DukeIntervention 
@@ -140,33 +141,48 @@ module Duke
       val 
     end 
 
+    # TODO: ADD @workingperiod iv,  Add each_time_interval if exists, or auto-create it. On modification, if only duration, recreate, if only date, recreate .. On complement, be smart
     # Extract both date_and duration
     def extract_date_and_duration
       input_clone = @user_input.clone 
-      whole_temp = @user_input.matchdel(/(de|à|a) *\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b *(jusqu\')?(a|à) *\b(00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b/)
+      whole_temp = input_clone.matchdel(/(de|à|a|entre) *\b((00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b|midi|minuit) *(jusqu\')?(a|à|et) *\b((00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b|midi|minuit)/)
       extract_duration
       extract_date
-      if input_clone.match("matin") 
+      if input_clone.match(/\b(00|[0-9]|1[0-1]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b *(du|de|ce)? *matin/)
+        @duration = 60 if @duration.kind_of?(Array)
+      elsif input_clone.match(/\b(00|[0-9]|1[0-1]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b *(du|de|cet|cette)? *(le|l')? *(aprem|apm|après-midi|apres midi|après midi|aprèm)/)
+        @date = @date.change(hour: @date.hour+12)
+        @duration = 60 if @duration.kind_of?(Array)
+      elsif input_clone.match("matin") 
         @duration = [[8, 12]]
-      elsif input_clone.match("(apr(e|è)?s( |-)?midi|apr(e|è)m|apm)")
+      elsif input_clone.match(/(apr(e|è)?s( |-)?midi|apr(e|è)m|apm)/)
         @duration = [[14, 17]]
       elsif input_clone.match("journ(é|e)e")
         @duration = [[8, 12], [14, 17]]
       elsif whole_temp
-        starting_hour = extract_hour(whole_temp[0].split(/\b(a|à)/)[0])
-        @date = @date.change(hour: starting_hour.hour, min: starting_hour.min)
-        @duration =  ((extract_hour(whole_temp[0].split(/\b(a|à)/)[2]) - starting_hour)* 24 * 60).to_i
+        extract_time_interval(whole_temp[0])
       elsif (not_current_time? && @duration.kind_of?(Array))
         @duration = 60
       end
     end
 
+    # @param [String] interval
+    def extract_time_interval(interval)
+      starting_hour = extract_hour(interval)
+      ending_hour = extract_hour(interval)
+      @date = @date.change(hour: starting_hour.hour, min: starting_hour.min)
+      @duration = ((ending_hour - starting_hour)/60).to_i
+      @date = @date.change(hour: ending_hour.hour, min: ending_hour.min) if @duration < 0 
+      @duration = @duration.abs
+    end 
+
     # @param [String] type : Type of item for which display all
     # @return [Json] OptJson for Ibm to display clickable buttons with every item & labels
     def optionAll type 
       pars = Procedo::Procedure.find(@procedure).parameters_of_type(type.to_sym).select{|param| Product.availables(at: @date.to_time).of_expression(param.filter).present?}
-      items = pars.map{|param| [{global_label: param.human_name}, Product.availables(at: @date.to_time).of_expression(param.filter)]}.flatten
-      options = items.map{|itm| (itm if itm.kind_of?(Hash))||optJsonify(itm.name, itm.id)}
+      items = pars.map{|param| [{global_label: param.human_name}, Product.availables(at: @date.to_time).of_expression(param.filter)]}.flatten # Get Label and all suggestions from parameters
+      items.reject!{|prod| prod.respond_to?(:id) && self.instance_variable_get("@#{type}").any?{|reco|reco.key == prod.id}} # Remove Already chosen from suggestions
+      options = items.map{|itm| (itm if itm.kind_of?(Hash))||optJsonify(itm.name, itm.id)} # Turn it to Jsonified options
       return dynamic_text(I18n.t("duke.interventions.ask.no_complement")) if options.empty?
       return dynamic_options(I18n.t("duke.interventions.ask.one_complement"), options) if options.size == 1
       return dynamic_options(I18n.t("duke.interventions.ask.what_complement_#{type}"), options)
@@ -217,7 +233,8 @@ module Duke
 
     # @returns json
     def suggest_categories_from_fam(farming_type)
-      categories = Onoma::ProcedureCategory.select { |c| c.activity_family.include?(farming_type.to_sym) and !Procedo::Procedure.of_main_category(c).empty? }.sort{|a,b| a.human_name <=> b.human_name }.map{|cat|optJsonify(cat.human_name, "#{cat.name}&")}
+      procedure_categories = Onoma::ProcedureCategory.select { |c| c.activity_family.include?(farming_type.to_sym) and !Procedo::Procedure.of_main_category(c).empty? }
+      categories = ListSorter.new(:procedure_categories, procedure_categories).sort.map{|cat|optJsonify(cat.human_name, "#{cat.name}&")}
       categories.push(optJsonify(I18n.t("duke.interventions.help.get_help"), :get_help))
       return {parsed: {user_input: @user_input}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_category"), categories)}
     end 
@@ -266,9 +283,9 @@ module Duke
       sentence += "<br>&#8226 #{I18n.t("duke.interventions.intervention")} : #{Procedo::Procedure.find(@procedure).human_name}"
       sentence += "<br>&#8226 #{I18n.t("duke.interventions.group")} : #{@crop_groups.map{|cg| cg.name}.join(", ")}" unless @crop_groups.to_a.empty?
       sentence += "<br>&#8226 #{I18n.t("duke.interventions.#{tar_type.name}")} : #{self.send(tar_type.name).map{|tar| tar.name}.join(", ")}" unless (tar_type.nil?||self.send(tar_type.name).to_a.empty?)
-      sentence += "<br>&#8226 #{I18n.t("duke.interventions.tool")} : #{@equipments.map{|eq| eq.name}.join(", ")}" unless @equipments.to_a.empty?
-      sentence += "<br>&#8226 #{I18n.t("duke.interventions.worker")} : #{@workers.map{|wk| wk.name}.join(", ")}" unless @workers.to_a.empty?
-      sentence += "<br>&#8226 #{I18n.t("duke.interventions.input")} : #{@inputs.map{|input| "#{input.name} (#{input[:rate][:value].to_f} #{(I18n.t("duke.interventions.units.#{Procedo::Procedure.find(@procedure).parameters_of_type(:input).find {|inp| Matter.find_by_id(input.key).of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name}") if input[:rate][:unit].to_sym != :population) || Matter.find_by_id(input.key)&.unit_name} )"}.join(", ")}" unless @inputs.to_a.empty?
+      sentence += "<br>&#8226 #{I18n.t("duke.interventions.tool")} : #{@tool.map{|eq| eq.name}.join(", ")}" unless @tool.to_a.empty?
+      sentence += "<br>&#8226 #{I18n.t("duke.interventions.doer")} : #{@doer.map{|wk| wk.name}.join(", ")}" unless @doer.to_a.empty?
+      sentence += "<br>&#8226 #{I18n.t("duke.interventions.input")} : #{@input.map{|input| "#{input.name} (#{input[:rate][:value].to_f} #{(I18n.t("duke.interventions.units.#{Procedo::Procedure.find(@procedure).parameters_of_type(:input).find {|inp| Matter.find_by_id(input.key).of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name}") if input[:rate][:unit].to_sym != :population) || Matter.find_by_id(input.key)&.unit_name} )"}.join(", ")}" unless @input.to_a.empty?
       @readings.each do |key, rd| 
         rd.to_a.each do |rd_hash| 
           sentence += "<br>&#8226 #{I18n.t("duke.interventions.readings.#{rd_hash[:indicator_name]}")} : #{(I18n.t("duke.interventions.readings.#{rd_hash.values.last}") if !is_number?(rd_hash.values.last))|| rd_hash.values.last}"
@@ -288,9 +305,9 @@ module Duke
       end 
     end  
 
-    # @returns [String, Integer] Sentence to ask how much input, and input index inside @inputs
+    # @returns [String, Integer] Sentence to ask how much input, and input index inside @input
     def speak_input_rate
-      @inputs.each_with_index do |input, index|
+      @input.each_with_index do |input, index|
         if input[:rate][:value].nil?
           sentence = I18n.t("duke.interventions.ask.how_much_inputs_#{rand(0...2)}", input: input.name, unit: Matter.find_by_id(input.key)&.unit_name)
           return sentence, index
@@ -369,7 +386,7 @@ module Duke
 
     # Adds input rate to input DukeMatchingItem
     def add_input_rate
-      @inputs.each_with_index do |input, index|
+      @input.each_with_index do |input, index|
         if quantity = @user_input.matchdel(/(\d{1,3}(\.|,)\d{1,2}|\d{1,3}) *((g|gramme|kg|kilo|kilogramme|tonne|t|l|litre|hectolitre|hl)(s)? *(par hectare|\/ *hectare|\/ *ha)?) *(de|d\'|du)? *(la|le)? *#{input.matched}/)
           measure = get_measure(quantity[1].gsub(',','.').to_f, quantity[4], (true unless quantity[6].nil?))
         elsif sec_quantity = @user_input.matchdel(/#{input.matched} *(à|a|avec)? *(\d{1,3}(\.|,)\d{1,2}|\d{1,3}) *((gramme|g|kg|kilo|kilogramme|tonne|t|hectolitre|hl|litre|l)(s)? *(par hectare|\/ *hectare|\/ *ha)?)/)
@@ -423,7 +440,7 @@ module Duke
       return ["ask_ambiguity", nil, @ambiguities.first] unless @ambiguities.blank?
       param_type = Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name
       return ["ask_which_targets", nil , speak_targets] if self.send(param_type).present? && self.send(param_type).map{|tar| tar.key? :potential}.count(true) > 1
-      return ["ask_input_rate", speak_input_rate].flatten if @inputs.to_a.any? {|input| input[:rate][:value].nil?}
+      return ["ask_input_rate", speak_input_rate].flatten if @input.to_a.any? {|input| input[:rate][:value].nil?}
       return "save", speak_intervention, nil
     end
 
@@ -459,9 +476,9 @@ module Duke
 
     # @return Array with input_attributes
     def input_attributes 
-      return [] if @inputs.blank?
+      return [] if @input.blank?
       if Procedo::Procedure.find(@procedure).parameters_of_type(:input).present?
-        return @inputs.map{|input| {reference_name: input_reference_name(input.key),
+        return @input.map{|input| {reference_name: input_reference_name(input.key),
                                     product_id: input.key,
                                     quantity_value: input.rate[:value].to_f,
                                     quantity_population: input.rate[:value].to_f,
@@ -476,17 +493,17 @@ module Duke
     
     # @return Array with doer_attributes
     def doer_attributes 
-      return [] if @workers.blank?
+      return [] if @doer.blank?
       if Procedo::Procedure.find(@procedure).parameters_of_type(:doer).present?
-        return @workers.to_a.map{|wrk| {reference_name: Procedo::Procedure.find(@procedure).parameters_of_type(:doer).first.name, product_id: wrk.key}}
+        return @doer.to_a.map{|wrk| {reference_name: Procedo::Procedure.find(@procedure).parameters_of_type(:doer).first.name, product_id: wrk.key}}
       end 
     end 
 
     # @return Array with tool_attributes
     def tool_attributes 
-      return [] if @equipments.blank?
+      return [] if @tool.blank?
       if Procedo::Procedure.find(@procedure).parameters_of_type(:tool).present?
-        return @equipments.to_a.map{|tool| {reference_name: tool_reference_name(tool.key), product_id: tool.key}}
+        return @tool.to_a.map{|tool| {reference_name: tool_reference_name(tool.key), product_id: tool.key}}
       end 
     end 
 
