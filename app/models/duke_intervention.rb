@@ -1,7 +1,7 @@
 module Duke
   class DukeIntervention < DukeArticle
     
-    attr_accessor :procedure, :input, :doer, :tool, :retry, :plant, :cultivation, :crop_groups, :land_parcel, :cultivablezones, :activity_variety, :ambiguities
+    attr_accessor :procedure, :input, :doer, :tool, :retry, :plant, :cultivation, :crop_groups, :land_parcel, :cultivablezones, :activity_variety, :ambiguities, :working_periods
     attr_reader :specific
 
     def initialize(**args)
@@ -9,7 +9,7 @@ module Duke
       @procedure = nil
       @input, @doer, @tool, @crop_group = Array.new(4, DukeMatchingArray.new)
       @retry = 0
-      @ambiguities = []
+      @ambiguities, @working_periods = [], []
       args.each{|k, v| instance_variable_set("@#{k}", v)}
       @description = @user_input.clone
       @matchArrs = [:input, :doer, :tool, :crop_groups, :plant, :cultivation, :land_parcel, :cultivablezones, :activity_variety]
@@ -42,6 +42,7 @@ module Duke
     def complement_candidates 
       candidates = [:target, :tool, :doer, :input].select{|type| Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == type}.present?}
                                                   .map{|type| optJsonify(I18n.t("duke.interventions.#{type}"))}
+      candidates.push(optJsonify(I18n.t("duke.interventions.working_period")))
       return dynamic_options(I18n.t("duke.interventions.ask.what_add"), candidates)
     end 
 
@@ -49,7 +50,7 @@ module Duke
     def ok_procedure? 
       return false if @procedure.blank?
       return true if Procedo::Procedure.find(@procedure).present? && (Procedo::Procedure.find(@procedure).activity_families & [:vine_farming, :plant_farming]).any?
-      if @procedure.scan(/[|]/).present? && !Activity.availables.any? {|act| act[:family] != :vine_farming}
+      if @procedure.scan(/[|]/).present? && !Activity.availables.any? {|act| act[:family] != :vine_farming} # Not any? | all? 
         @procedure = @procedure.split(/[|]/).first
         return true
       end 
@@ -61,11 +62,11 @@ module Duke
       if @procedure.blank? # Suggest categories if family.uniq, family
         return (suggest_categories_from_fam(exclusive_farming_type) if exclusive_farming_type.present?) ||asking_intervention_family
       elsif @procedure.scan(/[&]/).present? # (One or multiple category(ies) matched
-        if @procedure.split(/[&]/).size == 1 
-          @procedure = @procedure.split(/[&]/).first 
+        if @procedure.split(/[&]/).size.eql?(1)
+          @procedure = @procedure.split(/[&]/).first  # Only one category matched, we suggest procedures from category
           return suggest_proc_from_category
         else 
-          return suggest_categories_from_amb
+          return suggest_categories_from_amb # Multiple categories matched, we suggest those
         end 
       end 
       return suggest_categories_from_fam(@procedure) if [:plant_farming, :vine_farming].include? @procedure.to_sym # Received a family
@@ -129,9 +130,34 @@ module Duke
 
     # @param [DukeIntervention] int : previous DukeIntervention
     def join_temporality(int)
-      choose_date(int.date)
-      choose_duration(int.duration)
       self.update_description(int.description)
+      if int.date.to_date === @date.to_date && !int.not_current_time?
+        if int.duration.nil? 
+          working_periods = int.working_periods
+        else  
+          @duration = int.duration 
+          working_periods_attributes
+        end 
+      elsif (int.duration.nil?||int.duration.eql?(60))
+        choose_date(int.date)
+        if @date == int.date  
+          working_periods_attributes
+        else  
+          working_periods = int.working_periods
+        end 
+      else  
+        choose_date(int.date)
+        @duration = int.duration 
+        working_periods_attributes 
+      end 
+    end 
+
+    # @param [Array] periods : parsed Working_periods
+    def add_working_interval(periods) 
+      return if periods.nil? 
+      periods.each do |period| 
+        @working_periods.push(period) unless @working_periods.any?{|wp|period[:started_at].between?(wp[:started_at], wp[:stopped_at])||period[:stopped_at].between?(wp[:started_at], wp[:stopped_at])}
+      end 
     end 
 
     # @param [Integer] value : Integer parsed by ibm
@@ -144,36 +170,43 @@ module Duke
     # TODO: ADD @workingperiod iv,  Add each_time_interval if exists, or auto-create it. On modification, if only duration, recreate, if only date, recreate .. On complement, be smart
     # Extract both date_and duration
     def extract_date_and_duration
+      @user_input = clear_string
       input_clone = @user_input.clone 
-      whole_temp = input_clone.matchdel(/(de|à|a|entre) *\b((00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b|midi|minuit) *(jusqu\')?(a|à|et) *\b((00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b|midi|minuit)/)
       extract_duration
       extract_date
-      if input_clone.match(/\b(00|[0-9]|1[0-1]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b *(du|de|ce)? *matin/)
-        @duration = 60 if @duration.kind_of?(Array)
-      elsif input_clone.match(/\b(00|[0-9]|1[0-1]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b *(du|de|cet|cette)? *(le|l')? *(aprem|apm|après-midi|apres midi|après midi|aprèm)/)
-        @date = @date.change(hour: @date.hour+12)
-        @duration = 60 if @duration.kind_of?(Array)
-      elsif input_clone.match("matin") 
-        @duration = [[8, 12]]
-      elsif input_clone.match(/(apr(e|è)?s( |-)?midi|apr(e|è)m|apm)/)
-        @duration = [[14, 17]]
-      elsif input_clone.match("journ(é|e)e")
-        @duration = [[8, 12], [14, 17]]
-      elsif whole_temp
-        extract_time_interval(whole_temp[0])
-      elsif (not_current_time? && @duration.kind_of?(Array))
-        @duration = 60
-      end
+      extract_wp_from_interval(input_clone)
+      unless @working_periods.present?
+        if input_clone.match(/\b(00|[0-9]|1[0-1]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b *(du|de|ce)? *matin/)
+          @duration = 60 if @duration.nil?
+        elsif input_clone.match(/\b(00|[0-9]|1[0-1]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b *(du|de|cet|cette)? *(le|l')? *(aprem|apm|après-midi|apres midi|après midi|aprèm)/)
+          @date = @date.change(hour: @date.hour+12)
+          @duration = 60 if @duration.nil? 
+        elsif input_clone.match("matin") 
+          @working_periods = [{started_at: @date.to_time.change(offset: @offset, hour: 8, min: 0), stopped_at: @date.to_time.change(offset: @offset, hour: 12, min: 0)}]
+        elsif input_clone.match(/(apr(e|è)?s( |-)?midi|apr(e|è)m|apm)/)
+          @working_periods = [{started_at: @date.to_time.change(offset: @offset, hour: 14, min: 0), stopped_at: @date.to_time.change(offset: @offset, hour: 17, min: 0)}]
+        elsif (not_current_time? && @duration.nil?) # One hour duration if hour specified but no duration
+          @duration = 60
+        end
+      end 
+      working_periods_attributes unless @working_periods.present?
     end
 
-    # @param [String] interval
-    def extract_time_interval(interval)
-      starting_hour = extract_hour(interval)
-      ending_hour = extract_hour(interval)
-      @date = @date.change(hour: starting_hour.hour, min: starting_hour.min)
-      @duration = ((ending_hour - starting_hour)/60).to_i
-      @date = @date.change(hour: ending_hour.hour, min: ending_hour.min) if @duration < 0 
-      @duration = @duration.abs
+    # @param [String] istr
+    def extract_wp_from_interval(istr)
+      istr.scan(/((de|à|a|entre) *\b((00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b|midi|minuit) *(jusqu\')?(a|à|et) *\b((00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b|midi|minuit))/).to_a.each do |interval|
+        start, ending = [extract_hour(interval.first), extract_hour(interval.first)].sort # Extract two hours from interval & sort it & create working_period
+        @date = @date.to_time.change(offset: @offset, hour: start.hour, min: start.min)
+        @duration = ((ending - start)/60).to_i
+        @working_periods.push({started_at: @date, stopped_at: @date + @duration.minutes})
+      end
+    end 
+
+    # Checks if HH:MM corresponds to Time.now.HH:MM
+    def not_current_time?
+      now = Time.now 
+      return true if (@date.change(year: now.year, month: now.month, day: now.day) - now).abs > 300
+      false 
     end 
 
     # @param [String] type : Type of item for which display all
@@ -211,7 +244,7 @@ module Duke
                               doers_attributes: doer_attributes.to_a,
                               targets_attributes: target_attributes.to_a,
                               inputs_attributes: input_attributes.to_a,
-                              working_periods_attributes: working_periods_attributes.to_a}
+                              working_periods_attributes: @working_periods}
       add_readings_attributes(intervention_params)
       it = Intervention.create!(intervention_params)
       return it.id
@@ -292,18 +325,9 @@ module Duke
         end  
       end  
       sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{@date.to_time.strftime("%d/%m/%Y")}"
-      sentence += "<br>&#8226 #{I18n.t("duke.interventions.working_period")} : #{speak_working_periods}" 
+      sentence += "<br>&#8226 #{I18n.t("duke.interventions.working_period")} : #{ @working_periods.map{|wp| I18n.t("duke.interventions.working_periods", start: wp[:started_at].to_time.strftime("%H:%M"), ending: wp[:stopped_at].to_time.strftime("%H:%M"))}.join(", ")}" 
       return sentence.gsub(/, <br>&#8226/, "<br>&#8226")
     end
-
-    def speak_working_periods 
-      if @duration.kind_of? Array 
-        return @duration.map{|start, ending| I18n.t("duke.interventions.working_periods", start: "#{start}h", ending: "#{ending}h")}.join(", ")
-      else
-        ending_date = (@date.to_time + @duration.to_i.minutes).to_time.strftime("%H:%M")
-        return I18n.t("duke.interventions.working_periods", start: @date.to_time.strftime("%H:%M"), ending: ending_date)
-      end 
-    end  
 
     # @returns [String, Integer] Sentence to ask how much input, and input index inside @input
     def speak_input_rate
@@ -376,14 +400,6 @@ module Duke
       end 
     end 
 
-
-    # Checks if HH:MM corresponds to Time.now.HH:MM
-    def not_current_time?
-      now = Time.now 
-      return true if (@date.change(year: now.year, month: now.month, day: now.day) - now).abs > 300
-      false 
-    end 
-
     # Adds input rate to input DukeMatchingItem
     def add_input_rate
       @input.each_with_index do |input, index|
@@ -445,11 +461,11 @@ module Duke
     end
 
     def working_periods_attributes
-      offset = "+0#{Time.at(@date.to_time).utc_offset / 3600}:00"
-      if @duration.kind_of? Array 
-        return @duration.map{|start, ending| { started_at: @date.to_time.change(hour: start, min: 0, offset: offset) , stopped_at: @date.to_time.change(hour: ending, min: 0, offset: offset)}}
-      else  
-        return [{started_at: @date.to_time.change(offset: offset), stopped_at: @date.to_time.change(offset: offset) + @duration.to_i.minutes}]
+      if @duration.nil? # Basic working_periods if duration.nil?:true
+        @working_periods = [{started_at: @date.to_time.change(offset: @offset, hour: 8, min: 0), stopped_at: @date.to_time.change(offset: @offset, hour: 12, min: 0)},
+                            {started_at: @date.to_time.change(offset: @offset, hour: 14, min: 0), stopped_at: @date.to_time.change(offset: @offset, hour: 17, min: 0)}]
+      elsif @duration.kind_of?(Integer) # Specific working_periods if a duration was found
+        @working_periods = [{started_at: @date.to_time.change(offset: @offset), stopped_at: @date.to_time.change(offset: @offset) + @duration.to_i.minutes}]
       end 
     end 
 

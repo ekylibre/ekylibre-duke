@@ -2,7 +2,7 @@ module Duke
   class DukeArticle
     include Duke::BaseDuke
 
-    attr_accessor :description, :date, :duration, :user_input, :activity_variety, :tool, :cultivablezones, :financial_year, :entities
+    attr_accessor :description, :date, :duration, :offset, :user_input, :activity_variety, :tool, :cultivablezones, :financial_year, :entities
     @@user_specific_types = [:financial_year, :entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press] 
     @@ambiguities_types = [:plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press]
     @@month_hash =  {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9, "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12 }
@@ -108,6 +108,7 @@ module Duke
         end
       end
       @date = Time.new(d.year, d.month, d.day, time.hour, time.min, time.sec) # Set correct time to date if match
+      @offset = "+0#{Time.at(@date.to_time).utc_offset / 3600}:00"
     end
 
     # @return [Datetime(start), Datetime(end)]
@@ -153,7 +154,7 @@ module Duke
           delta_in_mins += hour_time[2].to_i*60
           delta_in_mins += 30 if @user_input.matchdel("et demi") # Check for "et demi" in user_input
         else
-          delta_in_mins = [[8, 12], [14, 17]] # Set duration to Array of working periods by default
+          delta_in_mins = nil # Set duration to nil on default
         end 
         @duration = delta_in_mins
     end
