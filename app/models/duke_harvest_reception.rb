@@ -57,7 +57,6 @@ module Duke
 
     # @param [SplatArray] args : Every instance variable we'll try to extract
     def parse_specifics(*args)
-      @user_input = clear_string
       extract_user_specifics(jsonD: self.to_jsonD(*args))
       extract_plant_area if args.include? :plant
     end 
@@ -171,11 +170,11 @@ module Duke
 
     def extract_quantity
       # Extracting quantity data
-      quantity = @user_input.matchdel('(\d{1,5}(\.|,)\d{1,2}|\d{1,5}) *(kilo|kg|hecto|expo|texto|hl|t\b|tonne)')
+      quantity = @user_input.matchdel(/(\d{1,5}(\.|,)\d{1,2}|\d{1,5}) *(kilo|kg|hecto|expo|texto|hl|t\b|tonne)/)
       if quantity
-        unit = if quantity[3].match('(kilo|kg)')
+        unit = if quantity[3].match(/(kilo|kg)/)
                 "kg" 
-                elsif quantity[3].match('(hecto|hl|texto|expo)')
+                elsif quantity[3].match(/(hecto|hl|texto|expo)/)
                 "hl"
                 else
                 "t"
@@ -188,15 +187,15 @@ module Duke
 
     # Extract values when conflicted between °C degrees & ° vol degrees
     def extract_conflicting_degrees
-      tav = @user_input.matchdel('(degré d\'alcool|alcool|degré|tavp|t avp2|tav|avp|t svp|pourcentage|t avait) *(jus de presse)? *(est|était)? *(égal +(a *|à *)?|= *|de *|à *)?(\d{1,2}(\.|,)\d{1,2}|\d{1,2}) *(degré)?')
+      tav = @user_input.matchdel(/(degré d\'alcool|alcool|degré|tavp|t avp2|tav|avp|t svp|pourcentage|t avait) *(jus de presse)? *(est|était)? *(égal +(a *|à *)?|= *|de *|à *)?(\d{1,2}(\.|,)\d{1,2}|\d{1,2}) *(degré)?/)
       @parameters['tav'] = tav[6].gsub(',','.') if tav
-      temp = @user_input.matchdel('(température|temp) *(est|était)? *(égal *|= *|de *|à *)?(\d{1,2}(\.|,)\d{1,2}|\d{1,2}) *(degré)?')
+      temp = @user_input.matchdel(/(température|temp) *(est|était)? *(égal *|= *|de *|à *)?(\d{1,2}(\.|,)\d{1,2}|\d{1,2}) *(degré)?/)
       @parameters['temperature'] = temp[4].gsub(',','.') if temp
     end
 
     # Extracting TAV value in @user_input
     def extract_tav
-      tav = @user_input.matchdel('(\d{1,2}|\d{1,2}(\.|,)\d{1,2}) ?((degré(s)?|°|%)|(de|en|d\')? *(tavp|t avp|tav|(t)? *avp|(t)? *svp|t avait|thé avait|thé à l\'épée|alcool|(entea|mta) *vp))')
+      tav = @user_input.matchdel(/(\d{1,2}|\d{1,2}(\.|,)\d{1,2}) ?((degré(s)?|°|%)|(de|en|d\')? *(tavp|t avp|tav|(t)? *avp|(t)? *svp|t avait|thé avait|thé à l\'épée|alcool|(entea|mta) *vp))/)
       unless @parameters.key?('tav')
         @parameters['tav'] = (tav[1].gsub(',','.') if tav)||nil
       end
@@ -204,7 +203,7 @@ module Duke
 
     # Extracting Temperature value in @user_input
     def extract_temp
-      temp = @user_input.matchdel('(\d{1,2}|\d{1,2}(\.|,)\d{1,2}) +(degré|°)')
+      temp = @user_input.matchdel(/(\d{1,2}|\d{1,2}(\.|,)\d{1,2}) +(degré|°)/)
       unless @parameters.key?('temperature')
         @parameters['temperature'] = (temp[1].gsub(',','.') if temp)||nil
       end
@@ -212,8 +211,8 @@ module Duke
 
     # Extracting pH value in @user_input
     def extract_ph
-      ph = @user_input.matchdel('(\d{1,2}|\d{1,2}(\.|,)\d{1,2}) +(de +)?(ph|péage)')
-      second_ph = @user_input.matchdel('((ph|péage) *(est|était)? *(égal *(a|à)? *|= ?|de +|à +)?)(\d{1,2}(\.|,)\d{1,2}|\d{1,2})')
+      ph = @user_input.matchdel(/(\d{1,2}|\d{1,2}(\.|,)\d{1,2}) +(de +)?(ph|péage)/)
+      second_ph = @user_input.matchdel(/((ph|péage) *(est|était)? *(égal *(a|à)? *|= ?|de +|à +)?)(\d{1,2}(\.|,)\d{1,2}|\d{1,2})/)
       @parameters['ph'] = if ph
                             ph[1].gsub(',','.') # ph is the first capturing group
                           elsif second_ph
@@ -225,8 +224,8 @@ module Duke
 
     # Extract Nitrogen value in @user_input
     def extract_amino_nitrogen
-      nitrogen = @user_input.matchdel('(azote aminé *(est|était)? *(égal +|= ?|de +)?(à)? *)(\d{1,3}(\.|,)\d{1,2}|\d{1,3})')
-      second_nitrogen = @user_input.matchdel('(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(mg|milligramme)?.?(par l|\/l|par litre)? ?+(d\'|de|en)? *azote aminé')
+      nitrogen = @user_input.matchdel(/(azote aminé *(est|était)? *(égal +|= ?|de +)?(à)? *)(\d{1,3}(\.|,)\d{1,2}|\d{1,3})/)
+      second_nitrogen = @user_input.matchdel(/(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(mg|milligramme)?.?(par l|\/l|par litre)? ?+(d\'|de|en)? *azote aminé/)
       @parameters['amino_nitrogen'] =  if nitrogen
                                           nitrogen[1].gsub(',','.') # nitrogen is the first capturing group
                                         elsif second_nitrogen
@@ -238,8 +237,8 @@ module Duke
 
     # Extract Nitrogen value in @user_input
     def extract_ammoniacal_nitrogen
-      nitrogen = @user_input.matchdel('(azote (ammoniacal|ammoniaque) *(est|était)? *(égal +|= ?|de +)?(à)? *)(\d{1,3}(\.|,)\d{1,2}|\d{1,3})')
-      second_nitrogen = @user_input.match('(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(mg|milligramme)?.?(par l|\/l|par litre)? ?+(d\'|de|en)? *azote ammonia')
+      nitrogen = @user_input.matchdel(/(azote (ammoniacal|ammoniaque) *(est|était)? *(égal +|= ?|de +)?(à)? *)(\d{1,3}(\.|,)\d{1,2}|\d{1,3})/)
+      second_nitrogen = @user_input.matchdel(/(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(mg|milligramme)?.?(par l|\/l|par litre)? ?+(d\'|de|en)? *azote ammonia/)
       @parameters['ammoniacal_nitrogen'] =  if nitrogen
                                               nitrogen[1].gsub(',','.') # nitrogen is the first capturing group
                                             elsif second_nitrogen
@@ -251,8 +250,8 @@ module Duke
 
     # Extract Nitrogen value in @user_input
     def extract_assimilated_nitrogen
-      nitrogen = @user_input.matchdel('(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(mg|milligramme)?.?(par l|\/l|par litre)? ?+(d\'|de|en)? ?+(azote *(assimilable)?|sel d\'ammonium|substance(s)? azotée)')
-      second_nitrogen = @user_input.match('((azote *(assimilable)?|sel d\'ammonium|substance azotée) *(est|était)? *(égal +|= ?|de +)?(à)? *)(\d{1,3}(\.|,)\d{1,2}|\d{1,3})')
+      nitrogen = @user_input.matchdel(/(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(mg|milligramme)?.?(par l|\/l|par litre)? ?+(d\'|de|en)? ?+(azote *(assimilable)?|sel d\'ammonium|substance(s)? azotée)/)
+      second_nitrogen = @user_input.matchdel(/((azote *(assimilable)?|sel d\'ammonium|substance azotée) *(est|était)? *(égal +|= ?|de +)?(à)? *)(\d{1,3}(\.|,)\d{1,2}|\d{1,3})/)
       @parameters['assimilated_nitrogen'] = if nitrogen
                                               nitrogen[1].gsub(',','.') # nitrogen is the first capturing group
                                             elsif second_nitrogen
@@ -268,8 +267,8 @@ module Duke
       sanitarystate = ""
       if sanitary_match
         sanitarystate += sanitary_match[2]
-        @user_input[sanitary_match[1]] = ""
-        @user_input[sanitary_match[2]] = ""
+        @user_input.gsub!(sanitary_match[1], '')
+        @user_input.gsub!(sanitary_match[2], '')
       end
       {sain: /s(a|e)in/, correct: /correct/, nromal: /normal/, botrytis: /(botrytis|beau titre is)/, oïdium: /o.dium/, pourriture: /pourriture/}.each do |val, regex|
         sanitarystate += val.to_s if @user_input.matchdel regex   
@@ -279,8 +278,8 @@ module Duke
 
     # Extract SO Acid value in @user_input
     def extrat_h2SO4
-      h2so4 = @user_input.matchdel('(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(g|gramme)?.? *(par l|\/l|par litre)? ?+(d\'|de|en)? ?+(acidité|acide|h2so4)')
-      second_h2so4 = @user_input.matchdel('(acide|acidité|h2so4) *(est|était)? *(égal.? *(a|à)?|=|de|à|a)? *(\d{1,3}(\.|,)\d{1,2}|\d{1,3})')
+      h2so4 = @user_input.matchdel(/(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(g|gramme)?.? *(par l|\/l|par litre)? ?+(d\'|de|en)? ?+(acidité|acide|h2so4)/)
+      second_h2so4 = @user_input.matchdel(/(acide|acidité|h2so4) *(est|était)? *(égal.? *(a|à)?|=|de|à|a)? *(\d{1,3}(\.|,)\d{1,2}|\d{1,3})/)
       @parameters['h2so4'] =  if h2so4
                                 h2so4[1].gsub(',','.') # h2so4 is the first capturing group
                               elsif second_h2so4
@@ -292,8 +291,8 @@ module Duke
 
     # Extract Malic Acid value in @user_input
     def extract_malic
-      malic = @user_input.matchdel('(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) *(g|gramme)?.?(par l|\/l|par litre)? *(d\'|de|en)? *(acide?) *(malique|malic)')
-      second_malic = @user_input.matchdel('((acide *)?(malic|malique) *(est|était)? *(égal +|= ?|de +|à +)?)(\d{1,3}(\.|,)\d{1,2}|\d{1,3})')
+      malic = @user_input.matchdel(/(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) *(g|gramme)?.?(par l|\/l|par litre)? *(d\'|de|en)? *(acide?) *(malique|malic)/)
+      second_malic = @user_input.matchdel(/((acide *)?(malic|malique) *(est|était)? *(égal +|= ?|de +|à +)?)(\d{1,3}(\.|,)\d{1,2}|\d{1,3})/)
       @parameters['malic'] =  if malic
                                 malic[1].gsub(',','.') # malic is the first capturing group
                               elsif second_malic
@@ -446,7 +445,7 @@ module Duke
     # @return [Array] target_attributes
     def targets_attributes 
       tar = @plant.map{|tar| {plant_id: tar.key, harvest_percentage_received: tar[:area].to_s, wine_incoming_harvest_id: @id}}
-      cg = @crop_groups.map{|cg| CropGroup.available_crops(cg.key, "is plant or is land_parcel").flatten.map{|crop| {plant_id: crop[:id], harvest_percentage_received: cg[:area].to_s, wine_incoming_harvest_id: @id}}}.flatten
+      cg = @crop_groups.flat_map{|cg| CropGroup.available_crops(cg.key, "is plant or is land_parcel").map{|crop| {plant_id: crop[:id], harvest_percentage_received: cg[:area].to_s, wine_incoming_harvest_id: @id}}}.flatten
       return (tar + cg).uniq{|t| t[:plant_id]}
     end 
 

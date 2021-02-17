@@ -33,15 +33,5 @@ module Duke
       return [optJson]
     end 
 
-    def clear_string(fstr=@user_input)
-      # Remove useless elements from user sentence
-      useless_dic = [/\bnum(e|é)ro\b/, /n ?°/,/(le|la|les)/, /(#|-|_|\\)/]
-      deburr_dic = {"é"=>"e"}
-      useless_dic.each{|rgx| fstr.matchdel(rgx)}
-      str = fstr.gsub(/\s+/, " ").strip.downcase.split(" | ").first
-      return (I18n.transliterate(str) unless str.nil?)||" "
-    end
-
-
   end 
 end 

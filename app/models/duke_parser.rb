@@ -32,7 +32,7 @@ module Duke
     # @param [Array] append_list : Correct DukeMatchingArray to append if nstr matches
     def compare_elements(nstr, key, append_list)
       if nstr.present? and @level != 1
-        distance = @fuzzloader.getDistance(@combo, clear_string(nstr))
+        distance = @fuzzloader.getDistance(@combo, nstr.duke_clear)
         if distance > @level
           @level = distance
           @matching_item = DukeMatchingItem.new(key: key, name: nstr, indexes: @indexes, distance: distance, matched: @combo)

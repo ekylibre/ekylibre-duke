@@ -17,7 +17,7 @@ module Duke
     # @param [ActiveRecord] product
     # @return bln, check if product is ambiguous with self
     def is_ambiguous(product)
-      return true if (@itm.key != product.id && (@itm.distance - @fuzzloader.getDistance(clear_string(product.send(@name_attr)), @itm.matched)).between?(0,@ambig_level) && !@itm.has_something_more_than?(product.send(@name_attr)))
+      return true if (@itm.key != product.id && (@itm.distance - @fuzzloader.getDistance(product.send(@name_attr).duke_clear, @itm.matched)).between?(0,@ambig_level) && !@itm.has_something_more_than?(product.send(@name_attr)))
       return false
     end 
 

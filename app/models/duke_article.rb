@@ -32,7 +32,7 @@ module Duke
     # @param [Float] level : min_match_level
     # Extract user specifics & recreates DukeArticle
     def extract_user_specifics(jsonD: self.to_jsonD, level: 0.89)
-      @user_input = self.clear_string # Get clean string before parsing
+      @user_input = @user_input.duke_clear # Get clean string before parsing
       user_specifics = jsonD.select{ |key, value| @@user_specific_types.include?(key.to_sym)}
       attributes = user_specifics.to_h{|key, mArr|[key, {iterator: iterator(key.to_sym), name_attribute: name_attr(key.to_sym), list: mArr}]}
       create_words_combo.each do |combo| # Creating all combo_words from user_input
@@ -92,16 +92,16 @@ module Duke
     def extract_date
       now = Time.now
       time = extract_hour(@user_input) # Extract hour from user_input
-      if @user_input.matchdel("avant( |-)?hier") # Look for specific keywords
+      if @user_input.matchdel(/avant( |-)?hier/) # Look for specific keywords
         d = Date.yesterday.prev_day
       elsif @user_input.matchdel("hier")
         d = Date.yesterday
       elsif @user_input.matchdel("demain")
         d = Date.tomorrow
       else
-        if full_date = @user_input.matchdel('(\d|\d{2})(er|eme|ème)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre) ?(\d{4})?')
+        if full_date = @user_input.matchdel(/(\d|\d{2})(er|eme|ème)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre) ?(\d{4})?/)
           @date = Time.new(year_from_str(full_date[4]), @@month_hash[full_date[3]], full_date[1].to_i, time.hour, time.min, time.sec); return 
-        elsif slash_date = @user_input.matchdel('(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?')
+        elsif slash_date = @user_input.matchdel(/(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?/)
           @date = Time.new(year_from_str(slash_date[4]), slash_date[2].to_i, slash_date[1].to_i, time.hour, time.min, time.sec); return
         else # If nothing matched, we return todays date
           @date = Time.new(now.year, now.month, now.day, time.hour, time.min, time.sec); return
@@ -114,9 +114,9 @@ module Duke
     # @return [Datetime(start), Datetime(end)]
     def extract_time_interval
       now = Time.now
-      since_date = @user_input.matchdel('(depuis|à partir|a partir) *(du|de|le|la)? *(\d|\d{2}) *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)( *\d{4})?')
-      since_slash_date = @user_input.matchdel('(depuis|à partir|a partir) * (du|de|le|la)? *(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?')
-      since_month_date = @user_input.matchdel('(depuis|à partir|a partir) *(du|de|le|la)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)')
+      since_date = @user_input.matchdel(/(depuis|à partir|a partir) *(du|de|le|la)? *(\d|\d{2}) *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)( *\d{4})?/)
+      since_slash_date = @user_input.matchdel(/(depuis|à partir|a partir) * (du|de|le|la)? *(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?/)
+      since_month_date = @user_input.matchdel(/(depuis|à partir|a partir) *(du|de|le|la)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)/)
       if @user_input.matchdel("ce mois")
         return Time.new(now.year, now.month, 1, 0, 0, 0), now
       elsif @user_input.matchdel("cette semaine")
@@ -146,11 +146,11 @@ module Duke
           @duration = 30; return
         end
         delta_in_mins = 0
-        if min_time = @user_input.matchdel('\d+\s(\w*minute\w*|mins)') # Extract MM regex
+        if min_time = @user_input.matchdel(/\d+\s(\w*minute\w*|mins)/) # Extract MM regex
           delta_in_mins += min_time[0].to_i
-        elsif hour_min_time = @user_input.matchdel('(de|pendant|durée) *(\d{1,2})\s?(heures|h|heure)\s?(\d\d)') # Extract HH:MM regex
+        elsif hour_min_time = @user_input.matchdel(/(de|pendant|durée) *(\d{1,2})\s?(heures|h|heure)\s?(\d\d)/) # Extract HH:MM regex
           delta_in_mins += hour_min_time[2].to_i*60 + hour_min_time[4].to_i
-        elsif hour_time = @user_input.matchdel('(de|pendant|durée) *(\d{1,2})\s?(h\b|h\s|heure)') # Extract HH: regex
+        elsif hour_time = @user_input.matchdel(/(de|pendant|durée) *(\d{1,2})\s?(h\b|h\s|heure)/) # Extract HH: regex
           delta_in_mins += hour_time[2].to_i*60
           delta_in_mins += 30 if @user_input.matchdel("et demi") # Check for "et demi" in user_input
         else
@@ -163,7 +163,7 @@ module Duke
     # @return Datetime
     def extract_hour(content = @user_input)
       now = Time.now
-      time = content.matchdel('\b(00|[0-9]|1[0-9]|2[0-3]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b') # matching time regex
+      time = content.matchdel(/\b(00|[0-9]|1[0-9]|2[0-3]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b/) # matching time regex
       return Time.new(now.year, now.month, now.day, time[1].to_i, (0 if time[4].nil?)||time[4].to_i, 0) if time # if we match, we return correct hour
       {8 => "matin", 14 => "après-midi", 12 => "midi", 20 => "soir", 0 => "minuit"}.each do |hour, val| # if any_word matches, we return correct hour
         return Time.new(now.year, now.month, now.day, hour, 0, 0) if content.matchdel(val) 

@@ -64,7 +64,7 @@ module Duke
     # @params [String] user_input : User Utterance
     def handle_complement_working_periods params 
       dukeInt = Duke::DukeIntervention.new.recover_from_hash(params[:parsed])
-      tmpInt = Duke::DukeIntervention.new(procedure: dukeInt.procedure,  date: dukeInt.date, user_input: params[:user_input])
+      tmpInt = Duke::DukeIntervention.new(procedure: dukeInt.procedure,  date: dukeInt.date, user_input: params[:user_input].duke_clear)
       tmpInt.extract_wp_from_interval(tmpInt.user_input)
       dukeInt.add_working_interval(tmpInt.working_periods)
       return dukeInt.to_ibm

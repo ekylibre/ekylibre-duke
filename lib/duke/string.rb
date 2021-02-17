@@ -2,13 +2,21 @@ class String
 
   def matchdel regex 
     match = self.match(regex)
-    self[match[0]] = "" if match 
+    self[match[0]] = '' if match.present?
     return match
   end 
 
   def del substr 
-    self[substr] = ""  if substr.present? && self.include?(substr)
-    return self
+    self.gsub!(substr, '')  if substr.present? && self.include?(substr)
+    self
+  end 
+
+  def duke_clear 
+    return " " if self.blank? 
+    str = self.strip.downcase.split(" | ").first
+    [/\bnum(e|é)ro\b/, /n ?°/,/\b(le|la|les)\b/, /(#|-|_|\\)/, /(?<=\s)\s/].each{|rgx| str.gsub!(rgx, '')}
+    str = (I18n.transliterate(str) unless str.blank?)||" "
+    str
   end 
 
   def substrings 

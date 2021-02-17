@@ -131,25 +131,15 @@ module Duke
     # @param [DukeIntervention] int : previous DukeIntervention
     def join_temporality(int)
       self.update_description(int.description)
-      if int.date.to_date === @date.to_date && !int.not_current_time?
-        if int.duration.nil? 
-          working_periods = int.working_periods
-        else  
-          @duration = int.duration 
-          working_periods_attributes
-        end 
-      elsif (int.duration.nil?||int.duration.eql?(60))
-        choose_date(int.date)
-        if @date == int.date  
-          working_periods_attributes
-        else  
-          working_periods = int.working_periods
-        end 
-      else  
-        choose_date(int.date)
-        @duration = int.duration 
-        working_periods_attributes 
+      (@working_periods = int.working_periods; return) if int.working_periods.size > 1 && int.duration.present? 
+      if (int.date.to_date === @date.to_date||int.date.to_date != @date.to_date && int.date.to_date === Time.now.to_date)
+        @date = @date.to_time.change(hour: int.date.hour, min: int.date.min) if int.not_current_time? 
+      elsif int.date.to_date != Time.now.to_date 
+        @date = @date.to_time.change(year: int.date.year, month: int.date.month, day: int.date.day)
+        @date = @date.to_time.change(hour: int.date.hour, min: int.date.min) if int.not_current_time?
       end 
+      @duration = int.duration if int.duration.present? && (@duration.nil?||(@duration.eql?(60)||!int.duration.eql?(60)))
+      working_periods_attributes
     end 
 
     # @param [Array] periods : parsed Working_periods
@@ -170,7 +160,7 @@ module Duke
     # TODO: ADD @workingperiod iv,  Add each_time_interval if exists, or auto-create it. On modification, if only duration, recreate, if only date, recreate .. On complement, be smart
     # Extract both date_and duration
     def extract_date_and_duration
-      @user_input = clear_string
+      @user_input = @user_input.duke_clear
       input_clone = @user_input.clone 
       extract_duration
       extract_date
@@ -182,8 +172,10 @@ module Duke
           @date = @date.change(hour: @date.hour+12)
           @duration = 60 if @duration.nil? 
         elsif input_clone.match("matin") 
+          (working_periods_attributes; return) if @duration.present? 
           @working_periods = [{started_at: @date.to_time.change(offset: @offset, hour: 8, min: 0), stopped_at: @date.to_time.change(offset: @offset, hour: 12, min: 0)}]
         elsif input_clone.match(/(apr(e|è)?s( |-)?midi|apr(e|è)m|apm)/)
+          (working_periods_attributes; return) if @duration.present?
           @working_periods = [{started_at: @date.to_time.change(offset: @offset, hour: 14, min: 0), stopped_at: @date.to_time.change(offset: @offset, hour: 17, min: 0)}]
         elsif (not_current_time? && @duration.nil?) # One hour duration if hour specified but no duration
           @duration = 60
@@ -194,7 +186,7 @@ module Duke
 
     # @param [String] istr
     def extract_wp_from_interval(istr)
-      istr.scan(/((de|à|a|entre) *\b((00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b|midi|minuit) *(jusqu\')?(a|à|et) *\b((00|[0-9]|1[0-9]|2[03]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b|midi|minuit))/).to_a.each do |interval|
+      istr.scan(/((de|à|a|entre) *\b((00|[0-9]|1[0-9]|2[0-3]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b|midi|minuit) *(jusqu\')?(a|à|et) *\b((00|[0-9]|1[0-9]|2[0-3]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b|midi|minuit))/).to_a.each do |interval|
         start, ending = [extract_hour(interval.first), extract_hour(interval.first)].sort # Extract two hours from interval & sort it & create working_period
         @date = @date.to_time.change(offset: @offset, hour: start.hour, min: start.min)
         @duration = ((ending - start)/60).to_i
@@ -306,7 +298,7 @@ module Duke
     # @clean sentence
     def get_clean_sentence
       @description = @user_input.clone
-      @user_input = clear_string
+      @user_input = @user_input.duke_clear
     end 
 
     # Create Sentence describing current intervention
@@ -325,7 +317,7 @@ module Duke
         end  
       end  
       sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{@date.to_time.strftime("%d/%m/%Y")}"
-      sentence += "<br>&#8226 #{I18n.t("duke.interventions.working_period")} : #{ @working_periods.map{|wp| I18n.t("duke.interventions.working_periods", start: wp[:started_at].to_time.strftime("%H:%M"), ending: wp[:stopped_at].to_time.strftime("%H:%M"))}.join(", ")}" 
+      sentence += "<br>&#8226 #{I18n.t("duke.interventions.working_period")} : #{ @working_periods.map{|wp| I18n.t("duke.interventions.working_periods", start: speak_hour(wp[:started_at]), ending:  speak_hour(wp[:stopped_at]))}.join(", ")}" 
       return sentence.gsub(/, <br>&#8226/, "<br>&#8226")
     end
 
@@ -345,7 +337,14 @@ module Duke
       candidates = self.send(tar_type).map{|tar| optJsonify(tar.name, tar.key.to_s) if tar.key? :potential}.compact
       return dynamic_options(I18n.t("duke.interventions.ask.what_targets", tar: I18n.t("duke.interventions.#{tar_type}").downcase),candidates)
     end 
-    
+
+    # @params [DateTime.to_s] hour
+    # @returns [String] Readable hour
+    def speak_hour hour 
+      return hour.to_time.strftime("%-Hh%M") if hour.to_time.min.positive? 
+      return hour.to_time.strftime("%-Hh")
+    end 
+
     # Create instance_variable with tar_names 
     def tag_specific_targets
       # Creates entry for each proc-specific target type with empty array inside what's about to be parsed

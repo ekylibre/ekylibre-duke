@@ -51,17 +51,17 @@ module Duke
     end 
 
     def longest_substring otherstr
-      substrs = clear_string(self.name.clone).substrings
+      substrs = self.name.clone.duke_clear.substrings
       biggest = substrs.find{|sub| otherstr.include? sub[1]}
       return (biggest.last if biggest)||nil
     end 
 
     def has_something_more_than? otherstr
       pure = FuzzyStringMatch::JaroWinkler.create( :pure )
-      common = self.longest_substring(clear_string(otherstr))
+      common = self.longest_substring(otherstr.duke_clear)
       match_rest = self.matched.clone.del(self.matched.better_match common)
-      our_rest = clear_string(self.name.clone).del common
-      oth_rest = clear_string(otherstr.clone).del common
+      our_rest = self.name.clone.duke_clear.del common
+      oth_rest = otherstr.clone.duke_clear.del common
       ourDist = pure.getDistance(our_rest, match_rest)
       return (true if ourDist > 0.70 && ourDist - pure.getDistance(oth_rest, match_rest) > 0.50)||false
     end 
