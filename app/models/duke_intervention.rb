@@ -317,7 +317,7 @@ module Duke
         end  
       end  
       sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{@date.to_time.strftime("%d/%m/%Y")}"
-      sentence += "<br>&#8226 #{I18n.t("duke.interventions.working_period")} : #{ @working_periods.map{|wp| I18n.t("duke.interventions.working_periods", start: speak_hour(wp[:started_at]), ending:  speak_hour(wp[:stopped_at]))}.join(", ")}" 
+      sentence += "<br>&#8226 #{I18n.t("duke.interventions.working_period")} : #{ @working_periods.sort_by{|wp|wp[:started_at]}.map{|wp| I18n.t("duke.interventions.working_periods", start: speak_hour(wp[:started_at]), ending:  speak_hour(wp[:stopped_at]))}.join(", ")}" 
       return sentence.gsub(/, <br>&#8226/, "<br>&#8226")
     end
 

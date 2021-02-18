@@ -50,12 +50,16 @@ module Duke
       return false
     end 
 
+    # @param [String] otherstr
+    # @returns [String] Longest common substring from self.name & otherstr
     def longest_substring otherstr
       substrs = self.name.clone.duke_clear.substrings
       biggest = substrs.find{|sub| otherstr.include? sub[1]}
       return (biggest.last if biggest)||nil
     end 
 
+    # @param [String] otherstr
+    # @Checks if (name - longest_substring) matches better for self that otherstr
     def has_something_more_than? otherstr
       pure = FuzzyStringMatch::JaroWinkler.create( :pure )
       common = self.longest_substring(otherstr.duke_clear)
