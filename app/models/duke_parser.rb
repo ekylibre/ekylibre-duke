@@ -1,18 +1,15 @@
 module Duke
   class DukeParser < DukeArticle
 
-    attr_accessor :matching_item, :matching_list, :level, :index, :combo, :attributes, :ambiguity
-    attr_reader :fuzzloader
+    attr_accessor :matching_item, :matching_list, :level, :index, :combo, :attributes, :partial_level
 
     def initialize(word_combo:, level:, **args) 
-      @fuzzloader = FuzzyStringMatch::JaroWinkler.create( :pure )
       @matching_item = nil 
       @matching_list = nil 
       @indexes = word_combo.first 
       @combo = word_combo.last
       @level = level
-      @ambig_level = 0.05
-      @ambiguity = []
+      @partial_level = 95
       args.each{|k, v| instance_variable_set("@#{k}", v)}
     end 
 
@@ -32,10 +29,10 @@ module Duke
     # @param [Array] append_list : Correct DukeMatchingArray to append if nstr matches
     def compare_elements(nstr, key, append_list)
       if nstr.present? and @level != 1
-        distance = @fuzzloader.getDistance(@combo, nstr.duke_clear)
-        if distance > @level
-          @level = distance
-          @matching_item = DukeMatchingItem.new(key: key, name: nstr, indexes: @indexes, distance: distance, matched: @combo)
+        if (distance = @combo.similar(nstr.duke_clear)) > @level||(par_dist = @combo.partial_similar(nstr.duke_clear)) > @partial_level
+          (@level = distance; par_dist = nil) if distance > level 
+          @partial_level = par_dist if par_dist
+          @matching_item = DukeMatchingItem.new(key: key, name: nstr, indexes: @indexes, distance: distance, matched: @combo, par_dist: par_dist)
           @matching_list = append_list
         end
       end 

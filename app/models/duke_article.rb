@@ -31,7 +31,7 @@ module Duke
     # @param [json] jsonD : DukeArticle.as_json
     # @param [Float] level : min_match_level
     # Extract user specifics & recreates DukeArticle
-    def extract_user_specifics(jsonD: self.to_jsonD, level: 0.89)
+    def extract_user_specifics(jsonD: self.to_jsonD, level: 66)
       @user_input = @user_input.duke_clear # Get clean string before parsing
       user_specifics = jsonD.select{ |key, value| @@user_specific_types.include?(key.to_sym)}
       attributes = user_specifics.to_h{|key, mArr|[key, {iterator: iterator(key.to_sym), name_attribute: name_attr(key.to_sym), list: mArr}]}
@@ -206,15 +206,10 @@ module Duke
       @duration = new_duration unless new_duration.kind_of?(Array) && new_duration.size.eql?(2)
     end
 
-    # @returns [String] every word from @user_input
-    def all_words
-      return @user_input.split /\s+|\'/
-    end 
-
     # @returns { [0]: "Je", [0,1]: "Je suis", [0,1,2]: "Je suis ton", [1]: "suis", [1,2]: "suis ton", [2]: "ton"} for @user_input = "Je suis ton"
     def create_words_combo
-      idx_cb = (0..all_words.size).to_a.combination(2)
-      return Hash[idx_cb.map{|i1, i2| [(i1..i2-1).to_a, all_words[i1..i2-1].join(" ")] if 4>= i2 - i1}.compact]
+      idx_cb = (0..@user_input.duke_words.size).to_a.combination(2)
+      return Hash[idx_cb.map{|i1, i2| [(i1..i2-1).to_a, @user_input.duke_words[i1..i2-1].join(" ")] if 4>= i2 - i1}.compact]
     end
 
     # @return true if there's nothing to iterate over

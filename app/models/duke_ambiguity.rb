@@ -2,12 +2,12 @@ module Duke
   class DukeAmbiguity < Array
     include Duke::BaseDuke
 
-    attr_accessor :options, :name_attr, :itm, :ambig_level, :type, :itm_type
+    attr_accessor :options, :name_attr, :itm, :ambig_level, :partial_ambig_level, :type, :itm_type
 
     def initialize(itm:, ambiguity_attr:, itm_type:) 
       super()
-      @fuzzloader = FuzzyStringMatch::JaroWinkler.create( :pure )
-      @ambig_level = 0.20
+      @ambig_level = 20
+      @partial_ambig_level = 8
       @options = []
       @itm = itm 
       @attributes = ambiguity_attr
@@ -16,8 +16,9 @@ module Duke
 
     # @param [ActiveRecord] product
     # @return bln, check if product is ambiguous with self
-    def is_ambiguous(product)
-      return true if (@itm.key != product.id && (@itm.distance - @fuzzloader.getDistance(product.send(@name_attr).duke_clear, @itm.matched)).between?(0,@ambig_level) && !@itm.has_something_more_than?(product.send(@name_attr)))
+    def is_ambiguous?(product)
+      return true if (!@itm.par_dist && @itm.key != product.id && (@itm.distance - product.send(@name_attr).duke_clear.similar(@itm.matched)).between?(0,@ambig_level))
+      return true if (@itm.par_dist && @itm.key != product.id && ((@itm.par_dist - @itm.matched.partial_similar(product.send(@name_attr).duke_clear)).between?(0, @partial_ambig_level)))
       return false
     end 
 
@@ -49,7 +50,7 @@ module Duke
         @name_attr = name_attr
         @type = type
         iterator.each do |product|
-          @options.push(amb_option(product: product)) if is_ambiguous(product)
+          @options.push(amb_option(product: product)) if is_ambiguous?(product)
         end
       end
       return push_amb 

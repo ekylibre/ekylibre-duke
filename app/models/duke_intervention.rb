@@ -106,7 +106,7 @@ module Duke
     def parse_specific(sp)
       get_clean_sentence
       @specific = (tag_specific_targets if sp.to_sym.eql?(:targets))||sp
-      extract_user_specifics(jsonD: self.to_jsonD(@specific, :procedure, :date, :user_input), level: 0.79)
+      extract_user_specifics(jsonD: self.to_jsonD(@specific, :procedure, :date, :user_input), level: 73)
       add_input_rate if sp.to_sym == :input 
       find_ambiguity
     end 
@@ -244,7 +244,7 @@ module Duke
 
     private
 
-    def extract_user_specifics(jsonD: self.to_jsonD, level: 0.85)
+    def extract_user_specifics(jsonD: self.to_jsonD, level: 73)
       super(jsonD: jsonD, level: level)
       targets_from_cz if Procedo::Procedure.find(@procedure).activity_families.include?(:plant_farming)
     end 

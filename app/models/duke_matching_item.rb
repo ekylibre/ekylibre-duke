@@ -1,7 +1,7 @@
 module Duke
   class DukeMatchingItem < HashWithIndifferentAccess
     include BaseDuke
-    attr_accessor :name, :distance, :indexes, :key, :matched, :rate, :area, :potential
+    attr_accessor :name, :distance, :indexes, :key, :matched, :rate, :area, :potential, :par_dist
 
     def initialize(hash: nil, **args) 
       super()
@@ -61,13 +61,12 @@ module Duke
     # @param [String] otherstr
     # @Checks if (name - longest_substring) matches better for self that otherstr
     def has_something_more_than? otherstr
-      pure = FuzzyStringMatch::JaroWinkler.create( :pure )
       common = self.longest_substring(otherstr.duke_clear)
       match_rest = self.matched.clone.del(self.matched.better_match common)
       our_rest = self.name.clone.duke_clear.del common
       oth_rest = otherstr.clone.duke_clear.del common
-      ourDist = pure.getDistance(our_rest, match_rest)
-      return (true if ourDist > 0.70 && ourDist - pure.getDistance(oth_rest, match_rest) > 0.50)||false
+      ourDist = our_rest.similar(match_rest)
+      return (true if ourDist > 65 && ourDist - oth_rest.similar(match_rest) > 40)||false
     end 
     
   end 

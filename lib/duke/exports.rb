@@ -21,7 +21,7 @@ module Duke
     # @params [String] session_id = duke_id
     def handle_export_balance_sheet(params)
       dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], financial_year: Duke::DukeMatchingArray.new)
-      dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:financial_year, :date), level: 0.72)
+      dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:financial_year, :date), level: 70)
       if dukeArt.financial_year.empty? && FinancialYear.all.length > 1
         options = dynamic_options(I18n.t("duke.exports.which_financial_year"), FinancialYear.all.map{|fY| optJsonify(fY.code, fY.id.to_s)})
         return {redirect: :ask_financialyear, options: options}

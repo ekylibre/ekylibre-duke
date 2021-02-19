@@ -1,4 +1,4 @@
-require "fuzzystringmatch"
+require 'similar_text'
 require "ibm_watson"
 require 'httparty'
 require "duke/base_duke"
