@@ -41,7 +41,7 @@ module Duke
     # @returns bln, checks overlap or duplicate in self
     def any_overlap_or_duplicate? itm
       return true if self.any_duplicate? itm
-      return (true if self.any?{|mItem| (mItem.indexes & itm.indexes).present?}? itm)||false
+      return (true if self.any?{|mItem| (mItem.indexes & itm.indexes).present?})||false
     end 
 
     # @returns bln, checks overlap with lower distance
