@@ -1,5 +1,6 @@
 module Duke
   class DukeArticle
+    using Duke::DukeRefinements
     include Duke::BaseDuke
 
     attr_accessor :description, :date, :duration, :offset, :user_input, :activity_variety, :tool, :cultivablezones, :financial_year, :entities
@@ -34,7 +35,7 @@ module Duke
     def extract_user_specifics(jsonD: self.to_jsonD, level: 80)
       @user_input = @user_input.duke_clear # Get clean string before parsing
       user_specifics = jsonD.select{ |key, value| @@user_specific_types.include?(key.to_sym)}
-      attributes = user_specifics.to_h{|key, mArr|[key, {iterator: iterator(key.to_sym), name_attribute: name_attr(key.to_sym), list: mArr}]}
+      attributes = user_specifics.to_h{|key, mArr|[key, {iterator: iterator(key.to_sym), list: mArr}]}
       create_words_combo.each do |combo| # Creating all combo_words from user_input
         parser = DukeParser.new(word_combo: combo, level: level, attributes: attributes) # create new DukeParser
         parser.parse # parse user_specifics
@@ -56,7 +57,8 @@ module Duke
         if @@ambiguities_types.include?(key.to_sym)
           ambiguity_attr = ambiguities_attributes(key.to_sym)
           reco.each do |anItem|
-            ambiguity_check(itm: anItem, ambiguity_attr: ambiguity_attr, itm_type: key) unless anItem.distance == 1
+            ambiguity = DukeAmbiguity.new(itm: anItem, ambiguity_attr: ambiguity_attr, itm_type: key).check_ambiguity
+            @ambiguities.push(ambiguity) unless ambiguity.empty?
           end
         end
       end
@@ -246,6 +248,7 @@ module Duke
     # @param [str] item_type 
     # @return iterator for this item
     def iterator(item_type) 
+      name_attr = name_attr(item_type)
       if empty_iterator(item_type)
         iterator= []
       elsif item_type == :input
@@ -275,7 +278,7 @@ module Duke
       elsif item_type == :cultivation
         iterator = Product.availables(at: @date.to_time).of_expression("is land_parcel or is plant")
       end
-      return iterator
+      return iterator.map{|rec| {id: rec.id, alias: rec.send(name_attr).duke_clear.words_combinations, name: rec.send(name_attr)}}
     end 
 
     # @param [str] item_type 
@@ -288,16 +291,7 @@ module Duke
               else  
                 [item_type]
               end 
-      return type.map{|ty| [ty, iterator(ty), name_attr(ty)]}
-    end 
-
-    # @param [DukeMatchingItem] itm 
-    # @param [Array] ambiguity_attr : [[type, iterator, name_attr].foreach ambig_types]
-    # @param [String] itm_type : Current itm type
-    # Checks ambiguity for one item
-    def ambiguity_check(itm:, ambiguity_attr:, itm_type:)
-      ambiguity = DukeAmbiguity.new(itm: itm, ambiguity_attr: ambiguity_attr, itm_type: itm_type).check_ambiguity
-      @ambiguities.push(ambiguity) unless ambiguity.empty?
+      return type.map{|ty| [ty, iterator(ty)]}
     end 
 
   end

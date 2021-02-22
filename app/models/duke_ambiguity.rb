@@ -1,6 +1,7 @@
 module Duke
   class DukeAmbiguity < Array
     include Duke::BaseDuke
+    using Duke::DukeRefinements
 
     attr_accessor :options, :name_attr, :itm, :ambig_level, :type, :itm_type
 
@@ -16,7 +17,7 @@ module Duke
     # @param [ActiveRecord] product
     # @return bln, check if product is ambiguous with self
     def is_ambiguous?(product)
-      return true if (@itm.key != product.id && ((@itm.distance - @itm.matched.partial_similar(product.send(@name_attr).duke_clear)).between?(0, @ambig_level)))
+      return true if (@itm.key != product[:id] && ((@itm.distance - @itm.matched.partial_similar(product[:alias])).between?(0, @ambig_level)))
       return false
     end 
 
@@ -24,7 +25,7 @@ module Duke
     # @return product/self as a json option
     def amb_option(product: nil)
       return optJsonify(@itm.name, "{:type => \"#{@itm_type}\", :key => #{@itm.key}, :name => \"#{@itm.name}\"}") if product.nil?
-      return optJsonify(product.name, "{:type => \"#{@type}\", :key => #{product.id}, :name => \"#{product.name}\"}")
+      return optJsonify(product[:name], "{:type => \"#{@type}\", :key => #{product[:id]}, :name => \"#{product[:name]}\"}")
     end 
 
     # Creates ambiguity item if any ambiguity options are present
@@ -44,8 +45,7 @@ module Duke
     # checks every @attribute.type for ambiguous items
     # @return self as an array 
     def check_ambiguity
-      @attributes.each do |type, iterator, name_attr|
-        @name_attr = name_attr
+      @attributes.each do |type, iterator|
         @type = type
         iterator.each do |product|
           @options.push(amb_option(product: product)) if is_ambiguous?(product)

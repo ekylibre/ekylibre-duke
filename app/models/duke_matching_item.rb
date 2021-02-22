@@ -1,6 +1,7 @@
 module Duke
   class DukeMatchingItem < HashWithIndifferentAccess
     include BaseDuke
+    using Duke::DukeRefinements
     attr_accessor :name, :distance, :indexes, :key, :matched, :rate, :area, :potential, :par_dist
 
     def initialize(hash: nil, **args) 
@@ -48,25 +49,6 @@ module Duke
       # True If measure in mass or volume , and procedure can handle this type of indicators for its inputs and net dimension exists for specific input
       return true if ([:mass, :volume].include? dim) && (input_param.handler("net_#{dim}").present?) && (!Matter.find_by_id(key)&.send("net_#{dim}").zero?)
       return false
-    end 
-
-    # @param [String] otherstr
-    # @returns [String] Longest common substring from self.name & otherstr
-    def longest_substring otherstr
-      substrs = self.name.clone.duke_clear.substrings
-      biggest = substrs.find{|sub| otherstr.include? sub[1]}
-      return (biggest.last if biggest)||nil
-    end 
-
-    # @param [String] otherstr
-    # @Checks if (name - longest_substring) matches better for self that otherstr
-    def has_something_more_than? otherstr
-      common = self.longest_substring(otherstr.duke_clear)
-      match_rest = self.matched.clone.duke_del(self.matched.better_match common)
-      our_rest = self.name.clone.duke_clear.duke_del common
-      oth_rest = otherstr.clone.duke_clear.duke_del common
-      ourDist = our_rest.similar(match_rest)
-      return (true if ourDist > 65 && ourDist - oth_rest.similar(match_rest) > 40)||false
     end 
     
   end 

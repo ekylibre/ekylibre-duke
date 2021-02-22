@@ -1,5 +1,6 @@
 module Duke
   class Interventions
+    using Duke::DukeRefinements
 
     # @params [Json] parsed : Previously parsed
     # @params [String] user_input : User Utterance

@@ -1,6 +1,7 @@
 module Duke
   class DukeIntervention < DukeArticle
-    
+    using Duke::DukeRefinements
+
     attr_accessor :procedure, :input, :doer, :tool, :retry, :plant, :cultivation, :crop_groups, :land_parcel, :cultivablezones, :activity_variety, :ambiguities, :working_periods
     attr_reader :specific
 
@@ -83,16 +84,10 @@ module Duke
       @user_input = @user_input.duke_del(proc_word)
       extract_date_and_duration  # getting cleaned user_input and finding when it happened and how long it lasted
       tag_specific_targets  # Tag the specific types of targets for this intervention
-      start = Time.now
       extract_user_specifics  # Then extract every possible user_specifics elements form the sentence (here : input, doer, tool, targets)  
-      puts " le temps : #{Time.now - start}"
-      byebug
       add_input_rate  # Look for a specified rate for the input, or attribute nil
       extract_intervention_readings  # extract_readings 
-      start = Time.now
       find_ambiguity # Loof for ambiguities in what has been parsed
-      puts " le temps : #{Time.now - start}"
-      byebug
       @specific = @matchArrs # Set specifics searched items to all
     end 
 

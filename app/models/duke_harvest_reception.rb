@@ -1,5 +1,6 @@
 module Duke
   class DukeHarvestReception < DukeArticle
+    using Duke::DukeRefinements
 
     attr_accessor :plant, :crop_groups, :destination, :press, :retry, :ambiguities, :parameters, :description, :user_input, :id
 

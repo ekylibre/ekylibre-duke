@@ -2,8 +2,8 @@ require 'similar_text'
 require "ibm_watson"
 require 'httparty'
 require "duke/base_duke"
+require "duke/duke_refinements"
 require "duke/interventions"
-require "duke/string"
 require "duke/redirections"
 require "duke/amounts"
 require "duke/issues"

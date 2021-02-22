@@ -1,7 +1,7 @@
 module Duke
   class DukeWebhooksController < ApplicationController
     skip_before_action :verify_authenticity_token
-
+    
     def handle_webhook
       event = ActiveSupport::HashWithIndifferentAccess.new(params[:main_param])
       class_ = ("Duke::#{event[:hook_skill]}").constantize.new
