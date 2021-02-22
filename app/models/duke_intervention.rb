@@ -80,13 +80,19 @@ module Duke
 
     # Parse every Intervention Parameters
     def parse_sentence(proc_word: nil)
-      @user_input = @user_input.del(proc_word)
+      @user_input = @user_input.duke_del(proc_word)
       extract_date_and_duration  # getting cleaned user_input and finding when it happened and how long it lasted
       tag_specific_targets  # Tag the specific types of targets for this intervention
+      start = Time.now
       extract_user_specifics  # Then extract every possible user_specifics elements form the sentence (here : input, doer, tool, targets)  
+      puts " le temps : #{Time.now - start}"
+      byebug
       add_input_rate  # Look for a specified rate for the input, or attribute nil
       extract_intervention_readings  # extract_readings 
+      start = Time.now
       find_ambiguity # Loof for ambiguities in what has been parsed
+      puts " le temps : #{Time.now - start}"
+      byebug
       @specific = @matchArrs # Set specifics searched items to all
     end 
 
@@ -106,7 +112,7 @@ module Duke
     def parse_specific(sp)
       get_clean_sentence
       @specific = (tag_specific_targets if sp.to_sym.eql?(:targets))||sp
-      extract_user_specifics(jsonD: self.to_jsonD(@specific, :procedure, :date, :user_input), level: 73)
+      extract_user_specifics(jsonD: self.to_jsonD(@specific, :procedure, :date, :user_input), level: 80)
       add_input_rate if sp.to_sym == :input 
       find_ambiguity
     end 
@@ -244,7 +250,7 @@ module Duke
 
     private
 
-    def extract_user_specifics(jsonD: self.to_jsonD, level: 73)
+    def extract_user_specifics(jsonD: self.to_jsonD, level: 80)
       super(jsonD: jsonD, level: level)
       targets_from_cz if Procedo::Procedure.find(@procedure).activity_families.include?(:plant_farming)
     end 

@@ -2,12 +2,11 @@ module Duke
   class DukeAmbiguity < Array
     include Duke::BaseDuke
 
-    attr_accessor :options, :name_attr, :itm, :ambig_level, :partial_ambig_level, :type, :itm_type
+    attr_accessor :options, :name_attr, :itm, :ambig_level, :type, :itm_type
 
     def initialize(itm:, ambiguity_attr:, itm_type:) 
       super()
-      @ambig_level = 20
-      @partial_ambig_level = 8
+      @ambig_level = 10
       @options = []
       @itm = itm 
       @attributes = ambiguity_attr
@@ -17,8 +16,7 @@ module Duke
     # @param [ActiveRecord] product
     # @return bln, check if product is ambiguous with self
     def is_ambiguous?(product)
-      return true if (!@itm.par_dist && @itm.key != product.id && (@itm.distance - product.send(@name_attr).duke_clear.similar(@itm.matched)).between?(0,@ambig_level))
-      return true if (@itm.par_dist && @itm.key != product.id && ((@itm.par_dist - @itm.matched.partial_similar(product.send(@name_attr).duke_clear)).between?(0, @partial_ambig_level)))
+      return true if (@itm.key != product.id && ((@itm.distance - @itm.matched.partial_similar(product.send(@name_attr).duke_clear)).between?(0, @ambig_level)))
       return false
     end 
 
@@ -29,7 +27,7 @@ module Duke
       return optJsonify(product.name, "{:type => \"#{@type}\", :key => #{product.id}, :name => \"#{product.name}\"}")
     end 
 
-    # @Creates ambiguity item if any ambiguity options are present
+    # Creates ambiguity item if any ambiguity options are present
     # @return self as an array
     def push_amb 
       if @options.present?

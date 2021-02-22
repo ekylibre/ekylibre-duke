@@ -31,7 +31,7 @@ module Duke
     # @param [json] jsonD : DukeArticle.as_json
     # @param [Float] level : min_match_level
     # Extract user specifics & recreates DukeArticle
-    def extract_user_specifics(jsonD: self.to_jsonD, level: 66)
+    def extract_user_specifics(jsonD: self.to_jsonD, level: 80)
       @user_input = @user_input.duke_clear # Get clean string before parsing
       user_specifics = jsonD.select{ |key, value| @@user_specific_types.include?(key.to_sym)}
       attributes = user_specifics.to_h{|key, mArr|[key, {iterator: iterator(key.to_sym), name_attribute: name_attr(key.to_sym), list: mArr}]}
