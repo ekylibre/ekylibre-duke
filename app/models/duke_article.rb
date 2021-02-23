@@ -278,7 +278,7 @@ module Duke
       elsif item_type == :cultivation
         iterator = Product.availables(at: @date.to_time).of_expression("is land_parcel or is plant")
       end
-      return iterator.map{|rec| {id: rec.id, alias: rec.send(name_attr).duke_clear.words_combinations, name: rec.send(name_attr)}}
+      return iterator.map{|rec| {id: rec.id, partials: rec.send(name_attr).duke_clear.words_combinations, name: rec.send(name_attr)}}
     end 
 
     # @param [str] item_type 
