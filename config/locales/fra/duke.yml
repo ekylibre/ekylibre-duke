@@ -33,6 +33,7 @@ fra:
       to_unpaid_sales: "Je vous redirige vers vos ventes impayées redirectkeep=/backend/sales?utf8=✓&q=&nature=unpaid"
       to_all_specific_sales: "Je vous redirige vers les ventes à %{entity} redirectkeep=/backend/sales?&q=%{entity}"
       to_unpaid_specific_sales: "Je vous redirige vers les ventes impayées à %{entity} redirectkeep=/backend/sales?&q=%{entity}&nature=unpaid"
+      which_sale_type: "Quelle type de vente souhaitez vous enregistrer ? "
     issues: 
       tool_not_found: "Je n'ai le support de l'incident, j'annule."
       found_tool: "Je vous emmène saisir un incident sur l'outil %{tool}"

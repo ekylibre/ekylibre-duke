@@ -56,5 +56,10 @@ module Duke
       return {sentence: I18n.t("duke.redirections.to_#{sale_type}_specific_sales" , entity: dukeArt.entities.max.name)}
     end 
 
+    def handle_get_sale_types(params) 
+      return {} if SaleNature.all.size < 2
+      return {options: dynamic_options(I18n.t("duke.redirections.which_sale_type"), SaleNature.all.map{|type| optJsonify(type.name, type.id.to_s)})}
+    end 
+
   end 
 end
