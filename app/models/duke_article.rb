@@ -2,7 +2,7 @@ module Duke
   class DukeArticle
     include Duke::BaseDuke
 
-    attr_accessor :description, :date, :duration, :offset, :user_input, :activity_variety, :tool, :cultivablezones, :financial_year, :entities
+    attr_accessor :description, :date, :duration, :offset, :user_input, :activity_variety, :tool, :cultivablezones, :financial_year, :entities, :email, :session_id
     @@user_specific_types = [:financial_year, :entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press] 
     @@ambiguities_types = [:plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press]
     @@month_hash =  {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9, "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12 }
