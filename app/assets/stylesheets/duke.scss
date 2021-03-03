@@ -502,3 +502,17 @@ a.disabled-send {
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
+.duke-multi-label, .duke-multi-label.hover-fill{
+  font-size: 14px;
+  padding: 7px 0px;
+  margin-bottom: 5px;
+  color: #3D3D3D;
+  background-color:#F3F3F3;
+  border-top: solid lightgray 1px;
+}
+.duke-dropdown-label{
+  font-size: 16px;
+  padding: 7px;
+  color: white;
+  background-color: mix($duke-color, lightgray, $weight: 80%);
+}

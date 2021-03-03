@@ -1,37 +1,20 @@
 module Duke
-  class Issues < Duke::Utils::DukeParsing
+  class Issues
+    include Duke::BaseDuke
+
+    # @params [String] user_input 
+    # @params [String] nature : Match (optional) for a issue_nature_type
     def handle_equipment_issues(params)
-      # Redirect User to issue declaration of a specific tool
-      # params : user_input -> What the user said 
-      #          nature     -> IBM potential match for a issue_nature_type
-      user_input = clear_string(params[:user_input])
-      parsed = {cultivablezones: [],
-                equipments: [],
-                date: Time.now}
-      extract_user_specifics(user_input, parsed, 0.82)
-      # If we don't recognize an equipment, we return that we didn't understand the equipment
-      if parsed[:equipments].empty? 
-        sentence = I18n.t("duke.issues.no_tool_found")
-        return {found: :no, sentence: sentence}
-      else 
-        # Defining which parsed equipment matched the best by distance
-        max_equipment = parsed[:equipments].max_by{|eq| eq[:distance]}
-        max_cz = parsed[:cultivablezones].max_by{|cz| cz[:distance]}
-        # Creating redirection url
-        link = "/backend/issues/new?target_id=#{max_equipment[:key]}&description=#{params[:user_input].gsub(" ", "+")}&target_type=Equipment"
-        # Adding issue nature if exists
-        unless params[:nature].nil?
-          link += "&nature=#{params[:nature]}"
-        end 
-        # Adding cz coordinates if exists
-        unless max_cz.nil?
-          coords = CultivableZone.find_by(id: max_cz[:key]).shape_centroid
-          link += "&lat=#{coords.first}&lon=#{coords.last}"
-        end
-        # Returning sentence and link
-        sentence =  I18n.t("duke.issues.found_tool" , tool: max_equipment[:name])
-        return {found: :yes, sentence: sentence, link: link}
-      end 
+      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], cultivablezones: Duke::DukeMatchingArray.new, equipments: Duke::DukeMatchingArray.new)
+      dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:cultivablezones, :equipments, :date))
+      return {found: :no, sentence: I18n.t("duke.issues.no_tool_found")} if dukeArt.equipments.empty? 
+      link = "/backend/issues/new?target_id=#{dukeArt.equipments.max.key}&description=#{params[:user_input].gsub(" ", "+")}&target_type=Equipment" # Creating redirection url
+      link += "&nature=#{params[:nature]}" unless params[:nature].nil? # Adding issue nature if exists
+      unless (max_cz = dukeArt.cultivablezones.max).nil?
+        coords = CultivableZone.find_by(id: max_cz.key).shape_centroid
+        link += "&lat=#{coords.first}&lon=#{coords.last}" # Adding cz coordinates if exists
+      end
+      return {found: :yes, sentence: I18n.t("duke.issues.found_tool" , tool: dukeArt.equipments.max.name), link: link}
     end 
 
   end 

@@ -3,7 +3,7 @@
   # Initializing duke vars with empty hash
   vars = {}
   vars.base_url = window.location.protocol + '//' + location.host.split(':')[0]
-  vars.redirection = /redirect=(.{10,})/
+  vars.redirection = /redirect(keep)?=(.{10,})/
   vars.cancelation = new RegExp('annul', 'i')
   vars.stt = {}
   vars.empty_history = false
@@ -27,7 +27,11 @@
         vars.pusher_channel.unbind 'duke'
       if typeof vars.pusher != "undefined" 
         vars.pusher.disconnect()
-      instanciate_pusher($('.btn-chat').show())
+      if (sessionStorage.duke_visible)
+        instanciate_pusher(persist_duke())
+        sessionStorage.removeItem('duke_visible')
+      else
+        instanciate_pusher($('.btn-chat').show())
     else 
       create_session()
     # Allowing TextArea autosize
@@ -84,7 +88,7 @@
       vars.pusher_channel = vars.pusher.subscribe(sessionStorage.getItem('duke_id'))
       vars.pusher_channel.bind 'duke', (data) ->
         integrate_received(data.message)
-        $('.btn-chat').show()
+        $(".btn-chat").css("z-index","9999999").show()
         return
       vars.pusher.connection.bind('pusher_internal:subscription_succeeded', callback)
     else 
@@ -101,7 +105,7 @@
 
   # Send msg to backends methods that communicate with IBM, if intent is specified, msg goes straight to this functionnality (intent disambiguation)
   send_msg = (msg = $("#duke-input").val().replace(/\n/g, ""), user_intent=undefined) ->
-    if msg.match(vars.cancelation)
+    if msg.toString().match(vars.cancelation)
       user_intent = "quick_exit"
     reset_textarea() 
     clear_textarea()
@@ -128,17 +132,21 @@
       $('#waiting').remove()
       $.each data, (index, value) ->
         if value.response_type == "text"
-          if value.text.match(vars.redirection)
-            location.replace vars.base_url + value.text.match(vars.redirection)[1]
-            value.text = value.text.replace(value.text.match(vars.redirection)[0], "")
-            vars.empty_history = true
+          current_redir = value.text.match(vars.redirection)
+          if current_redir
+            location.replace vars.base_url + current_redir[2]
+            value.text = value.text.replace(current_redir[0], "")
+            if current_redir[1]
+              sessionStorage.setItem('duke_visible', true)
+            else
+              vars.empty_history = true
           if value.text.indexOf('#base-url') >= 0
             value.text = value.text.replace('#base-url', vars.base_url)
           output_received_txt(value.text)
         else if value.response_type == "option"
-          output_received_txt(value.title)
+          output_received_txt(value.title.replace(/=multiple_choices/, ""))
           options = (val for val in value.options)
-          output_options(options, multiple=/validez/.test(value.title))
+          output_options(options, multiple=/=multiple_choices/.test(value.title))
         else if value.response_type == "suggestion"
           output_received_txt(value.title)
           options = (val for val in value.suggestions)
@@ -157,32 +165,33 @@
     # We first create the container
     $('.msg_container_base').append('<div class="msg_container options general"></div>')
     # Then we add every button with it's label, and it's value, and the potential intent to redirect the user
-    if options.length > 7
-      if multiple 
-        $('.msg_container.options').last().append('<div class="duke-select-wrap"><ul class="duke-default-option multiple"><li><div class="option">
-                                                    <p>Choisissez des options</p><div class="msg_container options duke-centered duke-hidden dropdown-default">
-                                                      <button type="button" class="hover-fill duke-dropdown duke-cancelation ">Annuler</button>
-                                                      <button type="button" class="hover-fill duke-dropdown dropdown-validation ">Valider</button>
-                                                    </div></div></li></ul><ul class="duke-select-ul multiple"></ul></div>')
-      else 
-        $('.msg_container.options').last().append('<div class="duke-select-wrap"><ul class="duke-default-option"><li><div class="option">
-                                        <p>Choisissez une option</p></div></li></ul><ul class="duke-select-ul"></ul>
-                                        </div>')
+    if multiple 
       $.each options, (index, op) -> 
-        $('.duke-select-ul').last().append('<li data-value= \''+escapeHtml(op.value.input.text)+'\'><div class="option">
-                                          <p>'+op.label+'</p></div>
-                                      </li>')
-    else 
-      if multiple 
-        $.each options, (index, op) -> 
-          $('.msg_container.options').last().append('<label data-value= \''+escapeHtml(op.value.input.text)+'\'class="control control--checkbox">'+escapeHtml(op.label)+'
-                                                      <input type="checkbox"/>
-                                                      <div class="control__indicator"></div>
-                                                    </label>')
+          if op.hasOwnProperty('global_label')
+             $('.msg_container.options').last().append('<p class = "duke-multi-label">'+op.global_label+'</p>')
+ 
+          else
+            $('.msg_container.options').last().append('<label data-value= \''+escapeHtml(op.value.input.text)+'\'class="control control--checkbox">'+escapeHtml(op.label)+'
+                                                        <input type="checkbox"/>
+                                                        <div class="control__indicator"></div>
+                                                      </label>')
         $('.msg_container.options').last().append('<div class="msg_container options duke-centered">
-                                                      <button type="button" class="gb-bordered hover-fill duke-option duke-cancelation ">Annuler</button>
                                                       <button type="button" class="gb-bordered hover-fill duke-option duke-checkbox-validation duke-validation ">Valider</button>
+                                                      <button type="button" class="gb-bordered hover-fill duke-option duke-cancelation ">Retour</button>
                                                     </div>')
+    else  
+      count = ((opt if opt.hasOwnProperty('global_label')) for opt in options).filter(Boolean).length
+      if options.length - count > 7
+        $('.msg_container.options').last().append('<div class="duke-select-wrap"><ul class="duke-default-option"><li><div class="option">
+                                                      <p>Choisissez une option</p></div></li></ul><ul class="duke-select-ul"></ul>
+                                                  </div>')
+        $.each options, (index, op) -> 
+          if op.hasOwnProperty('global_label')
+            $('.duke-select-ul').last().append('<p class="duke-dropdown-label">'+escapeHtml(op.global_label)+'</p>')
+          else 
+            $('.duke-select-ul').last().append('<li data-value= \''+escapeHtml(op.value.input.text)+'\'><div class="option">
+                                                  <p>'+escapeHtml(op.label)+'</p></div>
+                                                </li>')
       else 
         $.each options, (index, op) ->
           if op.hasOwnProperty('source_dialog_node')
@@ -213,6 +222,7 @@
   output_sent = (msg = $("#duke-input").val().replace(/\n/g, "")) ->
     # Disable buttons if previous message had options selections enabled
     $(".duke-select-wrap").last().parent().remove()
+    $(".duke-centered").last().remove()
     if $('.msg_container_base').children().last().hasClass('options') 
       $.each $('.msg_container_base').children().last().children(), (index, option) ->
         $(option).prop("disabled",true);
@@ -229,6 +239,11 @@
       $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
     return
 
+  persist_duke = -> 
+    $('.msg_container_base').append(sessionStorage.getItem('duke-chat'))
+    $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
+    $('#bottom_left').css("z-index","10000000").show()
+    return
 
   clear_textarea = ->
     # TextArea gets cleared, and send-btn gets disabled
@@ -261,24 +276,18 @@
   # Hiding the chat, and removing the current discussion from it. Will be reloaded from sessionStorage if we re-open the chat
   $(document).on 'click', '.minus-link', (e) ->
     $('#bottom_left').hide().css("z-index","-10")
-    $(".btn-chat").css("z-index","10000000").show()
+    $(".btn-chat").css("z-index","9999999").show()
     return
 
   $(document).on 'click', '.duke-default-option',  ->
     $(this).parent().toggleClass 'active'
-    if $(this).hasClass('multiple')
-      $(".msg_container").last().toggleClass("duke-hidden")
-      $(".duke-default-option li .option p").toggleClass("duke-hidden")
     $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
     return
 
   $(document).on 'click', '.duke-select-ul li',  ->
-    if $(this).parent().hasClass('multiple')
-      $(this).toggleClass('mult_selected')
-    else 
-      $(this).parents('.msg_container').remove()
-      output_sent($(this).html())
-      send_msg($(this).data("value"))
+    $(this).parents('.msg_container').remove()
+    output_sent($(this).html())
+    send_msg($(this).data("value"))
     return
   
   $(document).on 'click', '.control--checkbox', (evt) ->
@@ -286,23 +295,14 @@
     evt.preventDefault();
     $(this).children().last().toggleClass('duke-checked')
     $('.duke-checkbox-validation').show()
-    $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight)
     return
   
   $(document).on 'click', '.duke-cancelation',  ->
-    $(".duke-centered").last().remove()
     output_sent($(this).html())
-    send_msg('cancel')
-    return
-
-  $(document).on 'click', '.dropdown-validation',  ->
-    str = (($(opt).data('value') if $(opt).hasClass('mult_selected')) for opt in $('.duke-select-ul').last().children() ).filter(Boolean).join("|||")
-    output_sent($(this).html())
-    send_msg(str)
+    send_msg('*cancel*')
     return
 
   $(document).on 'click', '.duke-validation',  ->
-    $(".duke-centered").last().remove()
     str = (($(opt).data('value') if $(opt).children().last().hasClass('duke-checked')) for opt in $('.msg_container.options.general').last().children() ).filter(Boolean).join("|||")
     output_sent($(this).html())
     send_msg(str)
