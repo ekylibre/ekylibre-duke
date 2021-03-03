@@ -61,5 +61,11 @@ module Duke
       return {options: dynamic_options(I18n.t("duke.redirections.which_sale_type"), SaleNature.all.map{|type| optJsonify(type.name, type.id.to_s)})}
     end 
 
+    def handle_to_tax_declaration params 
+      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input])
+      dukeAcc.extract_user_specifics(jsonD: dukeAcc.to_jsonD(:financial_year, :date), level: 0.72) 
+      return dukeAcc.tax_declaration_redirect(params[:tax_state])
+    end 
+
   end 
 end

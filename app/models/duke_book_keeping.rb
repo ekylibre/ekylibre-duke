@@ -57,6 +57,15 @@ module Duke
       return {sentence: I18n.t("duke.exports.tax_on_fy", code: @fyHash[:name], id: @fyHash[:key])}
     end 
 
+    def tax_declaration_redirect(tax_state)
+      fYear = (FinancialYear.find_by_id(fy[:key]) if fy.present?)||nil
+      url = "/backend/tax-declarations?utf8=✓&q="
+      url += ("&state%5B%5D=#{tax_state}" if tax_state.present?)||"state%5B%5D=draft&state%5B%5D=validated&state%5B%5D=sent" 
+      url += ("&period=#{fYear.started_on.strftime("%Y-%m-%d")}_#{fYear.stopped_on.strftime("%Y-%m-%d")}" if fYear.present?)||"&period=all"
+      return {sentence: I18n.t("duke.redirections.to_tax_declaration_period",id: fYear.code, url: url)} if fYear.present?
+      return {sentence: I18n.t("duke.redirections.to_tax_declaration", url: url)}
+    end 
+
     private 
 
     # Correct financialYear ambiguity
