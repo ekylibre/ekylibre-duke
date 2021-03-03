@@ -67,5 +67,12 @@ module Duke
       return dukeAcc.tax_declaration_redirect(params[:tax_state])
     end 
 
+    def handle_to_new_fixed_asset params 
+      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], depreciables: Duke::DukeMatchingArray.new)
+      dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:depreciables, :date), level: 0.80)
+      return {redirect: :speak, sentence: I18n.t("duke.redirections.to_undefined_fixed_asset")} if dukeArt.depreciables.empty? 
+      return {redirect: :speak, sentence: I18n.t("duke.redirections.to_specific_fixed_asset",id: dukeArt.depreciables.max.key, name: dukeArt.depreciables.max.name)}
+    end 
+
   end 
 end
