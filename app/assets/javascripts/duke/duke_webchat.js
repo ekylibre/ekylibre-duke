@@ -1,5 +1,5 @@
+//= require action_cable
 (function (E, $) {
-  $.getScript('https://js.pusher.com/7.0/pusher.min.js');
   var duke = {}
   const base_url = window.location.protocol + '//' + location.host.split(':')[0];
   const base_urlReg = /#base-url/;
@@ -9,9 +9,9 @@
 
   class STTHandler {
 
-    constructor(key, region, webchat) {
+    constructor(key, webchat) {
       this.key = key;
-      this.region = region;
+      this.region = "francecentral";
       this.webchat = webchat;
       this.inUse = false;
       this.transcript = "";
@@ -85,50 +85,49 @@
     };
   }
 
-  class PusherHandler {
-
-    constructor(key, webchat) {
-      this.key = key;
+  class CableHandler {
+    constructor(webchat) {
+      this.url = "/cable";
       this.webchat = webchat;
-      this.cluster = "eu";
     };
 
     /**
-     * Delete Pusher Bindings & Instance
+     * Creates actionCable connection & bind to DukeChannel_duke_id
      */
-    reset() { 
-      if (this.channel) {
-        this.channel.unbind('duke');
-      }
-      if (this.instance) {
-        this.instance.disconnect();
-      }
+    subscribe() {
+      this.cable = ActionCable.createConsumer(base_url.replace("http", "ws") + this.url);
+      this.subscription = this.cable.subscriptions.create({
+        channel: 'DukeChannel',
+        roomId: sessionStorage.getItem('duke_id')},
+       {received: ((data) => this.webchat.onMsg(data)),
+        connected: (() => this.onConnect())
+      });
     };
 
     /**
-     * Creates Pusher connection & bind to user-Duke-channel
-     * @param {Method} connBack - onConnected callBack
+     * onActionCable subscription established
      */
-    instanciate(connBack) {
-      if (typeof Pusher !== 'undefined') {
-        this.instance = new Pusher(this.key, {
-                                   cluster: this.cluster});
-        this.channel = this.instance.subscribe(sessionStorage.getItem('duke_id'))
-        this.channel.bind('duke', (data => this.webchat.onMsg(data)))
-        this.instance.connection.bind('pusher_interval:subscription_succeeded', connBack)
+    onConnect() {
+      if (sessionStorage.getItem('duke-chat')) {
+        if (sessionStorage.duke_visible){
+          this.webchat.persist_duke();
+        } else {
+          $('.btn-chat').show();
+        }
       } else {
-        setTimeout(( () => this.instanciate(connBack)), 500);
+        this.webchat.send_msg("");
       }
     };
+
   }
   
   class DukeWebchat{ 
 
-    constructor(account, tenant, pusher_key, azure_key, azure_region) {
+    constructor(account, tenant, azure_key) {
       this.account = account 
       this.tenant = tenant 
-      this.pusherHandler = new PusherHandler(pusher_key, this)
-      this.stt = new STTHandler(azure_key, azure_region, this)
+      this.cableHandler = new CableHandler(this)
+      this.stt = new STTHandler(azure_key, this)
       this.isMobile = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent) || /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0, 4));
     };
 
@@ -136,12 +135,11 @@
      * (re)create Pusher Connection correctly
      */
     init() {
-      if (sessionStorage.getItem('duke-chat')) {
-        this.pusherHandler.reset()
-        if (sessionStorage.duke_visible) {
-          this.pusherHandler.instanciate(this.persist_duke());
+      if (sessionStorage.getItem('duke_id')) {
+        if (this.cableHandler.duke_subscription) {
+          $('.btn-chat').show()
         } else {
-          this.pusherHandler.instanciate($('.btn-chat').show());
+          this.cableHandler.subscribe();
         }
       } else {
         this.create_session();
@@ -162,15 +160,8 @@
         },
         success: ((data, status, xhr) => {sessionStorage.setItem('duke_id', data.session_id);
                                           sessionStorage.setItem('assistant_id', data.assistant_id);
-                                          this.pusherHandler.instanciate(this.msg_callback());})
+                                          this.cableHandler.subscribe();})
       });
-    };
-
-    /**
-     * Get Welcoming Message by sending empty string on Pusher instanciation
-     */
-    msg_callback() {
-      setTimeout(( () => this.send_msg("")), 1000);
     };
 
     /**
@@ -325,7 +316,7 @@
      * Output DukeMessage text
      */
     output_received_text() {
-      var outputed = this.text.replace(redirectionReg,"").replace(base_urlReg, "")
+      var outputed = this.text.replace(redirectionReg, "").replace(base_urlReg, "").replace(multChoicesReg, "")
       $('.duke-received:last p:first').css("border-style", "unset");
       $('.msg_container_base').append('<div class="msg-list msg-rcvd"> <div class="messenger-container duke-received"> <p>' + outputed + '</p> </div> </div>');
       $('.msg_container_base').scrollTop($('.msg_container_base')[0].scrollHeight);
@@ -396,8 +387,8 @@
       var duke_chat = Array.from($('.msg_container_base').children()).map(msg => msg.outerHTML).join("")
       var redirection = this.text.match(redirectionReg)
       if (redirection) {
-        location.replace(base_url  +redirection[2]);
-        var duke_chat = redirection[1] ? "<div class='messenger-container duke-received'><p>Bienvenue, je vous écoute</p></div>" : duke_chat
+        location.replace(base_url  + ":3000"+ redirection[2]);
+        var duke_chat = redirection[1] ? duke_chat : "<div class='messenger-container duke-received'><p>Bienvenue, je vous écoute</p></div>"
         if (redirection[1]) {
           sessionStorage.setItem('duke_visible', true);
         }
@@ -430,7 +421,9 @@
    * (Re)create Webchat on DomReady, initialize Pusher connection & sets Specific handlers bindings
    */
   E.onDomReady(function () {
-    duke.webchat = duke.webchat ? duke.webchat : new DukeWebchat($("duke").data('current-account'), $("duke").data('current-tenant'), $("duke").data('pusher-key'), $("duke").data('azure-key'), $("duke").data('azure-region'))
+    duke.webchat = duke.webchat ? duke.webchat : new DukeWebchat($("duke").data('current-account'),
+                                                                 $("duke").data('current-tenant'),
+                                                                 $("duke").data('azure-key'))
     duke.webchat.init()
 
     // Add Specifics handlers onDomReady
