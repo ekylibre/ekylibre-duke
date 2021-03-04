@@ -1,5 +1,5 @@
+#= require action_cable
 (($, E) ->
-  $.getScript 'https://js.pusher.com/7.0/pusher.min.js'
   # Initializing duke vars with empty hash
   vars = {}
   vars.base_url = window.location.protocol + '//' + location.host.split(':')[0]
@@ -17,21 +17,16 @@
     vars.account = $(this).data('current-account')
     vars.tenant = $(this).data('current-tenant')
     vars.language = $(this).data('current-language')
-    vars.pusher_key = $(this).data('pusher-key')
+    vars.cable_url = $(this).data('cable-url')
     vars.azure_key = $(this).data('azure-key')
     vars.azure_region = $(this).data('azure-region')
     # If there's alreay some msg, we show the btn-chat when pusher binded with duke, otherwise we create a session, send msg on pusher bingind, and show btn on first message
     if sessionStorage.getItem('duke-chat')
       # If channels are still defined, unbind duke subscription (we recreate it right after) to avoid duplicates
-      if typeof vars.pusher_channel != "undefined" 
-        vars.pusher_channel.unbind 'duke'
-      if typeof vars.pusher != "undefined" 
-        vars.pusher.disconnect()
-      if (sessionStorage.duke_visible)
-        instanciate_pusher(persist_duke())
-        sessionStorage.removeItem('duke_visible')
-      else
-        instanciate_pusher($('.btn-chat').show())
+      if !vars.duke_subscription
+        cable_subscribe()
+      else 
+        $('.btn-chat').show()
     else 
       create_session()
     # Allowing TextArea autosize
@@ -77,23 +72,25 @@
       success: (data, status, xhr) ->
         sessionStorage.setItem('duke_id', data.session_id)
         sessionStorage.setItem('assistant_id', data.assistant_id)
-        instanciate_pusher(msg_callback())
+        cable_subscribe()
         return
     return
-  
-  # Setting a callback function (either send first message, or show btn) when duke_subscription succeeded
-  instanciate_pusher = (callback) -> 
-    if typeof Pusher != 'undefined'
-      vars.pusher = new Pusher(vars.pusher_key, cluster: 'eu')
-      vars.pusher_channel = vars.pusher.subscribe(sessionStorage.getItem('duke_id'))
-      vars.pusher_channel.bind 'duke', (data) ->
+
+  cable_subscribe = -> 
+    vars.cable = ActionCable.createConsumer(vars.base_url.replace("http","ws")+vars.cable_url)
+    vars.duke_subscription = vars.cable.subscriptions.create(channel: 'DukeChannel', roomId: sessionStorage.getItem('duke_id'),
+      received: (data) ->
         integrate_received(data.message)
-        $(".btn-chat").css("z-index","9999999").show()
-        return
-      vars.pusher.connection.bind('pusher_internal:subscription_succeeded', callback)
-    else 
-      setTimeout instanciate_pusher, 200
-    return 
+        $('.btn-chat').show()
+      connected: -> 
+        if !sessionStorage.getItem('duke-chat')
+          send_msg("")
+        else 
+          $('.btn-chat').show()
+    )
+    return
+
+
   
   # CallBack method once Pusher subscription is done, to send first message, we wait a second since pusher binding signal comes a few milliseconds before actual binding
   msg_callback = -> 
