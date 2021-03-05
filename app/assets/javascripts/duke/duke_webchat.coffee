@@ -11,7 +11,7 @@
     vars.isMobile = true
   else 
     vars.isMobile = false
-  # When duke data attribute gets loaded, set values & instanciate pusher to show chat-btn
+  # When duke data attribute gets loaded, set values & instanciate acionCable to show chat-btn
   $(document).behave "load", "duke[data-current-account]", ->
     # Setting user attributes inside vars
     vars.account = $(this).data('current-account')
@@ -20,7 +20,7 @@
     vars.cable_url = $(this).data('cable-url')
     vars.azure_key = $(this).data('azure-key')
     vars.azure_region = $(this).data('azure-region')
-    # If there's alreay some msg, we show the btn-chat when pusher binded with duke, otherwise we create a session, send msg on pusher bingind, and show btn on first message
+    # Create Session is session is empty , or we show btn-chat when cable is subscribed to DukeChannel
     if sessionStorage.getItem('duke-chat')
       # If channels are still defined, unbind duke subscription (we recreate it right after) to avoid duplicates
       if !vars.duke_subscription
@@ -61,7 +61,7 @@
     $('#duke-input').focusout ->
       $('#btn-mic').css('border-color', 'lightgray')
       
-  # Creatig Duke session via Method in DukeWebchatController, storing assistant_id and session_id in sessionStorage and instanciate pusher to display chat-btn
+  # Creatig Duke session via Method in DukeWebchatController, storing assistant_id and session_id in sessionStorage and subscribe to cable to display chat-btn
   create_session =  ->
     $.ajax '/duke_create_session',
       type: 'post'
@@ -90,23 +90,13 @@
     )
     return
 
-
-  
-  # CallBack method once Pusher subscription is done, to send first message, we wait a second since pusher binding signal comes a few milliseconds before actual binding
-  msg_callback = -> 
-    setTimeout (->
-      send_msg("")
-      return
-    ), 1000
-    return
-
   # Send msg to backends methods that communicate with IBM, if intent is specified, msg goes straight to this functionnality (intent disambiguation)
   send_msg = (msg = $("#duke-input").val().replace(/\n/g, ""), user_intent=undefined) ->
     if msg.toString().match(vars.cancelation)
       user_intent = "quick_exit"
     reset_textarea() 
     clear_textarea()
-    # Reconnect pusher and subscribe to our duke channel
+
     $.ajax '/duke_send_msg',
       type: 'post'
       data:
