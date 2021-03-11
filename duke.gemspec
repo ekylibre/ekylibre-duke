@@ -19,5 +19,6 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'ibm_watson', "~> 1.6.0"
   spec.add_runtime_dependency 'sidekiq', "~> 4.2.10"
   spec.add_runtime_dependency 'httparty', "~> 0.17.3"
+  spec.add_runtime_dependency 'pusher', "~> 1.4.2"
 
 end
