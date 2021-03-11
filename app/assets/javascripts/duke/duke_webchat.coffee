@@ -2,7 +2,7 @@
   $.getScript 'https://js.pusher.com/7.0/pusher.min.js'
   # Initializing duke vars with empty hash
   vars = {}
-  vars.base_url = window.location.protocol + '//' + location.host.split(':')[0]
+  vars.base_url = window.location.protocol + '//' + location.host
   vars.redirection = /redirect(keep)?=(.{10,})/
   vars.cancelation = new RegExp('annul', 'i')
   vars.stt = {}
@@ -141,7 +141,7 @@
             else
               vars.empty_history = true
           if value.text.indexOf('#base-url') >= 0
-            value.text = value.text.replace('#base-url', vars.base_url)
+            value.text = value.text.replaceAll('#base-url', vars.base_url)
           output_received_txt(value.text)
         else if value.response_type == "option"
           output_received_txt(value.title.replace(/=multiple_choices/, ""))

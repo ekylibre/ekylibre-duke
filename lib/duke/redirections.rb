@@ -29,6 +29,7 @@ module Duke
     end 
 
     # @param [String] user_input
+    # TODO :: REDO AS GLOBAL FallBack
     def handle_to_tool(params)
       dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], equipments: Duke::DukeMatchingArray.new)
       dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:equipments, :date))
@@ -69,9 +70,60 @@ module Duke
 
     def handle_to_new_fixed_asset params 
       dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], depreciables: Duke::DukeMatchingArray.new)
-      dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:depreciables, :date), level: 0.80)
+      dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:depreciables), level: 0.80)
       return {redirect: :speak, sentence: I18n.t("duke.redirections.to_undefined_fixed_asset")} if dukeArt.depreciables.empty? 
       return {redirect: :speak, sentence: I18n.t("duke.redirections.to_specific_fixed_asset",id: dukeArt.depreciables.max.key, name: dukeArt.depreciables.max.name)}
+    end 
+
+    def handle_to_fixed_asset params 
+      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], fixed_asset: Duke::DukeMatchingArray.new)
+      dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:fixed_asset), level: 0.80)
+      return {sentence: I18n.t("duke.redirections.to_fixed_asset_product", name: dukeArt.fixed_asset.max.name, id: dukeArt.fixed_asset.max.key)} if dukeArt.fixed_asset.present? 
+      return {sentence: I18n.t("duke.redirections.to_fixed_asset_state", state: params[:asset_state])} if params[:asset_state].present? 
+      return {sentence: I18n.t("duke.redirections.to_all_fixed_assets")} 
+    end 
+
+    def handle_to_bank_account params 
+      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], bank_account: Duke::DukeMatchingArray.new)
+      dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:bank_account), level: 0.80)
+      return {sentence: I18n.t("duke.redirections.to_bank_accounts")} if dukeArt.bank_account.blank?
+      return {sentence: I18n.t("duke.redirections.to_bank_account", name: dukeArt.bank_account.max.name, id: dukeArt.bank_account.max.key)}
+    end 
+
+    def handle_to_bank_reconciliation params 
+      return {status: :over, sentence: I18n.t("duke.redirections.to_reconciliation_import", import: params[:import_type])} if params[:import_type].present? 
+      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], bank_account: Duke::DukeMatchingArray.new)
+      dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:bank_account), level: 0.80)
+      return {status: :ask, options: dynamic_options(I18n.t("duke.redirections.which_reconciliation_account"), Cash.all.map{|cash| optJsonify(cash.name, cash.id.to_s)})} if dukeArt.bank_account.blank?
+      cash = dukeArt.bank_account.max
+      return {status: :over, sentence: I18n.t("duke.redirections.to_reconciliation_account", id: cash.key, name: cash.name)}
+    end 
+    
+    def handle_to_bank_reconciliation_from_suggestion params 
+      begin   
+        cash = Cash.find_by_id(params[:user_input])
+        return {status: :over, sentence: I18n.t("duke.redirections.to_reconciliation_account", id: cash.id, name: cash.name)}
+      rescue Exception 
+        return {status: :over, sentence: I18n.t("duke.redirections.to_reconcialiation_accounts")}
+      end
+    end 
+
+    def handle_to_phyto_import params
+      byebug
+      if (prod = RegisteredPhytosanitaryProduct.find_by_id(params[:p_id])).present?
+        return {status: :over, sentence: I18n.t("duke.import.phyto_id", id: prod.id, name: prod.name)} 
+      elsif params[:aam].present? 
+        prods = RegisteredPhytosanitaryProduct.select{|ph| ph.france_maaid == params[:aam]}
+        return {status: :over, sentence: I18n.t("duke.import.invalid_maaid", id: params[:aam])} if prods.empty?
+        return {status: :over, sentence: I18n.t("duke.import.phyto_id", id: prods.first.id, name: prods.first.name)} if prods.size.eql? 1 
+        return {status: :ask, options: dynamic_options(I18n.t("duke.import.w_maaid"), prods.map{|p| optJsonify(p.name, p.id.to_s)})}
+      else # Issue matching Thousands of Phyto Products names, just redirecting to phyto_main_page
+        #dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], registered_phyto: Duke::DukeMatchingArray.new)
+        #dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:registered_phyto), level: 0.80)
+        return {status: :over, sentence: I18n.t("duke.import.all_phyto")} # if dukeArt.registered_phyto.blank? 
+        #phyto = dukeArt.registered_phyto.max
+        #return {status: :over, sentence: I18n.t("duke.import.phyto_id", id: phyto.key, name: phyto.name)}
+      end
     end 
 
   end 

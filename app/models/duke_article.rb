@@ -2,8 +2,8 @@ module Duke
   class DukeArticle
     include Duke::BaseDuke
 
-    attr_accessor :description, :date, :duration, :offset, :user_input, :activity_variety, :tool, :cultivablezones, :financial_year, :entities, :depreciables, :email, :session_id
-    @@user_specific_types = [:depreciables, :financial_year, :entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press] 
+    attr_accessor :description, :date, :duration, :offset, :user_input, :activity_variety, :tool, :cultivablezones, :financial_year, :entities, :depreciables, :fixed_asset, :bank_account, :registered_phyto, :email, :session_id
+    @@user_specific_types = [:registered_phyto, :bank_account, :fixed_asset, :depreciables, :financial_year, :entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press] 
     @@ambiguities_types = [:plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press]
     @@month_hash =  {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9, "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12 }
     
@@ -252,15 +252,21 @@ module Duke
     # @return iterator for this item
     def iterator(item_type) 
       if empty_iterator(item_type)
-        iterator= []
+        iterator = []
       elsif item_type == :depreciables  
-        iterator= Product.depreciables
+        iterator = Product.depreciables
+      elsif item_type == :fixed_asset 
+        iterator = Product.find(FixedAsset.all.collect(&:product_id))
+      elsif item_type == :bank_account
+        iterator = Cash.all
+      elsif item_type == :registered_phyto
+        iterator = RegisteredPhytosanitaryProduct.all
       elsif item_type == :input
-        iterator= Matter.availables(at: @date.to_time).of_expression(Procedo::Procedure.find(@procedure).parameters_of_type(:input).collect(&:filter).join(" or "))
+        iterator = Matter.availables(at: @date.to_time).of_expression(Procedo::Procedure.find(@procedure).parameters_of_type(:input).collect(&:filter).join(" or "))
       elsif item_type == :crop_groups
-        iterator= CropGroup.all
+        iterator = CropGroup.all
       elsif item_type == :financial_year 
-        iterator= FinancialYear.all
+        iterator = FinancialYear.all
       elsif item_type == :activity_variety
         iterator = Activity.select('distinct on (cultivation_variety) *')
       elsif item_type == :press
