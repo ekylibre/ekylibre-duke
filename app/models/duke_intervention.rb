@@ -247,9 +247,9 @@ module Duke
 
     # @returns json
     def suggest_categories_from_fam(farming_type)
-      procedure_categories = Onoma::ProcedureCategory.select { |c| c.activity_family.include?(farming_type.to_sym) and !Procedo::Procedure.of_main_category(c).empty? }
-      categories = ListSorter.new(:procedure_categories, procedure_categories).sort.map{|cat|optJsonify(cat.human_name, "#{cat.name}&")}
-      categories.push(optJsonify(I18n.t("duke.interventions.help.get_help"), :get_help))
+      categories = Onoma::ProcedureCategory.select { |c| c.activity_family.include?(farming_type.to_sym) and !Procedo::Procedure.of_main_category(c).empty? }
+      categories = ListSorter.new(:procedure_categories, procedure_categories).sort if defined?(ListSorter)
+      categories.map!{|cat|optJsonify(cat.human_name, "#{cat.name}&")}.push(optJsonify(I18n.t("duke.interventions.help.get_help"), :get_help))
       return {parsed: {user_input: @user_input}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_category"), categories)}
     end 
 
@@ -261,7 +261,9 @@ module Duke
 
     # @returns json
     def suggest_proc_from_category
-      procs = Procedo::Procedure.of_main_category(@procedure).sort_by(&:position).map {|proc| optJsonify(proc.human_name.to_sym, proc.name)}
+      procs = Procedo::Procedure.of_main_category(@procedure)
+      procs.sort_by!(&:position) if procs.all?{|proc| defined?(proc.position)}
+      procs.map!{|proc| optJsonify(proc.human_name.to_sym, proc.name)}
       return {parsed: {user_input: @user_input}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.which_procedure"), procs)}
     end 
 
