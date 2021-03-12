@@ -382,7 +382,7 @@ module Duke
         else # Associate a nil population rate if we don't find a quantity
           measure = get_measure(nil.to_f, :population, nil)
         end
-        if input.is_measure_coherent?(measure, @procedure) # Check for coherent unit
+        if input.measure_coherent?(measure, @procedure) # Check for coherent unit
           if measure.repartition_unit.nil? #Check for repartition_unit
             measure = measure.in(Procedo::Procedure.find(@procedure).parameters_of_type(:input).find {|inp| Matter.find_by_id(input.key).of_expression(inp.filter)}.handler("net_#{measure.base_dimension}").unit.name)
             input[:rate] = {:value => measure.value.to_f, :unit => "net_#{measure.base_dimension}"}

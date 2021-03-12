@@ -13,7 +13,7 @@ module Duke
       args.each{|k, v| instance_variable_set("@#{k}", v)}
     end 
 
-    # @parse * for a given word-combo
+    # @parse every attribute for a given word-combo
     def parse
       @attributes.map{|k, val| [k, val[:iterator], val[:list]]}.each do |type, iterator, list|
         iterator.each do |item| # iterate over every Item from given iterator
@@ -22,6 +22,8 @@ module Duke
       end
       @matching_list.add_to_recognized(@matching_item, @attributes.map{|k, val| val[:list]}) if @matching_item.present?
     end 
+
+    private 
 
     # @param [String] nstr : String we'll compare to @combo 
     # @param [Integer] key : nstr Item key

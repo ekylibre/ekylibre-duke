@@ -2,7 +2,7 @@ module Duke
   class DukeMatchingItem < HashWithIndifferentAccess
     include BaseDuke
     using Duke::DukeRefinements
-    attr_accessor :name, :distance, :indexes, :key, :matched, :rate, :area, :potential, :par_dist
+    attr_accessor :name, :distance, :indexes, :key, :matched, :rate, :area
 
     def initialize(hash: nil, **args) 
       super()
@@ -13,7 +13,7 @@ module Duke
 
     # @param [DukeMatchingElement] item
     # @returns true if self matches less than item
-    def has_lower_match?(item)
+    def lower_match?(item)
       if item.key == @key # only compare distance when same item
         return (true if item.distance > @distance)||false
       else # apply exp(diff/70) to have item-length correction
@@ -33,7 +33,7 @@ module Duke
     
     # @param [DukeMatchingItem] item 
     # @returns true if item rate isn't permitted for him || false
-    def needs_input_reinitialize? item 
+    def conflicting_rate? item 
       return false unless (item.key?(:rate) && self.key?(:rate))
       return true if ([:net_mass, :mass_area_density].include? self.rate[:unit].to_sym and Matter.find_by_id(item.key)&.net_mass.to_f == 0)
       return true if ([:net_volume, :volume_area_density].include? self.rate[:unit].to_sym and Matter.find_by_id(item.key)&.net_volume.fo_f == 0)
@@ -43,7 +43,7 @@ module Duke
     # @param [String] procedure
     # @param [Measure] measure
     # @returns boolean
-    def is_measure_coherent? measure, procedure
+    def measure_coherent? measure, procedure
       input_param = Procedo::Procedure.find(procedure).parameters_of_type(:input).find{|param| Matter.find_by_id(@key).of_expression(param.filter)}
       dim = measure.base_dimension.to_sym
       # True If measure in mass or volume , and procedure can handle this type of indicators for its inputs and net dimension exists for specific input

@@ -5,6 +5,7 @@ module Duke
 
     attr_accessor :options, :name_attr, :itm, :ambig_level, :type, :itm_type
 
+    # Creates ambiguity item
     def initialize(itm:, ambiguity_attr:, itm_type:) 
       super()
       @ambig_level = 10
@@ -14,44 +15,44 @@ module Duke
       @itm_type = itm_type
     end 
 
-    # @param [ActiveRecord] product
-    # @return bln, check if product is ambiguous with self
-    def is_ambiguous?(product)
-      return true if (@itm.key != product[:id] && ((@itm.distance - @itm.matched.partial_similar(product[:partials])).between?(0, @ambig_level)))
-      return false
-    end 
-
-    # @param [ActiveRecord] product
-    # @return product/self as a json option
-    def amb_option(product: nil)
-      return optJsonify(@itm.name, "{:type => \"#{@itm_type}\", :key => #{@itm.key}, :name => \"#{@itm.name}\"}") if product.nil?
-      return optJsonify(product[:name], "{:type => \"#{@type}\", :key => #{product[:id]}, :name => \"#{product[:name]}\"}")
-    end 
-
-    # Creates ambiguity item if any ambiguity options are present
-    # @return self as an array
-    def push_amb 
-      if @options.present?
-        @options.push(amb_option)
-        optDescription = {itm_type: @itm_type, key: @itm.key}
-        optSentence = I18n.t("duke.ambiguities.ask", item: @itm.matched)
-        add_target_labels if [:cultivation, :crop_groups, :plant, :land_parcel].include? @itm_type.to_sym
-        self.push(dynamic_options(optSentence, @options, optDescription).first)
-        @options = []
-      end
-      self.to_a
-    end 
-
     # checks every @attribute.type for ambiguous items
     # @return self as an array 
     def check_ambiguity
       @attributes.each do |type, iterator|
         @type = type
         iterator.each do |product|
-          @options.push(amb_option(product: product)) if is_ambiguous?(product)
+          @options.push(option(product: product)) if ambiguous?(product)
         end
       end
-      return push_amb 
+      return create_ambiguity 
+    end 
+
+    private
+
+    # @param [ActiveRecord] product
+    # @return bln, check if product is ambiguous with self
+    def ambiguous?(product)
+      return (@itm.key != product[:id] && ((@itm.distance - @itm.matched.partial_similar(product[:partials])).between?(0, @ambig_level)))
+    end 
+
+    # @param [ActiveRecord] product
+    # @return product/self as a json option
+    def option(product: nil)
+      return optJsonify(@itm.name, "{:type => \"#{@itm_type}\", :key => #{@itm.key}, :name => \"#{@itm.name}\"}") if product.nil?
+      return optJsonify(product[:name], "{:type => \"#{@type}\", :key => #{product[:id]}, :name => \"#{product[:name]}\"}")
+    end 
+
+    # Creates ambiguity item if any ambiguity options are present
+    # @return self as an array
+    def create_ambiguity 
+      if @options.present?
+        @options.push(option)
+        optDescription = {itm_type: @itm_type, key: @itm.key}
+        optSentence = I18n.t("duke.ambiguities.ask", item: @itm.matched)
+        add_target_labels if [:cultivation, :crop_groups, :plant, :land_parcel].include? @itm_type.to_sym
+        self.push(dynamic_options(optSentence, @options, optDescription).first)
+      end
+      self.to_a
     end 
 
     # Sorts @option by target types, and add a "global_label" before each target types

@@ -13,7 +13,7 @@ module Duke
       # @params [String] substr 
       # rm -f from self
       def duke_del substr 
-        self.gsub!(substr, '')  if substr.present? && self.include?(substr)
+        self.gsub!(substr, '') if substr.present? && self.include?(substr)
         self
       end 
 
@@ -38,7 +38,7 @@ module Duke
       def partial_similar item 
         return 0 if self.length < 4||item.blank?
         items = item.words_combinations if item.kind_of?(String)
-        return item.map{|wrd| wrd.length > 3 ? (0.64 + 0.14 * Math.log([wrd.size, 20].min)) * wrd.similar(self) : 0}.max
+        return item.map{|wrd| wrd.length > 3 ? (0.64 + 0.14 * Math.log(wrd.size)) * wrd.similar(self) : 0}.max
       end 
 
       # @return [Array] all words combinations from a string
@@ -51,12 +51,6 @@ module Duke
         return self.split /\s+|\'/
       end
     end 
-
-    refine NilClass do 
-      def duke_clear 
-        return " "
-      end 
-    end
 
   end 
 end 
