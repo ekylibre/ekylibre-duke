@@ -84,7 +84,7 @@ module Duke
       @user_input = @user_input.duke_del(proc_word)
       extract_date_and_duration  # getting cleaned user_input and finding when it happened and how long it lasted
       tag_specific_targets  # Tag the specific types of targets for this intervention
-      extract_user_specifics  # Then extract every possible user_specifics elements form the sentence (here : input, doer, tool, targets)  
+      extract_user_specifics  # Then extract every possible user_specifics elements form the sentence (here : input, doer, tool, targets)
       add_input_rate  # Look for a specified rate for the input, or attribute nil
       extract_intervention_readings  # extract_readings 
       find_ambiguity # Loof for ambiguities in what has been parsed
@@ -366,7 +366,7 @@ module Duke
                            .reject{|prod| !prod.available?||
                                    (prod.is_a?(Plant) && prod.dead_at.nil? && prod.activity_production&.support.present?) and (prod.activity_production.support.dead_at.nil?||prod.activity_production.support.dead_at < @date.to_time)||
                                    !prod.of_expression(tar_param.filter)}
-                           .map{|tar| DukeMatchingItem.new(key: tar.id, name: tar.name, potential: :true, distance: 1, matched: tar.name)}
+                           .map{|tar| DukeMatchingItem.new(key: tar.id, name: tar.name, potential: :true, distance: 100, matched: tar.name)}
         self.instance_variable_set("@#{tar_param.name}", DukeMatchingArray.new(arr: items))
         @cultivablezones, @activity_variety = Array.new(2,DukeMatchingArray.new)
       end 
