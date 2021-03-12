@@ -223,11 +223,7 @@ module Duke
 
     # @return target_type given procedure_family
     def tar_from_procedure
-      if (Procedo::Procedure.find(@procedure).activity_families & [:vine_farming]).any?
-        return Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name, :crop_groups
-      else  
-        return :cultivablezones, :activity_variety, :crop_groups
-      end 
+      return Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name, :crop_groups
     end 
 
     # @param [str] item_type 
@@ -250,13 +246,13 @@ module Duke
     def iterator(item_type) 
       name_attr = name_attr(item_type)
       if empty_iterator(item_type)
-        iterator= []
+        iterator = []
       elsif item_type == :input
-        iterator= Matter.availables(at: @date.to_time).of_expression(Procedo::Procedure.find(@procedure).parameters_of_type(:input).collect(&:filter).join(" or "))
+        iterator = Matter.availables(at: @date.to_time).of_expression(Procedo::Procedure.find(@procedure).parameters_of_type(:input).collect(&:filter).join(" or "))
       elsif item_type == :crop_groups
-        iterator= CropGroup.all
+        iterator = CropGroup.all
       elsif item_type == :financial_year 
-        iterator= FinancialYear.all
+        iterator = FinancialYear.all
       elsif item_type == :activity_variety
         iterator = Activity.select('distinct on (cultivation_variety) *')
       elsif item_type == :press

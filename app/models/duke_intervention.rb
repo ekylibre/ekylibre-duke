@@ -2,7 +2,7 @@ module Duke
   class DukeIntervention < DukeArticle
     using Duke::DukeRefinements
 
-    attr_accessor :procedure, :input, :doer, :tool, :retry, :plant, :cultivation, :crop_groups, :land_parcel, :cultivablezones, :activity_variety, :ambiguities, :working_periods
+    attr_accessor :procedure, :input, :doer, :tool, :retry, :plant, :cultivation, :crop_groups, :land_parcel, :ambiguities, :working_periods
     attr_reader :specific
 
     def initialize(**args)
@@ -13,7 +13,7 @@ module Duke
       @ambiguities, @working_periods = [], []
       args.each{|k, v| instance_variable_set("@#{k}", v)}
       @description = @user_input.clone
-      @matchArrs = [:input, :doer, :tool, :crop_groups, :plant, :cultivation, :land_parcel, :cultivablezones, :activity_variety]
+      @matchArrs = [:input, :doer, :tool, :crop_groups, :plant, :cultivation, :land_parcel]
     end 
 
     # @creates intervention from json
@@ -32,7 +32,6 @@ module Duke
 
     # @returns json Option with all clickable buttons understandable by IBM
     def modification_candidates
-
       candidates = [:tool, :doer, :input].select{|type| self.instance_variable_get("@#{type}").present? }
                                                    .map{|type| optJsonify(I18n.t("duke.interventions.#{type}"))}
       candidates.push(optJsonify(I18n.t("duke.interventions.temporality")))
@@ -40,6 +39,7 @@ module Duke
       return dynamic_options(I18n.t("duke.interventions.ask.what_modify"), candidates)
     end 
 
+    # @returns json Option with all clickable buttons understandable by IBM
     def complement_candidates 
       candidates = [:target, :tool, :doer, :input].select{|type| Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == type}.present?}
                                                   .map{|type| optJsonify(I18n.t("duke.interventions.#{type}"))}
@@ -87,10 +87,12 @@ module Duke
       extract_user_specifics  # Then extract every possible user_specifics elements form the sentence (here : input, doer, tool, targets)
       add_input_rate  # Look for a specified rate for the input, or attribute nil
       extract_intervention_readings  # extract_readings 
-      find_ambiguity # Loof for ambiguities in what has been parsed
+      find_ambiguity # Look for ambiguities in what has been parsed
       @specific = @matchArrs # Set specifics searched items to all
     end 
 
+    # Parse a specific item type, if user can answer via buttons
+    # @param [String] sp : specific item type
     def parse_specific_buttons sp 
       if @user_input.match(/^(\d{1,5}(\|{3}|\b))*$/) # If response type matches a multiple click response
         prods = @user_input.split(/\|{3}/).map{|num| Product.find_by_id(num.to_i)}  # Creating a list with all chosen products
@@ -103,6 +105,7 @@ module Duke
       end 
     end 
     
+    # Parse a specific item type, if user input isn't a button click
     # @param [String] sp : specific item type 
     def parse_specific(sp)
       get_clean_sentence
@@ -122,7 +125,6 @@ module Duke
     end 
 
     # @param [DukeIntervention] int : previous DukeIntervention 
-    # @param [String] sp 
     def replace_specific(int:)
       full_jsonD = self.to_jsonD.merge(int.to_jsonD(int.specific, :ambiguities))
       self.recover_from_hash(full_jsonD)
@@ -158,8 +160,7 @@ module Duke
       val 
     end 
 
-    # TODO: ADD @workingperiod iv,  Add each_time_interval if exists, or auto-create it. On modification, if only duration, recreate, if only date, recreate .. On complement, be smart
-    # Extract both date_and duration
+    # Extract both date_and duration (Both information can be extract from same string)
     def extract_date_and_duration
       @user_input = @user_input.duke_clear
       input_clone = @user_input.clone 
@@ -202,7 +203,7 @@ module Duke
       false 
     end 
 
-    # @param [String] type : Type of item for which display all
+    # @param [String] type : Type of item for which we want to display all suggestions
     # @return [Json] OptJson for Ibm to display clickable buttons with every item & labels
     def optionAll type 
       pars = Procedo::Procedure.find(@procedure).parameters_of_type(type.to_sym).select{|param| Product.availables(at: @date.to_time).of_expression(param.filter).present?}
@@ -210,20 +211,8 @@ module Duke
       items.reject!{|prod| prod.respond_to?(:id) && self.instance_variable_get("@#{type}").any?{|reco|reco.key == prod.id}} # Remove Already chosen from suggestions
       options = items.map{|itm| (itm if itm.kind_of?(Hash))||optJsonify(itm.name, itm.id)} # Turn it to Jsonified options
       return dynamic_text(I18n.t("duke.interventions.ask.no_complement")) if options.empty?
-      return dynamic_options(I18n.t("duke.interventions.ask.one_complement"), options) if options.size == 1
+      return dynamic_options(I18n.t("duke.interventions.ask.one_complement"), options) if options.size == 2
       return dynamic_options(I18n.t("duke.interventions.ask.what_complement_#{type}"), options)
-    end 
-
-    # @set new instance variables with clicked targets
-    def parse_multiple_targets 
-      tar_type = Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name
-      if @user_input.match(/^(\d{1,5}(\|{3}|\b))*$/) # If response type matches a multiple click response
-        every_choices = @user_input.split(/[|]/).map{|num| num.to_i}  # Creating a list with all integers corresponding to targets.ids chosen by the user
-        new_tars = self.instance_variable_get("@#{tar_type}").map{|tar| tar.except!(:potential) if every_choices.include? tar.key }.compact  # if the key is in every_choices, we keep it
-      else 
-        new_tars = DukeMatchingArray.new
-      end 
-      self.instance_variable_set("@#{tar_type}", new_tars)
     end 
 
     # @returns [Integer] newly created intervention id
@@ -247,7 +236,6 @@ module Duke
 
     def extract_user_specifics(jsonD: self.to_jsonD, level: 80)
       super(jsonD: jsonD, level: level)
-      targets_from_cz if Procedo::Procedure.find(@procedure).activity_families.include?(:plant_farming)
     end 
 
     # @returns json
@@ -354,24 +342,6 @@ module Duke
       end 
     end 
 
-    # Extract targets from cultivable_zone and cultivation variety for vegetal_procedures
-    def targets_from_cz
-      tar_param = Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}
-      unless tar_param.nil? ||@cultivablezones.to_a.empty? and @activity_variety.to_a.empty?
-        tarIterator = ActivityProduction.at(@date.to_time)
-        tarIterator = ActivityProduction.at(@date.to_time).of_activity(Activity.select{|act| @activity_variety.map{ |var| var.name}.include? act.cultivation_variety_name}) unless @activity_variety.to_a.empty? 
-        tarIterator = tarIterator.select{|act| @cultivablezones.map{ |cz| cz.key}.include? act.cultivable_zone_id} unless @cultivablezones.to_a.empty? 
-        items = tarIterator.map {|act| act.products}
-                           .flatten
-                           .reject{|prod| !prod.available?||
-                                   (prod.is_a?(Plant) && prod.dead_at.nil? && prod.activity_production&.support.present?) and (prod.activity_production.support.dead_at.nil?||prod.activity_production.support.dead_at < @date.to_time)||
-                                   !prod.of_expression(tar_param.filter)}
-                           .map{|tar| DukeMatchingItem.new(key: tar.id, name: tar.name, potential: :true, distance: 100, matched: tar.name)}
-        self.instance_variable_set("@#{tar_param.name}", DukeMatchingArray.new(arr: items))
-        @cultivablezones, @activity_variety = Array.new(2,DukeMatchingArray.new)
-      end 
-    end
-
     # Check if readings exits, if so, and if extract_#{reading} method exitsts, try to extract it
     def extract_intervention_readings
       @readings = Hash[*Procedo::Procedure.find(@procedure).product_parameters(true).flat_map {|param| [param.type, DukeMatchingArray.new]}]
@@ -451,11 +421,8 @@ module Duke
 
     # @return [String, String, Hash|Array|Integer] what_next, sentence, optional
     def redirect
-      targets_from_cz if @activity_variety.present?||@cultivablezones.present? 
       return ["cancel", nil, nil] if @retry == 2
       return ["ask_ambiguity", nil, @ambiguities.first] unless @ambiguities.blank?
-      param_type = Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name
-      return ["ask_which_targets", nil , speak_targets] if self.send(param_type).present? && self.send(param_type).map{|tar| tar.key? :potential}.count(true) > 1
       return ["ask_input_rate", speak_input_rate].flatten if @input.to_a.any? {|input| input[:rate][:value].nil?}
       return "save", speak_intervention, nil
     end
