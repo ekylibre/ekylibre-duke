@@ -31525,4 +31525,3 @@ exports.RestMessageAdapter = RestMessageAdapter;
 
 /***/ })
 /******/ ]);
-//# sourceMappingURL=microsoft.cognitiveservices.speech.sdk.bundle.js.map
