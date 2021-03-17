@@ -67,6 +67,10 @@ fra:
       which_reconciliation_account: "Quel compte souhaitez-vous rapprocher ?"
       to_reconciliation_import: "Je vous redirige vers la page d'import %{import}.<br><br>Besoin d'aide pour la création d'un rapprochement bancaire? Cliquez <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#rapprochement' target='_blank' rel='noopener noreferrer'>ici <i class='icon icon-help'></i></a> redirectkeep=/backend/bank-statements/import_%{import}"
       to_reconcialiation_accounts: "Je vous redirige vers vos comptes.<br><br>Besoin d'aide pour la création d'un rapprochement bancaire? Cliquez <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#rapprochement' target='_blank' rel='noopener noreferrer'>ici <i class='icon icon-help'></i></a> redirectkeep=/backend/cashes"
+      tool_fallback: "Je vous redirige vers l'outil %{name}.redirect=/backend/equipments/%{id}"
+      activity_variety_fallback: "Je vous redirige vers l'activité %{name}.redirect=/backend/activities/%{id}"
+      entities_fallback: "Je vous redirige vers l'entité %{name}.redirect=/backend/entities/%{id}"
+      multiple_fallback: "Vers quel élément souhaitez vous être redirigé ? "
     issues: 
       tool_not_found: "Je n'ai le support de l'incident, j'annule."
       found_tool: "Je vous emmène saisir un incident sur l'outil %{tool}"

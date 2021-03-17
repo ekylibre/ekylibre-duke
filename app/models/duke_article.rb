@@ -133,6 +133,14 @@ module Duke
       end 
     end 
 
+    def all_specifics(*vals)
+      vals = @@user_specific_types if vals.empty?
+      return vals.map{|val|send(val)
+                    .each{|hs|hs.merge_h({type: val})} if respond_to?("#{val}=") && send(val).kind_of?(Duke::DukeMatchingArray)}
+                 .compact
+                 .flatten
+    end 
+
     private 
 
     # Extracts duration from user_input

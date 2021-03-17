@@ -29,12 +29,15 @@ module Duke
     end 
 
     # @param [String] user_input
-    # TODO :: REDO AS GLOBAL FallBack
-    def handle_to_tool(params)
-      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], equipments: Duke::DukeMatchingArray.new)
-      dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:equipments, :date))
-      return {found: :no, sentence: I18n.t("duke.redirections.not_finding")} if dukeArt.equipments.empty?
-      return {found: :yes, sentence: I18n.t("duke.redirections.found_tool" , tool: dukeArt.equipments.max.name), key: dukeArt.equipments.max.key}
+    def handle_fallback(params)
+      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], tool: Duke::DukeMatchingArray.new,
+                                                                       entities: Duke::DukeMatchingArray.new,
+                                                                       activity_variety: Duke::DukeMatchingArray.new)
+      dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:tool, :date, :entities, :activity_variety))
+      specifics = dukeArt.all_specifics(:tool, :entities, :activity_variety)
+      return {} if specifics.empty? 
+      max = specifics.max_by{|itm| itm[:distance]}
+      return {found: :yes, sentence: I18n.t("duke.redirections.#{max[:type]}_fallback", id: max[:key], name: max[:name]) }
     end 
 
     # @param [String] user_input 
