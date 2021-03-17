@@ -190,10 +190,10 @@
     onMsg(data) {
       if ($(".btn-chat").is(":visible")){
         $(".btn-chat").css("z-index", "-10").hide()
-        $('#bottom_left').css("z-index", "10000000").show();
+        $('#bottom_left').css("z-index", "9998").show();
       }
       else if ($('#bottom_left').is(":hidden")){
-        $(".btn-chat").css("z-index", "9999999").show()
+        $(".btn-chat").css("z-index", "9997").show()
       }
       this.integrate_received(data.message);
     };
@@ -205,7 +205,7 @@
      */
     send_msg(msg = $("#duke-input").val().replace(/\n/g, "") , user_intent = undefined) {
       if (msg.toString().match(cancelationReg)) {
-        user_intent = "quick_exit";
+        user_intent = "Exit";
       }
       this.reset_textarea();
       this.clear_textarea();
@@ -288,7 +288,7 @@
      * Pusher Instanciation to persist Duke on page change
      */
     persist_duke() {
-      $('#bottom_left').css("z-index", "10000000").show();
+      $('#bottom_left').css("z-index", "9998").show();
       this.add_content()
       sessionStorage.removeItem('duke_visible');
     };
@@ -335,6 +335,7 @@
      * Output DukeMessage text
      */
     output_received_text() {
+      if (this.text === "") { return;}
       var outputed = this.text.replace(redirectionReg,"").replace(base_urlReg, "")
       $('.duke-received:last p:first').css("border-style", "unset");
       $('.msg_container_base').append('<div class="msg-list msg-rcvd"> <div class="messenger-container duke-received"> <p>' + outputed + '</p> </div> </div>');
@@ -492,7 +493,7 @@
   // Add Dynamic items events handlers
   $(document).on('click', '.btn-chat', function(e) { // Display Chat on click
     $('.btn-chat').hide().css("z-index", "-10");
-    $('#bottom_left').css("z-index", "10000000").show();
+    $('#bottom_left').css("z-index", "9998").show();
     if (!duke.webchat.isMobile) {
       $("#duke-input").focus();
     }
@@ -501,7 +502,7 @@
 
   $(document).on('click', '.minus-link', function() { // Remove Chat, display btn-chat
     $('#bottom_left').hide().css("z-index", "-10");
-    $(".btn-chat").css("z-index", "9999999").show();
+    $(".btn-chat").css("z-index", "9997").show();
   });
 
   $(document).on('click', '.duke-default-option', function() { // Display dropdown list
