@@ -2,8 +2,10 @@ module Duke
   class Redirections
     include Duke::BaseDuke
 
-    # @param [String] user_input 
-    # @return [Json] hasfound: bln|multiple, sentence & optional
+    # Common @params : [String] user_input : User Utterance
+
+    # Redirects to activity, or suggest multiple if cultivation_variety ambiguity
+    # @return [Json] found: boolean|multiple, sentence & optional
     def handle_to_activity(params)
       dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], activity_variety: Duke::DukeMatchingArray.new)
       dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:activity_variety, :date))
@@ -17,8 +19,8 @@ module Duke
       end 
     end 
 
-    # @param [String] user_input
-    # @return [Json]
+    # Parse btn.click for activity to be redirected to
+    # @return [Json] found: boolean, sentence
     def handle_which_activity(params)
       begin # if user_clicked on Activity, user_input is it's id
         act = Activity.find_by_id(params[:user_input].to_i)
@@ -28,7 +30,7 @@ module Duke
       end 
     end 
 
-    # @param [String] user_input
+    # Redirects to tool 
     def handle_to_tool(params)
       dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], equipments: Duke::DukeMatchingArray.new)
       dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:equipments, :date))
@@ -36,7 +38,6 @@ module Duke
       return {found: :yes, sentence: I18n.t("duke.redirections.found_tool" , tool: dukeArt.equipments.max.name), key: dukeArt.equipments.max.key}
     end 
 
-    # @param [String] user_input 
     # @param [String] purchase_type : unpaid|nil
     def handle_to_bill(params)
       dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], entities: Duke::DukeMatchingArray.new)
@@ -46,7 +47,6 @@ module Duke
       return {sentence: I18n.t("duke.redirections.to_#{purchase_type}_specific_bills" , entity: dukeArt.entities.max.name)}
     end 
 
-    # @param [String] user_input 
     # @param [String] sale_type : unpaid|nil
     def handle_to_sale(params) 
       dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], entities: Duke::DukeMatchingArray.new)

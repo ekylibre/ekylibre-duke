@@ -2,8 +2,6 @@ module Duke
   class DukeParser < DukeArticle
     using Duke::DukeRefinements
 
-    attr_accessor :matching_item, :matching_list, :level, :index, :combo, :attributes
-
     def initialize(word_combo:, level:, **args) 
       @matching_item = nil 
       @matching_list = nil 
@@ -24,6 +22,8 @@ module Duke
     end 
 
     private 
+
+    attr_reader :matching_item, :matching_list, :level, :index, :combo, :attributes 
 
     # @param [String] nstr : String we'll compare to @combo 
     # @param [Integer] key : nstr Item key

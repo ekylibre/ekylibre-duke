@@ -2,7 +2,7 @@ module Duke
   class DukeIntervention < DukeArticle
     using Duke::DukeRefinements
 
-    attr_accessor :procedure, :input, :doer, :tool, :retry, :plant, :cultivation, :crop_groups, :land_parcel, :ambiguities, :working_periods
+    attr_accessor :procedure, :input, :ambiguities, :working_periods, :doer, :tool, :plant, :cultivation, :crop_groups, :land_parcel
     attr_reader :specific
 
     def initialize(**args)
@@ -22,12 +22,6 @@ module Duke
       jsonD.slice(*@matchArrs).each{|k,v| self.instance_variable_set("@#{k}", DukeMatchingArray.new(arr: v))}
       jsonD.except(*@matchArrs).each{|k,v| self.instance_variable_set("@#{k}", v)}
       self
-    end 
-
-    # @returns DukeIntervention to_json with given parameters
-    def to_jsonD(*args) 
-      return ActiveSupport::HashWithIndifferentAccess.new(self.as_json) if args.empty?
-      return ActiveSupport::HashWithIndifferentAccess.new(Hash[args.flatten.map{|arg| [arg, self.send(arg)] if self.respond_to? arg}.compact])
     end 
 
     # @returns json Option with all clickable buttons understandable by IBM
@@ -234,6 +228,8 @@ module Duke
 
     private
 
+    attr_accessor  :retry
+
     def extract_user_specifics(jsonD: self.to_jsonD, level: 80)
       super(jsonD: jsonD, level: level)
     end 
@@ -248,7 +244,7 @@ module Duke
     # @returns json
     def suggest_categories_from_fam(farming_type)
       categories = Onoma::ProcedureCategory.select { |c| c.activity_family.include?(farming_type.to_sym) and !Procedo::Procedure.of_main_category(c).empty? }
-      categories = ListSorter.new(:procedure_categories, procedure_categories).sort if defined?(ListSorter)
+      categories = ListSorter.new(:procedure_categories, categories).sort if defined?(ListSorter)
       categories.map!{|cat|optJsonify(cat.human_name, "#{cat.name}&")}.push(optJsonify(I18n.t("duke.interventions.help.get_help"), :get_help))
       return {parsed: {user_input: @user_input}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_category"), categories)}
     end 
@@ -304,7 +300,7 @@ module Duke
       sentence += "<br>&#8226 #{I18n.t("duke.interventions.input")} : #{@input.map{|input| "#{input.name} (#{input[:rate][:value].to_f} #{(I18n.t("duke.interventions.units.#{Procedo::Procedure.find(@procedure).parameters_of_type(:input).find {|inp| Matter.find_by_id(input.key).of_expression(inp.filter)}.handler(input[:rate][:unit]).unit.name}") if input[:rate][:unit].to_sym != :population) || Matter.find_by_id(input.key)&.unit_name} )"}.join(", ")}" unless @input.to_a.empty?
       @readings.each do |key, rd| 
         rd.to_a.each do |rd_hash| 
-          sentence += "<br>&#8226 #{I18n.t("duke.interventions.readings.#{rd_hash[:indicator_name]}")} : #{(I18n.t("duke.interventions.readings.#{rd_hash.values.last}") if !is_number?(rd_hash.values.last))|| rd_hash.values.last}"
+          sentence += "<br>&#8226 #{I18n.t("duke.interventions.readings.#{rd_hash[:indicator_name]}")} : #{(I18n.t("duke.interventions.readings.#{rd_hash.values.last}") if !number?(rd_hash.values.last))|| rd_hash.values.last}"
         end  
       end  
       sentence += "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{@date.to_time.strftime("%d/%m/%Y")}"

@@ -1,8 +1,6 @@
 module Duke
   class DukeMatchingArray < Array
 
-    attr_accessor :date, :duration, :user_input
-
     def initialize(arr: nil)
       super()
       arr.each{|item| self.push(DukeMatchingItem.new(hash: item))} unless arr.nil?
@@ -11,7 +9,7 @@ module Duke
     # @param [DukeMatchingArray] mArr
     # @returns concatenated DukeMatchingArray
     def uniq_concat(mArr)
-      mArr.each{|mItem| self.push(mItem) unless self.any_duplicate?(mItem)}
+      mArr.each{|mItem| self.push(mItem) unless self.duplicate?(mItem)}
       self
     end
 
@@ -22,7 +20,7 @@ module Duke
 
     # Returns element with highest distance
     def max 
-      return self.max_by{|item| item.distance}
+      self.max_by{|item| item.distance}
     end 
 
     # @returns Array as json
@@ -61,7 +59,7 @@ module Duke
       return self.any?{|mItem| (mItem.indexes & itm.indexes).present?}
     end 
 
-    # @returns bln, checks overlap with lower distance
+    # @returns [Boolean], overlap with lower distance
     def lower_overlap? itm
       overlap = self.find{|mItem| (mItem.indexes & itm.indexes).present?}
       return false if overlap.nil? 

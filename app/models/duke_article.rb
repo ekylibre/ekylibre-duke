@@ -3,7 +3,7 @@ module Duke
     using Duke::DukeRefinements
     include Duke::BaseDuke
 
-    attr_accessor :description, :date, :duration, :offset, :user_input, :activity_variety, :tool, :cultivablezones, :financial_year, :entities
+    attr_accessor :date, :duration, :user_input, :description
     @@user_specific_types = [:financial_year, :entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press] 
     @@ambiguities_types = [:plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press]
     @@month_hash =  {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9, "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12 }
@@ -83,7 +83,6 @@ module Duke
       end 
     end 
 
-    # TODO : check if really usefull
     def to_ibm(**opt)
       what_next, sentence, optional = redirect
       return { parsed: self.to_jsonD, sentence: sentence, redirect: what_next, optional: optional}.merge(opt)
@@ -136,6 +135,8 @@ module Duke
     end 
 
     private 
+
+    attr_accessor :activity_variety, :tool, :cultivablezones, :financial_year, :entities, :offset
 
     # Extracts duration from user_input
     # @return nil but set @duration in minutes

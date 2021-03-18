@@ -2,6 +2,7 @@ module Duke
   class DukeMatchingItem < HashWithIndifferentAccess
     include BaseDuke
     using Duke::DukeRefinements
+    
     attr_accessor :name, :distance, :indexes, :key, :matched, :rate, :area
 
     def initialize(hash: nil, **args) 

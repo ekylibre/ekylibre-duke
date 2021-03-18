@@ -6,6 +6,7 @@ module Duke
     #   [Json] parsed : Previously parsed
     #   [String] user_input : User Utterance
 
+    # First entry into Intervention Skill
     # @params [String] procedure_word : Literal procedure word
     def handle_parse_sentence params
       dukeInt = Duke::DukeIntervention.new(procedure: params[:procedure], user_input: params[:user_input])
@@ -14,6 +15,7 @@ module Duke
       return dukeInt.to_ibm(modifiable: dukeInt.modification_candidates, moreable: dukeInt.complement_candidates) # return Json with what'll be displayed on .click modify-btn
     end
 
+    # Modify a specific type of element
     # @params [String] specific : What we want to modify
     def handle_modify_specific params
       dukeInt = Duke::DukeIntervention.new.recover_from_hash(params[:parsed])
@@ -23,6 +25,7 @@ module Duke
       return dukeInt.to_ibm
     end
 
+    # Add a specific type of element
     # @params [String] specific : What we want to modify
     def handle_complement_specific params
       dukeInt = Duke::DukeIntervention.new.recover_from_hash(params[:parsed])
@@ -32,12 +35,14 @@ module Duke
       return dukeInt.to_ibm(modifiable: dukeInt.modification_candidates)
     end 
 
+    # @return [Json] clickable options with all 'type' elements
     # @params [String] type: Type of items we want to display
     def handle_get_complement_items params 
       dukeInt = Duke::DukeIntervention.new.recover_from_hash(params[:parsed])
       return dukeInt.to_ibm(optionAll: dukeInt.optionAll(params[:type]))
     end 
 
+    # Add element(s) from everything available
     def handle_complement_anything params 
       dukeInt = Duke::DukeIntervention.new.recover_from_hash(params[:parsed])
       tmpInt = Duke::DukeIntervention.new(procedure: dukeInt.procedure,  date: dukeInt.date, user_input: params[:user_input])
@@ -46,6 +51,7 @@ module Duke
       return dukeInt.to_ibm(modifiable: dukeInt.modification_candidates)
     end 
 
+    # Modify intervention date and duration
     def handle_modify_temporality params
       dukeInt = Duke::DukeIntervention.new.recover_from_hash(params[:parsed])
       tmpInt = Duke::DukeIntervention.new(procedure: dukeInt.procedure,  date: dukeInt.date, user_input: params[:user_input])
@@ -54,6 +60,7 @@ module Duke
       return dukeInt.to_ibm
     end
 
+    # Add working period(s)
     def handle_complement_working_periods params 
       dukeInt = Duke::DukeIntervention.new.recover_from_hash(params[:parsed])
       tmpInt = Duke::DukeIntervention.new(procedure: dukeInt.procedure,  date: dukeInt.date, user_input: params[:user_input].duke_clear)
@@ -64,6 +71,7 @@ module Duke
 
     # @params [Integer] quantity : Number parsed by IBM 
     # @params [Integer] optional : Index of input that needs modif
+    # Parse input quantity when asked to user
     def handle_parse_input_quantity params
       dukeInt = Duke::DukeIntervention.new.recover_from_hash(params[:parsed])
       dukeInt.user_input = params[:user_input]
@@ -78,6 +86,7 @@ module Duke
 
     # @params [Integer] amb_key : Key of ambiguous element
     # @params [String] amb_type : Type of ambiguous element
+    # Disambiguate an element
     def handle_parse_disambiguation params
       dukeInt = Duke::DukeIntervention.new.recover_from_hash(params[:parsed])
       dukeInt.user_input = params[:user_input]
@@ -85,6 +94,8 @@ module Duke
       return dukeInt.to_ibm
     end
 
+    # Creates intervention 
+    # @return [Json] link to intervention
     def handle_save_intervention params
       dukeInt = Duke::DukeIntervention.new.recover_from_hash(params[:parsed])
       id = dukeInt.save_intervention 

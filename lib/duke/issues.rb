@@ -2,6 +2,7 @@ module Duke
   class Issues
     include Duke::BaseDuke
 
+    # Create an issue on a tool, if tool is found. has optional issue_nature, search for cultivableZone
     # @params [String] user_input 
     # @params [String] nature : Match (optional) for a issue_nature_type
     def handle_equipment_issues(params)

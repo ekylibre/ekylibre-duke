@@ -3,8 +3,6 @@ module Duke
     include Duke::BaseDuke
     using Duke::DukeRefinements
 
-    attr_accessor :options, :name_attr, :itm, :ambig_level, :type, :itm_type
-
     # Creates ambiguity item
     def initialize(itm:, ambiguity_attr:, itm_type:) 
       super()
@@ -19,15 +17,16 @@ module Duke
     # @return self as an array 
     def check_ambiguity
       @attributes.each do |type, iterator|
-        @type = type
         iterator.each do |product|
-          @options.push(option(product: product)) if ambiguous?(product)
+          @options.push(option(product: product, type: type)) if ambiguous?(product)
         end
       end
-      return create_ambiguity 
+      create_ambiguity 
     end 
 
     private
+
+    attr_reader :options, :itm, :ambig_level, :itm_type
 
     # @param [ActiveRecord] product
     # @return bln, check if product is ambiguous with self
@@ -37,9 +36,9 @@ module Duke
 
     # @param [ActiveRecord] product
     # @return product/self as a json option
-    def option(product: nil)
+    def option(product: nil, type: nil)
       return optJsonify(@itm.name, "{:type => \"#{@itm_type}\", :key => #{@itm.key}, :name => \"#{@itm.name}\"}") if product.nil?
-      return optJsonify(product[:name], "{:type => \"#{@type}\", :key => #{product[:id]}, :name => \"#{product[:name]}\"}")
+      return optJsonify(product[:name], "{:type => \"#{type}\", :key => #{product[:id]}, :name => \"#{product[:name]}\"}")
     end 
 
     # Creates ambiguity item if any ambiguity options are present
@@ -56,12 +55,19 @@ module Duke
     end 
 
     # Sorts @option by target types, and add a "global_label" before each target types
-    # TODO: Do it cleanly ???
     def add_target_labels 
-      @options = @options.sort_by{|opt| (eval(opt[:value][:input][:text])[:type] if eval(opt[:value][:input][:text])[:type] != "cultivation")||Product.find_by_id(eval(opt[:value][:input][:text])[:key]).type}
-      @options.map.with_index{|opt, ix| {label: (eval(opt[:value][:input][:text])[:type] if eval(opt[:value][:input][:text])[:type] != "cultivation")||Product.find_by_id(eval(opt[:value][:input][:text])[:key]).type, idx: ix}}.uniq{|res| res[:label]}.each_with_index do |res, idx| 
+      @options = @options.sort_by{|opt| option_target_type(opt)}
+      @options.map.with_index{|opt, ix| {label: option_target_type(opt), idx: ix}}
+              .uniq{|res| res[:label]}
+              .each_with_index do |res, idx| 
         @options.insert(res[:idx] + idx, {global_label: I18n.t("duke.interventions.#{res[:label]}")})
       end 
+    end 
+
+    # @return [String] Target type for an option
+    def option_target_type opt
+      return eval(opt[:value][:input][:text])[:type] if eval(opt[:value][:input][:text])[:type] != "cultivation"
+      Product.find_by_id(eval(opt[:value][:input][:text])[:key]).type
     end 
 
   end 
