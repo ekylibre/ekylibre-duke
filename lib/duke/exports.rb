@@ -16,16 +16,14 @@ module Duke
     # @params [String] template_nature
     # @params [String] printer
     def handle_export_balance_sheet(params)
-      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input], email: params[:user_id], session_id: params[:session_id])
-      dukeAcc.extract_user_specifics(jsonD: dukeAcc.to_jsonD(:financial_year, :date), level: 0.72) 
+      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input], email: params[:user_id], session_id: params[:session_id], yParam: params[:financial_year]) 
       return dukeAcc.balance_sheet_redirect(params[:printer], params[:template_nature])
     end 
     
     # Starts fec_export
     def handle_fec_export params 
-      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input], email: params[:user_id], session_id: params[:session_id])
-      dukeAcc.extract_user_specifics(jsonD: dukeAcc.to_jsonD(:financial_year, :date), level: 0.72) 
-      return dukeAcc.fec_redirect(params[:financial_year], params[:fec_format])
+      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input], email: params[:user_id], session_id: params[:session_id], yParam: params[:financial_year])
+      return dukeAcc.fec_redirect(params[:fec_format])
     end 
 
     # @params [String] template_nature
@@ -59,26 +57,6 @@ module Duke
       rescue Exception
         return {}
       end 
-    end 
-
-    # @params [String] financial_year - optional Financial Year Id if clicked by user
-    def handle_accounting_exchange params 
-      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input], email: params[:user_id], session_id: params[:session_id])
-      dukeAcc.extract_user_specifics(jsonD: dukeAcc.to_jsonD(:financial_year, :date), level: 0.72) 
-      return dukeAcc.exchange_redirect(params[:financial_year])
-    end 
-
-    # @params [String] financial_year - optional Financial Year Id if clicked by user
-    def handle_close_financial_year params
-      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input])
-      dukeAcc.extract_user_specifics(jsonD: dukeAcc.to_jsonD(:financial_year, :date), level: 0.72) 
-      return dukeAcc.closing_redirect(params[:financial_year])
-    end 
-
-    def handle_tax_declaration params 
-      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input])
-      dukeAcc.extract_user_specifics(jsonD: dukeAcc.to_jsonD(:financial_year, :date), level: 0.72) 
-      return dukeAcc.tax_redirect 
     end 
 
   end 

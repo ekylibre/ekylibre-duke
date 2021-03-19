@@ -60,17 +60,40 @@ module Duke
       return {sentence: I18n.t("duke.redirections.to_#{sale_type}_specific_sales" , entity: dukeArt.entities.max.name)}
     end 
 
+    # Return Sale types that can be dynamically displayed by IBM
     def handle_get_sale_types(params) 
       return {} if SaleNature.all.size < 2
       return {options: dynamic_options(I18n.t("duke.redirections.which_sale_type"), SaleNature.all.map{|type| optJsonify(type.name, type.id.to_s)})}
     end 
 
+    # Redirects to tax declaration
+    # @param [String] tax_state - state of tax declaration with want to show
     def handle_to_tax_declaration params 
-      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input])
-      dukeAcc.extract_user_specifics(jsonD: dukeAcc.to_jsonD(:financial_year, :date), level: 0.72) 
+      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input], yParam: params[:financial_year])
       return dukeAcc.tax_declaration_redirect(params[:tax_state])
     end 
 
+    # Redirects to accounting exchange steps
+    # @params [String] financial_year - optional Financial Year Id if clicked by user
+    def handle_accounting_exchange params 
+      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input], email: params[:user_id], session_id: params[:session_id], yParam: params[:financial_year])
+      return dukeAcc.exchange_redirect
+    end 
+
+    # Redirect to tax_declaration creation
+    def handle_tax_declaration params 
+      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input], yParam: params[:financial_year])
+      return dukeAcc.tax_redirect 
+    end 
+
+    # Redirect to financial year closure
+    # @params [String] financial_year - optional Financial Year Id if clicked by user
+    def handle_close_financial_year params
+      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input], yParam: params[:financial_year])
+      return dukeAcc.closing_redirect
+    end 
+
+    # Redirect to fixed asset creation
     def handle_to_new_fixed_asset params 
       dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], depreciables: Duke::DukeMatchingArray.new)
       dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:depreciables), level: 0.80)
@@ -78,6 +101,8 @@ module Duke
       return {redirect: :speak, sentence: I18n.t("duke.redirections.to_specific_fixed_asset",id: dukeArt.depreciables.max.key, name: dukeArt.depreciables.max.name)}
     end 
 
+    # Redirect to fixed asset show
+    # @param [String] asset_state - State of fixed_asset
     def handle_to_fixed_asset params 
       dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], fixed_asset: Duke::DukeMatchingArray.new)
       dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:fixed_asset), level: 0.80)
@@ -86,6 +111,7 @@ module Duke
       return {sentence: I18n.t("duke.redirections.to_all_fixed_assets")} 
     end 
 
+    # Redirect to bank account(s)
     def handle_to_bank_account params 
       dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], bank_account: Duke::DukeMatchingArray.new)
       dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:bank_account), level: 0.80)
@@ -93,6 +119,8 @@ module Duke
       return {sentence: I18n.t("duke.redirections.to_bank_account", name: dukeArt.bank_account.max.name, id: dukeArt.bank_account.max.key)}
     end 
 
+    # Redirect to bank_reconciliation
+    # @param [String] import_type - CFONB | OFX
     def handle_to_bank_reconciliation params 
       return {status: :over, sentence: I18n.t("duke.redirections.to_reconciliation_import", import: params[:import_type])} if params[:import_type].present? 
       dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], bank_account: Duke::DukeMatchingArray.new)
@@ -102,6 +130,7 @@ module Duke
       return {status: :over, sentence: I18n.t("duke.redirections.to_reconciliation_account", id: cash.key, name: cash.name)}
     end 
     
+    # Redirect to bank reconciliation if user clicked on btn-cash-suggestion
     def handle_to_bank_reconciliation_from_suggestion params 
       begin   
         cash = Cash.find_by_id(params[:user_input])
@@ -111,8 +140,9 @@ module Duke
       end
     end 
 
+    # Redirect to phytosanitary import (by AAM id, or all)
+    # @param [String] aam - aam number
     def handle_to_phyto_import params
-      byebug
       if (prod = RegisteredPhytosanitaryProduct.find_by_id(params[:p_id])).present?
         return {status: :over, sentence: I18n.t("duke.import.phyto_id", id: prod.id, name: prod.name)} 
       elsif params[:aam].present? 
@@ -121,11 +151,7 @@ module Duke
         return {status: :over, sentence: I18n.t("duke.import.phyto_id", id: prods.first.id, name: prods.first.name)} if prods.size.eql? 1 
         return {status: :ask, options: dynamic_options(I18n.t("duke.import.w_maaid"), prods.map{|p| optJsonify(p.name, p.id.to_s)})}
       else # Issue matching Thousands of Phyto Products names, just redirecting to phyto_main_page
-        #dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], registered_phyto: Duke::DukeMatchingArray.new)
-        #dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:registered_phyto), level: 0.80)
-        return {status: :over, sentence: I18n.t("duke.import.all_phyto")} # if dukeArt.registered_phyto.blank? 
-        #phyto = dukeArt.registered_phyto.max
-        #return {status: :over, sentence: I18n.t("duke.import.phyto_id", id: phyto.key, name: phyto.name)}
+        return {status: :over, sentence: I18n.t("duke.import.all_phyto")}
       end
     end 
 
