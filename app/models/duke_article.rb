@@ -2,8 +2,8 @@ module Duke
   class DukeArticle
     include Duke::BaseDuke
 
-    attr_accessor :description, :date, :duration, :offset, :user_input, :activity_variety, :tool, :cultivablezones, :financial_year, :entities, :depreciables, :fixed_asset, :bank_account, :registered_phyto, :email, :session_id
-    @@user_specific_types = [:registered_phyto, :bank_account, :fixed_asset, :depreciables, :financial_year, :entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press] 
+    attr_accessor :description, :date, :duration, :offset, :user_input, :activity_variety, :tool, :cultivablezones, :financial_year, :entities, :depreciables, :registered_phyto, :email, :session_id
+    @@user_specific_types = [:account, :journal, :registered_phyto, :bank_account, :fixed_asset, :depreciables, :financial_year, :entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press] 
     @@ambiguities_types = [:plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press]
     @@month_hash =  {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9, "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12 }
     
@@ -25,7 +25,7 @@ module Duke
     # @returns DukeIntervention to_json with given parameters
     def to_jsonD(*args) 
       return ActiveSupport::HashWithIndifferentAccess.new(self.as_json) if args.empty?
-      return ActiveSupport::HashWithIndifferentAccess.new(Hash[args.flatten.map{|arg| [arg, self.send(arg)] if self.respond_to? arg}.compact])
+      return ActiveSupport::HashWithIndifferentAccess.new(Hash[args.flatten.map{|arg| [arg, self.send(arg)] if self.respond_to?(arg, true)}.compact])
     end 
 
     # @param [json] jsonD : DukeArticle.as_json
@@ -261,6 +261,10 @@ module Duke
     def iterator(item_type) 
       if empty_iterator(item_type)
         iterator = []
+      elsif item_type == :account 
+        iterator = Account.all
+      elsif item_type == :journal 
+        iterator = Journal.all
       elsif item_type == :depreciables  
         iterator = Product.depreciables
       elsif item_type == :fixed_asset 

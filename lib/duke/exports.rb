@@ -16,14 +16,18 @@ module Duke
     # @params [String] template_nature
     # @params [String] printer
     def handle_export_balance_sheet(params)
-      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input], email: params[:user_id], session_id: params[:session_id], yParam: params[:financial_year]) 
-      return dukeAcc.balance_sheet_redirect(params[:printer], params[:template_nature])
+      Duke::DukeBookKeeping.new(user_input: params[:user_input],
+                                email: params[:user_id],
+                                session_id: params[:session_id],
+                                yParam: params[:financial_year]).balance_sheet_redirect(params[:printer], params[:template_nature])
     end 
     
     # Starts fec_export
     def handle_fec_export params 
-      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input], email: params[:user_id], session_id: params[:session_id], yParam: params[:financial_year])
-      return dukeAcc.fec_redirect(params[:fec_format])
+      Duke::DukeBookKeeping.new(user_input: params[:user_input],
+                                email: params[:user_id],
+                                session_id: params[:session_id],
+                                yParam: params[:financial_year]).fec_redirect(params[:fec_format])
     end 
 
     # @params [String] template_nature

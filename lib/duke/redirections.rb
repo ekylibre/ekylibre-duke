@@ -2,6 +2,7 @@ module Duke
   class Redirections
     include Duke::BaseDuke
 
+
     # @param [String] user_input 
     # @return [Json] hasfound: bln|multiple, sentence & optional
     def handle_to_activity(params)
@@ -40,104 +41,10 @@ module Duke
       return {found: :yes, sentence: I18n.t("duke.redirections.#{max[:type]}_fallback", id: max[:key], name: max[:name]) }
     end 
 
-    # @param [String] user_input 
-    # @param [String] purchase_type : unpaid|nil
-    def handle_to_bill(params)
-      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], entities: Duke::DukeMatchingArray.new)
-      dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:entities, :date))
-      purchase_type = (:all if params[:purchase_type].nil?)|| :unpaid
-      return {sentence: I18n.t("duke.redirections.to_#{purchase_type}_bills")} if dukeArt.entities.empty?
-      return {sentence: I18n.t("duke.redirections.to_#{purchase_type}_specific_bills" , entity: dukeArt.entities.max.name)}
-    end 
-
-    # @param [String] user_input 
-    # @param [String] sale_type : unpaid|nil
-    def handle_to_sale(params) 
-      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], entities: Duke::DukeMatchingArray.new)
-      dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:entities, :date))
-      sale_type = (:all if params[:sale_type].nil?)|| :unpaid
-      return {sentence: I18n.t("duke.redirections.to_#{sale_type}_sales")} if dukeArt.entities.empty?
-      return {sentence: I18n.t("duke.redirections.to_#{sale_type}_specific_sales" , entity: dukeArt.entities.max.name)}
-    end 
-
     # Return Sale types that can be dynamically displayed by IBM
     def handle_get_sale_types(params) 
       return {} if SaleNature.all.size < 2
       return {options: dynamic_options(I18n.t("duke.redirections.which_sale_type"), SaleNature.all.map{|type| optJsonify(type.name, type.id.to_s)})}
-    end 
-
-    # Redirects to tax declaration
-    # @param [String] tax_state - state of tax declaration with want to show
-    def handle_to_tax_declaration params 
-      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input], yParam: params[:financial_year])
-      return dukeAcc.tax_declaration_redirect(params[:tax_state])
-    end 
-
-    # Redirects to accounting exchange steps
-    # @params [String] financial_year - optional Financial Year Id if clicked by user
-    def handle_accounting_exchange params 
-      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input], email: params[:user_id], session_id: params[:session_id], yParam: params[:financial_year])
-      return dukeAcc.exchange_redirect
-    end 
-
-    # Redirect to tax_declaration creation
-    def handle_tax_declaration params 
-      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input], yParam: params[:financial_year])
-      return dukeAcc.tax_redirect 
-    end 
-
-    # Redirect to financial year closure
-    # @params [String] financial_year - optional Financial Year Id if clicked by user
-    def handle_close_financial_year params
-      dukeAcc = Duke::DukeBookKeeping.new(user_input: params[:user_input], yParam: params[:financial_year])
-      return dukeAcc.closing_redirect
-    end 
-
-    # Redirect to fixed asset creation
-    def handle_to_new_fixed_asset params 
-      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], depreciables: Duke::DukeMatchingArray.new)
-      dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:depreciables), level: 0.80)
-      return {redirect: :speak, sentence: I18n.t("duke.redirections.to_undefined_fixed_asset")} if dukeArt.depreciables.empty? 
-      return {redirect: :speak, sentence: I18n.t("duke.redirections.to_specific_fixed_asset",id: dukeArt.depreciables.max.key, name: dukeArt.depreciables.max.name)}
-    end 
-
-    # Redirect to fixed asset show
-    # @param [String] asset_state - State of fixed_asset
-    def handle_to_fixed_asset params 
-      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], fixed_asset: Duke::DukeMatchingArray.new)
-      dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:fixed_asset), level: 0.80)
-      return {sentence: I18n.t("duke.redirections.to_fixed_asset_product", name: dukeArt.fixed_asset.max.name, id: dukeArt.fixed_asset.max.key)} if dukeArt.fixed_asset.present? 
-      return {sentence: I18n.t("duke.redirections.to_fixed_asset_state", state: params[:asset_state])} if params[:asset_state].present? 
-      return {sentence: I18n.t("duke.redirections.to_all_fixed_assets")} 
-    end 
-
-    # Redirect to bank account(s)
-    def handle_to_bank_account params 
-      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], bank_account: Duke::DukeMatchingArray.new)
-      dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:bank_account), level: 0.80)
-      return {sentence: I18n.t("duke.redirections.to_bank_accounts")} if dukeArt.bank_account.blank?
-      return {sentence: I18n.t("duke.redirections.to_bank_account", name: dukeArt.bank_account.max.name, id: dukeArt.bank_account.max.key)}
-    end 
-
-    # Redirect to bank_reconciliation
-    # @param [String] import_type - CFONB | OFX
-    def handle_to_bank_reconciliation params 
-      return {status: :over, sentence: I18n.t("duke.redirections.to_reconciliation_import", import: params[:import_type])} if params[:import_type].present? 
-      dukeArt = Duke::DukeArticle.new(user_input: params[:user_input], bank_account: Duke::DukeMatchingArray.new)
-      dukeArt.extract_user_specifics(jsonD: dukeArt.to_jsonD(:bank_account), level: 0.80)
-      return {status: :ask, options: dynamic_options(I18n.t("duke.redirections.which_reconciliation_account"), Cash.all.map{|cash| optJsonify(cash.name, cash.id.to_s)})} if dukeArt.bank_account.blank?
-      cash = dukeArt.bank_account.max
-      return {status: :over, sentence: I18n.t("duke.redirections.to_reconciliation_account", id: cash.key, name: cash.name)}
-    end 
-    
-    # Redirect to bank reconciliation if user clicked on btn-cash-suggestion
-    def handle_to_bank_reconciliation_from_suggestion params 
-      begin   
-        cash = Cash.find_by_id(params[:user_input])
-        return {status: :over, sentence: I18n.t("duke.redirections.to_reconciliation_account", id: cash.id, name: cash.name)}
-      rescue Exception 
-        return {status: :over, sentence: I18n.t("duke.redirections.to_reconcialiation_accounts")}
-      end
     end 
 
     # Redirect to phytosanitary import (by AAM id, or all)
@@ -153,6 +60,91 @@ module Duke
       else # Issue matching Thousands of Phyto Products names, just redirecting to phyto_main_page
         return {status: :over, sentence: I18n.t("duke.import.all_phyto")}
       end
+    end 
+
+    # Redirect to journals, or specific journal by name
+    # @param [String] journal_word : word that matched Journal Entity
+    def handle_to_journal params 
+      input = params[:user_input].del(params[:journal_word])
+      Duke::DukeBookKeeping.new(user_input: input, journal: Duke::DukeMatchingArray.new).journal_redirect
+    end 
+
+    # Redirect to Accouting fog, for specific journal, or current fY
+    def handle_to_accounting_fog params 
+      Duke::DukeBookKeeping.new(user_input: params[:user_input], journal: Duke::DukeMatchingArray.new).fog_redirect
+    end 
+
+    # Redirect to accounting Lettering, for specific account, or all
+    def handle_to_accounting_lettering params 
+      input = params[:user_input].del(params[:lettering_word])
+      Duke::DukeBookKeeping.new(user_input: input, account: Duke::DukeMatchingArray.new).lettering_redirect
+    end 
+
+    # Redirect to financial_year, specific account, or all
+    def handle_to_financial_year params 
+      Duke::DukeBookKeeping.new(user_input: params[:user_input], financial_year: Duke::DukeMatchingArray.new).fy_redirect 
+    end 
+
+    # Redirects to tax declaration
+    # @param [String] tax_state - state of tax declaration with want to show
+    def handle_to_tax_declaration params 
+      Duke::DukeBookKeeping.new(user_input: params[:user_input]).tax_declaration_redirect(params[:tax_state])
+    end 
+
+    # Redirects to accounting exchange steps
+    # @params [String] financial_year - optional Financial Year Id if clicked by user
+    def handle_accounting_exchange params 
+      Duke::DukeBookKeeping.new(user_input: params[:user_input]).exchange_redirect(params[:financial_year])
+    end 
+
+    # Redirect to tax_declaration creation
+    def handle_tax_declaration params 
+      Duke::DukeBookKeeping.new(user_input: params[:user_input]).tax_redirect(params[:financial_year])
+    end 
+
+    # Redirect to financial year closure
+    # @params [String] financial_year - optional Financial Year Id if clicked by user
+    def handle_close_financial_year params
+      Duke::DukeBookKeeping.new(user_input: params[:user_input]).closing_redirect(params[:financial_year])
+    end 
+
+    # Redirect to bank_reconciliation
+    # @param [String] import_type - CFONB | OFX
+    def handle_to_bank_reconciliation params 
+      Duke::DukeBookKeeping.new(user_input: input, bank_account: Duke::DukeMatchingArray.new).reconc_redirect(params[:import_type])
+    end 
+
+    # Redirect to bank reconciliation if user clicked on btn-cash-suggestion
+    def handle_to_bank_reconciliation_from_suggestion params 
+      Duke::DukeBookKeeping.new.btn_reconc_redirect(params[:user_input])
+    end 
+
+    # Redirect to fixed asset creation
+    def handle_to_new_fixed_asset params 
+      Duke::DukeBookKeeping.new(user_input: params[:user_input], depreciables: Duke::DukeMatchingArray.new).new_fixed_asset_redirect
+    end 
+
+    # Redirect to fixed asset show
+    # @param [String] asset_state - State of fixed_asset
+    def handle_to_fixed_asset params 
+      Duke::DukeBookKeeping.new(user_input: params[:user_input], fixed_asset: Duke::DukeMatchingArray.new).fixed_asset_redirect(params[:asset_state])
+    end 
+
+    # Redirect to bank account(s)
+    def handle_to_bank_account params 
+      Duke::DukeBookKeeping.new(user_input: params[:user_input], bank_account: Duke::DukeMatchingArray.new).bank_account_redirect
+    end 
+
+    # @param [String] user_input 
+    # @param [String] purchase_type : unpaid|nil
+    def handle_to_bill(params)
+      Duke::DukeBookKeeping.new(user_input: params[:user_input], entities: Duke::DukeMatchingArray.new).purchase_redirect(params[:purchase_type])
+    end 
+
+    # @param [String] user_input 
+    # @param [String] sale_type : unpaid|nil
+    def handle_to_sale(params)
+      Duke::DukeBookKeeping.new(user_input: params[:user_input], entities: Duke::DukeMatchingArray.new).sale_redirect(params[:sale_type])
     end 
 
   end 
