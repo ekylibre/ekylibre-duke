@@ -1,5 +1,5 @@
 module Duke
-  class DukeBookKeeping < DukeArticle
+  class DukeSingleMatch < DukeArticle
 
     def initialize(**args)
       super() 
@@ -9,26 +9,26 @@ module Duke
 
     # Redirect to journal
     def journal_redirect
-      return {sentence: I18n.t("duke.redirections.journals")} if @journal.empty? 
+      return {sentence: I18n.t("duke.redirections.journals")} if @journal.blank? 
       return {sentence: I18n.t("duke.redirections.journal", name: @journal.name, key: @journal.key)}
     end 
 
     # Redirect to fog
     def fog_redirect
-      return {sentence: I18n.t("duke.redirections.current_fog", key: FinancialYear.current.id)} if @journal.empty? 
+      return {sentence: I18n.t("duke.redirections.current_fog", key: FinancialYear.current.id)} if @journal.blank? 
       return {sentence: I18n.t("duke.redirections.fog", name: @journal.name, key: @journal.key)}
     end 
     
     # Redirect to lettering
     def lettering_redirect
-      return {sentence: I18n.t("duke.redirections.letterings")} if @account.empty? 
+      return {sentence: I18n.t("duke.redirections.letterings")} if @account.blank? 
       return {sentence: I18n.t("duke.redirections.lettering", name: @account.name, key: @account.key)}
     end 
 
     # Redirect to immobilization creation
     def new_fixed_asset_redirect 
-      return {redirect: :speak, sentence: I18n.t("duke.redirections.to_undefined_fixed_asset")} if @depreciables.empty? 
-      return {redirect: :speak, sentence: I18n.t("duke.redirections.to_specific_fixed_asset",id: @depreciables.key, name: @depreciables.name)}
+      return {redirect: :speak, sentence: I18n.t("duke.redirections.to_undefined_fixed_asset")} if @depreciable.blank? 
+      return {redirect: :speak, sentence: I18n.t("duke.redirections.to_specific_fixed_asset",id: @depreciable.key, name: @depreciable.name)}
     end 
 
     # Redirect to financial year
@@ -43,13 +43,15 @@ module Duke
     end 
 
     # Redirect to bank reconciliation
+    # @param [String] import_type - cfonb|ofx
     def reconc_redirect import_type
-      return {status: :over, sentence: I18n.t("duke.redirections.to_reconciliation_import", import: params[:import_type])} if import_type.present? 
+      return {status: :over, sentence: I18n.t("duke.redirections.to_reconciliation_import", import: import_type)} if import_type.present? 
       return w_account if @bank_account.blank?
-      return {status: :over, sentence: I18n.t("duke.redirections.to_reconciliation_account", id: @cash.key, name: @cash.name)}
+      return {status: :over, sentence: I18n.t("duke.redirections.to_reconciliation_account", id: @bank_account.key, name: @bank_account.name)}
     end 
 
     # Redirect to a fixed asset show
+    # @param [String] state - state of fixed assets we wish to access
     def fixed_asset_redirect state
       return {sentence: I18n.t("duke.redirections.to_fixed_asset_product", name: @fixed_asset.name, id: @fixed_asset.key)} if @fixed_asset.present?
       return {sentence: I18n.t("duke.redirections.to_fixed_asset_state", state: state)} if state.present? 
@@ -57,23 +59,24 @@ module Duke
     end 
 
     # Redirect to (Unpaid|All) sales, to specific customer or all
-    def sale_redirect(type)
+    # @param [String] type - unpaid|nil
+    def sale_redirect type
       type = (:all if type.nil?)|| :unpaid
-      return {sentence: I18n.t("duke.redirections.to_#{type}_sales")} if @entities.empty?
-      return {sentence: I18n.t("duke.redirections.to_#{type}_specific_sales" , entity: @entities.name)}
+      return {sentence: I18n.t("duke.redirections.to_#{type}_sales")} if @entity.blank?
+      return {sentence: I18n.t("duke.redirections.to_#{type}_specific_sales" , entity: @entity.name)}
     end 
 
     # Redirect to (Unpaid|All) purchases, to specific supplier or all
+    # @param [String] type - unpaid|nil
     def purchase_redirect(type)
       type = (:all if type.nil?)|| :unpaid
-      return {sentence: I18n.t("duke.redirections.to_#{type}_bills")} if @entities.empty?
-      return {sentence: I18n.t("duke.redirections.to_#{type}_specific_bills" , entity: @entities.name)}
+      return {sentence: I18n.t("duke.redirections.to_#{type}_bills")} if @entity.blank?
+      return {sentence: I18n.t("duke.redirections.to_#{type}_specific_bills" , entity: @entity.name)}
     end 
 
     # Redirect to bank reconciliation after btn-click to disambiguate bank account
-    # @param [String] id - cash id
-    def btn_reconc_redirect id 
-      cash = Cash.find_by_id(id)
+    def btn_reconc_redirect
+      cash = Cash.find_by_id(@user_input)
       return {status: :over, sentence: I18n.t("duke.redirections.to_reconciliation_account", id: cash.id, name: cash.name)} if cash.present?
       return {status: :over, sentence: I18n.t("duke.redirections.to_reconcialiation_accounts")}
     end 
@@ -111,15 +114,41 @@ module Duke
     end 
 
     # Redirect to closing financial year
-    def closing_redirect(fy_id)
-      year_from_id(fy_id)
+    # @param [String] id - FinancialYear id
+    def closing_redirect id
+      year_from_id(id)
       return w_fy if @financial_year.nil? 
       return {redirect: :alreadyclosed, sentence: I18n.t("duke.exports.closed", code: @financial_year[:name], id: @financial_year[:key])} if FinancialYear.find_by_id(@financial_year[:key]).state.eql?("locked")
       return {redirect: :closed, sentence: I18n.t("duke.exports.to_close", code: @financial_year[:name], id: @financial_year[:key])}
     end 
-    
+
+    # Parse activity variety, and redirects to correct activity
+    def activity_redirect 
+      return {found: :no, sentence: I18n.t("duke.redirections.no_activity")} if @activity_variety.blank? # Return if no activity matched
+      iterator = Activity.of_cultivation_variety(Activity.find_by_id(@activity_variety.key).cultivation_variety)
+      return w_variety(iterator) if iterator.size > 1
+      return {found: :yes, sentence: I18n.t("duke.redirections.activity", variety: @activity_variety.name), key: @activity_variety.key}
+    end 
+
+    # Redirects to activity if user clicked on btn-cultivation-variety-suggestion
+    def activity_sugg_redirect
+      act = Activity.find_by_id(@user_input.to_i)
+      return {found: :yes, sentence: I18n.t("duke.redirections.activity", variety: act.cultivation_variety_name), key: act.id} if act.present?
+      return {found: :no, sentence: I18n.t("duke.redirections.no_activity")}
+    end 
+
+    # Looks for tool|entity|activity_variety and redirects if matches something
+    def fallback_redirect
+      best = best_of(:tool, :entity, :activity_variety)
+      return {found: :no, sentence: I18n.t("duke.redirections.no_fallback")} if best.blank? 
+      return {found: :yes, sentence: I18n.t("duke.redirections.#{best[:type]}_fallback", id: best.key, name: best.name) }
+    end 
+
     # Parse every Fec parameters and starts FEC export
-    def fec_redirect(format)
+    # @param [String] id - FinancialYear id
+    # @param [String] format - xml|txt = exporting format
+    def fec_redirect(id, format)
+      year_from_id(id)
       exportFormat = fec_format(format)
       return w_fy(fec_format: exportFormat) if @financial_year.nil? 
       return w_fec_format if exportFormat.nil? 
@@ -130,16 +159,34 @@ module Duke
     end 
 
     # Parse financial year and start balance sheet export
-    def balance_sheet_redirect(printer, template_nature)
+    # @param [String] id - FinancialYear id
+    # @param [String] printer - which printer for printer_job
+    # @param [String] template_nature - which template for printer_job
+    def balance_sheet_redirect(id, printer, template_nature)
+      year_from_id(id)
       return w_fy if @financial_year.nil?
       sentence = I18n.t("duke.exports.#{template_nature}_started", year: @financial_year[:name])
       PrinterJob.perform_later(printer, template: DocumentTemplate.find_by_nature(template_nature), financial_year: FinancialYear.find_by_id(@financial_year[:key]), perform_as: User.find_by(email: @email), duke_id: @session_id)
       return {redirect: :started, sentence: sentence}
     end 
 
+    # Start tool Costs exports if a tool is recognized
+    def tool_costs_redirect
+      return {status: :no_tool, sentence: I18n.t("duke.exports.no_tool_found")} if @tool.blank?
+      ToolCostExportJob.perform_later(equipment_ids: [@tool.key], campaign_ids: Campaign.current.ids, user: User.find_by(email: @email, duke_id: @session_id)
+      return {status: :started, sentence: I18n.t("duke.exports.tool_export_started" , tool: @tool.name)}
+    end 
+
+    # Starts activity tracability exports
+    def activity_traca_redirect
+      return {status: :no_cultivation, sentence: I18n.t("duke.exports.no_var_found")} if @activity_variety.blank? 
+      InterventionExportJob.perform_later(activity_id: @activity_variety.key, campaign_ids: Activity.find_by(id: @activity_variety.key).campaigns.pluck(:id), user: User.find_by(email: @email), duke_id: @session_id)
+      return {status: :started, sentence: I18n.t("duke.exports.activity_export_started" , activity: @activity_variety.name)}
+    end 
+
     private 
 
-    attr_accessor :financial_year, :journal, :account, :bank_account, :fixed_asset, :depreciables, :entities
+    attr_accessor :financial_year, :journal, :account, :bank_account, :fixed_asset, :depreciable, :entity
 
     # Returns best account
     def best_account
@@ -152,32 +199,48 @@ module Duke
     end 
 
     # Returns best depreciable
-    def best_depreciables
-      @depreciables.max
+    def best_depreciable
+      @depreciable.max
     end
     
     # Returns best entity
-    def best_entities
-      @entities.max
+    def best_entity
+      @entity.max
+    end 
+
+    # Returns best activity variety
+    def best_activity_variety 
+      @activity_variety.max
+    end 
+
+    # Returns best tool
+    def best_tool 
+      @tool.max
     end 
 
     # Returns best bank_account
     def best_bank_account
-      return {key: Cash.first.id, name: Cash.first.name} if Cash.all.size.eql?(1)
+      return DukeMatchingItem.new(key: Cash.first.id, name: Cash.first.name) if Cash.all.size.eql?(1)
       @bank_account.max
     end 
 
     # Returns best journal
     def best_journal
-      return {key: Journal.first.id, name: Journal.first.name} if Journal.all.size.eql?(1)
+      return DukeMatchingItem.new(key: Journal.first.id, name: Journal.first.name) if Journal.all.size.eql?(1)
       @journal.max
     end 
 
     # Returns best financial year
     def best_financial_year 
-      return {key: FinancialYear.first.id, name: FinancialYear.first.code} if FinancialYear.all.size.eql?(1) 
+      return DukeMatchingItem.new(key: FinancialYear.first.id, name: FinancialYear.first.name) if FinancialYear.all.size.eql?(1) 
       @financial_year.max
     end 
+
+    # Return best match across multiple entries, with it's type as an hash entry
+    def best_of(*args)
+      vals = args.map{|arg| send(arg).merge_h({type: arg}) if send(arg).present?}.compact
+      return vals.max_by{|itm| itm.distance}
+    end
 
     # Correct financialYear ambiguity
     def w_fy(fec_format: nil)
@@ -196,6 +259,11 @@ module Duke
     def w_account 
       options = dynamic_options(I18n.t("duke.redirections.which_reconciliation_account"), Cash.all.map{|cash| optJsonify(cash.name, cash.id.to_s)})
       {status: :ask, options: options} 
+    end 
+
+    def w_variety vars
+      opts = vars.map{|act| optJsonify(act.name, act.id.to_s)}
+      return {found: :multiple, optional: dynamic_options(I18n.t("duke.redirections.which_activity", variety: @activity_variety.name), opts)}
     end 
 
     # Set @financialYear from btn-suggestion-click

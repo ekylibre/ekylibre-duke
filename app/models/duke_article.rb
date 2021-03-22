@@ -2,8 +2,8 @@ module Duke
   class DukeArticle
     include Duke::BaseDuke
 
-    attr_accessor :description, :date, :duration, :offset, :user_input, :activity_variety, :tool, :cultivablezones, :financial_year, :entities, :depreciables, :registered_phyto, :email, :session_id
-    @@user_specific_types = [:account, :journal, :registered_phyto, :bank_account, :fixed_asset, :depreciables, :financial_year, :entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press] 
+    attr_accessor :description, :date, :duration, :offset, :user_input, :activity_variety, :tool, :cultivablezones, :financial_year, :entity, :depreciable, :registered_phyto, :email, :session_id
+    @@user_specific_types = [:account, :journal, :registered_phyto, :bank_account, :fixed_asset, :depreciable, :financial_year, :entity, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press] 
     @@ambiguities_types = [:plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press]
     @@month_hash =  {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9, "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12 }
     
@@ -133,14 +133,6 @@ module Duke
       end 
     end 
 
-    def all_specifics(*vals)
-      vals = @@user_specific_types if vals.empty?
-      return vals.map{|val|send(val)
-                    .each{|hs|hs.merge_h({type: val})} if respond_to?("#{val}=") && send(val).kind_of?(Duke::DukeMatchingArray)}
-                 .compact
-                 .flatten
-    end 
-
     private 
 
     # Extracts duration from user_input
@@ -178,8 +170,6 @@ module Duke
       end 
       return Time.now # If nothing matches, we return current hour
     end
-
-
 
     # @param [Str|Integer|Float] year
     # @return [Integer] parsed year
@@ -246,7 +236,7 @@ module Duke
     def name_attr(item_type)
       if item_type == :activity_variety
         attribute = :cultivation_variety_name
-      elsif item_type == :entities
+      elsif item_type == :entity
         attribute = :full_name
       elsif item_type == :financial_year
         attribute = :code 
@@ -265,7 +255,7 @@ module Duke
         iterator = Account.all
       elsif item_type == :journal 
         iterator = Journal.all
-      elsif item_type == :depreciables  
+      elsif item_type == :depreciable
         iterator = Product.depreciables
       elsif item_type == :fixed_asset 
         iterator = Product.find(FixedAsset.all.collect(&:product_id))
@@ -285,7 +275,7 @@ module Duke
         iterator = Matter.availables(at: @date.to_time).can('press(grape)', 'press(juice)', 'press(fermented_juice)', 'press(wine)')
       elsif item_type == :doer
         iterator = Worker.availables(at: @date.to_time).each
-      elsif item_type == :entities 
+      elsif item_type == :entity
         iterator = Entity.all
       elsif item_type == :destination
         iterator = Matter.availables(at: @date.to_time).where("variety='tank'")
