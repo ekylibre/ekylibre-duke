@@ -13,21 +13,23 @@ module Duke
       @ambiguities, @working_periods = [], []
       args.each{|k, v| instance_variable_set("@#{k}", v)}
       @description = @user_input.clone
-      @matchArrs = [:input, :doer, :tool, :crop_groups, :plant, :cultivation, :land_parcel]
+      @matchArrs.concat([:input, :doer, :tool, :crop_groups, :plant, :cultivation, :land_parcel])
     end 
 
     # @creates intervention from json
+    # @param [Json] jsonD - Json representation of dukeIntervention
+    # @param [Boolean] all - Should we recover everything, or only user_specifics
     # @returns DukeIntervention
-    def recover_from_hash(jsonD) 
+    def recover_from_hash(jsonD, all=true) 
       jsonD.slice(*@matchArrs).each{|k,v| self.instance_variable_set("@#{k}", DukeMatchingArray.new(arr: v))}
-      jsonD.except(*@matchArrs).each{|k,v| self.instance_variable_set("@#{k}", v)}
+      jsonD.except(*@matchArrs).each{|k,v| self.instance_variable_set("@#{k}", v)} if all
       self
     end 
 
     # @returns json Option with all clickable buttons understandable by IBM
     def modification_candidates
       candidates = [:tool, :doer, :input].select{|type| self.instance_variable_get("@#{type}").present? }
-                                                   .map{|type| optJsonify(I18n.t("duke.interventions.#{type}"))}
+                                         .map{|type| optJsonify(I18n.t("duke.interventions.#{type}"))}
       candidates.push(optJsonify(I18n.t("duke.interventions.temporality")))
       candidates.push(optJsonify(I18n.t("duke.interventions.target"))) if @plant.present?||@crop_groups.present?||@cultivation.present?||@land_parcel.present?
       return dynamic_options(I18n.t("duke.interventions.ask.what_modify"), candidates)

@@ -12,7 +12,7 @@ module Duke
       @parameters = {complementary: {}}
       args.each{|k, v| instance_variable_set("@#{k}", v)}
       @description = @user_input.clone
-      @matchArrs = [:plant, :crop_groups, :destination, :press]
+      @matchArrs.concat([:plant, :crop_groups, :destination, :press])
     end 
 
     # @param [String] type : type_of parameter

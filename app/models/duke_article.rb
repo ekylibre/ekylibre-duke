@@ -4,22 +4,22 @@ module Duke
     include Duke::BaseDuke
 
     attr_accessor :date, :duration, :user_input, :description
-    @@user_specific_types = [:financial_year, :entities, :cultivablezones, :activity_variety, :plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press] 
-    @@ambiguities_types = [:plant, :land_parcel, :cultivation, :destination, :crop_groups, :tool, :doer, :input, :press]
-    @@month_hash =  {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4, "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9, "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12 }
-    
+
     def initialize(**args)
       @description, @user_input = "", ""
       @date = Time.now
       @duration = 60 
+      @matchArrs = [:activity_variety, :tool, :cultivablezones, :financial_year, :entities]
       args.each{|k, v| instance_variable_set("@#{k}", v)}
     end 
 
-    # @creates intervention from json
+    # Create intervention from json
+    # @param [Json] jsonD - Json representation of dukeIntervention
+    # @param [Boolean] all - Should we recover everything, or only user_specifics
     # @returns DukeIntervention
-    def recover_from_hash(jsonD) 
+    def recover_from_hash(jsonD, all=true) 
       jsonD.slice(*@matchArrs).each{|k,v| self.instance_variable_set("@#{k}", DukeMatchingArray.new(arr: v))}
-      jsonD.except(*@matchArrs).each{|k,v| self.instance_variable_set("@#{k}", v)}
+      jsonD.except(*@matchArrs).each{|k,v| self.instance_variable_set("@#{k}", v)} if all
       self
     end 
 
@@ -34,13 +34,13 @@ module Duke
     # Extract user specifics & recreates DukeArticle
     def extract_user_specifics(jsonD: self.to_jsonD, level: 80)
       @user_input = @user_input.duke_clear # Get clean string before parsing
-      user_specifics = jsonD.select{ |key, value| @@user_specific_types.include?(key.to_sym)}
+      user_specifics = jsonD.select{ |key, value| @matchArrs.include?(key.to_sym)}
       attributes = user_specifics.to_h{|key, mArr|[key, {iterator: iterator(key.to_sym), list: mArr}]}
       create_words_combo.each do |combo| # Creating all combo_words from user_input
         parser = DukeParser.new(word_combo: combo, level: level, attributes: attributes) # create new DukeParser
         parser.parse # parse user_specifics
       end
-      self.recover_from_hash(jsonD) # recreate DukeArticle
+      self.recover_from_hash(jsonD, false) # recreate DukeArticle
     end
           
     def update_description(ds)
@@ -54,7 +54,7 @@ module Duke
     # Find ambiguities in what's been parsed
     def find_ambiguity
       self.as_json.each do |key, reco|
-        if @@ambiguities_types.include?(key.to_sym)
+        if @matchArrs.include?(key.to_sym)
           ambiguity_attr = ambiguities_attributes(key.to_sym)
           reco.each do |anItem|
             ambiguity = DukeAmbiguity.new(itm: anItem, ambiguity_attr: ambiguity_attr, itm_type: key).check_ambiguity
@@ -101,7 +101,7 @@ module Duke
         d = Date.tomorrow
       else
         if full_date = @user_input.matchdel(/(\d|\d{2})(er|eme|ème)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre) ?(\d{4})?/)
-          @date = Time.new(year_from_str(full_date[4]), @@month_hash[full_date[3]], full_date[1].to_i, time.hour, time.min, time.sec); return 
+          @date = Time.new(year_from_str(full_date[4]), month_int(full_date[3]), full_date[1].to_i, time.hour, time.min, time.sec); return 
         elsif slash_date = @user_input.matchdel(/(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?/)
           @date = Time.new(year_from_str(slash_date[4]), slash_date[2].to_i, slash_date[1].to_i, time.hour, time.min, time.sec); return
         else # If nothing matched, we return todays date
@@ -123,12 +123,12 @@ module Duke
       elsif @user_input.matchdel("cette semaine")
         return now - (now.wday - 1), now
       elsif since_date 
-        return Time.new(year_from_str(since_date[5]), @@month_hash[since_date[4]], since_date[3].to_i, 0, 0, 0), now
+        return Time.new(year_from_str(since_date[5]), month_int(since_date[4]), since_date[3].to_i, 0, 0, 0), now
       elsif since_slash_date
         return Time.new(year_from_str(since_slash_date[6]), since_slash_date[4].to_i, since_slash_date[3].to_i, 0, 0, 0), now
       elsif since_month_date 
         year = (now.year - 1 if month > now.month)||now.year
-        return Time.new(year, @@month_hash[since_month_date[3]], 1, 0, 0, 0), now
+        return Time.new(year, month_int(since_month_date[3]), 1, 0, 0, 0), now
       else 
         return Time.new(now.year, 1, 1, 0, 0, 0), now
       end 
@@ -136,7 +136,7 @@ module Duke
 
     private 
 
-    attr_accessor :activity_variety, :tool, :cultivablezones, :financial_year, :entities, :offset
+    attr_accessor :retry, :activity_variety, :tool, :cultivablezones, :financial_year, :entities, :offset
 
     # Extracts duration from user_input
     # @return nil but set @duration in minutes
@@ -174,8 +174,6 @@ module Duke
       return Time.now # If nothing matches, we return current hour
     end
 
-
-
     # @param [Str|Integer|Float] year
     # @return [Integer] parsed year
     def year_from_str year
@@ -183,6 +181,15 @@ module Duke
       return 2000 + year.to_i if year.to_i.between?(now.year - 2005, now.year - 1999)
       return year.to_i if year.to_i.between?(now.year - 5, now.year + 1)
       return now.year
+    end 
+
+    # @param [String] month
+    # @return [Integer] month
+    def month_int month
+      hash =  {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4,
+                "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9,
+                "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12}
+      hash[month] 
     end 
 
     # @param [Integer] value : Integer extracted by ibm

@@ -31,7 +31,7 @@ module Duke
     # @param [ActiveRecord] product
     # @return bln, check if product is ambiguous with self
     def ambiguous?(product)
-      return (@itm.key != product[:id] && ((@itm.distance - @itm.matched.partial_similar(product[:partials])).between?(0, @ambig_level)))
+      @itm.key != product[:id] && (@itm.distance - @itm.matched.partial_similar(product[:partials])).between?(0, @ambig_level)
     end 
 
     # @param [ActiveRecord] product
