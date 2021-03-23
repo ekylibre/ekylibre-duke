@@ -13,7 +13,7 @@ module Duke
       return dukeInt.guide_to_procedure unless dukeInt.ok_procedure? # help user find his procedure if current_proc is not accepted
       dukeInt.parse_sentence(proc_word: params[:procedure_word]) # Parse user sentence
       return dukeInt.to_ibm(modifiable: dukeInt.modification_candidates, moreable: dukeInt.complement_candidates) # return Json with what'll be displayed on .click modify-btn
-    end
+    end 
 
     # Modify a specific type of element
     # @params [String] specific : What we want to modify

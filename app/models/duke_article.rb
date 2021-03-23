@@ -9,7 +9,7 @@ module Duke
       @description, @user_input = "", ""
       @date = Time.now
       @duration = 60 
-      @matchArrs = [:activity_variety, :tool, :cultivablezones, :financial_year, :entities]
+      @matchArrs = [:tool, :cultivablezones]
       args.each{|k, v| instance_variable_set("@#{k}", v)}
     end 
 
@@ -26,7 +26,7 @@ module Duke
     # @returns DukeIntervention to_json with given parameters
     def to_jsonD(*args) 
       return ActiveSupport::HashWithIndifferentAccess.new(self.as_json) if args.empty?
-      return ActiveSupport::HashWithIndifferentAccess.new(Hash[args.flatten.map{|arg| [arg, self.send(arg)] if self.respond_to? arg}.compact])
+      return ActiveSupport::HashWithIndifferentAccess.new(Hash[args.flatten.map{|arg| [arg, self.send(arg)] if self.respond_to?(arg, true)}.compact])
     end 
 
     # @param [json] jsonD : DukeArticle.as_json
@@ -136,7 +136,7 @@ module Duke
 
     private 
 
-    attr_accessor :retry, :activity_variety, :tool, :cultivablezones, :financial_year, :entities, :offset
+    attr_accessor :retry, :tool, :cultivablezones, :offset
 
     # Extracts duration from user_input
     # @return nil but set @duration in minutes
@@ -239,7 +239,7 @@ module Duke
     def name_attr(item_type)
       if item_type == :activity_variety
         attribute = :cultivation_variety_name
-      elsif item_type == :entities
+      elsif item_type == :entity
         attribute = :full_name
       elsif item_type == :financial_year
         attribute = :code 
@@ -267,7 +267,7 @@ module Duke
         iterator = Matter.availables(at: @date.to_time).can('press(grape)', 'press(juice)', 'press(fermented_juice)', 'press(wine)')
       elsif item_type == :doer
         iterator = Worker.availables(at: @date.to_time).each
-      elsif item_type == :entities 
+      elsif item_type == :entity
         iterator = Entity.all
       elsif item_type == :destination
         iterator = Matter.availables(at: @date.to_time).where("variety='tank'")

@@ -8,7 +8,7 @@ module Duke
     def initialize(**args)
       super()
       @procedure = nil
-      @input, @doer, @tool, @crop_group = Array.new(4, DukeMatchingArray.new)
+      @input, @doer, @tool, @crop_groups = Array.new(4, DukeMatchingArray.new)
       @retry = 0
       @ambiguities, @working_periods = [], []
       args.each{|k, v| instance_variable_set("@#{k}", v)}
