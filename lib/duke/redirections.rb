@@ -38,18 +38,28 @@ module Duke
     # Redirects to accounting exchange steps
     # @params [String] financial_year - optional Financial Year Id if clicked by user
     def handle_accounting_exchange params 
-      Duke::DukeSingleMatch.new(user_input: params[:user_input]).exchange_redirect(params[:financial_year])
+      Duke::DukeSingleMatch.new(user_input: params[:user_input],
+                                financial_year: Duke::DukeMatchingArray.new).exchange_redirect(params[:financial_year])
     end 
 
     # Redirect to tax_declaration creation
     def handle_tax_declaration params 
-      Duke::DukeSingleMatch.new(user_input: params[:user_input]).tax_redirect(params[:financial_year])
+      Duke::DukeSingleMatch.new(user_input: params[:user_input],
+                                financial_year: Duke::DukeMatchingArray.new).tax_redirect(params[:financial_year])
     end 
 
     # Redirect to financial year closure
     # @params [String] financial_year - optional Financial Year Id if clicked by user
     def handle_close_financial_year params
-      Duke::DukeSingleMatch.new(user_input: params[:user_input]).closing_redirect(params[:financial_year])
+      Duke::DukeSingleMatch.new(user_input: params[:user_input],
+                                financial_year: Duke::DukeMatchingArray.new).closing_redirect(params[:financial_year])
+    end 
+
+    # Redirect to financial year locking
+    # @params [String] financial_year - optional Financial Year Id if clicked by user
+    def handle_lock_financial_year params 
+      Duke::DukeSingleMatch.new(user_input: params[:user_input],
+                                financial_year: Duke::DukeMatchingArray.new).locking_redirect(params[:financial_year])
     end 
 
     # Redirect to bank_reconciliation
@@ -83,6 +93,11 @@ module Duke
                                 bank_account: Duke::DukeMatchingArray.new).bank_account_redirect
     end 
 
+    # Redirect to account plan(s)
+    def handle_to_accounts_plan params 
+      Duke::DukeSingleMatch.new(user_input: params[:user_input]).accounts_plan_redirect(params[:account_id])
+    end 
+
     # @param [String] user_input 
     # @param [String] purchase_type : unpaid|nil
     def handle_to_bill(params)
@@ -95,6 +110,13 @@ module Duke
     def handle_to_sale(params)
       Duke::DukeSingleMatch.new(user_input: params[:user_input],
                                 entity: Duke::DukeMatchingArray.new).sale_redirect(params[:sale_type])
+    end 
+
+    # @param [String] user_input 
+    # @param [String] sale_type : unpaid|nil
+    def handle_to_fixed_asset_sale(params)
+      Duke::DukeSingleMatch.new(user_input: params[:user_input],
+                                fixed_asset: Duke::DukeMatchingArray.new).fixed_asset_sale_redirect
     end 
 
     # @param [String] user_input 
