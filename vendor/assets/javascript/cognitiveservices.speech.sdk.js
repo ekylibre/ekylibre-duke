@@ -101,9 +101,16 @@ window.SpeechSDK = __webpack_require__(1);
 
 "use strict";
 
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -113,7 +120,7 @@ var Exports_2 = __webpack_require__(4);
 // Common.Storage.SetSessionStorage(new Common.Browser.SessionStorage());
 Exports_2.Events.instance.attachListener(new Exports_1.ConsoleLoggingListener());
 // Speech SDK API
-__export(__webpack_require__(49));
+__exportStar(__webpack_require__(61), exports);
 
 
 
@@ -125,20 +132,28 @@ __export(__webpack_require__(49));
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(3));
-__export(__webpack_require__(43));
-__export(__webpack_require__(206));
-__export(__webpack_require__(207));
-__export(__webpack_require__(208));
-__export(__webpack_require__(209));
-__export(__webpack_require__(226));
-__export(__webpack_require__(227));
-__export(__webpack_require__(228));
-__export(__webpack_require__(183));
+__exportStar(__webpack_require__(3), exports);
+__exportStar(__webpack_require__(51), exports);
+__exportStar(__webpack_require__(52), exports);
+__exportStar(__webpack_require__(227), exports);
+__exportStar(__webpack_require__(228), exports);
+__exportStar(__webpack_require__(229), exports);
+__exportStar(__webpack_require__(230), exports);
+__exportStar(__webpack_require__(247), exports);
+__exportStar(__webpack_require__(248), exports);
+__exportStar(__webpack_require__(249), exports);
+__exportStar(__webpack_require__(203), exports);
 
 
 
@@ -151,6 +166,7 @@ __export(__webpack_require__(183));
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConsoleLoggingListener = void 0;
 var Exports_1 = __webpack_require__(4);
 var ConsoleLoggingListener = /** @class */ (function () {
     function ConsoleLoggingListener(logLevelFilter) {
@@ -224,33 +240,49 @@ exports.ConsoleLoggingListener = ConsoleLoggingListener;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(5));
-__export(__webpack_require__(23));
-__export(__webpack_require__(24));
-__export(__webpack_require__(26));
-__export(__webpack_require__(27));
-__export(__webpack_require__(25));
-__export(__webpack_require__(29));
-__export(__webpack_require__(30));
-__export(__webpack_require__(7));
-__export(__webpack_require__(31));
-__export(__webpack_require__(32));
-__export(__webpack_require__(6));
-__export(__webpack_require__(33));
-__export(__webpack_require__(34));
-__export(__webpack_require__(35));
-__export(__webpack_require__(36));
-__export(__webpack_require__(37));
-var TranslationStatus_1 = __webpack_require__(38);
-exports.TranslationStatus = TranslationStatus_1.TranslationStatus;
-__export(__webpack_require__(39));
-__export(__webpack_require__(40));
-__export(__webpack_require__(41));
-__export(__webpack_require__(42));
+__exportStar(__webpack_require__(5), exports);
+__exportStar(__webpack_require__(23), exports);
+__exportStar(__webpack_require__(24), exports);
+__exportStar(__webpack_require__(26), exports);
+__exportStar(__webpack_require__(27), exports);
+__exportStar(__webpack_require__(25), exports);
+__exportStar(__webpack_require__(28), exports);
+__exportStar(__webpack_require__(29), exports);
+__exportStar(__webpack_require__(7), exports);
+__exportStar(__webpack_require__(30), exports);
+__exportStar(__webpack_require__(31), exports);
+__exportStar(__webpack_require__(32), exports);
+__exportStar(__webpack_require__(33), exports);
+__exportStar(__webpack_require__(34), exports);
+__exportStar(__webpack_require__(35), exports);
+__exportStar(__webpack_require__(36), exports);
+__exportStar(__webpack_require__(37), exports);
+__exportStar(__webpack_require__(38), exports);
+__exportStar(__webpack_require__(39), exports);
+__exportStar(__webpack_require__(6), exports);
+__exportStar(__webpack_require__(40), exports);
+__exportStar(__webpack_require__(41), exports);
+__exportStar(__webpack_require__(42), exports);
+__exportStar(__webpack_require__(43), exports);
+__exportStar(__webpack_require__(44), exports);
+var TranslationStatus_1 = __webpack_require__(45);
+Object.defineProperty(exports, "TranslationStatus", { enumerable: true, get: function () { return TranslationStatus_1.TranslationStatus; } });
+__exportStar(__webpack_require__(46), exports);
+__exportStar(__webpack_require__(47), exports);
+__exportStar(__webpack_require__(48), exports);
+__exportStar(__webpack_require__(49), exports);
+__exportStar(__webpack_require__(50), exports);
 
 
 
@@ -276,6 +308,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AudioStreamNodeErrorEvent = exports.AudioStreamNodeDetachedEvent = exports.AudioStreamNodeAttachedEvent = exports.AudioStreamNodeAttachingEvent = exports.AudioStreamNodeEvent = exports.AudioSourceErrorEvent = exports.AudioSourceOffEvent = exports.AudioSourceReadyEvent = exports.AudioSourceInitializingEvent = exports.AudioSourceEvent = void 0;
+// tslint:disable:max-classes-per-file
 var PlatformEvent_1 = __webpack_require__(6);
 var AudioSourceEvent = /** @class */ (function (_super) {
     __extends(AudioSourceEvent, _super);
@@ -289,13 +323,12 @@ var AudioSourceEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privAudioSourceId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return AudioSourceEvent;
 }(PlatformEvent_1.PlatformEvent));
 exports.AudioSourceEvent = AudioSourceEvent;
-// tslint:disable-next-line:max-classes-per-file
 var AudioSourceInitializingEvent = /** @class */ (function (_super) {
     __extends(AudioSourceInitializingEvent, _super);
     function AudioSourceInitializingEvent(audioSourceId) {
@@ -304,7 +337,6 @@ var AudioSourceInitializingEvent = /** @class */ (function (_super) {
     return AudioSourceInitializingEvent;
 }(AudioSourceEvent));
 exports.AudioSourceInitializingEvent = AudioSourceInitializingEvent;
-// tslint:disable-next-line:max-classes-per-file
 var AudioSourceReadyEvent = /** @class */ (function (_super) {
     __extends(AudioSourceReadyEvent, _super);
     function AudioSourceReadyEvent(audioSourceId) {
@@ -313,7 +345,6 @@ var AudioSourceReadyEvent = /** @class */ (function (_super) {
     return AudioSourceReadyEvent;
 }(AudioSourceEvent));
 exports.AudioSourceReadyEvent = AudioSourceReadyEvent;
-// tslint:disable-next-line:max-classes-per-file
 var AudioSourceOffEvent = /** @class */ (function (_super) {
     __extends(AudioSourceOffEvent, _super);
     function AudioSourceOffEvent(audioSourceId) {
@@ -322,7 +353,6 @@ var AudioSourceOffEvent = /** @class */ (function (_super) {
     return AudioSourceOffEvent;
 }(AudioSourceEvent));
 exports.AudioSourceOffEvent = AudioSourceOffEvent;
-// tslint:disable-next-line:max-classes-per-file
 var AudioSourceErrorEvent = /** @class */ (function (_super) {
     __extends(AudioSourceErrorEvent, _super);
     function AudioSourceErrorEvent(audioSourceId, error) {
@@ -334,13 +364,12 @@ var AudioSourceErrorEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privError;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return AudioSourceErrorEvent;
 }(AudioSourceEvent));
 exports.AudioSourceErrorEvent = AudioSourceErrorEvent;
-// tslint:disable-next-line:max-classes-per-file
 var AudioStreamNodeEvent = /** @class */ (function (_super) {
     __extends(AudioStreamNodeEvent, _super);
     function AudioStreamNodeEvent(eventName, audioSourceId, audioNodeId) {
@@ -352,13 +381,12 @@ var AudioStreamNodeEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privAudioNodeId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return AudioStreamNodeEvent;
 }(AudioSourceEvent));
 exports.AudioStreamNodeEvent = AudioStreamNodeEvent;
-// tslint:disable-next-line:max-classes-per-file
 var AudioStreamNodeAttachingEvent = /** @class */ (function (_super) {
     __extends(AudioStreamNodeAttachingEvent, _super);
     function AudioStreamNodeAttachingEvent(audioSourceId, audioNodeId) {
@@ -367,7 +395,6 @@ var AudioStreamNodeAttachingEvent = /** @class */ (function (_super) {
     return AudioStreamNodeAttachingEvent;
 }(AudioStreamNodeEvent));
 exports.AudioStreamNodeAttachingEvent = AudioStreamNodeAttachingEvent;
-// tslint:disable-next-line:max-classes-per-file
 var AudioStreamNodeAttachedEvent = /** @class */ (function (_super) {
     __extends(AudioStreamNodeAttachedEvent, _super);
     function AudioStreamNodeAttachedEvent(audioSourceId, audioNodeId) {
@@ -376,7 +403,6 @@ var AudioStreamNodeAttachedEvent = /** @class */ (function (_super) {
     return AudioStreamNodeAttachedEvent;
 }(AudioStreamNodeEvent));
 exports.AudioStreamNodeAttachedEvent = AudioStreamNodeAttachedEvent;
-// tslint:disable-next-line:max-classes-per-file
 var AudioStreamNodeDetachedEvent = /** @class */ (function (_super) {
     __extends(AudioStreamNodeDetachedEvent, _super);
     function AudioStreamNodeDetachedEvent(audioSourceId, audioNodeId) {
@@ -385,7 +411,6 @@ var AudioStreamNodeDetachedEvent = /** @class */ (function (_super) {
     return AudioStreamNodeDetachedEvent;
 }(AudioStreamNodeEvent));
 exports.AudioStreamNodeDetachedEvent = AudioStreamNodeDetachedEvent;
-// tslint:disable-next-line:max-classes-per-file
 var AudioStreamNodeErrorEvent = /** @class */ (function (_super) {
     __extends(AudioStreamNodeErrorEvent, _super);
     function AudioStreamNodeErrorEvent(audioSourceId, audioNodeId, error) {
@@ -397,7 +422,7 @@ var AudioStreamNodeErrorEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privError;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return AudioStreamNodeErrorEvent;
@@ -415,6 +440,7 @@ exports.AudioStreamNodeErrorEvent = AudioStreamNodeErrorEvent;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PlatformEvent = exports.EventType = void 0;
 var Guid_1 = __webpack_require__(7);
 var EventType;
 (function (EventType) {
@@ -435,35 +461,35 @@ var PlatformEvent = /** @class */ (function () {
         get: function () {
             return this.privName;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(PlatformEvent.prototype, "eventId", {
         get: function () {
             return this.privEventId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(PlatformEvent.prototype, "eventTime", {
         get: function () {
             return this.privEventTime;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(PlatformEvent.prototype, "eventType", {
         get: function () {
             return this.privEventType;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(PlatformEvent.prototype, "metadata", {
         get: function () {
             return this.privMetadata;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return PlatformEvent;
@@ -481,6 +507,7 @@ exports.PlatformEvent = PlatformEvent;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.createNoDashGuid = exports.createGuid = void 0;
 var uuid_1 = __webpack_require__(8);
 var createGuid = function () {
     return uuid_1.v4();
@@ -650,13 +677,18 @@ __webpack_require__.r(__webpack_exports__);
 // Unique ID creation requires a high quality random # generator. In the browser we therefore
 // require the crypto API and do not support built-in fallback to lower quality random number
 // generators (like Math.random()).
-// getRandomValues needs to be invoked in a context where "this" is a Crypto implementation. Also,
-// find the complete implementation of crypto (msCrypto) on IE11.
-var getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto) || typeof msCrypto !== 'undefined' && typeof msCrypto.getRandomValues === 'function' && msCrypto.getRandomValues.bind(msCrypto);
+var getRandomValues;
 var rnds8 = new Uint8Array(16);
 function rng() {
+  // lazy load so that environments that need to polyfill have a chance to do so
   if (!getRandomValues) {
-    throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+    // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation. Also,
+    // find the complete implementation of crypto (msCrypto) on IE11.
+    getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto) || typeof msCrypto !== 'undefined' && typeof msCrypto.getRandomValues === 'function' && msCrypto.getRandomValues.bind(msCrypto);
+
+    if (!getRandomValues) {
+      throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+    }
   }
 
   return getRandomValues(rnds8);
@@ -1274,6 +1306,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConnectionMessageSentEvent = exports.ConnectionMessageReceivedEvent = exports.ConnectionEstablishErrorEvent = exports.ConnectionErrorEvent = exports.ConnectionClosedEvent = exports.ConnectionEstablishedEvent = exports.ConnectionStartEvent = exports.ConnectionEvent = exports.ServiceEvent = void 0;
 var PlatformEvent_1 = __webpack_require__(6);
 var ServiceEvent = /** @class */ (function (_super) {
     __extends(ServiceEvent, _super);
@@ -1287,13 +1320,12 @@ var ServiceEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privJsonResult;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ServiceEvent;
 }(PlatformEvent_1.PlatformEvent));
 exports.ServiceEvent = ServiceEvent;
-// tslint:disable-next-line:max-classes-per-file
 var ConnectionEvent = /** @class */ (function (_super) {
     __extends(ConnectionEvent, _super);
     function ConnectionEvent(eventName, connectionId, eventType) {
@@ -1306,13 +1338,12 @@ var ConnectionEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privConnectionId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ConnectionEvent;
 }(PlatformEvent_1.PlatformEvent));
 exports.ConnectionEvent = ConnectionEvent;
-// tslint:disable-next-line:max-classes-per-file
 var ConnectionStartEvent = /** @class */ (function (_super) {
     __extends(ConnectionStartEvent, _super);
     function ConnectionStartEvent(connectionId, uri, headers) {
@@ -1325,20 +1356,19 @@ var ConnectionStartEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privUri;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConnectionStartEvent.prototype, "headers", {
         get: function () {
             return this.privHeaders;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ConnectionStartEvent;
 }(ConnectionEvent));
 exports.ConnectionStartEvent = ConnectionStartEvent;
-// tslint:disable-next-line:max-classes-per-file
 var ConnectionEstablishedEvent = /** @class */ (function (_super) {
     __extends(ConnectionEstablishedEvent, _super);
     function ConnectionEstablishedEvent(connectionId, metadata) {
@@ -1347,7 +1377,6 @@ var ConnectionEstablishedEvent = /** @class */ (function (_super) {
     return ConnectionEstablishedEvent;
 }(ConnectionEvent));
 exports.ConnectionEstablishedEvent = ConnectionEstablishedEvent;
-// tslint:disable-next-line:max-classes-per-file
 var ConnectionClosedEvent = /** @class */ (function (_super) {
     __extends(ConnectionClosedEvent, _super);
     function ConnectionClosedEvent(connectionId, statusCode, reason) {
@@ -1360,20 +1389,19 @@ var ConnectionClosedEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privRreason;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConnectionClosedEvent.prototype, "statusCode", {
         get: function () {
             return this.privStatusCode;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ConnectionClosedEvent;
 }(ConnectionEvent));
 exports.ConnectionClosedEvent = ConnectionClosedEvent;
-// tslint:disable-next-line:max-classes-per-file
 var ConnectionErrorEvent = /** @class */ (function (_super) {
     __extends(ConnectionErrorEvent, _super);
     function ConnectionErrorEvent(connectionId, message, type) {
@@ -1386,20 +1414,19 @@ var ConnectionErrorEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privMessage;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConnectionErrorEvent.prototype, "type", {
         get: function () {
             return this.privType;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ConnectionErrorEvent;
 }(ConnectionEvent));
 exports.ConnectionErrorEvent = ConnectionErrorEvent;
-// tslint:disable-next-line:max-classes-per-file
 var ConnectionEstablishErrorEvent = /** @class */ (function (_super) {
     __extends(ConnectionEstablishErrorEvent, _super);
     function ConnectionEstablishErrorEvent(connectionId, statuscode, reason) {
@@ -1412,20 +1439,19 @@ var ConnectionEstablishErrorEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privReason;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConnectionEstablishErrorEvent.prototype, "statusCode", {
         get: function () {
             return this.privStatusCode;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ConnectionEstablishErrorEvent;
 }(ConnectionEvent));
 exports.ConnectionEstablishErrorEvent = ConnectionEstablishErrorEvent;
-// tslint:disable-next-line:max-classes-per-file
 var ConnectionMessageReceivedEvent = /** @class */ (function (_super) {
     __extends(ConnectionMessageReceivedEvent, _super);
     function ConnectionMessageReceivedEvent(connectionId, networkReceivedTimeISO, message) {
@@ -1438,20 +1464,19 @@ var ConnectionMessageReceivedEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privNetworkReceivedTime;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConnectionMessageReceivedEvent.prototype, "message", {
         get: function () {
             return this.privMessage;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ConnectionMessageReceivedEvent;
 }(ConnectionEvent));
 exports.ConnectionMessageReceivedEvent = ConnectionMessageReceivedEvent;
-// tslint:disable-next-line:max-classes-per-file
 var ConnectionMessageSentEvent = /** @class */ (function (_super) {
     __extends(ConnectionMessageSentEvent, _super);
     function ConnectionMessageSentEvent(connectionId, networkSentTimeISO, message) {
@@ -1464,14 +1489,14 @@ var ConnectionMessageSentEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privNetworkSentTime;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConnectionMessageSentEvent.prototype, "message", {
         get: function () {
             return this.privMessage;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ConnectionMessageSentEvent;
@@ -1489,6 +1514,7 @@ exports.ConnectionMessageSentEvent = ConnectionMessageSentEvent;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConnectionMessage = exports.MessageType = void 0;
 var Error_1 = __webpack_require__(25);
 var Guid_1 = __webpack_require__(7);
 var MessageType;
@@ -1521,21 +1547,21 @@ var ConnectionMessage = /** @class */ (function () {
         get: function () {
             return this.privMessageType;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConnectionMessage.prototype, "headers", {
         get: function () {
             return this.privHeaders;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConnectionMessage.prototype, "body", {
         get: function () {
             return this.privBody;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConnectionMessage.prototype, "textBody", {
@@ -1545,7 +1571,7 @@ var ConnectionMessage = /** @class */ (function () {
             }
             return this.privBody;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConnectionMessage.prototype, "binaryBody", {
@@ -1555,14 +1581,14 @@ var ConnectionMessage = /** @class */ (function () {
             }
             return this.privBody;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConnectionMessage.prototype, "id", {
         get: function () {
             return this.privId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ConnectionMessage;
@@ -1593,6 +1619,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ObjectDisposedError = exports.InvalidOperationError = exports.ArgumentNullError = void 0;
+// tslint:disable:max-classes-per-file
 /**
  * The error that is thrown when an argument passed in is null.
  *
@@ -1625,7 +1653,6 @@ exports.ArgumentNullError = ArgumentNullError;
  * @class InvalidOperationError
  * @extends {Error}
  */
-// tslint:disable-next-line:max-classes-per-file
 var InvalidOperationError = /** @class */ (function (_super) {
     __extends(InvalidOperationError, _super);
     /**
@@ -1683,6 +1710,7 @@ exports.ObjectDisposedError = ObjectDisposedError;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConnectionOpenResponse = void 0;
 var ConnectionOpenResponse = /** @class */ (function () {
     function ConnectionOpenResponse(statusCode, reason) {
         this.privStatusCode = statusCode;
@@ -1692,14 +1720,14 @@ var ConnectionOpenResponse = /** @class */ (function () {
         get: function () {
             return this.privStatusCode;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConnectionOpenResponse.prototype, "reason", {
         get: function () {
             return this.privReason;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ConnectionOpenResponse;
@@ -1716,68 +1744,53 @@ exports.ConnectionOpenResponse = ConnectionOpenResponse;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var ws_1 = __webpack_require__(28);
-// tslint:disable-next-line:max-classes-per-file
-var CustomEmitter = /** @class */ (function () {
-    function CustomEmitter() {
-        this.target = null;
-        try {
-            this.target = new EventTarget();
-        }
-        catch (error) {
-            if (typeof window !== "undefined") {
-                this.target = window.document.createElement("eventTarget");
-            }
-            else {
-                throw error;
-            }
-        }
+exports.SendingAgentContextMessageEvent = exports.DialogEvent = void 0;
+var PlatformEvent_1 = __webpack_require__(6);
+var DialogEvent = /** @class */ (function (_super) {
+    __extends(DialogEvent, _super);
+    function DialogEvent(eventName, eventType) {
+        if (eventType === void 0) { eventType = PlatformEvent_1.EventType.Info; }
+        return _super.call(this, eventName, eventType) || this;
     }
-    CustomEmitter.prototype.on = function (eventName, listener) {
-        return this.target.addEventListener(eventName, listener);
-    };
-    CustomEmitter.prototype.off = function (eventName, listener) {
-        return this.target.removeEventListener(eventName, listener);
-    };
-    CustomEmitter.prototype.emit = function (eventName, detail) {
-        this.target.dispatchEvent(new CustomEvent(eventName, { detail: detail }));
-    };
-    return CustomEmitter;
-}());
-// tslint:disable-next-line:max-classes-per-file
-var PlatformEmitter = /** @class */ (function () {
-    function PlatformEmitter() {
-        if (ws_1.EventEmitter !== undefined) {
-            this.privEmitter = new ws_1.EventEmitter();
-        }
-        else {
-            this.privEmitter = new CustomEmitter();
-        }
+    return DialogEvent;
+}(PlatformEvent_1.PlatformEvent));
+exports.DialogEvent = DialogEvent;
+var SendingAgentContextMessageEvent = /** @class */ (function (_super) {
+    __extends(SendingAgentContextMessageEvent, _super);
+    function SendingAgentContextMessageEvent(agentConfig) {
+        var _this = _super.call(this, "SendingAgentContextMessageEvent") || this;
+        _this.privAgentConfig = agentConfig;
+        return _this;
     }
-    PlatformEmitter.prototype.on = function (eventName, fn) {
-        this.privEmitter.on(eventName, fn);
-    };
-    PlatformEmitter.prototype.off = function (eventName, fn) {
-        this.privEmitter.off(eventName, fn);
-    };
-    PlatformEmitter.prototype.emit = function (eventName, params) {
-        this.privEmitter.emit(eventName, params);
-    };
-    return PlatformEmitter;
-}());
-exports.PlatformEmitter = PlatformEmitter;
+    Object.defineProperty(SendingAgentContextMessageEvent.prototype, "agentConfig", {
+        get: function () {
+            return this.privAgentConfig;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return SendingAgentContextMessageEvent;
+}(DialogEvent));
+exports.SendingAgentContextMessageEvent = SendingAgentContextMessageEvent;
 
 
 
 /***/ }),
 /* 28 */
-/***/ (function(module, exports) {
-
-/* (ignored) */
-
-/***/ }),
-/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1785,8 +1798,9 @@ exports.PlatformEmitter = PlatformEmitter;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Events = void 0;
 var Error_1 = __webpack_require__(25);
-var EventSource_1 = __webpack_require__(30);
+var EventSource_1 = __webpack_require__(29);
 var Events = /** @class */ (function () {
     function Events() {
     }
@@ -1794,7 +1808,7 @@ var Events = /** @class */ (function () {
         get: function () {
             return Events.privInstance;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Events.privInstance = new EventSource_1.EventSource();
@@ -1811,7 +1825,7 @@ exports.Events = Events;
 
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1819,13 +1833,13 @@ exports.Events = Events;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Emitter_1 = __webpack_require__(27);
+exports.EventSource = void 0;
 var Error_1 = __webpack_require__(25);
 var Guid_1 = __webpack_require__(7);
 var EventSource = /** @class */ (function () {
     function EventSource(metadata) {
         var _this = this;
-        this.privEventIds = {};
+        this.privEventListeners = {};
         this.privIsDisposed = false;
         this.onEvent = function (event) {
             if (_this.isDisposed()) {
@@ -1842,20 +1856,18 @@ var EventSource = /** @class */ (function () {
                     }
                 }
             }
-            for (var eventId in _this.privEventIds) {
-                if (eventId && _this.privEventIds[eventId]) {
-                    _this.privEmitter.emit(eventId, event);
+            for (var eventId in _this.privEventListeners) {
+                if (eventId && _this.privEventListeners[eventId]) {
+                    _this.privEventListeners[eventId](event);
                 }
             }
         };
         this.attach = function (onEventCallback) {
             var id = Guid_1.createNoDashGuid();
-            _this.privEmitter.on(id, onEventCallback);
-            _this.privEventIds[id] = true;
+            _this.privEventListeners[id] = onEventCallback;
             return {
                 detach: function () {
-                    _this.privEmitter.off(id, onEventCallback);
-                    delete _this.privEventIds[id];
+                    delete _this.privEventListeners[id];
                     return Promise.resolve();
                 },
             };
@@ -1867,21 +1879,33 @@ var EventSource = /** @class */ (function () {
             return _this.privIsDisposed;
         };
         this.dispose = function () {
+            _this.privEventListeners = null;
             _this.privIsDisposed = true;
         };
         this.privMetadata = metadata;
-        this.privEmitter = new Emitter_1.PlatformEmitter();
     }
     Object.defineProperty(EventSource.prototype, "metadata", {
         get: function () {
             return this.privMetadata;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return EventSource;
 }());
 exports.EventSource = EventSource;
+
+
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
 
 
 
@@ -1894,6 +1918,7 @@ exports.EventSource = EventSource;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConnectionState = void 0;
 var ConnectionState;
 (function (ConnectionState) {
     ConnectionState[ConnectionState["None"] = 0] = "None";
@@ -1913,6 +1938,89 @@ var ConnectionState;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+
+
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+
+
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+
+
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+
+
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+
+
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+
+
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+
+
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.List = void 0;
 var Error_1 = __webpack_require__(25);
 var List = /** @class */ (function () {
     function List(list) {
@@ -2120,7 +2228,7 @@ exports.List = List;
 
 
 /***/ }),
-/* 33 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2128,6 +2236,7 @@ exports.List = List;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.marshalPromiseToCallbacks = exports.Sink = exports.Deferred = exports.PromiseResultEventSource = exports.PromiseResult = exports.PromiseState = void 0;
 var PromiseState;
 (function (PromiseState) {
     PromiseState[PromiseState["None"] = 0] = "None";
@@ -2160,34 +2269,33 @@ var PromiseResult = /** @class */ (function () {
         get: function () {
             return this.privIsCompleted;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(PromiseResult.prototype, "isError", {
         get: function () {
             return this.privIsError;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(PromiseResult.prototype, "error", {
         get: function () {
             return this.privError;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(PromiseResult.prototype, "result", {
         get: function () {
             return this.privResult;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return PromiseResult;
 }());
 exports.PromiseResult = PromiseResult;
-// tslint:disable-next-line:max-classes-per-file
 var PromiseResultEventSource = /** @class */ (function () {
     function PromiseResultEventSource() {
         var _this = this;
@@ -2205,7 +2313,6 @@ var PromiseResultEventSource = /** @class */ (function () {
     return PromiseResultEventSource;
 }());
 exports.PromiseResultEventSource = PromiseResultEventSource;
-// tslint:disable-next-line:max-classes-per-file
 var Deferred = /** @class */ (function () {
     function Deferred() {
         var _this = this;
@@ -2226,13 +2333,12 @@ var Deferred = /** @class */ (function () {
         get: function () {
             return this.privPromise;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return Deferred;
 }());
 exports.Deferred = Deferred;
-// tslint:disable-next-line:max-classes-per-file
 var Sink = /** @class */ (function () {
     function Sink() {
         var _this = this;
@@ -2314,14 +2420,14 @@ var Sink = /** @class */ (function () {
         get: function () {
             return this.privState;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Sink.prototype, "result", {
         get: function () {
             return this.privPromiseResult;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return Sink;
@@ -2370,7 +2476,7 @@ exports.marshalPromiseToCallbacks = marshalPromiseToCallbacks;
 
 
 /***/ }),
-/* 34 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2414,9 +2520,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Queue = void 0;
 var Error_1 = __webpack_require__(25);
-var List_1 = __webpack_require__(32);
-var Promise_1 = __webpack_require__(33);
+var List_1 = __webpack_require__(39);
+var Promise_1 = __webpack_require__(40);
 var SubscriberType;
 (function (SubscriberType) {
     SubscriberType[SubscriberType["Dequeue"] = 0] = "Dequeue";
@@ -2613,7 +2720,7 @@ exports.Queue = Queue;
 
 
 /***/ }),
-/* 35 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2621,6 +2728,7 @@ exports.Queue = Queue;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RawWebsocketMessage = void 0;
 var ConnectionMessage_1 = __webpack_require__(24);
 var Error_1 = __webpack_require__(25);
 var Guid_1 = __webpack_require__(7);
@@ -2644,14 +2752,14 @@ var RawWebsocketMessage = /** @class */ (function () {
         get: function () {
             return this.privMessageType;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RawWebsocketMessage.prototype, "payload", {
         get: function () {
             return this.privPayload;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RawWebsocketMessage.prototype, "textContent", {
@@ -2661,7 +2769,7 @@ var RawWebsocketMessage = /** @class */ (function () {
             }
             return this.privPayload;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RawWebsocketMessage.prototype, "binaryContent", {
@@ -2671,14 +2779,14 @@ var RawWebsocketMessage = /** @class */ (function () {
             }
             return this.privPayload;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RawWebsocketMessage.prototype, "id", {
         get: function () {
             return this.privId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return RawWebsocketMessage;
@@ -2688,7 +2796,7 @@ exports.RawWebsocketMessage = RawWebsocketMessage;
 
 
 /***/ }),
-/* 36 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2696,6 +2804,7 @@ exports.RawWebsocketMessage = RawWebsocketMessage;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RiffPcmEncoder = void 0;
 var RiffPcmEncoder = /** @class */ (function () {
     function RiffPcmEncoder(actualSampleRate, desiredSampleRate) {
         var _this = this;
@@ -2752,7 +2861,7 @@ exports.RiffPcmEncoder = RiffPcmEncoder;
 
 
 /***/ }),
-/* 37 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2796,9 +2905,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Stream = void 0;
 var Error_1 = __webpack_require__(25);
 var Guid_1 = __webpack_require__(7);
-var Queue_1 = __webpack_require__(34);
+var Queue_1 = __webpack_require__(41);
 var Stream = /** @class */ (function () {
     function Stream(streamId) {
         var _this = this;
@@ -2842,21 +2952,21 @@ var Stream = /** @class */ (function () {
         get: function () {
             return this.privIsWriteEnded;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Stream.prototype, "isReadEnded", {
         get: function () {
             return this.privIsReadEnded;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Stream.prototype, "id", {
         get: function () {
             return this.privId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Stream.prototype.close = function () {
@@ -2887,7 +2997,7 @@ exports.Stream = Stream;
 
 
 /***/ }),
-/* 38 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2895,6 +3005,7 @@ exports.Stream = Stream;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TranslationStatus = void 0;
 /**
  * Defines translation status.
  * @class TranslationStatus
@@ -2914,7 +3025,7 @@ var TranslationStatus;
 
 
 /***/ }),
-/* 39 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2935,6 +3046,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ChunkedArrayBufferStream = void 0;
 var Exports_1 = __webpack_require__(4);
 var ChunkedArrayBufferStream = /** @class */ (function (_super) {
     __extends(ChunkedArrayBufferStream, _super);
@@ -2995,7 +3107,7 @@ exports.ChunkedArrayBufferStream = ChunkedArrayBufferStream;
 
 
 /***/ }),
-/* 40 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3003,6 +3115,19 @@ exports.ChunkedArrayBufferStream = ChunkedArrayBufferStream;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+
+
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Timeout = void 0;
 var Timeout = /** @class */ (function () {
     function Timeout() {
     }
@@ -3106,7 +3231,7 @@ exports.Timeout = Timeout;
 
 
 /***/ }),
-/* 41 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3127,6 +3252,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.OCSPCacheUpdateErrorEvent = exports.OCSPResponseRetrievedEvent = exports.OCSPCacheFetchErrorEvent = exports.OCSPVerificationFailedEvent = exports.OCSPCacheHitEvent = exports.OCSPCacheEntryNeedsRefreshEvent = exports.OCSPCacheEntryExpiredEvent = exports.OCSPWSUpgradeStartedEvent = exports.OCSPStapleReceivedEvent = exports.OCSPCacheUpdatehCompleteEvent = exports.OCSPDiskCacheStoreEvent = exports.OCSPMemoryCacheStoreEvent = exports.OCSPCacheUpdateNeededEvent = exports.OCSPDiskCacheHitEvent = exports.OCSPCacheMissEvent = exports.OCSPMemoryCacheHitEvent = exports.OCSPEvent = void 0;
+// tslint:disable:max-classes-per-file
 var PlatformEvent_1 = __webpack_require__(6);
 var OCSPEvent = /** @class */ (function (_super) {
     __extends(OCSPEvent, _super);
@@ -3138,7 +3265,6 @@ var OCSPEvent = /** @class */ (function (_super) {
     return OCSPEvent;
 }(PlatformEvent_1.PlatformEvent));
 exports.OCSPEvent = OCSPEvent;
-// tslint:disable-next-line:max-classes-per-file
 var OCSPMemoryCacheHitEvent = /** @class */ (function (_super) {
     __extends(OCSPMemoryCacheHitEvent, _super);
     function OCSPMemoryCacheHitEvent(signature) {
@@ -3147,7 +3273,6 @@ var OCSPMemoryCacheHitEvent = /** @class */ (function (_super) {
     return OCSPMemoryCacheHitEvent;
 }(OCSPEvent));
 exports.OCSPMemoryCacheHitEvent = OCSPMemoryCacheHitEvent;
-// tslint:disable-next-line:max-classes-per-file
 var OCSPCacheMissEvent = /** @class */ (function (_super) {
     __extends(OCSPCacheMissEvent, _super);
     function OCSPCacheMissEvent(signature) {
@@ -3156,7 +3281,6 @@ var OCSPCacheMissEvent = /** @class */ (function (_super) {
     return OCSPCacheMissEvent;
 }(OCSPEvent));
 exports.OCSPCacheMissEvent = OCSPCacheMissEvent;
-// tslint:disable-next-line:max-classes-per-file
 var OCSPDiskCacheHitEvent = /** @class */ (function (_super) {
     __extends(OCSPDiskCacheHitEvent, _super);
     function OCSPDiskCacheHitEvent(signature) {
@@ -3165,7 +3289,6 @@ var OCSPDiskCacheHitEvent = /** @class */ (function (_super) {
     return OCSPDiskCacheHitEvent;
 }(OCSPEvent));
 exports.OCSPDiskCacheHitEvent = OCSPDiskCacheHitEvent;
-// tslint:disable-next-line:max-classes-per-file
 var OCSPCacheUpdateNeededEvent = /** @class */ (function (_super) {
     __extends(OCSPCacheUpdateNeededEvent, _super);
     function OCSPCacheUpdateNeededEvent(signature) {
@@ -3174,7 +3297,6 @@ var OCSPCacheUpdateNeededEvent = /** @class */ (function (_super) {
     return OCSPCacheUpdateNeededEvent;
 }(OCSPEvent));
 exports.OCSPCacheUpdateNeededEvent = OCSPCacheUpdateNeededEvent;
-// tslint:disable-next-line:max-classes-per-file
 var OCSPMemoryCacheStoreEvent = /** @class */ (function (_super) {
     __extends(OCSPMemoryCacheStoreEvent, _super);
     function OCSPMemoryCacheStoreEvent(signature) {
@@ -3183,7 +3305,6 @@ var OCSPMemoryCacheStoreEvent = /** @class */ (function (_super) {
     return OCSPMemoryCacheStoreEvent;
 }(OCSPEvent));
 exports.OCSPMemoryCacheStoreEvent = OCSPMemoryCacheStoreEvent;
-// tslint:disable-next-line:max-classes-per-file
 var OCSPDiskCacheStoreEvent = /** @class */ (function (_super) {
     __extends(OCSPDiskCacheStoreEvent, _super);
     function OCSPDiskCacheStoreEvent(signature) {
@@ -3192,7 +3313,6 @@ var OCSPDiskCacheStoreEvent = /** @class */ (function (_super) {
     return OCSPDiskCacheStoreEvent;
 }(OCSPEvent));
 exports.OCSPDiskCacheStoreEvent = OCSPDiskCacheStoreEvent;
-// tslint:disable-next-line:max-classes-per-file
 var OCSPCacheUpdatehCompleteEvent = /** @class */ (function (_super) {
     __extends(OCSPCacheUpdatehCompleteEvent, _super);
     function OCSPCacheUpdatehCompleteEvent(signature) {
@@ -3201,7 +3321,6 @@ var OCSPCacheUpdatehCompleteEvent = /** @class */ (function (_super) {
     return OCSPCacheUpdatehCompleteEvent;
 }(OCSPEvent));
 exports.OCSPCacheUpdatehCompleteEvent = OCSPCacheUpdatehCompleteEvent;
-// tslint:disable-next-line:max-classes-per-file
 var OCSPStapleReceivedEvent = /** @class */ (function (_super) {
     __extends(OCSPStapleReceivedEvent, _super);
     function OCSPStapleReceivedEvent() {
@@ -3210,7 +3329,6 @@ var OCSPStapleReceivedEvent = /** @class */ (function (_super) {
     return OCSPStapleReceivedEvent;
 }(OCSPEvent));
 exports.OCSPStapleReceivedEvent = OCSPStapleReceivedEvent;
-// tslint:disable-next-line:max-classes-per-file
 var OCSPWSUpgradeStartedEvent = /** @class */ (function (_super) {
     __extends(OCSPWSUpgradeStartedEvent, _super);
     function OCSPWSUpgradeStartedEvent(serialNumber) {
@@ -3219,7 +3337,6 @@ var OCSPWSUpgradeStartedEvent = /** @class */ (function (_super) {
     return OCSPWSUpgradeStartedEvent;
 }(OCSPEvent));
 exports.OCSPWSUpgradeStartedEvent = OCSPWSUpgradeStartedEvent;
-// tslint:disable-next-line:max-classes-per-file
 var OCSPCacheEntryExpiredEvent = /** @class */ (function (_super) {
     __extends(OCSPCacheEntryExpiredEvent, _super);
     function OCSPCacheEntryExpiredEvent(serialNumber, expireTime) {
@@ -3230,7 +3347,6 @@ var OCSPCacheEntryExpiredEvent = /** @class */ (function (_super) {
     return OCSPCacheEntryExpiredEvent;
 }(OCSPEvent));
 exports.OCSPCacheEntryExpiredEvent = OCSPCacheEntryExpiredEvent;
-// tslint:disable-next-line:max-classes-per-file
 var OCSPCacheEntryNeedsRefreshEvent = /** @class */ (function (_super) {
     __extends(OCSPCacheEntryNeedsRefreshEvent, _super);
     function OCSPCacheEntryNeedsRefreshEvent(serialNumber, startTime, expireTime) {
@@ -3242,7 +3358,6 @@ var OCSPCacheEntryNeedsRefreshEvent = /** @class */ (function (_super) {
     return OCSPCacheEntryNeedsRefreshEvent;
 }(OCSPEvent));
 exports.OCSPCacheEntryNeedsRefreshEvent = OCSPCacheEntryNeedsRefreshEvent;
-// tslint:disable-next-line:max-classes-per-file
 var OCSPCacheHitEvent = /** @class */ (function (_super) {
     __extends(OCSPCacheHitEvent, _super);
     function OCSPCacheHitEvent(serialNumber, startTime, expireTime) {
@@ -3256,7 +3371,6 @@ var OCSPCacheHitEvent = /** @class */ (function (_super) {
     return OCSPCacheHitEvent;
 }(OCSPEvent));
 exports.OCSPCacheHitEvent = OCSPCacheHitEvent;
-// tslint:disable-next-line:max-classes-per-file
 var OCSPVerificationFailedEvent = /** @class */ (function (_super) {
     __extends(OCSPVerificationFailedEvent, _super);
     function OCSPVerificationFailedEvent(serialNumber, error) {
@@ -3267,7 +3381,6 @@ var OCSPVerificationFailedEvent = /** @class */ (function (_super) {
     return OCSPVerificationFailedEvent;
 }(OCSPEvent));
 exports.OCSPVerificationFailedEvent = OCSPVerificationFailedEvent;
-// tslint:disable-next-line:max-classes-per-file
 var OCSPCacheFetchErrorEvent = /** @class */ (function (_super) {
     __extends(OCSPCacheFetchErrorEvent, _super);
     function OCSPCacheFetchErrorEvent(serialNumber, error) {
@@ -3278,7 +3391,6 @@ var OCSPCacheFetchErrorEvent = /** @class */ (function (_super) {
     return OCSPCacheFetchErrorEvent;
 }(OCSPEvent));
 exports.OCSPCacheFetchErrorEvent = OCSPCacheFetchErrorEvent;
-// tslint:disable-next-line:max-classes-per-file
 var OCSPResponseRetrievedEvent = /** @class */ (function (_super) {
     __extends(OCSPResponseRetrievedEvent, _super);
     function OCSPResponseRetrievedEvent(serialNumber) {
@@ -3287,7 +3399,6 @@ var OCSPResponseRetrievedEvent = /** @class */ (function (_super) {
     return OCSPResponseRetrievedEvent;
 }(OCSPEvent));
 exports.OCSPResponseRetrievedEvent = OCSPResponseRetrievedEvent;
-// tslint:disable-next-line:max-classes-per-file
 var OCSPCacheUpdateErrorEvent = /** @class */ (function (_super) {
     __extends(OCSPCacheUpdateErrorEvent, _super);
     function OCSPCacheUpdateErrorEvent(serialNumber, error) {
@@ -3302,7 +3413,7 @@ exports.OCSPCacheUpdateErrorEvent = OCSPCacheUpdateErrorEvent;
 
 
 /***/ }),
-/* 42 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3323,6 +3434,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BackgroundEvent = void 0;
 var Exports_1 = __webpack_require__(4);
 var BackgroundEvent = /** @class */ (function (_super) {
     __extends(BackgroundEvent, _super);
@@ -3335,7 +3447,7 @@ var BackgroundEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privError;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return BackgroundEvent;
@@ -3345,7 +3457,19 @@ exports.BackgroundEvent = BackgroundEvent;
 
 
 /***/ }),
-/* 43 */
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+
+
+
+/***/ }),
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3389,9 +3513,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.MicAudioSource = exports.AudioWorkletSourceURLPropertyName = void 0;
+var Exports_1 = __webpack_require__(53);
 var Exports_2 = __webpack_require__(4);
-var AudioStreamFormat_1 = __webpack_require__(60);
+var AudioStreamFormat_1 = __webpack_require__(72);
 exports.AudioWorkletSourceURLPropertyName = "MICROPHONE-WorkletSourceUrl";
 var MicAudioSource = /** @class */ (function () {
     function MicAudioSource(privRecorder, deviceId, audioSourceId, mediaStream) {
@@ -3438,7 +3563,7 @@ var MicAudioSource = /** @class */ (function () {
             else {
                 var next = function () {
                     _this.onEvent(new Exports_2.AudioSourceInitializingEvent(_this.privId)); // no stream id
-                    if (_this.privMediaStream) {
+                    if (_this.privMediaStream && _this.privMediaStream.active) {
                         _this.onEvent(new Exports_2.AudioSourceReadyEvent(_this.privId));
                         _this.privInitializeDeferral.resolve();
                     }
@@ -3449,15 +3574,7 @@ var MicAudioSource = /** @class */ (function () {
                             _this.privInitializeDeferral.resolve();
                         }, function (error) {
                             var errorMsg = "Error occurred during microphone initialization: " + error;
-                            var tmp = _this.privInitializeDeferral;
-                            // HACK: this should be handled through onError callbacks of all promises up the stack.
-                            // Unfortunately, the current implementation does not provide an easy way to reject promises
-                            // without a lot of code replication.
-                            // TODO: fix promise implementation, allow for a graceful reject chaining.
-                            _this.privInitializeDeferral = null;
-                            tmp.reject(errorMsg); // this will bubble up through the whole chain of promises,
-                            // with each new level adding extra "Unhandled callback error" prefix to the error message.
-                            // The following line is not guaranteed to be executed.
+                            _this.privInitializeDeferral.reject(errorMsg);
                             _this.onEvent(new Exports_2.AudioSourceErrorEvent(_this.privId, errorMsg));
                         });
                     }
@@ -3465,7 +3582,9 @@ var MicAudioSource = /** @class */ (function () {
                 if (_this.privContext.state === "suspended") {
                     // NOTE: On iOS, the Web Audio API requires sounds to be triggered from an explicit user action.
                     // https://github.com/WebAudio/web-audio-api/issues/790
-                    _this.privContext.resume().then(next, function (reason) {
+                    _this.privContext.resume()
+                        .then(next)
+                        .catch(function (reason) {
                         _this.privInitializeDeferral.reject("Failed to initialize audio context: " + reason);
                     });
                 }
@@ -3547,14 +3666,14 @@ var MicAudioSource = /** @class */ (function () {
         get: function () {
             return Promise.resolve(MicAudioSource.AUDIOFORMAT);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(MicAudioSource.prototype, "blob", {
         get: function () {
             return Promise.reject("Not implemented for Mic input");
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     MicAudioSource.prototype.turnOff = function () {
@@ -3585,7 +3704,7 @@ var MicAudioSource = /** @class */ (function () {
         get: function () {
             return this.privEvents;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(MicAudioSource.prototype, "deviceInfo", {
@@ -3602,7 +3721,7 @@ var MicAudioSource = /** @class */ (function () {
                 };
             });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     MicAudioSource.prototype.setProperty = function (name, value) {
@@ -3698,59 +3817,71 @@ exports.MicAudioSource = MicAudioSource;
 
 
 /***/ }),
-/* 44 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !exports.hasOwnProperty(p)) __createBinding(exports, m, p);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AutoDetectSourceLanguagesOpenRangeOptionName = exports.ForceDictationPropertyName = exports.ServicePropertiesPropertyName = exports.CancellationErrorCodePropertyName = exports.OutputFormatPropertyName = void 0;
 // Make sure not to export internal modules.
 //
-__export(__webpack_require__(45));
-__export(__webpack_require__(47));
-__export(__webpack_require__(46));
-__export(__webpack_require__(48));
-__export(__webpack_require__(147));
-__export(__webpack_require__(148));
-__export(__webpack_require__(150));
-__export(__webpack_require__(151));
-__export(__webpack_require__(152));
-__export(__webpack_require__(153));
-__export(__webpack_require__(154));
-__export(__webpack_require__(155));
-__export(__webpack_require__(156));
-__export(__webpack_require__(157));
-__export(__webpack_require__(158));
-__export(__webpack_require__(159));
-__export(__webpack_require__(160));
-__export(__webpack_require__(161));
-__export(__webpack_require__(162));
-__export(__webpack_require__(163));
-__export(__webpack_require__(164));
-__export(__webpack_require__(165));
-__export(__webpack_require__(166));
-__export(__webpack_require__(167));
-__export(__webpack_require__(168));
-__export(__webpack_require__(169));
-__export(__webpack_require__(170));
-__export(__webpack_require__(171));
-__export(__webpack_require__(173));
-__export(__webpack_require__(174));
-__export(__webpack_require__(175));
-__export(__webpack_require__(179));
-__export(__webpack_require__(180));
-__export(__webpack_require__(198));
-__export(__webpack_require__(199));
-__export(__webpack_require__(200));
-__export(__webpack_require__(202));
-__export(__webpack_require__(203));
-__export(__webpack_require__(204));
-__export(__webpack_require__(205));
+__exportStar(__webpack_require__(54), exports);
+__exportStar(__webpack_require__(57), exports);
+__exportStar(__webpack_require__(56), exports);
+__exportStar(__webpack_require__(58), exports);
+__exportStar(__webpack_require__(59), exports);
+__exportStar(__webpack_require__(60), exports);
+__exportStar(__webpack_require__(165), exports);
+__exportStar(__webpack_require__(166), exports);
+__exportStar(__webpack_require__(168), exports);
+__exportStar(__webpack_require__(169), exports);
+__exportStar(__webpack_require__(170), exports);
+__exportStar(__webpack_require__(171), exports);
+__exportStar(__webpack_require__(172), exports);
+__exportStar(__webpack_require__(173), exports);
+__exportStar(__webpack_require__(174), exports);
+__exportStar(__webpack_require__(175), exports);
+__exportStar(__webpack_require__(176), exports);
+__exportStar(__webpack_require__(177), exports);
+__exportStar(__webpack_require__(178), exports);
+__exportStar(__webpack_require__(179), exports);
+__exportStar(__webpack_require__(180), exports);
+__exportStar(__webpack_require__(181), exports);
+__exportStar(__webpack_require__(182), exports);
+__exportStar(__webpack_require__(183), exports);
+__exportStar(__webpack_require__(184), exports);
+__exportStar(__webpack_require__(185), exports);
+__exportStar(__webpack_require__(186), exports);
+__exportStar(__webpack_require__(187), exports);
+__exportStar(__webpack_require__(188), exports);
+__exportStar(__webpack_require__(189), exports);
+__exportStar(__webpack_require__(190), exports);
+__exportStar(__webpack_require__(192), exports);
+__exportStar(__webpack_require__(193), exports);
+__exportStar(__webpack_require__(194), exports);
+__exportStar(__webpack_require__(195), exports);
+__exportStar(__webpack_require__(199), exports);
+__exportStar(__webpack_require__(200), exports);
+__exportStar(__webpack_require__(219), exports);
+__exportStar(__webpack_require__(220), exports);
+__exportStar(__webpack_require__(221), exports);
+__exportStar(__webpack_require__(223), exports);
+__exportStar(__webpack_require__(224), exports);
+__exportStar(__webpack_require__(225), exports);
+__exportStar(__webpack_require__(226), exports);
 exports.OutputFormatPropertyName = "OutputFormat";
 exports.CancellationErrorCodePropertyName = "CancellationErrorCode";
 exports.ServicePropertiesPropertyName = "ServiceProperties";
@@ -3760,7 +3891,7 @@ exports.AutoDetectSourceLanguagesOpenRangeOptionName = "OpenRange";
 
 
 /***/ }),
-/* 45 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3768,9 +3899,10 @@ exports.AutoDetectSourceLanguagesOpenRangeOptionName = "OpenRange";
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CognitiveSubscriptionKeyAuthentication = void 0;
 var Exports_1 = __webpack_require__(4);
-var IAuthentication_1 = __webpack_require__(46);
-var AuthHeader = "Ocp-Apim-Subscription-Key";
+var HeaderNames_1 = __webpack_require__(55);
+var IAuthentication_1 = __webpack_require__(56);
 /**
  * @class
  */
@@ -3805,7 +3937,7 @@ var CognitiveSubscriptionKeyAuthentication = /** @class */ (function () {
         if (!subscriptionKey) {
             throw new Exports_1.ArgumentNullError("subscriptionKey");
         }
-        this.privAuthInfo = new IAuthentication_1.AuthInfo(AuthHeader, subscriptionKey);
+        this.privAuthInfo = new IAuthentication_1.AuthInfo(HeaderNames_1.HeaderNames.AuthKey, subscriptionKey);
     }
     return CognitiveSubscriptionKeyAuthentication;
 }());
@@ -3814,7 +3946,7 @@ exports.CognitiveSubscriptionKeyAuthentication = CognitiveSubscriptionKeyAuthent
 
 
 /***/ }),
-/* 46 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3822,6 +3954,34 @@ exports.CognitiveSubscriptionKeyAuthentication = CognitiveSubscriptionKeyAuthent
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.HeaderNames = void 0;
+var HeaderNames = /** @class */ (function () {
+    function HeaderNames() {
+    }
+    HeaderNames.AuthKey = "Ocp-Apim-Subscription-Key";
+    HeaderNames.ConnectionId = "X-ConnectionId";
+    HeaderNames.ContentType = "Content-Type";
+    HeaderNames.CustomCommandsAppId = "X-CommandsAppId";
+    HeaderNames.Path = "Path";
+    HeaderNames.RequestId = "X-RequestId";
+    HeaderNames.RequestStreamId = "X-StreamId";
+    HeaderNames.RequestTimestamp = "X-Timestamp";
+    return HeaderNames;
+}());
+exports.HeaderNames = HeaderNames;
+
+
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AuthInfo = void 0;
 var AuthInfo = /** @class */ (function () {
     function AuthInfo(headerName, token) {
         this.privHeaderName = headerName;
@@ -3831,14 +3991,14 @@ var AuthInfo = /** @class */ (function () {
         get: function () {
             return this.privHeaderName;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(AuthInfo.prototype, "token", {
         get: function () {
             return this.privToken;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return AuthInfo;
@@ -3848,7 +4008,7 @@ exports.AuthInfo = AuthInfo;
 
 
 /***/ }),
-/* 47 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3856,8 +4016,9 @@ exports.AuthInfo = AuthInfo;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CognitiveTokenAuthentication = void 0;
 var Exports_1 = __webpack_require__(4);
-var IAuthentication_1 = __webpack_require__(46);
+var IAuthentication_1 = __webpack_require__(56);
 var AuthHeader = "Authorization";
 var CognitiveTokenAuthentication = /** @class */ (function () {
     function CognitiveTokenAuthentication(fetchCallback, fetchOnExpiryCallback) {
@@ -3884,7 +4045,31 @@ exports.CognitiveTokenAuthentication = CognitiveTokenAuthentication;
 
 
 /***/ }),
-/* 48 */
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+
+
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+
+
+
+/***/ }),
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3905,12 +4090,12 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.IntentConnectionFactory = void 0;
 var Exports_1 = __webpack_require__(2);
-var Exports_2 = __webpack_require__(49);
-var ConnectionFactoryBase_1 = __webpack_require__(111);
-var Exports_3 = __webpack_require__(44);
-var TestHooksParamName = "testhooks";
-var ConnectionIdHeader = "X-ConnectionId";
+var Exports_2 = __webpack_require__(61);
+var ConnectionFactoryBase_1 = __webpack_require__(123);
+var Exports_3 = __webpack_require__(53);
+var HeaderNames_1 = __webpack_require__(55);
 var IntentConnectionFactory = /** @class */ (function (_super) {
     __extends(IntentConnectionFactory, _super);
     function IntentConnectionFactory() {
@@ -3932,9 +4117,10 @@ var IntentConnectionFactory = /** @class */ (function (_super) {
             if (authInfo.token !== undefined && authInfo.token !== "") {
                 headers[authInfo.headerName] = authInfo.token;
             }
-            headers[ConnectionIdHeader] = connectionId;
+            headers[HeaderNames_1.HeaderNames.ConnectionId] = connectionId;
             config.parameters.setProperty(Exports_2.PropertyId.SpeechServiceConnection_Url, endpoint);
-            return new Exports_1.WebsocketConnection(endpoint, queryParams, headers, new Exports_3.WebsocketMessageFormatter(), Exports_1.ProxyInfo.fromRecognizerConfig(config), connectionId);
+            var enableCompression = config.parameters.getProperty("SPEECH-EnableWebsocketCompression", "false") === "true";
+            return new Exports_1.WebsocketConnection(endpoint, queryParams, headers, new Exports_3.WebsocketMessageFormatter(), Exports_1.ProxyInfo.fromRecognizerConfig(config), enableCompression, connectionId);
         };
         return _this;
     }
@@ -3999,7 +4185,7 @@ exports.IntentConnectionFactory = IntentConnectionFactory;
 
 
 /***/ }),
-/* 49 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4007,178 +4193,188 @@ exports.IntentConnectionFactory = IntentConnectionFactory;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var AudioConfig_1 = __webpack_require__(50);
-exports.AudioConfig = AudioConfig_1.AudioConfig;
-var AudioStreamFormat_1 = __webpack_require__(60);
-exports.AudioStreamFormat = AudioStreamFormat_1.AudioStreamFormat;
-var AudioInputStream_1 = __webpack_require__(54);
-exports.AudioInputStream = AudioInputStream_1.AudioInputStream;
-exports.PullAudioInputStream = AudioInputStream_1.PullAudioInputStream;
-exports.PushAudioInputStream = AudioInputStream_1.PushAudioInputStream;
-var AudioOutputStream_1 = __webpack_require__(61);
-exports.AudioOutputStream = AudioOutputStream_1.AudioOutputStream;
-exports.PullAudioOutputStream = AudioOutputStream_1.PullAudioOutputStream;
-exports.PushAudioOutputStream = AudioOutputStream_1.PushAudioOutputStream;
-var CancellationReason_1 = __webpack_require__(64);
-exports.CancellationReason = CancellationReason_1.CancellationReason;
-var PullAudioInputStreamCallback_1 = __webpack_require__(65);
-exports.PullAudioInputStreamCallback = PullAudioInputStreamCallback_1.PullAudioInputStreamCallback;
-var PushAudioOutputStreamCallback_1 = __webpack_require__(66);
-exports.PushAudioOutputStreamCallback = PushAudioOutputStreamCallback_1.PushAudioOutputStreamCallback;
-var KeywordRecognitionModel_1 = __webpack_require__(67);
-exports.KeywordRecognitionModel = KeywordRecognitionModel_1.KeywordRecognitionModel;
-var SessionEventArgs_1 = __webpack_require__(68);
-exports.SessionEventArgs = SessionEventArgs_1.SessionEventArgs;
-var RecognitionEventArgs_1 = __webpack_require__(69);
-exports.RecognitionEventArgs = RecognitionEventArgs_1.RecognitionEventArgs;
-var OutputFormat_1 = __webpack_require__(70);
-exports.OutputFormat = OutputFormat_1.OutputFormat;
-var IntentRecognitionEventArgs_1 = __webpack_require__(71);
-exports.IntentRecognitionEventArgs = IntentRecognitionEventArgs_1.IntentRecognitionEventArgs;
-var RecognitionResult_1 = __webpack_require__(72);
-exports.RecognitionResult = RecognitionResult_1.RecognitionResult;
-var SpeechRecognitionResult_1 = __webpack_require__(73);
-exports.SpeechRecognitionResult = SpeechRecognitionResult_1.SpeechRecognitionResult;
-var IntentRecognitionResult_1 = __webpack_require__(74);
-exports.IntentRecognitionResult = IntentRecognitionResult_1.IntentRecognitionResult;
-var LanguageUnderstandingModel_1 = __webpack_require__(75);
-exports.LanguageUnderstandingModel = LanguageUnderstandingModel_1.LanguageUnderstandingModel;
-var SpeechRecognitionEventArgs_1 = __webpack_require__(76);
-exports.SpeechRecognitionEventArgs = SpeechRecognitionEventArgs_1.SpeechRecognitionEventArgs;
-exports.ConversationTranscriptionEventArgs = SpeechRecognitionEventArgs_1.ConversationTranscriptionEventArgs;
-var SpeechRecognitionCanceledEventArgs_1 = __webpack_require__(77);
-exports.SpeechRecognitionCanceledEventArgs = SpeechRecognitionCanceledEventArgs_1.SpeechRecognitionCanceledEventArgs;
-var TranslationRecognitionEventArgs_1 = __webpack_require__(79);
-exports.TranslationRecognitionEventArgs = TranslationRecognitionEventArgs_1.TranslationRecognitionEventArgs;
-var TranslationSynthesisEventArgs_1 = __webpack_require__(80);
-exports.TranslationSynthesisEventArgs = TranslationSynthesisEventArgs_1.TranslationSynthesisEventArgs;
-var TranslationRecognitionResult_1 = __webpack_require__(81);
-exports.TranslationRecognitionResult = TranslationRecognitionResult_1.TranslationRecognitionResult;
-var TranslationSynthesisResult_1 = __webpack_require__(82);
-exports.TranslationSynthesisResult = TranslationSynthesisResult_1.TranslationSynthesisResult;
-var ResultReason_1 = __webpack_require__(83);
-exports.ResultReason = ResultReason_1.ResultReason;
-var SpeechConfig_1 = __webpack_require__(84);
-exports.SpeechConfig = SpeechConfig_1.SpeechConfig;
-exports.SpeechConfigImpl = SpeechConfig_1.SpeechConfigImpl;
-var SpeechTranslationConfig_1 = __webpack_require__(85);
-exports.SpeechTranslationConfig = SpeechTranslationConfig_1.SpeechTranslationConfig;
-exports.SpeechTranslationConfigImpl = SpeechTranslationConfig_1.SpeechTranslationConfigImpl;
-var PropertyCollection_1 = __webpack_require__(86);
-exports.PropertyCollection = PropertyCollection_1.PropertyCollection;
-var PropertyId_1 = __webpack_require__(87);
-exports.PropertyId = PropertyId_1.PropertyId;
-var Recognizer_1 = __webpack_require__(88);
-exports.Recognizer = Recognizer_1.Recognizer;
-var SpeechRecognizer_1 = __webpack_require__(89);
-exports.SpeechRecognizer = SpeechRecognizer_1.SpeechRecognizer;
-var IntentRecognizer_1 = __webpack_require__(90);
-exports.IntentRecognizer = IntentRecognizer_1.IntentRecognizer;
-var VoiceProfileType_1 = __webpack_require__(91);
-exports.VoiceProfileType = VoiceProfileType_1.VoiceProfileType;
-var TranslationRecognizer_1 = __webpack_require__(92);
-exports.TranslationRecognizer = TranslationRecognizer_1.TranslationRecognizer;
-var Translations_1 = __webpack_require__(93);
-exports.Translations = Translations_1.Translations;
-var NoMatchReason_1 = __webpack_require__(94);
-exports.NoMatchReason = NoMatchReason_1.NoMatchReason;
-var NoMatchDetails_1 = __webpack_require__(95);
-exports.NoMatchDetails = NoMatchDetails_1.NoMatchDetails;
-var TranslationRecognitionCanceledEventArgs_1 = __webpack_require__(96);
-exports.TranslationRecognitionCanceledEventArgs = TranslationRecognitionCanceledEventArgs_1.TranslationRecognitionCanceledEventArgs;
-var IntentRecognitionCanceledEventArgs_1 = __webpack_require__(97);
-exports.IntentRecognitionCanceledEventArgs = IntentRecognitionCanceledEventArgs_1.IntentRecognitionCanceledEventArgs;
-var CancellationDetailsBase_1 = __webpack_require__(98);
-exports.CancellationDetailsBase = CancellationDetailsBase_1.CancellationDetailsBase;
-var CancellationDetails_1 = __webpack_require__(99);
-exports.CancellationDetails = CancellationDetails_1.CancellationDetails;
-var CancellationErrorCodes_1 = __webpack_require__(100);
-exports.CancellationErrorCode = CancellationErrorCodes_1.CancellationErrorCode;
-var ConnectionEventArgs_1 = __webpack_require__(101);
-exports.ConnectionEventArgs = ConnectionEventArgs_1.ConnectionEventArgs;
-var ServiceEventArgs_1 = __webpack_require__(102);
-exports.ServiceEventArgs = ServiceEventArgs_1.ServiceEventArgs;
-var Connection_1 = __webpack_require__(103);
-exports.Connection = Connection_1.Connection;
-var PhraseListGrammar_1 = __webpack_require__(105);
-exports.PhraseListGrammar = PhraseListGrammar_1.PhraseListGrammar;
-var DialogServiceConfig_1 = __webpack_require__(106);
-exports.DialogServiceConfig = DialogServiceConfig_1.DialogServiceConfig;
-var BotFrameworkConfig_1 = __webpack_require__(107);
-exports.BotFrameworkConfig = BotFrameworkConfig_1.BotFrameworkConfig;
-var CustomCommandsConfig_1 = __webpack_require__(108);
-exports.CustomCommandsConfig = CustomCommandsConfig_1.CustomCommandsConfig;
-var DialogServiceConnector_1 = __webpack_require__(109);
-exports.DialogServiceConnector = DialogServiceConnector_1.DialogServiceConnector;
-var ActivityReceivedEventArgs_1 = __webpack_require__(113);
-exports.ActivityReceivedEventArgs = ActivityReceivedEventArgs_1.ActivityReceivedEventArgs;
-var ServicePropertyChannel_1 = __webpack_require__(114);
-exports.ServicePropertyChannel = ServicePropertyChannel_1.ServicePropertyChannel;
-var ProfanityOption_1 = __webpack_require__(115);
-exports.ProfanityOption = ProfanityOption_1.ProfanityOption;
-var BaseAudioPlayer_1 = __webpack_require__(116);
-exports.BaseAudioPlayer = BaseAudioPlayer_1.BaseAudioPlayer;
-var ConnectionMessageEventArgs_1 = __webpack_require__(117);
-exports.ConnectionMessageEventArgs = ConnectionMessageEventArgs_1.ConnectionMessageEventArgs;
-var ConnectionMessage_1 = __webpack_require__(104);
-exports.ConnectionMessage = ConnectionMessage_1.ConnectionMessage;
-var VoiceProfile_1 = __webpack_require__(118);
-exports.VoiceProfile = VoiceProfile_1.VoiceProfile;
-var VoiceProfileEnrollmentResult_1 = __webpack_require__(119);
-exports.VoiceProfileEnrollmentResult = VoiceProfileEnrollmentResult_1.VoiceProfileEnrollmentResult;
-exports.VoiceProfileEnrollmentCancellationDetails = VoiceProfileEnrollmentResult_1.VoiceProfileEnrollmentCancellationDetails;
-var VoiceProfileResult_1 = __webpack_require__(120);
-exports.VoiceProfileResult = VoiceProfileResult_1.VoiceProfileResult;
-exports.VoiceProfileCancellationDetails = VoiceProfileResult_1.VoiceProfileCancellationDetails;
-var VoiceProfileClient_1 = __webpack_require__(121);
-exports.VoiceProfileClient = VoiceProfileClient_1.VoiceProfileClient;
-var SpeakerRecognizer_1 = __webpack_require__(122);
-exports.SpeakerRecognizer = SpeakerRecognizer_1.SpeakerRecognizer;
-var SpeakerIdentificationModel_1 = __webpack_require__(123);
-exports.SpeakerIdentificationModel = SpeakerIdentificationModel_1.SpeakerIdentificationModel;
-var SpeakerVerificationModel_1 = __webpack_require__(124);
-exports.SpeakerVerificationModel = SpeakerVerificationModel_1.SpeakerVerificationModel;
-var AutoDetectSourceLanguageConfig_1 = __webpack_require__(125);
-exports.AutoDetectSourceLanguageConfig = AutoDetectSourceLanguageConfig_1.AutoDetectSourceLanguageConfig;
-var AutoDetectSourceLanguageResult_1 = __webpack_require__(126);
-exports.AutoDetectSourceLanguageResult = AutoDetectSourceLanguageResult_1.AutoDetectSourceLanguageResult;
-var SourceLanguageConfig_1 = __webpack_require__(127);
-exports.SourceLanguageConfig = SourceLanguageConfig_1.SourceLanguageConfig;
-var SpeakerRecognitionResult_1 = __webpack_require__(128);
-exports.SpeakerRecognitionResult = SpeakerRecognitionResult_1.SpeakerRecognitionResult;
-exports.SpeakerRecognitionResultType = SpeakerRecognitionResult_1.SpeakerRecognitionResultType;
-exports.SpeakerRecognitionCancellationDetails = SpeakerRecognitionResult_1.SpeakerRecognitionCancellationDetails;
-var Exports_1 = __webpack_require__(129);
-exports.Conversation = Exports_1.Conversation;
-exports.ConversationExpirationEventArgs = Exports_1.ConversationExpirationEventArgs;
-exports.ConversationParticipantsChangedEventArgs = Exports_1.ConversationParticipantsChangedEventArgs;
-exports.ConversationTranslationCanceledEventArgs = Exports_1.ConversationTranslationCanceledEventArgs;
-exports.ConversationTranslationEventArgs = Exports_1.ConversationTranslationEventArgs;
-exports.ConversationTranslationResult = Exports_1.ConversationTranslationResult;
-exports.ConversationTranslator = Exports_1.ConversationTranslator;
-exports.ConversationTranscriber = Exports_1.ConversationTranscriber;
-exports.Participant = Exports_1.Participant;
-exports.ParticipantChangedReason = Exports_1.ParticipantChangedReason;
-exports.User = Exports_1.User;
-var SpeechSynthesisOutputFormat_1 = __webpack_require__(63);
-exports.SpeechSynthesisOutputFormat = SpeechSynthesisOutputFormat_1.SpeechSynthesisOutputFormat;
-var SpeechSynthesizer_1 = __webpack_require__(141);
-exports.SpeechSynthesizer = SpeechSynthesizer_1.SpeechSynthesizer;
-var SpeechSynthesisResult_1 = __webpack_require__(142);
-exports.SpeechSynthesisResult = SpeechSynthesisResult_1.SpeechSynthesisResult;
-var SpeechSynthesisEventArgs_1 = __webpack_require__(143);
-exports.SpeechSynthesisEventArgs = SpeechSynthesisEventArgs_1.SpeechSynthesisEventArgs;
-var SpeechSynthesisWordBoundaryEventArgs_1 = __webpack_require__(144);
-exports.SpeechSynthesisWordBoundaryEventArgs = SpeechSynthesisWordBoundaryEventArgs_1.SpeechSynthesisWordBoundaryEventArgs;
-var SpeakerAudioDestination_1 = __webpack_require__(145);
-exports.SpeakerAudioDestination = SpeakerAudioDestination_1.SpeakerAudioDestination;
-var ConversationTranscriptionCanceledEventArgs_1 = __webpack_require__(146);
-exports.ConversationTranscriptionCanceledEventArgs = ConversationTranscriptionCanceledEventArgs_1.ConversationTranscriptionCanceledEventArgs;
+var AudioConfig_1 = __webpack_require__(62);
+Object.defineProperty(exports, "AudioConfig", { enumerable: true, get: function () { return AudioConfig_1.AudioConfig; } });
+var AudioStreamFormat_1 = __webpack_require__(72);
+Object.defineProperty(exports, "AudioStreamFormat", { enumerable: true, get: function () { return AudioStreamFormat_1.AudioStreamFormat; } });
+var AudioInputStream_1 = __webpack_require__(66);
+Object.defineProperty(exports, "AudioInputStream", { enumerable: true, get: function () { return AudioInputStream_1.AudioInputStream; } });
+Object.defineProperty(exports, "PullAudioInputStream", { enumerable: true, get: function () { return AudioInputStream_1.PullAudioInputStream; } });
+Object.defineProperty(exports, "PushAudioInputStream", { enumerable: true, get: function () { return AudioInputStream_1.PushAudioInputStream; } });
+var AudioOutputStream_1 = __webpack_require__(73);
+Object.defineProperty(exports, "AudioOutputStream", { enumerable: true, get: function () { return AudioOutputStream_1.AudioOutputStream; } });
+Object.defineProperty(exports, "PullAudioOutputStream", { enumerable: true, get: function () { return AudioOutputStream_1.PullAudioOutputStream; } });
+Object.defineProperty(exports, "PushAudioOutputStream", { enumerable: true, get: function () { return AudioOutputStream_1.PushAudioOutputStream; } });
+var CancellationReason_1 = __webpack_require__(76);
+Object.defineProperty(exports, "CancellationReason", { enumerable: true, get: function () { return CancellationReason_1.CancellationReason; } });
+var PullAudioInputStreamCallback_1 = __webpack_require__(77);
+Object.defineProperty(exports, "PullAudioInputStreamCallback", { enumerable: true, get: function () { return PullAudioInputStreamCallback_1.PullAudioInputStreamCallback; } });
+var PushAudioOutputStreamCallback_1 = __webpack_require__(78);
+Object.defineProperty(exports, "PushAudioOutputStreamCallback", { enumerable: true, get: function () { return PushAudioOutputStreamCallback_1.PushAudioOutputStreamCallback; } });
+var KeywordRecognitionModel_1 = __webpack_require__(79);
+Object.defineProperty(exports, "KeywordRecognitionModel", { enumerable: true, get: function () { return KeywordRecognitionModel_1.KeywordRecognitionModel; } });
+var SessionEventArgs_1 = __webpack_require__(80);
+Object.defineProperty(exports, "SessionEventArgs", { enumerable: true, get: function () { return SessionEventArgs_1.SessionEventArgs; } });
+var RecognitionEventArgs_1 = __webpack_require__(81);
+Object.defineProperty(exports, "RecognitionEventArgs", { enumerable: true, get: function () { return RecognitionEventArgs_1.RecognitionEventArgs; } });
+var OutputFormat_1 = __webpack_require__(82);
+Object.defineProperty(exports, "OutputFormat", { enumerable: true, get: function () { return OutputFormat_1.OutputFormat; } });
+var IntentRecognitionEventArgs_1 = __webpack_require__(83);
+Object.defineProperty(exports, "IntentRecognitionEventArgs", { enumerable: true, get: function () { return IntentRecognitionEventArgs_1.IntentRecognitionEventArgs; } });
+var RecognitionResult_1 = __webpack_require__(84);
+Object.defineProperty(exports, "RecognitionResult", { enumerable: true, get: function () { return RecognitionResult_1.RecognitionResult; } });
+var SpeechRecognitionResult_1 = __webpack_require__(85);
+Object.defineProperty(exports, "SpeechRecognitionResult", { enumerable: true, get: function () { return SpeechRecognitionResult_1.SpeechRecognitionResult; } });
+var IntentRecognitionResult_1 = __webpack_require__(86);
+Object.defineProperty(exports, "IntentRecognitionResult", { enumerable: true, get: function () { return IntentRecognitionResult_1.IntentRecognitionResult; } });
+var LanguageUnderstandingModel_1 = __webpack_require__(87);
+Object.defineProperty(exports, "LanguageUnderstandingModel", { enumerable: true, get: function () { return LanguageUnderstandingModel_1.LanguageUnderstandingModel; } });
+var SpeechRecognitionEventArgs_1 = __webpack_require__(88);
+Object.defineProperty(exports, "SpeechRecognitionEventArgs", { enumerable: true, get: function () { return SpeechRecognitionEventArgs_1.SpeechRecognitionEventArgs; } });
+Object.defineProperty(exports, "ConversationTranscriptionEventArgs", { enumerable: true, get: function () { return SpeechRecognitionEventArgs_1.ConversationTranscriptionEventArgs; } });
+var SpeechRecognitionCanceledEventArgs_1 = __webpack_require__(89);
+Object.defineProperty(exports, "SpeechRecognitionCanceledEventArgs", { enumerable: true, get: function () { return SpeechRecognitionCanceledEventArgs_1.SpeechRecognitionCanceledEventArgs; } });
+var TranslationRecognitionEventArgs_1 = __webpack_require__(91);
+Object.defineProperty(exports, "TranslationRecognitionEventArgs", { enumerable: true, get: function () { return TranslationRecognitionEventArgs_1.TranslationRecognitionEventArgs; } });
+var TranslationSynthesisEventArgs_1 = __webpack_require__(92);
+Object.defineProperty(exports, "TranslationSynthesisEventArgs", { enumerable: true, get: function () { return TranslationSynthesisEventArgs_1.TranslationSynthesisEventArgs; } });
+var TranslationRecognitionResult_1 = __webpack_require__(93);
+Object.defineProperty(exports, "TranslationRecognitionResult", { enumerable: true, get: function () { return TranslationRecognitionResult_1.TranslationRecognitionResult; } });
+var TranslationSynthesisResult_1 = __webpack_require__(94);
+Object.defineProperty(exports, "TranslationSynthesisResult", { enumerable: true, get: function () { return TranslationSynthesisResult_1.TranslationSynthesisResult; } });
+var ResultReason_1 = __webpack_require__(95);
+Object.defineProperty(exports, "ResultReason", { enumerable: true, get: function () { return ResultReason_1.ResultReason; } });
+var SpeechConfig_1 = __webpack_require__(96);
+Object.defineProperty(exports, "SpeechConfig", { enumerable: true, get: function () { return SpeechConfig_1.SpeechConfig; } });
+Object.defineProperty(exports, "SpeechConfigImpl", { enumerable: true, get: function () { return SpeechConfig_1.SpeechConfigImpl; } });
+var SpeechTranslationConfig_1 = __webpack_require__(97);
+Object.defineProperty(exports, "SpeechTranslationConfig", { enumerable: true, get: function () { return SpeechTranslationConfig_1.SpeechTranslationConfig; } });
+Object.defineProperty(exports, "SpeechTranslationConfigImpl", { enumerable: true, get: function () { return SpeechTranslationConfig_1.SpeechTranslationConfigImpl; } });
+var PropertyCollection_1 = __webpack_require__(98);
+Object.defineProperty(exports, "PropertyCollection", { enumerable: true, get: function () { return PropertyCollection_1.PropertyCollection; } });
+var PropertyId_1 = __webpack_require__(99);
+Object.defineProperty(exports, "PropertyId", { enumerable: true, get: function () { return PropertyId_1.PropertyId; } });
+var Recognizer_1 = __webpack_require__(100);
+Object.defineProperty(exports, "Recognizer", { enumerable: true, get: function () { return Recognizer_1.Recognizer; } });
+var SpeechRecognizer_1 = __webpack_require__(101);
+Object.defineProperty(exports, "SpeechRecognizer", { enumerable: true, get: function () { return SpeechRecognizer_1.SpeechRecognizer; } });
+var IntentRecognizer_1 = __webpack_require__(102);
+Object.defineProperty(exports, "IntentRecognizer", { enumerable: true, get: function () { return IntentRecognizer_1.IntentRecognizer; } });
+var VoiceProfileType_1 = __webpack_require__(103);
+Object.defineProperty(exports, "VoiceProfileType", { enumerable: true, get: function () { return VoiceProfileType_1.VoiceProfileType; } });
+var TranslationRecognizer_1 = __webpack_require__(104);
+Object.defineProperty(exports, "TranslationRecognizer", { enumerable: true, get: function () { return TranslationRecognizer_1.TranslationRecognizer; } });
+var Translations_1 = __webpack_require__(105);
+Object.defineProperty(exports, "Translations", { enumerable: true, get: function () { return Translations_1.Translations; } });
+var NoMatchReason_1 = __webpack_require__(106);
+Object.defineProperty(exports, "NoMatchReason", { enumerable: true, get: function () { return NoMatchReason_1.NoMatchReason; } });
+var NoMatchDetails_1 = __webpack_require__(107);
+Object.defineProperty(exports, "NoMatchDetails", { enumerable: true, get: function () { return NoMatchDetails_1.NoMatchDetails; } });
+var TranslationRecognitionCanceledEventArgs_1 = __webpack_require__(108);
+Object.defineProperty(exports, "TranslationRecognitionCanceledEventArgs", { enumerable: true, get: function () { return TranslationRecognitionCanceledEventArgs_1.TranslationRecognitionCanceledEventArgs; } });
+var IntentRecognitionCanceledEventArgs_1 = __webpack_require__(109);
+Object.defineProperty(exports, "IntentRecognitionCanceledEventArgs", { enumerable: true, get: function () { return IntentRecognitionCanceledEventArgs_1.IntentRecognitionCanceledEventArgs; } });
+var CancellationDetailsBase_1 = __webpack_require__(110);
+Object.defineProperty(exports, "CancellationDetailsBase", { enumerable: true, get: function () { return CancellationDetailsBase_1.CancellationDetailsBase; } });
+var CancellationDetails_1 = __webpack_require__(111);
+Object.defineProperty(exports, "CancellationDetails", { enumerable: true, get: function () { return CancellationDetails_1.CancellationDetails; } });
+var CancellationErrorCodes_1 = __webpack_require__(112);
+Object.defineProperty(exports, "CancellationErrorCode", { enumerable: true, get: function () { return CancellationErrorCodes_1.CancellationErrorCode; } });
+var ConnectionEventArgs_1 = __webpack_require__(113);
+Object.defineProperty(exports, "ConnectionEventArgs", { enumerable: true, get: function () { return ConnectionEventArgs_1.ConnectionEventArgs; } });
+var ServiceEventArgs_1 = __webpack_require__(114);
+Object.defineProperty(exports, "ServiceEventArgs", { enumerable: true, get: function () { return ServiceEventArgs_1.ServiceEventArgs; } });
+var Connection_1 = __webpack_require__(115);
+Object.defineProperty(exports, "Connection", { enumerable: true, get: function () { return Connection_1.Connection; } });
+var PhraseListGrammar_1 = __webpack_require__(117);
+Object.defineProperty(exports, "PhraseListGrammar", { enumerable: true, get: function () { return PhraseListGrammar_1.PhraseListGrammar; } });
+var DialogServiceConfig_1 = __webpack_require__(118);
+Object.defineProperty(exports, "DialogServiceConfig", { enumerable: true, get: function () { return DialogServiceConfig_1.DialogServiceConfig; } });
+var BotFrameworkConfig_1 = __webpack_require__(119);
+Object.defineProperty(exports, "BotFrameworkConfig", { enumerable: true, get: function () { return BotFrameworkConfig_1.BotFrameworkConfig; } });
+var CustomCommandsConfig_1 = __webpack_require__(120);
+Object.defineProperty(exports, "CustomCommandsConfig", { enumerable: true, get: function () { return CustomCommandsConfig_1.CustomCommandsConfig; } });
+var DialogServiceConnector_1 = __webpack_require__(121);
+Object.defineProperty(exports, "DialogServiceConnector", { enumerable: true, get: function () { return DialogServiceConnector_1.DialogServiceConnector; } });
+var ActivityReceivedEventArgs_1 = __webpack_require__(125);
+Object.defineProperty(exports, "ActivityReceivedEventArgs", { enumerable: true, get: function () { return ActivityReceivedEventArgs_1.ActivityReceivedEventArgs; } });
+var TurnStatusReceivedEventArgs_1 = __webpack_require__(126);
+Object.defineProperty(exports, "TurnStatusReceivedEventArgs", { enumerable: true, get: function () { return TurnStatusReceivedEventArgs_1.TurnStatusReceivedEventArgs; } });
+var ServicePropertyChannel_1 = __webpack_require__(128);
+Object.defineProperty(exports, "ServicePropertyChannel", { enumerable: true, get: function () { return ServicePropertyChannel_1.ServicePropertyChannel; } });
+var ProfanityOption_1 = __webpack_require__(129);
+Object.defineProperty(exports, "ProfanityOption", { enumerable: true, get: function () { return ProfanityOption_1.ProfanityOption; } });
+var BaseAudioPlayer_1 = __webpack_require__(130);
+Object.defineProperty(exports, "BaseAudioPlayer", { enumerable: true, get: function () { return BaseAudioPlayer_1.BaseAudioPlayer; } });
+var ConnectionMessageEventArgs_1 = __webpack_require__(131);
+Object.defineProperty(exports, "ConnectionMessageEventArgs", { enumerable: true, get: function () { return ConnectionMessageEventArgs_1.ConnectionMessageEventArgs; } });
+var ConnectionMessage_1 = __webpack_require__(116);
+Object.defineProperty(exports, "ConnectionMessage", { enumerable: true, get: function () { return ConnectionMessage_1.ConnectionMessage; } });
+var VoiceProfile_1 = __webpack_require__(132);
+Object.defineProperty(exports, "VoiceProfile", { enumerable: true, get: function () { return VoiceProfile_1.VoiceProfile; } });
+var VoiceProfileEnrollmentResult_1 = __webpack_require__(133);
+Object.defineProperty(exports, "VoiceProfileEnrollmentResult", { enumerable: true, get: function () { return VoiceProfileEnrollmentResult_1.VoiceProfileEnrollmentResult; } });
+Object.defineProperty(exports, "VoiceProfileEnrollmentCancellationDetails", { enumerable: true, get: function () { return VoiceProfileEnrollmentResult_1.VoiceProfileEnrollmentCancellationDetails; } });
+var VoiceProfileResult_1 = __webpack_require__(134);
+Object.defineProperty(exports, "VoiceProfileResult", { enumerable: true, get: function () { return VoiceProfileResult_1.VoiceProfileResult; } });
+Object.defineProperty(exports, "VoiceProfileCancellationDetails", { enumerable: true, get: function () { return VoiceProfileResult_1.VoiceProfileCancellationDetails; } });
+var VoiceProfileClient_1 = __webpack_require__(135);
+Object.defineProperty(exports, "VoiceProfileClient", { enumerable: true, get: function () { return VoiceProfileClient_1.VoiceProfileClient; } });
+var SpeakerRecognizer_1 = __webpack_require__(136);
+Object.defineProperty(exports, "SpeakerRecognizer", { enumerable: true, get: function () { return SpeakerRecognizer_1.SpeakerRecognizer; } });
+var SpeakerIdentificationModel_1 = __webpack_require__(137);
+Object.defineProperty(exports, "SpeakerIdentificationModel", { enumerable: true, get: function () { return SpeakerIdentificationModel_1.SpeakerIdentificationModel; } });
+var SpeakerVerificationModel_1 = __webpack_require__(138);
+Object.defineProperty(exports, "SpeakerVerificationModel", { enumerable: true, get: function () { return SpeakerVerificationModel_1.SpeakerVerificationModel; } });
+var AutoDetectSourceLanguageConfig_1 = __webpack_require__(139);
+Object.defineProperty(exports, "AutoDetectSourceLanguageConfig", { enumerable: true, get: function () { return AutoDetectSourceLanguageConfig_1.AutoDetectSourceLanguageConfig; } });
+var AutoDetectSourceLanguageResult_1 = __webpack_require__(140);
+Object.defineProperty(exports, "AutoDetectSourceLanguageResult", { enumerable: true, get: function () { return AutoDetectSourceLanguageResult_1.AutoDetectSourceLanguageResult; } });
+var SourceLanguageConfig_1 = __webpack_require__(141);
+Object.defineProperty(exports, "SourceLanguageConfig", { enumerable: true, get: function () { return SourceLanguageConfig_1.SourceLanguageConfig; } });
+var SpeakerRecognitionResult_1 = __webpack_require__(142);
+Object.defineProperty(exports, "SpeakerRecognitionResult", { enumerable: true, get: function () { return SpeakerRecognitionResult_1.SpeakerRecognitionResult; } });
+Object.defineProperty(exports, "SpeakerRecognitionResultType", { enumerable: true, get: function () { return SpeakerRecognitionResult_1.SpeakerRecognitionResultType; } });
+Object.defineProperty(exports, "SpeakerRecognitionCancellationDetails", { enumerable: true, get: function () { return SpeakerRecognitionResult_1.SpeakerRecognitionCancellationDetails; } });
+var Exports_1 = __webpack_require__(143);
+Object.defineProperty(exports, "Conversation", { enumerable: true, get: function () { return Exports_1.Conversation; } });
+Object.defineProperty(exports, "ConversationExpirationEventArgs", { enumerable: true, get: function () { return Exports_1.ConversationExpirationEventArgs; } });
+Object.defineProperty(exports, "ConversationParticipantsChangedEventArgs", { enumerable: true, get: function () { return Exports_1.ConversationParticipantsChangedEventArgs; } });
+Object.defineProperty(exports, "ConversationTranslationCanceledEventArgs", { enumerable: true, get: function () { return Exports_1.ConversationTranslationCanceledEventArgs; } });
+Object.defineProperty(exports, "ConversationTranslationEventArgs", { enumerable: true, get: function () { return Exports_1.ConversationTranslationEventArgs; } });
+Object.defineProperty(exports, "ConversationTranslationResult", { enumerable: true, get: function () { return Exports_1.ConversationTranslationResult; } });
+Object.defineProperty(exports, "ConversationTranslator", { enumerable: true, get: function () { return Exports_1.ConversationTranslator; } });
+Object.defineProperty(exports, "ConversationTranscriber", { enumerable: true, get: function () { return Exports_1.ConversationTranscriber; } });
+Object.defineProperty(exports, "Participant", { enumerable: true, get: function () { return Exports_1.Participant; } });
+Object.defineProperty(exports, "ParticipantChangedReason", { enumerable: true, get: function () { return Exports_1.ParticipantChangedReason; } });
+Object.defineProperty(exports, "User", { enumerable: true, get: function () { return Exports_1.User; } });
+var SpeechSynthesisOutputFormat_1 = __webpack_require__(75);
+Object.defineProperty(exports, "SpeechSynthesisOutputFormat", { enumerable: true, get: function () { return SpeechSynthesisOutputFormat_1.SpeechSynthesisOutputFormat; } });
+var SpeechSynthesizer_1 = __webpack_require__(155);
+Object.defineProperty(exports, "SpeechSynthesizer", { enumerable: true, get: function () { return SpeechSynthesizer_1.SpeechSynthesizer; } });
+var SpeechSynthesisResult_1 = __webpack_require__(156);
+Object.defineProperty(exports, "SpeechSynthesisResult", { enumerable: true, get: function () { return SpeechSynthesisResult_1.SpeechSynthesisResult; } });
+var SpeechSynthesisEventArgs_1 = __webpack_require__(157);
+Object.defineProperty(exports, "SpeechSynthesisEventArgs", { enumerable: true, get: function () { return SpeechSynthesisEventArgs_1.SpeechSynthesisEventArgs; } });
+var SpeechSynthesisWordBoundaryEventArgs_1 = __webpack_require__(158);
+Object.defineProperty(exports, "SpeechSynthesisWordBoundaryEventArgs", { enumerable: true, get: function () { return SpeechSynthesisWordBoundaryEventArgs_1.SpeechSynthesisWordBoundaryEventArgs; } });
+var SpeakerAudioDestination_1 = __webpack_require__(159);
+Object.defineProperty(exports, "SpeakerAudioDestination", { enumerable: true, get: function () { return SpeakerAudioDestination_1.SpeakerAudioDestination; } });
+var ConversationTranscriptionCanceledEventArgs_1 = __webpack_require__(160);
+Object.defineProperty(exports, "ConversationTranscriptionCanceledEventArgs", { enumerable: true, get: function () { return ConversationTranscriptionCanceledEventArgs_1.ConversationTranscriptionCanceledEventArgs; } });
+var PronunciationAssessmentGradingSystem_1 = __webpack_require__(161);
+Object.defineProperty(exports, "PronunciationAssessmentGradingSystem", { enumerable: true, get: function () { return PronunciationAssessmentGradingSystem_1.PronunciationAssessmentGradingSystem; } });
+var PronunciationAssessmentGranularity_1 = __webpack_require__(162);
+Object.defineProperty(exports, "PronunciationAssessmentGranularity", { enumerable: true, get: function () { return PronunciationAssessmentGranularity_1.PronunciationAssessmentGranularity; } });
+var PronunciationAssessmentConfig_1 = __webpack_require__(163);
+Object.defineProperty(exports, "PronunciationAssessmentConfig", { enumerable: true, get: function () { return PronunciationAssessmentConfig_1.PronunciationAssessmentConfig; } });
+var PronunciationAssessmentResult_1 = __webpack_require__(164);
+Object.defineProperty(exports, "PronunciationAssessmentResult", { enumerable: true, get: function () { return PronunciationAssessmentResult_1.PronunciationAssessmentResult; } });
 
 
 
 /***/ }),
-/* 50 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4199,12 +4395,13 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AudioOutputConfigImpl = exports.AudioConfigImpl = exports.AudioConfig = void 0;
 var Exports_1 = __webpack_require__(2);
-var Contracts_1 = __webpack_require__(51);
-var Exports_2 = __webpack_require__(49);
-var AudioFileWriter_1 = __webpack_require__(52);
-var AudioInputStream_1 = __webpack_require__(54);
-var AudioOutputStream_1 = __webpack_require__(61);
+var Contracts_1 = __webpack_require__(63);
+var Exports_2 = __webpack_require__(61);
+var AudioFileWriter_1 = __webpack_require__(64);
+var AudioInputStream_1 = __webpack_require__(66);
+var AudioOutputStream_1 = __webpack_require__(73);
 /**
  * Represents audio input configuration used for specifying what type of input to use (microphone, file, stream).
  * @class AudioConfig
@@ -4342,7 +4539,6 @@ exports.AudioConfig = AudioConfig;
  * @private
  * @class AudioConfigImpl
  */
-// tslint:disable-next-line:max-classes-per-file
 var AudioConfigImpl = /** @class */ (function (_super) {
     __extends(AudioConfigImpl, _super);
     /**
@@ -4362,7 +4558,7 @@ var AudioConfigImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privSource.format;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -4398,7 +4594,7 @@ var AudioConfigImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privSource.blob;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -4448,7 +4644,7 @@ var AudioConfigImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privSource.events;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     AudioConfigImpl.prototype.setProperty = function (name, value) {
@@ -4473,13 +4669,12 @@ var AudioConfigImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privSource.deviceInfo;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return AudioConfigImpl;
 }(AudioConfig));
 exports.AudioConfigImpl = AudioConfigImpl;
-// tslint:disable-next-line:max-classes-per-file
 var AudioOutputConfigImpl = /** @class */ (function (_super) {
     __extends(AudioOutputConfigImpl, _super);
     /**
@@ -4496,7 +4691,7 @@ var AudioOutputConfigImpl = /** @class */ (function (_super) {
         set: function (format) {
             this.privDestination.format = format;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     AudioOutputConfigImpl.prototype.write = function (buffer) {
@@ -4521,7 +4716,7 @@ exports.AudioOutputConfigImpl = AudioOutputConfigImpl;
 
 
 /***/ }),
-/* 51 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4529,6 +4724,7 @@ exports.AudioOutputConfigImpl = AudioOutputConfigImpl;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Contracts = void 0;
 /**
  * @class Contracts
  * @private
@@ -4583,23 +4779,36 @@ exports.Contracts = Contracts;
 
 
 /***/ }),
-/* 52 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var fs = __importStar(__webpack_require__(53));
-var Contracts_1 = __webpack_require__(51);
+exports.AudioFileWriter = void 0;
+var fs = __importStar(__webpack_require__(65));
+var Contracts_1 = __webpack_require__(63);
 var AudioFileWriter = /** @class */ (function () {
     function AudioFileWriter(filename) {
         var _this = this;
@@ -4620,7 +4829,7 @@ var AudioFileWriter = /** @class */ (function () {
                 this.privWriteStream = fs.createWriteStream("", { fd: this.privFd, start: headerOffset, autoClose: false });
             }
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     AudioFileWriter.prototype.write = function (buffer) {
@@ -4650,13 +4859,13 @@ exports.AudioFileWriter = AudioFileWriter;
 
 
 /***/ }),
-/* 53 */
+/* 65 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 54 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4713,11 +4922,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.PullAudioInputStreamImpl = exports.PullAudioInputStream = exports.PushAudioInputStreamImpl = exports.PushAudioInputStream = exports.AudioInputStream = void 0;
+// tslint:disable:max-classes-per-file
+var Exports_1 = __webpack_require__(53);
 var Exports_2 = __webpack_require__(4);
 var Guid_1 = __webpack_require__(7);
-var Exports_3 = __webpack_require__(49);
-var AudioStreamFormat_1 = __webpack_require__(60);
+var Exports_3 = __webpack_require__(61);
+var AudioStreamFormat_1 = __webpack_require__(72);
 /**
  * Represents audio input stream used for custom audio input configurations.
  * @class AudioInputStream
@@ -4764,7 +4975,6 @@ exports.AudioInputStream = AudioInputStream;
  * Represents memory backed push audio input stream used for custom audio input configurations.
  * @class PushAudioInputStream
  */
-// tslint:disable-next-line:max-classes-per-file
 var PushAudioInputStream = /** @class */ (function (_super) {
     __extends(PushAudioInputStream, _super);
     function PushAudioInputStream() {
@@ -4790,7 +5000,6 @@ exports.PushAudioInputStream = PushAudioInputStream;
  * @private
  * @class PushAudioInputStreamImpl
  */
-// tslint:disable-next-line:max-classes-per-file
 var PushAudioInputStreamImpl = /** @class */ (function (_super) {
     __extends(PushAudioInputStreamImpl, _super);
     /**
@@ -4822,7 +5031,7 @@ var PushAudioInputStreamImpl = /** @class */ (function (_super) {
         get: function () {
             return Promise.resolve(this.privFormat);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -4860,7 +5069,7 @@ var PushAudioInputStreamImpl = /** @class */ (function (_super) {
                 var readCycle = function () {
                     return audioNode.read().then(function (audioStreamChunk) {
                         if (!audioStreamChunk || audioStreamChunk.isEnd) {
-                            if (typeof (XMLHttpRequest) !== "undefined") {
+                            if (typeof (XMLHttpRequest) !== "undefined" && typeof (Blob) !== "undefined") {
                                 return Promise.resolve(new Blob(data));
                             }
                             else {
@@ -4881,7 +5090,7 @@ var PushAudioInputStreamImpl = /** @class */ (function (_super) {
                 return readCycle();
             });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     PushAudioInputStreamImpl.prototype.turnOn = function () {
@@ -4931,7 +5140,7 @@ var PushAudioInputStreamImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privEvents;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(PushAudioInputStreamImpl.prototype, "deviceInfo", {
@@ -4946,7 +5155,7 @@ var PushAudioInputStreamImpl = /** @class */ (function (_super) {
                 type: Exports_1.type.Stream,
             });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     PushAudioInputStreamImpl.prototype.toBuffer = function (arrayBuffer) {
@@ -4964,7 +5173,6 @@ exports.PushAudioInputStreamImpl = PushAudioInputStreamImpl;
  * Represents audio input stream used for custom audio input configurations.
  * @class PullAudioInputStream
  */
-// tslint:disable-next-line:max-classes-per-file
 var PullAudioInputStream = /** @class */ (function (_super) {
     __extends(PullAudioInputStream, _super);
     /**
@@ -4997,7 +5205,6 @@ exports.PullAudioInputStream = PullAudioInputStream;
  * @private
  * @class PullAudioInputStreamImpl
  */
-// tslint:disable-next-line:max-classes-per-file
 var PullAudioInputStreamImpl = /** @class */ (function (_super) {
     __extends(PullAudioInputStreamImpl, _super);
     /**
@@ -5035,7 +5242,7 @@ var PullAudioInputStreamImpl = /** @class */ (function (_super) {
         get: function () {
             return Promise.resolve(this.privFormat);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -5055,7 +5262,7 @@ var PullAudioInputStreamImpl = /** @class */ (function (_super) {
         get: function () {
             return Promise.reject("Not implemented");
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     PullAudioInputStreamImpl.prototype.turnOn = function () {
@@ -5130,7 +5337,7 @@ var PullAudioInputStreamImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privEvents;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(PullAudioInputStreamImpl.prototype, "deviceInfo", {
@@ -5145,7 +5352,7 @@ var PullAudioInputStreamImpl = /** @class */ (function (_super) {
                 type: Exports_1.type.Stream,
             });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return PullAudioInputStreamImpl;
@@ -5153,10 +5360,10 @@ var PullAudioInputStreamImpl = /** @class */ (function (_super) {
 exports.PullAudioInputStreamImpl = PullAudioInputStreamImpl;
 
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(55).Buffer))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(67).Buffer))
 
 /***/ }),
-/* 55 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5170,9 +5377,9 @@ exports.PullAudioInputStreamImpl = PullAudioInputStreamImpl;
 
 
 
-var base64 = __webpack_require__(57)
-var ieee754 = __webpack_require__(58)
-var isArray = __webpack_require__(59)
+var base64 = __webpack_require__(69)
+var ieee754 = __webpack_require__(70)
+var isArray = __webpack_require__(71)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -6950,10 +7157,10 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(56)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(68)))
 
 /***/ }),
-/* 56 */
+/* 68 */
 /***/ (function(module, exports) {
 
 var g;
@@ -6979,7 +7186,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 57 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7138,7 +7345,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 58 */
+/* 70 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -7228,7 +7435,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 59 */
+/* 71 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -7239,7 +7446,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 60 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7260,6 +7467,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AudioStreamFormatImpl = exports.AudioStreamFormat = void 0;
 /**
  * Represents audio stream format used for custom audio input configurations.
  * @class AudioStreamFormat
@@ -7400,7 +7608,7 @@ var AudioStreamFormatImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privHeader;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return AudioStreamFormatImpl;
@@ -7410,7 +7618,7 @@ exports.AudioStreamFormatImpl = AudioStreamFormatImpl;
 
 
 /***/ }),
-/* 61 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7467,9 +7675,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PushAudioOutputStreamImpl = exports.PushAudioOutputStream = exports.PullAudioOutputStreamImpl = exports.PullAudioOutputStream = exports.AudioOutputStream = void 0;
+// tslint:disable:max-classes-per-file
 var Exports_1 = __webpack_require__(4);
-var Contracts_1 = __webpack_require__(51);
-var AudioOutputFormat_1 = __webpack_require__(62);
+var Contracts_1 = __webpack_require__(63);
+var AudioOutputFormat_1 = __webpack_require__(74);
 /**
  * Represents audio output stream used for custom audio output configurations.
  * @class AudioOutputStream
@@ -7498,7 +7708,6 @@ exports.AudioOutputStream = AudioOutputStream;
  * Represents memory backed push audio output stream used for custom audio output configurations.
  * @class PullAudioOutputStream
  */
-// tslint:disable-next-line:max-classes-per-file
 var PullAudioOutputStream = /** @class */ (function (_super) {
     __extends(PullAudioOutputStream, _super);
     function PullAudioOutputStream() {
@@ -7522,7 +7731,6 @@ exports.PullAudioOutputStream = PullAudioOutputStream;
  * @private
  * @class PullAudioOutputStreamImpl
  */
-// tslint:disable-next-line:max-classes-per-file
 var PullAudioOutputStreamImpl = /** @class */ (function (_super) {
     __extends(PullAudioOutputStreamImpl, _super);
     /**
@@ -7552,7 +7760,7 @@ var PullAudioOutputStreamImpl = /** @class */ (function (_super) {
             }
             this.privFormat = format;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(PullAudioOutputStreamImpl.prototype, "isClosed", {
@@ -7565,7 +7773,7 @@ var PullAudioOutputStreamImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privStream.isClosed;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -7662,7 +7870,6 @@ exports.PullAudioOutputStreamImpl = PullAudioOutputStreamImpl;
  * Represents audio output stream used for custom audio output configurations.
  * @class PushAudioOutputStream
  */
-// tslint:disable-next-line:max-classes-per-file
 var PushAudioOutputStream = /** @class */ (function (_super) {
     __extends(PushAudioOutputStream, _super);
     /**
@@ -7693,7 +7900,6 @@ exports.PushAudioOutputStream = PushAudioOutputStream;
  * @private
  * @class PushAudioOutputStreamImpl
  */
-// tslint:disable-next-line:max-classes-per-file
 var PushAudioOutputStreamImpl = /** @class */ (function (_super) {
     __extends(PushAudioOutputStreamImpl, _super);
     /**
@@ -7712,7 +7918,7 @@ var PushAudioOutputStreamImpl = /** @class */ (function (_super) {
     Object.defineProperty(PushAudioOutputStreamImpl.prototype, "format", {
         // tslint:disable-next-line:no-empty
         set: function (format) { },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     PushAudioOutputStreamImpl.prototype.write = function (buffer) {
@@ -7735,7 +7941,7 @@ exports.PushAudioOutputStreamImpl = PushAudioOutputStreamImpl;
 
 
 /***/ }),
-/* 62 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7757,8 +7963,9 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-var SpeechSynthesisOutputFormat_1 = __webpack_require__(63);
-var AudioStreamFormat_1 = __webpack_require__(60);
+exports.AudioOutputFormatImpl = exports.AudioFormatTag = void 0;
+var SpeechSynthesisOutputFormat_1 = __webpack_require__(75);
+var AudioStreamFormat_1 = __webpack_require__(72);
 var AudioFormatTag;
 (function (AudioFormatTag) {
     AudioFormatTag[AudioFormatTag["PCM"] = 1] = "PCM";
@@ -7780,14 +7987,14 @@ var AudioOutputFormatImpl = /** @class */ (function (_super) {
      * Creates an instance with the given values.
      * @constructor
      * @param formatTag
-     * @param {number} samplesPerSec - Samples per second.
-     * @param {number} bitsPerSample - Bits per sample.
      * @param {number} channels - Number of channels.
-     * @param avgBytesPerSec
-     * @param blockAlign
-     * @param audioFormatString
-     * @param requestAudioFormatString
-     * @param hasHeader
+     * @param {number} samplesPerSec - Samples per second.
+     * @param {number} avgBytesPerSec - Average bytes per second.
+     * @param {number} blockAlign - Block alignment.
+     * @param {number} bitsPerSample - Bits per sample.
+     * @param {string} audioFormatString - Audio format string
+     * @param {string} requestAudioFormatString - Audio format string sent to service.
+     * @param {boolean} hasHeader - If the format has header or not.
      */
     function AudioOutputFormatImpl(formatTag, channels, samplesPerSec, avgBytesPerSec, blockAlign, bitsPerSample, audioFormatString, requestAudioFormatString, hasHeader) {
         var _this = _super.call(this, samplesPerSec, bitsPerSample, channels) || this;
@@ -7820,11 +8027,11 @@ var AudioOutputFormatImpl = /** @class */ (function (_super) {
             case "audio-16khz-64kbitrate-mono-mp3":
                 return new AudioOutputFormatImpl(AudioFormatTag.MP3, 1, 16000, 64 << 7, 2, 16, speechSynthesisOutputFormatString, speechSynthesisOutputFormatString, false);
             case "audio-24khz-48kbitrate-mono-mp3":
-                return new AudioOutputFormatImpl(AudioFormatTag.MP3, 1, 16000, 48 << 7, 2, 16, speechSynthesisOutputFormatString, speechSynthesisOutputFormatString, false);
+                return new AudioOutputFormatImpl(AudioFormatTag.MP3, 1, 24000, 48 << 7, 2, 16, speechSynthesisOutputFormatString, speechSynthesisOutputFormatString, false);
             case "audio-24khz-96kbitrate-mono-mp3":
-                return new AudioOutputFormatImpl(AudioFormatTag.MP3, 1, 16000, 96 << 7, 2, 16, speechSynthesisOutputFormatString, speechSynthesisOutputFormatString, false);
+                return new AudioOutputFormatImpl(AudioFormatTag.MP3, 1, 24000, 96 << 7, 2, 16, speechSynthesisOutputFormatString, speechSynthesisOutputFormatString, false);
             case "audio-24khz-160kbitrate-mono-mp3":
-                return new AudioOutputFormatImpl(AudioFormatTag.MP3, 1, 16000, 160 << 7, 2, 16, speechSynthesisOutputFormatString, speechSynthesisOutputFormatString, false);
+                return new AudioOutputFormatImpl(AudioFormatTag.MP3, 1, 24000, 160 << 7, 2, 16, speechSynthesisOutputFormatString, speechSynthesisOutputFormatString, false);
             case "raw-16khz-16bit-mono-truesilk":
                 return new AudioOutputFormatImpl(AudioFormatTag.SILKSkype, 1, 16000, 32000, 2, 16, speechSynthesisOutputFormatString, speechSynthesisOutputFormatString, false);
             case "riff-8khz-16bit-mono-pcm":
@@ -7843,6 +8050,14 @@ var AudioOutputFormatImpl = /** @class */ (function (_super) {
                 return new AudioOutputFormatImpl(AudioFormatTag.Opus, 1, 16000, 8192, 2, 16, speechSynthesisOutputFormatString, "ogg-16khz-16bit-mono-opus", false);
             case "ogg-24khz-16bit-mono-opus":
                 return new AudioOutputFormatImpl(AudioFormatTag.Opus, 1, 24000, 8192, 2, 16, speechSynthesisOutputFormatString, "ogg-24khz-16bit-mono-opus", false);
+            case "raw-48khz-16bit-mono-pcm":
+                return new AudioOutputFormatImpl(AudioFormatTag.PCM, 1, 48000, 96000, 2, 16, speechSynthesisOutputFormatString, "raw-48khz-16bit-mono-pcm", false);
+            case "riff-48khz-16bit-mono-pcm":
+                return new AudioOutputFormatImpl(AudioFormatTag.PCM, 1, 48000, 96000, 2, 16, speechSynthesisOutputFormatString, "raw-48khz-16bit-mono-pcm", true);
+            case "audio-48khz-96kbitrate-mono-mp3":
+                return new AudioOutputFormatImpl(AudioFormatTag.MP3, 1, 48000, 96 << 7, 2, 16, speechSynthesisOutputFormatString, speechSynthesisOutputFormatString, false);
+            case "audio-48khz-192kbitrate-mono-mp3":
+                return new AudioOutputFormatImpl(AudioFormatTag.MP3, 1, 48000, 192 << 7, 2, 16, speechSynthesisOutputFormatString, speechSynthesisOutputFormatString, false);
             case "riff-16khz-16bit-mono-pcm":
             default:
                 return new AudioOutputFormatImpl(AudioFormatTag.PCM, 1, 16000, 32000, 2, 16, "riff-16khz-16bit-mono-pcm", "raw-16khz-16bit-mono-pcm", true);
@@ -7861,7 +8076,7 @@ var AudioOutputFormatImpl = /** @class */ (function (_super) {
         get: function () {
             return this.priHasHeader;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(AudioOutputFormatImpl.prototype, "header", {
@@ -7877,7 +8092,7 @@ var AudioOutputFormatImpl = /** @class */ (function (_super) {
             }
             return undefined;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -7903,7 +8118,7 @@ var AudioOutputFormatImpl = /** @class */ (function (_super) {
         get: function () {
             return this.priRequestAudioFormatString;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     AudioOutputFormatImpl.SpeechSynthesisOutputFormatToString = (_a = {},
@@ -7926,6 +8141,10 @@ var AudioOutputFormatImpl = /** @class */ (function (_super) {
         _a[SpeechSynthesisOutputFormat_1.SpeechSynthesisOutputFormat.Raw8Khz16BitMonoPcm] = "raw-8khz-16bit-mono-pcm",
         _a[SpeechSynthesisOutputFormat_1.SpeechSynthesisOutputFormat.Ogg16Khz16BitMonoOpus] = "ogg-16khz-16bit-mono-opus",
         _a[SpeechSynthesisOutputFormat_1.SpeechSynthesisOutputFormat.Ogg24Khz16BitMonoOpus] = "ogg-24khz-16bit-mono-opus",
+        _a[SpeechSynthesisOutputFormat_1.SpeechSynthesisOutputFormat.Raw48Khz16BitMonoPcm] = "raw-48khz-16bit-mono-pcm",
+        _a[SpeechSynthesisOutputFormat_1.SpeechSynthesisOutputFormat.Riff48Khz16BitMonoPcm] = "riff-48khz-16bit-mono-pcm",
+        _a[SpeechSynthesisOutputFormat_1.SpeechSynthesisOutputFormat.Audio48Khz96KBitRateMonoMp3] = "audio-48khz-96kbitrate-mono-mp3",
+        _a[SpeechSynthesisOutputFormat_1.SpeechSynthesisOutputFormat.Audio48Khz192KBitRateMonoMp3] = "audio-48khz-192kbitrate-mono-mp3",
         _a);
     return AudioOutputFormatImpl;
 }(AudioStreamFormat_1.AudioStreamFormatImpl));
@@ -7934,7 +8153,7 @@ exports.AudioOutputFormatImpl = AudioOutputFormatImpl;
 
 
 /***/ }),
-/* 63 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7942,6 +8161,7 @@ exports.AudioOutputFormatImpl = AudioOutputFormatImpl;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SpeechSynthesisOutputFormat = void 0;
 /**
  * Define speech synthesis audio output formats.
  * @enum SpeechSynthesisOutputFormat
@@ -8044,12 +8264,32 @@ var SpeechSynthesisOutputFormat;
      * @member SpeechSynthesisOutputFormat.Ogg24Khz16BitMonoOpus
      */
     SpeechSynthesisOutputFormat[SpeechSynthesisOutputFormat["Ogg24Khz16BitMonoOpus"] = 18] = "Ogg24Khz16BitMonoOpus";
+    /**
+     * raw-48khz-16bit-mono-pcm
+     * @member SpeechSynthesisOutputFormat.Raw48Khz16BitMonoPcm
+     */
+    SpeechSynthesisOutputFormat[SpeechSynthesisOutputFormat["Raw48Khz16BitMonoPcm"] = 19] = "Raw48Khz16BitMonoPcm";
+    /**
+     * riff-48khz-16bit-mono-pcm
+     * @member SpeechSynthesisOutputFormat.Riff48Khz16BitMonoPcm
+     */
+    SpeechSynthesisOutputFormat[SpeechSynthesisOutputFormat["Riff48Khz16BitMonoPcm"] = 20] = "Riff48Khz16BitMonoPcm";
+    /**
+     * audio-48khz-96kbitrate-mono-mp3
+     * @member SpeechSynthesisOutputFormat.Audio48Khz96KBitRateMonoMp3
+     */
+    SpeechSynthesisOutputFormat[SpeechSynthesisOutputFormat["Audio48Khz96KBitRateMonoMp3"] = 21] = "Audio48Khz96KBitRateMonoMp3";
+    /**
+     * audio-48khz-192kbitrate-mono-mp3
+     * @member SpeechSynthesisOutputFormat.Audio48Khz192KBitRateMonoMp3
+     */
+    SpeechSynthesisOutputFormat[SpeechSynthesisOutputFormat["Audio48Khz192KBitRateMonoMp3"] = 22] = "Audio48Khz192KBitRateMonoMp3";
 })(SpeechSynthesisOutputFormat = exports.SpeechSynthesisOutputFormat || (exports.SpeechSynthesisOutputFormat = {}));
 
 
 
 /***/ }),
-/* 64 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8057,6 +8297,7 @@ var SpeechSynthesisOutputFormat;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CancellationReason = void 0;
 /**
  * Defines the possible reasons a recognition result might be canceled.
  * @class CancellationReason
@@ -8078,12 +8319,13 @@ var CancellationReason;
 
 
 /***/ }),
-/* 65 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PullAudioInputStreamCallback = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 /**
@@ -8101,12 +8343,13 @@ exports.PullAudioInputStreamCallback = PullAudioInputStreamCallback;
 
 
 /***/ }),
-/* 66 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PushAudioOutputStreamCallback = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 /**
@@ -8124,7 +8367,7 @@ exports.PushAudioOutputStreamCallback = PushAudioOutputStreamCallback;
 
 
 /***/ }),
-/* 67 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8132,7 +8375,8 @@ exports.PushAudioOutputStreamCallback = PushAudioOutputStreamCallback;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Contracts_1 = __webpack_require__(51);
+exports.KeywordRecognitionModel = void 0;
+var Contracts_1 = __webpack_require__(63);
 /**
  * Represents a keyword recognition model for recognizing when
  * the user says a keyword to initiate further speech recognition.
@@ -8192,7 +8436,7 @@ exports.KeywordRecognitionModel = KeywordRecognitionModel;
 
 
 /***/ }),
-/* 68 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8200,6 +8444,7 @@ exports.KeywordRecognitionModel = KeywordRecognitionModel;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SessionEventArgs = void 0;
 /**
  * Defines content for session events like SessionStarted/Stopped, SoundStarted/Stopped.
  * @class SessionEventArgs
@@ -8224,7 +8469,7 @@ var SessionEventArgs = /** @class */ (function () {
         get: function () {
             return this.privSessionId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SessionEventArgs;
@@ -8234,7 +8479,7 @@ exports.SessionEventArgs = SessionEventArgs;
 
 
 /***/ }),
-/* 69 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8255,7 +8500,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.RecognitionEventArgs = void 0;
+var Exports_1 = __webpack_require__(61);
 /**
  * Defines payload for session events like Speech Start/End Detected
  * @class
@@ -8283,7 +8529,7 @@ var RecognitionEventArgs = /** @class */ (function (_super) {
         get: function () {
             return this.privOffset;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return RecognitionEventArgs;
@@ -8293,7 +8539,7 @@ exports.RecognitionEventArgs = RecognitionEventArgs;
 
 
 /***/ }),
-/* 70 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8301,6 +8547,7 @@ exports.RecognitionEventArgs = RecognitionEventArgs;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.OutputFormat = void 0;
 /**
  * Define Speech Recognizer output formats.
  * @class OutputFormat
@@ -8320,7 +8567,7 @@ var OutputFormat;
 
 
 /***/ }),
-/* 71 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8341,7 +8588,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.IntentRecognitionEventArgs = void 0;
+var Exports_1 = __webpack_require__(61);
 /**
  * Intent recognition result event arguments.
  * @class
@@ -8371,7 +8619,7 @@ var IntentRecognitionEventArgs = /** @class */ (function (_super) {
         get: function () {
             return this.privResult;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return IntentRecognitionEventArgs;
@@ -8381,7 +8629,7 @@ exports.IntentRecognitionEventArgs = IntentRecognitionEventArgs;
 
 
 /***/ }),
-/* 72 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8389,6 +8637,7 @@ exports.IntentRecognitionEventArgs = IntentRecognitionEventArgs;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RecognitionResult = void 0;
 /**
  * Defines result of speech recognition.
  * @class RecognitionResult
@@ -8431,7 +8680,7 @@ var RecognitionResult = /** @class */ (function () {
         get: function () {
             return this.privResultId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognitionResult.prototype, "reason", {
@@ -8445,7 +8694,7 @@ var RecognitionResult = /** @class */ (function () {
         get: function () {
             return this.privReason;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognitionResult.prototype, "text", {
@@ -8459,7 +8708,7 @@ var RecognitionResult = /** @class */ (function () {
         get: function () {
             return this.privText;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognitionResult.prototype, "duration", {
@@ -8473,7 +8722,7 @@ var RecognitionResult = /** @class */ (function () {
         get: function () {
             return this.privDuration;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognitionResult.prototype, "offset", {
@@ -8487,7 +8736,7 @@ var RecognitionResult = /** @class */ (function () {
         get: function () {
             return this.privOffset;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognitionResult.prototype, "language", {
@@ -8501,7 +8750,7 @@ var RecognitionResult = /** @class */ (function () {
         get: function () {
             return this.privLanguage;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognitionResult.prototype, "languageDetectionConfidence", {
@@ -8515,7 +8764,7 @@ var RecognitionResult = /** @class */ (function () {
         get: function () {
             return this.privLanguageDetectionConfidence;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognitionResult.prototype, "errorDetails", {
@@ -8529,7 +8778,7 @@ var RecognitionResult = /** @class */ (function () {
         get: function () {
             return this.privErrorDetails;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognitionResult.prototype, "json", {
@@ -8543,7 +8792,7 @@ var RecognitionResult = /** @class */ (function () {
         get: function () {
             return this.privJson;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognitionResult.prototype, "properties", {
@@ -8557,7 +8806,7 @@ var RecognitionResult = /** @class */ (function () {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return RecognitionResult;
@@ -8567,7 +8816,7 @@ exports.RecognitionResult = RecognitionResult;
 
 
 /***/ }),
-/* 73 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8588,7 +8837,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.SpeechRecognitionResult = void 0;
+var Exports_1 = __webpack_require__(61);
 /**
  * Defines result of speech recognition.
  * @class SpeechRecognitionResult
@@ -8627,7 +8877,7 @@ var SpeechRecognitionResult = /** @class */ (function (_super) {
         get: function () {
             return this.privSpeakerId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SpeechRecognitionResult;
@@ -8637,7 +8887,7 @@ exports.SpeechRecognitionResult = SpeechRecognitionResult;
 
 
 /***/ }),
-/* 74 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8658,7 +8908,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.IntentRecognitionResult = void 0;
+var Exports_1 = __webpack_require__(61);
 /**
  * Intent recognition result.
  * @class
@@ -8696,7 +8947,7 @@ var IntentRecognitionResult = /** @class */ (function (_super) {
         get: function () {
             return this.privIntentId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return IntentRecognitionResult;
@@ -8706,7 +8957,7 @@ exports.IntentRecognitionResult = IntentRecognitionResult;
 
 
 /***/ }),
-/* 75 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8727,7 +8978,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Contracts_1 = __webpack_require__(51);
+exports.LanguageUnderstandingModelImpl = exports.LanguageUnderstandingModel = void 0;
+var Contracts_1 = __webpack_require__(63);
 /**
  * Language understanding model
  * @class LanguageUnderstandingModel
@@ -8831,7 +9083,7 @@ exports.LanguageUnderstandingModelImpl = LanguageUnderstandingModelImpl;
 
 
 /***/ }),
-/* 76 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8852,7 +9104,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.ConversationTranscriptionEventArgs = exports.SpeechRecognitionEventArgs = void 0;
+var Exports_1 = __webpack_require__(61);
 /**
  * Defines contents of speech recognizing/recognized event.
  * @class SpeechRecognitionEventArgs
@@ -8882,7 +9135,7 @@ var SpeechRecognitionEventArgs = /** @class */ (function (_super) {
         get: function () {
             return this.privResult;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SpeechRecognitionEventArgs;
@@ -8905,7 +9158,7 @@ exports.ConversationTranscriptionEventArgs = ConversationTranscriptionEventArgs;
 
 
 /***/ }),
-/* 77 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8926,7 +9179,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var CancellationEventArgsBase_1 = __webpack_require__(78);
+exports.SpeechRecognitionCanceledEventArgs = void 0;
+var CancellationEventArgsBase_1 = __webpack_require__(90);
 var SpeechRecognitionCanceledEventArgs = /** @class */ (function (_super) {
     __extends(SpeechRecognitionCanceledEventArgs, _super);
     function SpeechRecognitionCanceledEventArgs() {
@@ -8939,7 +9193,7 @@ exports.SpeechRecognitionCanceledEventArgs = SpeechRecognitionCanceledEventArgs;
 
 
 /***/ }),
-/* 78 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8960,7 +9214,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.CancellationEventArgsBase = void 0;
+var Exports_1 = __webpack_require__(61);
 /**
  * Defines content of a CancellationEvent.
  * @class CancellationEventArgsBase
@@ -8993,7 +9248,7 @@ var CancellationEventArgsBase = /** @class */ (function (_super) {
         get: function () {
             return this.privReason;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(CancellationEventArgsBase.prototype, "errorCode", {
@@ -9004,7 +9259,7 @@ var CancellationEventArgsBase = /** @class */ (function (_super) {
         get: function () {
             return this.privErrorCode;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(CancellationEventArgsBase.prototype, "errorDetails", {
@@ -9018,7 +9273,7 @@ var CancellationEventArgsBase = /** @class */ (function (_super) {
         get: function () {
             return this.privErrorDetails;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return CancellationEventArgsBase;
@@ -9028,7 +9283,7 @@ exports.CancellationEventArgsBase = CancellationEventArgsBase;
 
 
 /***/ }),
-/* 79 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9049,7 +9304,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.TranslationRecognitionEventArgs = void 0;
+var Exports_1 = __webpack_require__(61);
 /**
  * Translation text result event arguments.
  * @class TranslationRecognitionEventArgs
@@ -9079,7 +9335,7 @@ var TranslationRecognitionEventArgs = /** @class */ (function (_super) {
         get: function () {
             return this.privResult;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return TranslationRecognitionEventArgs;
@@ -9089,7 +9345,7 @@ exports.TranslationRecognitionEventArgs = TranslationRecognitionEventArgs;
 
 
 /***/ }),
-/* 80 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9110,7 +9366,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.TranslationSynthesisEventArgs = void 0;
+var Exports_1 = __webpack_require__(61);
 /**
  * Translation Synthesis event arguments
  * @class TranslationSynthesisEventArgs
@@ -9139,7 +9396,7 @@ var TranslationSynthesisEventArgs = /** @class */ (function (_super) {
         get: function () {
             return this.privResult;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return TranslationSynthesisEventArgs;
@@ -9149,7 +9406,7 @@ exports.TranslationSynthesisEventArgs = TranslationSynthesisEventArgs;
 
 
 /***/ }),
-/* 81 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9170,7 +9427,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.TranslationRecognitionResult = void 0;
+var Exports_1 = __webpack_require__(61);
 /**
  * Translation text result.
  * @class TranslationRecognitionResult
@@ -9209,7 +9467,7 @@ var TranslationRecognitionResult = /** @class */ (function (_super) {
         get: function () {
             return this.privTranslations;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return TranslationRecognitionResult;
@@ -9219,7 +9477,7 @@ exports.TranslationRecognitionResult = TranslationRecognitionResult;
 
 
 /***/ }),
-/* 82 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9227,6 +9485,7 @@ exports.TranslationRecognitionResult = TranslationRecognitionResult;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TranslationSynthesisResult = void 0;
 /**
  * Defines translation synthesis result, i.e. the voice output of the translated
  * text in the target language.
@@ -9254,7 +9513,7 @@ var TranslationSynthesisResult = /** @class */ (function () {
         get: function () {
             return this.privAudio;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranslationSynthesisResult.prototype, "reason", {
@@ -9268,7 +9527,7 @@ var TranslationSynthesisResult = /** @class */ (function () {
         get: function () {
             return this.privReason;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return TranslationSynthesisResult;
@@ -9278,7 +9537,7 @@ exports.TranslationSynthesisResult = TranslationSynthesisResult;
 
 
 /***/ }),
-/* 83 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9286,6 +9545,7 @@ exports.TranslationSynthesisResult = TranslationSynthesisResult;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ResultReason = void 0;
 /**
  * Defines the possible reasons a recognition result might be generated.
  * @class ResultReason
@@ -9387,7 +9647,7 @@ var ResultReason;
 
 
 /***/ }),
-/* 84 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9408,9 +9668,10 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
-var Contracts_1 = __webpack_require__(51);
-var Exports_2 = __webpack_require__(49);
+exports.SpeechConfigImpl = exports.SpeechConfig = void 0;
+var Exports_1 = __webpack_require__(53);
+var Contracts_1 = __webpack_require__(63);
+var Exports_2 = __webpack_require__(61);
 /**
  * Speech configuration.
  * @class SpeechConfig
@@ -9547,28 +9808,28 @@ var SpeechConfigImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechConfigImpl.prototype, "endPoint", {
         get: function () {
             return new URL(this.privProperties.getProperty(Exports_2.PropertyId.SpeechServiceConnection_Endpoint));
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechConfigImpl.prototype, "subscriptionKey", {
         get: function () {
             return this.privProperties.getProperty(Exports_2.PropertyId.SpeechServiceConnection_Key);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechConfigImpl.prototype, "region", {
         get: function () {
             return this.privProperties.getProperty(Exports_2.PropertyId.SpeechServiceConnection_Region);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechConfigImpl.prototype, "authorizationToken", {
@@ -9578,7 +9839,7 @@ var SpeechConfigImpl = /** @class */ (function (_super) {
         set: function (value) {
             this.privProperties.setProperty(Exports_2.PropertyId.SpeechServiceAuthorization_Token, value);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechConfigImpl.prototype, "speechRecognitionLanguage", {
@@ -9588,7 +9849,7 @@ var SpeechConfigImpl = /** @class */ (function (_super) {
         set: function (value) {
             this.privProperties.setProperty(Exports_2.PropertyId.SpeechServiceConnection_RecoLanguage, value);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechConfigImpl.prototype, "autoDetectSourceLanguages", {
@@ -9598,7 +9859,7 @@ var SpeechConfigImpl = /** @class */ (function (_super) {
         set: function (value) {
             this.privProperties.setProperty(Exports_2.PropertyId.SpeechServiceConnection_AutoDetectSourceLanguages, value);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechConfigImpl.prototype, "outputFormat", {
@@ -9608,7 +9869,7 @@ var SpeechConfigImpl = /** @class */ (function (_super) {
         set: function (value) {
             this.privProperties.setProperty(Exports_1.OutputFormatPropertyName, Exports_2.OutputFormat[value]);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechConfigImpl.prototype, "endpointId", {
@@ -9618,7 +9879,7 @@ var SpeechConfigImpl = /** @class */ (function (_super) {
         set: function (value) {
             this.privProperties.setProperty(Exports_2.PropertyId.SpeechServiceConnection_EndpointId, value);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     SpeechConfigImpl.prototype.setProperty = function (name, value) {
@@ -9663,7 +9924,7 @@ var SpeechConfigImpl = /** @class */ (function (_super) {
         set: function (language) {
             this.privProperties.setProperty(Exports_2.PropertyId.SpeechServiceConnection_SynthLanguage, language);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechConfigImpl.prototype, "speechSynthesisVoiceName", {
@@ -9673,7 +9934,7 @@ var SpeechConfigImpl = /** @class */ (function (_super) {
         set: function (voice) {
             this.privProperties.setProperty(Exports_2.PropertyId.SpeechServiceConnection_SynthVoice, voice);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechConfigImpl.prototype, "speechSynthesisOutputFormat", {
@@ -9683,7 +9944,7 @@ var SpeechConfigImpl = /** @class */ (function (_super) {
         set: function (format) {
             this.privProperties.setProperty(Exports_2.PropertyId.SpeechServiceConnection_SynthOutputFormat, Exports_2.SpeechSynthesisOutputFormat[format]);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SpeechConfigImpl;
@@ -9693,7 +9954,7 @@ exports.SpeechConfigImpl = SpeechConfigImpl;
 
 
 /***/ }),
-/* 85 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9714,9 +9975,10 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
-var Contracts_1 = __webpack_require__(51);
-var Exports_2 = __webpack_require__(49);
+exports.SpeechTranslationConfigImpl = exports.SpeechTranslationConfig = void 0;
+var Exports_1 = __webpack_require__(53);
+var Contracts_1 = __webpack_require__(63);
+var Exports_2 = __webpack_require__(61);
 /**
  * Speech translation configuration.
  * @class SpeechTranslationConfig
@@ -9851,7 +10113,7 @@ var SpeechTranslationConfigImpl = /** @class */ (function (_super) {
             Contracts_1.Contracts.throwIfNullOrWhitespace(value, "value");
             this.privSpeechProperties.setProperty(Exports_2.PropertyId.SpeechServiceAuthorization_Token, value);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechTranslationConfigImpl.prototype, "speechRecognitionLanguage", {
@@ -9876,7 +10138,7 @@ var SpeechTranslationConfigImpl = /** @class */ (function (_super) {
             Contracts_1.Contracts.throwIfNullOrWhitespace(value, "value");
             this.privSpeechProperties.setProperty(Exports_2.PropertyId.SpeechServiceConnection_RecoLanguage, value);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechTranslationConfigImpl.prototype, "subscriptionKey", {
@@ -9888,7 +10150,7 @@ var SpeechTranslationConfigImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privSpeechProperties.getProperty(Exports_2.PropertyId[Exports_2.PropertyId.SpeechServiceConnection_Key]);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechTranslationConfigImpl.prototype, "outputFormat", {
@@ -9910,7 +10172,7 @@ var SpeechTranslationConfigImpl = /** @class */ (function (_super) {
         set: function (value) {
             this.privSpeechProperties.setProperty(Exports_1.OutputFormatPropertyName, Exports_2.OutputFormat[value]);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechTranslationConfigImpl.prototype, "endpointId", {
@@ -9932,7 +10194,7 @@ var SpeechTranslationConfigImpl = /** @class */ (function (_super) {
         set: function (value) {
             this.privSpeechProperties.setProperty(Exports_2.PropertyId.SpeechServiceConnection_EndpointId, value);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -9964,7 +10226,7 @@ var SpeechTranslationConfigImpl = /** @class */ (function (_super) {
                 return [];
             }
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechTranslationConfigImpl.prototype, "voiceName", {
@@ -9988,7 +10250,7 @@ var SpeechTranslationConfigImpl = /** @class */ (function (_super) {
             Contracts_1.Contracts.throwIfNullOrWhitespace(value, "value");
             this.privSpeechProperties.setProperty(Exports_2.PropertyId.SpeechServiceConnection_TranslationVoice, value);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechTranslationConfigImpl.prototype, "region", {
@@ -10002,7 +10264,7 @@ var SpeechTranslationConfigImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privSpeechProperties.getProperty(Exports_2.PropertyId.SpeechServiceConnection_Region);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     SpeechTranslationConfigImpl.prototype.setProxy = function (proxyHostName, proxyPort, proxyUserName, proxyPassword) {
@@ -10045,7 +10307,7 @@ var SpeechTranslationConfigImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privSpeechProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -10081,7 +10343,7 @@ var SpeechTranslationConfigImpl = /** @class */ (function (_super) {
         set: function (language) {
             this.privSpeechProperties.setProperty(Exports_2.PropertyId.SpeechServiceConnection_SynthLanguage, language);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechTranslationConfigImpl.prototype, "speechSynthesisVoiceName", {
@@ -10091,7 +10353,7 @@ var SpeechTranslationConfigImpl = /** @class */ (function (_super) {
         set: function (voice) {
             this.privSpeechProperties.setProperty(Exports_2.PropertyId.SpeechServiceConnection_SynthVoice, voice);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechTranslationConfigImpl.prototype, "speechSynthesisOutputFormat", {
@@ -10101,7 +10363,7 @@ var SpeechTranslationConfigImpl = /** @class */ (function (_super) {
         set: function (format) {
             this.privSpeechProperties.setProperty(Exports_2.PropertyId.SpeechServiceConnection_SynthOutputFormat, Exports_2.SpeechSynthesisOutputFormat[format]);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SpeechTranslationConfigImpl;
@@ -10111,7 +10373,7 @@ exports.SpeechTranslationConfigImpl = SpeechTranslationConfigImpl;
 
 
 /***/ }),
-/* 86 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10119,7 +10381,8 @@ exports.SpeechTranslationConfigImpl = SpeechTranslationConfigImpl;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.PropertyCollection = void 0;
+var Exports_1 = __webpack_require__(61);
 /**
  * Represents collection of properties and their values.
  * @class PropertyCollection
@@ -10219,7 +10482,7 @@ exports.PropertyCollection = PropertyCollection;
 
 
 /***/ }),
-/* 87 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10227,6 +10490,7 @@ exports.PropertyCollection = PropertyCollection;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PropertyId = void 0;
 /**
  * Defines speech property ids.
  * @class PropertyId
@@ -10507,36 +10771,88 @@ var PropertyId;
      */
     PropertyId[PropertyId["Conversation_Speech_Activity_Template"] = 45] = "Conversation_Speech_Activity_Template";
     /**
+     * Enables or disables the receipt of turn status messages as obtained on the turnStatusReceived event.
+     * @member PropertyId.Conversation_Request_Bot_Status_Messages
+     * Added in version 1.15.0.
+     */
+    PropertyId[PropertyId["Conversation_Request_Bot_Status_Messages"] = 46] = "Conversation_Request_Bot_Status_Messages";
+    /**
+     * Specifies the connection ID to be provided in the Agent configuration message, e.g. a Direct Line token for
+     * channel authentication.
+     * Added in version 1.15.1.
+     */
+    PropertyId[PropertyId["Conversation_Agent_Connection_Id"] = 47] = "Conversation_Agent_Connection_Id";
+    /**
      * The Cognitive Services Speech Service host (url). Under normal circumstances, you shouldn't have to use this property directly.
      * Instead, use [[SpeechConfig.fromHost]].
      */
-    PropertyId[PropertyId["SpeechServiceConnection_Host"] = 46] = "SpeechServiceConnection_Host";
+    PropertyId[PropertyId["SpeechServiceConnection_Host"] = 48] = "SpeechServiceConnection_Host";
     /**
      * Set the host for service calls to the Conversation Translator REST management and websocket calls.
      */
-    PropertyId[PropertyId["ConversationTranslator_Host"] = 47] = "ConversationTranslator_Host";
+    PropertyId[PropertyId["ConversationTranslator_Host"] = 49] = "ConversationTranslator_Host";
     /**
      * Optionally set the the host's display name.
      * Used when joining a conversation.
      */
-    PropertyId[PropertyId["ConversationTranslator_Name"] = 48] = "ConversationTranslator_Name";
+    PropertyId[PropertyId["ConversationTranslator_Name"] = 50] = "ConversationTranslator_Name";
     /**
      * Optionally set a value for the X-CorrelationId request header.
      * Used for troubleshooting errors in the server logs. It should be a valid guid.
      */
-    PropertyId[PropertyId["ConversationTranslator_CorrelationId"] = 49] = "ConversationTranslator_CorrelationId";
+    PropertyId[PropertyId["ConversationTranslator_CorrelationId"] = 51] = "ConversationTranslator_CorrelationId";
     /**
      * Set the conversation token to be sent to the speech service. This enables the
      * service to service call from the speech service to the Conversation Translator service for relaying
      * recognitions. For internal use.
      */
-    PropertyId[PropertyId["ConversationTranslator_Token"] = 50] = "ConversationTranslator_Token";
+    PropertyId[PropertyId["ConversationTranslator_Token"] = 52] = "ConversationTranslator_Token";
+    /**
+     * The reference text of the audio for pronunciation evaluation.
+     * For this and the following pronunciation assessment parameters, see
+     * https://docs.microsoft.com/azure/cognitive-services/speech-service/rest-speech-to-text#pronunciation-assessment-parameters for details.
+     * Under normal circumstances, you shouldn't have to use this property directly.
+     * Added in version 1.15.0
+     */
+    PropertyId[PropertyId["PronunciationAssessment_ReferenceText"] = 53] = "PronunciationAssessment_ReferenceText";
+    /**
+     * The point system for pronunciation score calibration (FivePoint or HundredMark).
+     * Under normal circumstances, you shouldn't have to use this property directly.
+     * Added in version 1.15.0
+     */
+    PropertyId[PropertyId["PronunciationAssessment_GradingSystem"] = 54] = "PronunciationAssessment_GradingSystem";
+    /**
+     * The pronunciation evaluation granularity (Phoneme, Word, or FullText).
+     * Under normal circumstances, you shouldn't have to use this property directly.
+     * Added in version 1.15.0
+     */
+    PropertyId[PropertyId["PronunciationAssessment_Granularity"] = 55] = "PronunciationAssessment_Granularity";
+    /**
+     * Defines if enable miscue calculation.
+     * With this enabled, the pronounced words will be compared to the reference text,
+     * and will be marked with omission/insertion based on the comparison. The default setting is False.
+     * Under normal circumstances, you shouldn't have to use this property directly.
+     * Added in version 1.15.0
+     */
+    PropertyId[PropertyId["PronunciationAssessment_EnableMiscue"] = 56] = "PronunciationAssessment_EnableMiscue";
+    /**
+     * The json string of pronunciation assessment parameters
+     * Under normal circumstances, you shouldn't have to use this property directly.
+     * Added in version 1.15.0
+     */
+    PropertyId[PropertyId["PronunciationAssessment_Json"] = 57] = "PronunciationAssessment_Json";
+    /**
+     * Pronunciation assessment parameters.
+     * This property is intended to be read-only. The SDK is using it internally.
+     * Added in version 1.15.0
+     */
+    PropertyId[PropertyId["PronunciationAssessment_Params"] = 58] = "PronunciationAssessment_Params";
 })(PropertyId = exports.PropertyId || (exports.PropertyId = {}));
 
 
 
 /***/ }),
-/* 88 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10580,10 +10896,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.Recognizer = void 0;
+var Exports_1 = __webpack_require__(53);
 var Exports_2 = __webpack_require__(4);
-var Contracts_1 = __webpack_require__(51);
-var Exports_3 = __webpack_require__(49);
+var Contracts_1 = __webpack_require__(63);
+var Exports_3 = __webpack_require__(61);
 /**
  * Defines the base class Recognizer which mainly contains common event handlers.
  * @class Recognizer
@@ -10620,7 +10937,7 @@ var Recognizer = /** @class */ (function () {
         get: function () {
             return this.privReco;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -10667,7 +10984,7 @@ var Recognizer = /** @class */ (function () {
         get: function () {
             return Exports_1.ServiceRecognizerBase.telemetryDataEnabled;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -10788,7 +11105,7 @@ exports.Recognizer = Recognizer;
 
 
 /***/ }),
-/* 89 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10845,10 +11162,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.SpeechRecognizer = void 0;
+var Exports_1 = __webpack_require__(53);
 var Exports_2 = __webpack_require__(4);
-var Contracts_1 = __webpack_require__(51);
-var Exports_3 = __webpack_require__(49);
+var Contracts_1 = __webpack_require__(63);
+var Exports_3 = __webpack_require__(61);
 /**
  * Performs speech recognition from microphone, file, or other audio input streams, and gets transcribed text as result.
  * @class SpeechRecognizer
@@ -10895,7 +11213,7 @@ var SpeechRecognizer = /** @class */ (function (_super) {
             Contracts_1.Contracts.throwIfDisposed(this.privDisposedRecognizer);
             return this.properties.getProperty(Exports_3.PropertyId.SpeechServiceConnection_EndpointId, "00000000-0000-0000-0000-000000000000");
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechRecognizer.prototype, "authorizationToken", {
@@ -10920,7 +11238,7 @@ var SpeechRecognizer = /** @class */ (function (_super) {
             Contracts_1.Contracts.throwIfNullOrWhitespace(token, "token");
             this.properties.setProperty(Exports_3.PropertyId.SpeechServiceAuthorization_Token, token);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechRecognizer.prototype, "speechRecognitionLanguage", {
@@ -10935,7 +11253,7 @@ var SpeechRecognizer = /** @class */ (function (_super) {
             Contracts_1.Contracts.throwIfDisposed(this.privDisposedRecognizer);
             return this.properties.getProperty(Exports_3.PropertyId.SpeechServiceConnection_RecoLanguage);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechRecognizer.prototype, "outputFormat", {
@@ -10955,7 +11273,7 @@ var SpeechRecognizer = /** @class */ (function (_super) {
                 return Exports_3.OutputFormat.Detailed;
             }
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechRecognizer.prototype, "properties", {
@@ -10969,7 +11287,7 @@ var SpeechRecognizer = /** @class */ (function (_super) {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -11098,7 +11416,7 @@ exports.SpeechRecognizer = SpeechRecognizer;
 
 
 /***/ }),
-/* 90 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11155,10 +11473,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.IntentRecognizer = void 0;
+var Exports_1 = __webpack_require__(53);
 var Exports_2 = __webpack_require__(4);
-var Contracts_1 = __webpack_require__(51);
-var Exports_3 = __webpack_require__(49);
+var Contracts_1 = __webpack_require__(63);
+var Exports_3 = __webpack_require__(61);
 /**
  * Intent recognizer.
  * @class
@@ -11196,7 +11515,7 @@ var IntentRecognizer = /** @class */ (function (_super) {
             Contracts_1.Contracts.throwIfDisposed(this.privDisposedIntentRecognizer);
             return this.properties.getProperty(Exports_3.PropertyId.SpeechServiceConnection_RecoLanguage);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(IntentRecognizer.prototype, "authorizationToken", {
@@ -11221,7 +11540,7 @@ var IntentRecognizer = /** @class */ (function (_super) {
         set: function (value) {
             this.properties.setProperty(Exports_3.PropertyId.SpeechServiceAuthorization_Token, value);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(IntentRecognizer.prototype, "properties", {
@@ -11236,7 +11555,7 @@ var IntentRecognizer = /** @class */ (function (_super) {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -11468,7 +11787,7 @@ exports.IntentRecognizer = IntentRecognizer;
 
 
 /***/ }),
-/* 91 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11476,6 +11795,7 @@ exports.IntentRecognizer = IntentRecognizer;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.VoiceProfileType = void 0;
 /**
  * Output format
  * @class VoiceProfileType
@@ -11502,7 +11822,7 @@ var VoiceProfileType;
 
 
 /***/ }),
-/* 92 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11559,10 +11879,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.TranslationRecognizer = void 0;
+var Exports_1 = __webpack_require__(53);
 var Exports_2 = __webpack_require__(4);
-var Contracts_1 = __webpack_require__(51);
-var Exports_3 = __webpack_require__(49);
+var Contracts_1 = __webpack_require__(63);
+var Exports_3 = __webpack_require__(61);
 /**
  * Translation recognizer
  * @class TranslationRecognizer
@@ -11601,7 +11922,7 @@ var TranslationRecognizer = /** @class */ (function (_super) {
             Contracts_1.Contracts.throwIfDisposed(this.privDisposedTranslationRecognizer);
             return this.properties.getProperty(Exports_3.PropertyId.SpeechServiceConnection_RecoLanguage);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranslationRecognizer.prototype, "targetLanguages", {
@@ -11617,7 +11938,7 @@ var TranslationRecognizer = /** @class */ (function (_super) {
             Contracts_1.Contracts.throwIfDisposed(this.privDisposedTranslationRecognizer);
             return this.properties.getProperty(Exports_3.PropertyId.SpeechServiceConnection_TranslationToLanguages).split(",");
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranslationRecognizer.prototype, "voiceName", {
@@ -11632,7 +11953,7 @@ var TranslationRecognizer = /** @class */ (function (_super) {
             Contracts_1.Contracts.throwIfDisposed(this.privDisposedTranslationRecognizer);
             return this.properties.getProperty(Exports_3.PropertyId.SpeechServiceConnection_TranslationVoice, undefined);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranslationRecognizer.prototype, "authorizationToken", {
@@ -11656,7 +11977,7 @@ var TranslationRecognizer = /** @class */ (function (_super) {
         set: function (value) {
             this.properties.setProperty(Exports_3.PropertyId.SpeechServiceAuthorization_Token, value);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranslationRecognizer.prototype, "properties", {
@@ -11670,7 +11991,7 @@ var TranslationRecognizer = /** @class */ (function (_super) {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -11758,7 +12079,7 @@ exports.TranslationRecognizer = TranslationRecognizer;
 
 
 /***/ }),
-/* 93 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11766,7 +12087,8 @@ exports.TranslationRecognizer = TranslationRecognizer;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.Translations = void 0;
+var Exports_1 = __webpack_require__(61);
 /**
  * Represents collection of parameters and their values.
  * @class Translation
@@ -11808,7 +12130,7 @@ exports.Translations = Translations;
 
 
 /***/ }),
-/* 94 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11816,6 +12138,7 @@ exports.Translations = Translations;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.NoMatchReason = void 0;
 /**
  * Defines the possible reasons a recognition result might not be recognized.
  * @class NoMatchReason
@@ -11844,7 +12167,7 @@ var NoMatchReason;
 
 
 /***/ }),
-/* 95 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11852,8 +12175,9 @@ var NoMatchReason;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
-var Exports_2 = __webpack_require__(49);
+exports.NoMatchDetails = void 0;
+var Exports_1 = __webpack_require__(53);
+var Exports_2 = __webpack_require__(61);
 /**
  * Contains detailed information for NoMatch recognition results.
  * @class NoMatchDetails
@@ -11903,7 +12227,7 @@ var NoMatchDetails = /** @class */ (function () {
         get: function () {
             return this.privReason;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return NoMatchDetails;
@@ -11913,7 +12237,7 @@ exports.NoMatchDetails = NoMatchDetails;
 
 
 /***/ }),
-/* 96 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11921,6 +12245,7 @@ exports.NoMatchDetails = NoMatchDetails;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TranslationRecognitionCanceledEventArgs = void 0;
 /**
  * Define payload of speech recognition canceled result events.
  * @class TranslationRecognitionCanceledEventArgs
@@ -11952,7 +12277,7 @@ var TranslationRecognitionCanceledEventArgs = /** @class */ (function () {
         get: function () {
             return this.privResult;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranslationRecognitionCanceledEventArgs.prototype, "sessionId", {
@@ -11966,7 +12291,7 @@ var TranslationRecognitionCanceledEventArgs = /** @class */ (function () {
         get: function () {
             return this.privSessionId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranslationRecognitionCanceledEventArgs.prototype, "reason", {
@@ -11980,7 +12305,7 @@ var TranslationRecognitionCanceledEventArgs = /** @class */ (function () {
         get: function () {
             return this.privCancelReason;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranslationRecognitionCanceledEventArgs.prototype, "errorCode", {
@@ -11992,7 +12317,7 @@ var TranslationRecognitionCanceledEventArgs = /** @class */ (function () {
         get: function () {
             return this.privErrorCode;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranslationRecognitionCanceledEventArgs.prototype, "errorDetails", {
@@ -12006,7 +12331,7 @@ var TranslationRecognitionCanceledEventArgs = /** @class */ (function () {
         get: function () {
             return this.privErrorDetails;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return TranslationRecognitionCanceledEventArgs;
@@ -12016,7 +12341,7 @@ exports.TranslationRecognitionCanceledEventArgs = TranslationRecognitionCanceled
 
 
 /***/ }),
-/* 97 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12037,7 +12362,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.IntentRecognitionCanceledEventArgs = void 0;
+var Exports_1 = __webpack_require__(61);
 /**
  * Define payload of intent recognition canceled result events.
  * @class IntentRecognitionCanceledEventArgs
@@ -12069,7 +12395,7 @@ var IntentRecognitionCanceledEventArgs = /** @class */ (function (_super) {
         get: function () {
             return this.privReason;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(IntentRecognitionCanceledEventArgs.prototype, "errorCode", {
@@ -12081,7 +12407,7 @@ var IntentRecognitionCanceledEventArgs = /** @class */ (function (_super) {
         get: function () {
             return this.privErrorCode;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(IntentRecognitionCanceledEventArgs.prototype, "errorDetails", {
@@ -12095,7 +12421,7 @@ var IntentRecognitionCanceledEventArgs = /** @class */ (function (_super) {
         get: function () {
             return this.privErrorDetails;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return IntentRecognitionCanceledEventArgs;
@@ -12105,7 +12431,7 @@ exports.IntentRecognitionCanceledEventArgs = IntentRecognitionCanceledEventArgs;
 
 
 /***/ }),
-/* 98 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12113,6 +12439,7 @@ exports.IntentRecognitionCanceledEventArgs = IntentRecognitionCanceledEventArgs;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CancellationDetailsBase = void 0;
 /**
  * Contains detailed information about why a result was canceled.
  * @class CancellationDetailsBase
@@ -12140,7 +12467,7 @@ var CancellationDetailsBase = /** @class */ (function () {
         get: function () {
             return this.privReason;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(CancellationDetailsBase.prototype, "errorDetails", {
@@ -12154,7 +12481,7 @@ var CancellationDetailsBase = /** @class */ (function () {
         get: function () {
             return this.privErrorDetails;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(CancellationDetailsBase.prototype, "ErrorCode", {
@@ -12166,7 +12493,7 @@ var CancellationDetailsBase = /** @class */ (function () {
         get: function () {
             return this.privErrorCode;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return CancellationDetailsBase;
@@ -12176,7 +12503,7 @@ exports.CancellationDetailsBase = CancellationDetailsBase;
 
 
 /***/ }),
-/* 99 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12197,9 +12524,10 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
-var CancellationDetailsBase_1 = __webpack_require__(98);
-var Exports_2 = __webpack_require__(49);
+exports.CancellationDetails = void 0;
+var Exports_1 = __webpack_require__(53);
+var CancellationDetailsBase_1 = __webpack_require__(110);
+var Exports_2 = __webpack_require__(61);
 /**
  * Contains detailed information about why a result was canceled.
  * @class CancellationDetails
@@ -12236,7 +12564,7 @@ exports.CancellationDetails = CancellationDetails;
 
 
 /***/ }),
-/* 100 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12244,6 +12572,7 @@ exports.CancellationDetails = CancellationDetails;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CancellationErrorCode = void 0;
 /**
  *  Defines error code in case that CancellationReason is Error.
  *  Added in version 1.1.0.
@@ -12288,7 +12617,7 @@ var CancellationErrorCode;
 
 
 /***/ }),
-/* 101 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12311,7 +12640,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.ConnectionEventArgs = void 0;
+var Exports_1 = __webpack_require__(61);
 /**
  * Defines payload for connection events like Connected/Disconnected.
  * Added in version 1.2.0
@@ -12328,7 +12658,7 @@ exports.ConnectionEventArgs = ConnectionEventArgs;
 
 
 /***/ }),
-/* 102 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12351,7 +12681,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.ServiceEventArgs = void 0;
+var Exports_1 = __webpack_require__(61);
 /**
  * Defines payload for any Service message event
  * Added in version 1.9.0
@@ -12373,14 +12704,14 @@ var ServiceEventArgs = /** @class */ (function (_super) {
         get: function () {
             return this.privJsonResult;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ServiceEventArgs.prototype, "eventName", {
         get: function () {
             return this.privEventName;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ServiceEventArgs;
@@ -12390,7 +12721,7 @@ exports.ServiceEventArgs = ServiceEventArgs;
 
 
 /***/ }),
-/* 103 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12400,11 +12731,12 @@ exports.ServiceEventArgs = ServiceEventArgs;
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.Connection = void 0;
+var Exports_1 = __webpack_require__(53);
 var Exports_2 = __webpack_require__(4);
-var ConnectionMessage_1 = __webpack_require__(104);
-var Contracts_1 = __webpack_require__(51);
-var Exports_3 = __webpack_require__(49);
+var ConnectionMessage_1 = __webpack_require__(116);
+var Contracts_1 = __webpack_require__(63);
+var Exports_3 = __webpack_require__(61);
 /**
  * Connection is a proxy class for managing connection to the speech service of the specified Recognizer.
  * By default, a Recognizer autonomously manages connection to service when needed.
@@ -12550,7 +12882,7 @@ exports.Connection = Connection;
 
 
 /***/ }),
-/* 104 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12560,9 +12892,11 @@ exports.Connection = Connection;
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConnectionMessageImpl = exports.ConnectionMessage = void 0;
+var HeaderNames_1 = __webpack_require__(55);
 var Exports_1 = __webpack_require__(4);
-var PropertyCollection_1 = __webpack_require__(86);
-var PropertyId_1 = __webpack_require__(87);
+var PropertyCollection_1 = __webpack_require__(98);
+var PropertyId_1 = __webpack_require__(99);
 /**
  * ConnectionMessage represents implementation specific messages sent to and received from
  * the speech service. These messages are provided for debugging purposes and should not
@@ -12583,8 +12917,8 @@ var ConnectionMessageImpl = /** @class */ (function () {
         var _this = this;
         this.privConnectionMessage = message;
         this.privProperties = new PropertyCollection_1.PropertyCollection();
-        if (!!this.privConnectionMessage.headers["X-ConnectionId"]) {
-            this.privProperties.setProperty(PropertyId_1.PropertyId.Speech_SessionId, this.privConnectionMessage.headers["X-ConnectionId"]);
+        if (!!this.privConnectionMessage.headers[HeaderNames_1.HeaderNames.ConnectionId]) {
+            this.privProperties.setProperty(PropertyId_1.PropertyId.Speech_SessionId, this.privConnectionMessage.headers[HeaderNames_1.HeaderNames.ConnectionId]);
         }
         Object.keys(this.privConnectionMessage.headers).forEach(function (header, index, array) {
             _this.privProperties.setProperty(header, _this.privConnectionMessage.headers[header]);
@@ -12597,7 +12931,7 @@ var ConnectionMessageImpl = /** @class */ (function () {
         get: function () {
             return this.privConnectionMessage.headers[Object.keys(this.privConnectionMessage.headers).find(function (key) { return key.toLowerCase() === "path".toLowerCase(); })];
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConnectionMessageImpl.prototype, "isTextMessage", {
@@ -12608,7 +12942,7 @@ var ConnectionMessageImpl = /** @class */ (function () {
         get: function () {
             return this.privConnectionMessage.messageType === Exports_1.MessageType.Text;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConnectionMessageImpl.prototype, "isBinaryMessage", {
@@ -12619,7 +12953,7 @@ var ConnectionMessageImpl = /** @class */ (function () {
         get: function () {
             return this.privConnectionMessage.messageType === Exports_1.MessageType.Binary;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConnectionMessageImpl.prototype, "TextMessage", {
@@ -12631,7 +12965,7 @@ var ConnectionMessageImpl = /** @class */ (function () {
         get: function () {
             return this.privConnectionMessage.textBody;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConnectionMessageImpl.prototype, "binaryMessage", {
@@ -12641,7 +12975,7 @@ var ConnectionMessageImpl = /** @class */ (function () {
         get: function () {
             return this.privConnectionMessage.binaryBody;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConnectionMessageImpl.prototype, "properties", {
@@ -12652,7 +12986,7 @@ var ConnectionMessageImpl = /** @class */ (function () {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -12668,7 +13002,7 @@ exports.ConnectionMessageImpl = ConnectionMessageImpl;
 
 
 /***/ }),
-/* 105 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12676,6 +13010,7 @@ exports.ConnectionMessageImpl = ConnectionMessageImpl;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PhraseListGrammar = void 0;
 /**
  * Allows additions of new phrases to improve speech recognition.
  *
@@ -12721,7 +13056,7 @@ exports.PhraseListGrammar = PhraseListGrammar;
 
 
 /***/ }),
-/* 106 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12742,8 +13077,9 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Contracts_1 = __webpack_require__(51);
-var Exports_1 = __webpack_require__(49);
+exports.DialogServiceConfigImpl = exports.DialogServiceConfig = void 0;
+var Contracts_1 = __webpack_require__(63);
+var Exports_1 = __webpack_require__(61);
 /**
  * Class that defines base configurations for dialog service connector
  * @class DialogServiceConfig
@@ -12765,9 +13101,18 @@ var DialogServiceConfig = /** @class */ (function () {
          */
         // tslint:disable-next-line: no-empty
         set: function (value) { },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
+    var _a;
+    DialogServiceConfig.DialogTypes = (_a = /** @class */ (function () {
+            function class_1() {
+            }
+            return class_1;
+        }()),
+        _a.BotFramework = "bot_framework",
+        _a.CustomCommands = "custom_commands",
+        _a);
     return DialogServiceConfig;
 }());
 exports.DialogServiceConfig = DialogServiceConfig;
@@ -12797,7 +13142,7 @@ var DialogServiceConfigImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privSpeechConfig.properties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(DialogServiceConfigImpl.prototype, "speechRecognitionLanguage", {
@@ -12821,7 +13166,7 @@ var DialogServiceConfigImpl = /** @class */ (function (_super) {
             Contracts_1.Contracts.throwIfNullOrWhitespace(value, "value");
             this.privSpeechConfig.speechRecognitionLanguage = value;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(DialogServiceConfigImpl.prototype, "outputFormat", {
@@ -12831,7 +13176,7 @@ var DialogServiceConfigImpl = /** @class */ (function (_super) {
         set: function (value) {
             this.privSpeechConfig.outputFormat = value;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -12895,7 +13240,7 @@ exports.DialogServiceConfigImpl = DialogServiceConfigImpl;
 
 
 /***/ }),
-/* 107 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12916,9 +13261,10 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Contracts_1 = __webpack_require__(51);
-var DialogServiceConfig_1 = __webpack_require__(106);
-var Exports_1 = __webpack_require__(49);
+exports.BotFrameworkConfig = void 0;
+var Contracts_1 = __webpack_require__(63);
+var DialogServiceConfig_1 = __webpack_require__(118);
+var Exports_1 = __webpack_require__(61);
 /**
  * Class that defines configurations for the dialog service connector object for using a Bot Framework backend.
  * @class BotFrameworkConfig
@@ -12932,20 +13278,21 @@ var BotFrameworkConfig = /** @class */ (function (_super) {
         return _super.call(this) || this;
     }
     /**
-     * Creates an instance of the bot framework config with the specified subscription and region.
+     * Creates a bot framework configuration instance with the provided subscription information.
      * @member BotFrameworkConfig.fromSubscription
      * @function
      * @public
      * @param subscription Subscription key associated with the bot
      * @param region The region name (see the <a href="https://aka.ms/csspeech/region">region page</a>).
-     * @param botId Optional, ID for using a specific bot.
-     * @returns {BotFrameworkConfig} A new bot framework config.
+     * @param botId Optional. Identifier for using a specific bot within an Azure resource group. Equivalent to the
+     *        resource name.
+     * @returns {BotFrameworkConfig} A new bot framework configuration instance.
      */
     BotFrameworkConfig.fromSubscription = function (subscription, region, botId) {
         Contracts_1.Contracts.throwIfNullOrWhitespace(subscription, "subscription");
         Contracts_1.Contracts.throwIfNullOrWhitespace(region, "region");
         var botFrameworkConfig = new DialogServiceConfig_1.DialogServiceConfigImpl();
-        botFrameworkConfig.setProperty(Exports_1.PropertyId.Conversation_DialogType, "bot_framework");
+        botFrameworkConfig.setProperty(Exports_1.PropertyId.Conversation_DialogType, DialogServiceConfig_1.DialogServiceConfig.DialogTypes.BotFramework);
         botFrameworkConfig.setProperty(Exports_1.PropertyId.SpeechServiceConnection_Key, subscription);
         botFrameworkConfig.setProperty(Exports_1.PropertyId.SpeechServiceConnection_Region, region);
         if (botId) {
@@ -12954,26 +13301,91 @@ var BotFrameworkConfig = /** @class */ (function (_super) {
         return botFrameworkConfig;
     };
     /**
-     * Creates an instance of the bot framework config with the specified authorization token and region.
-     * Note: The caller needs to ensure that the authorization token is valid. Before the authorization token
-     * expires, the caller needs to refresh it by calling this setter with a new valid token.
-     * As configuration values are copied when creating a new recognizer, the new token value will not apply to recognizers that have already been created.
-     * For recognizers that have been created before, you need to set authorization token of the corresponding recognizer
-     * to refresh the token. Otherwise, the recognizers will encounter errors during recognition.
+     * Creates a bot framework configuration instance for the specified authorization token and region.
+     * Note: The caller must ensure that an authorization token is valid. Before an authorization token expires, the
+     *       caller must refresh it by setting the authorizationToken property on the corresponding
+     *       DialogServiceConnector instance created with this config. The contents of configuration objects are copied
+     *       when connectors are created, so setting authorizationToken on a DialogServiceConnector will not update the
+     *       original configuration's authorization token. Create a new configuration instance or set the
+     *       SpeechServiceAuthorization_Token property to update an existing instance if it will be used to create
+     *       further DialogServiceConnectors.
      * @member BotFrameworkConfig.fromAuthorizationToken
      * @function
      * @public
      * @param authorizationToken The authorization token associated with the bot
      * @param region The region name (see the <a href="https://aka.ms/csspeech/region">region page</a>).
-     * @returns {BotFrameworkConfig} A new bot framework config.
+     * @param botId Optional. Identifier for using a specific bot within an Azure resource group. Equivalent to the
+     *        resource name.
+     * @returns {BotFrameworkConfig} A new bot framework configuration instance.
      */
-    BotFrameworkConfig.fromAuthorizationToken = function (authorizationToken, region) {
+    BotFrameworkConfig.fromAuthorizationToken = function (authorizationToken, region, botId) {
         Contracts_1.Contracts.throwIfNullOrWhitespace(authorizationToken, "authorizationToken");
         Contracts_1.Contracts.throwIfNullOrWhitespace(region, "region");
         var botFrameworkConfig = new DialogServiceConfig_1.DialogServiceConfigImpl();
-        botFrameworkConfig.setProperty(Exports_1.PropertyId.Conversation_DialogType, "bot_framework");
+        botFrameworkConfig.setProperty(Exports_1.PropertyId.Conversation_DialogType, DialogServiceConfig_1.DialogServiceConfig.DialogTypes.BotFramework);
         botFrameworkConfig.setProperty(Exports_1.PropertyId.SpeechServiceAuthorization_Token, authorizationToken);
         botFrameworkConfig.setProperty(Exports_1.PropertyId.SpeechServiceConnection_Region, region);
+        if (botId) {
+            botFrameworkConfig.setProperty(Exports_1.PropertyId.Conversation_ApplicationId, botId);
+        }
+        return botFrameworkConfig;
+    };
+    /**
+     * Creates an instance of a BotFrameworkConfig.
+     * This method is intended only for users who use a non-default service host. The standard resource path will be
+     * assumed. For services with a non-standard resource path or no path at all, use fromEndpoint instead.
+     * Note: Query parameters are not allowed in the host URI and must be set by other APIs.
+     * Note: To use an authorization token with fromHost, use fromHost(URL) and then set the AuthorizationToken
+     *       property on the created BotFrameworkConfig instance.
+     * Note: Added in version 1.15.0.
+     * @member BotFrameworkConfig.fromHost
+     * @function
+     * @public
+     * @param {URL | string} host - If a URL is provided, the fully-qualified host with protocol (e.g.
+     *        wss://your.host.com:1234) will be used. If a string is provided, it will be embedded in
+     *        wss://{host}.convai.speech.azure.us.
+     * @param {string} subscriptionKey - The subscription key. If a subscription key is not specified, an authorization
+     *        token must be set.
+     * @param botId Optional. Identifier for using a specific bot within an Azure resource group. Equivalent to the
+     *        resource name.
+     * @returns {BotFrameworkConfig} A new bot framework configuration instance.
+     */
+    BotFrameworkConfig.fromHost = function (host, subscriptionKey, botId) {
+        Contracts_1.Contracts.throwIfNullOrUndefined(host, "host");
+        var resolvedHost = host instanceof URL ? host : new URL("wss://" + host + ".convai.speech.azure.us");
+        Contracts_1.Contracts.throwIfNullOrUndefined(resolvedHost, "resolvedHost");
+        var botFrameworkConfig = new DialogServiceConfig_1.DialogServiceConfigImpl();
+        botFrameworkConfig.setProperty(Exports_1.PropertyId.Conversation_DialogType, DialogServiceConfig_1.DialogServiceConfig.DialogTypes.BotFramework);
+        botFrameworkConfig.setProperty(Exports_1.PropertyId.SpeechServiceConnection_Host, resolvedHost.toString());
+        if (undefined !== subscriptionKey) {
+            botFrameworkConfig.setProperty(Exports_1.PropertyId.SpeechServiceConnection_Key, subscriptionKey);
+        }
+        return botFrameworkConfig;
+    };
+    /**
+     * Creates an instance of a BotFrameworkConfig.
+     * This method is intended only for users who use a non-standard service endpoint or parameters.
+     * Note: The query parameters specified in the endpoint URL are not changed, even if they are set by any other APIs.
+     * Note: To use authorization token with fromEndpoint, pass an empty string to the subscriptionKey in the
+     *       fromEndpoint method, and then set authorizationToken="token" on the created BotFrameworkConfig instance to
+     *       use the authorization token.
+     * Note: Added in version 1.15.0.
+     * @member BotFrameworkConfig.fromEndpoint
+     * @function
+     * @public
+     * @param {URL} endpoint - The service endpoint to connect to.
+     * @param {string} subscriptionKey - The subscription key. If a subscription key is not specified, an authorization
+     *        token must be set.
+     * @returns {BotFrameworkConfig} - A new bot framework configuration instance using the provided endpoint.
+     */
+    BotFrameworkConfig.fromEndpoint = function (endpoint, subscriptionKey) {
+        Contracts_1.Contracts.throwIfNull(endpoint, "endpoint");
+        var botFrameworkConfig = new DialogServiceConfig_1.DialogServiceConfigImpl();
+        botFrameworkConfig.setProperty(Exports_1.PropertyId.Conversation_DialogType, DialogServiceConfig_1.DialogServiceConfig.DialogTypes.BotFramework);
+        botFrameworkConfig.setProperty(Exports_1.PropertyId.SpeechServiceConnection_Endpoint, endpoint.toString());
+        if (undefined !== subscriptionKey) {
+            botFrameworkConfig.setProperty(Exports_1.PropertyId.SpeechServiceConnection_Key, subscriptionKey);
+        }
         return botFrameworkConfig;
     };
     return BotFrameworkConfig;
@@ -12983,7 +13395,7 @@ exports.BotFrameworkConfig = BotFrameworkConfig;
 
 
 /***/ }),
-/* 108 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13004,9 +13416,10 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Contracts_1 = __webpack_require__(51);
-var DialogServiceConfig_1 = __webpack_require__(106);
-var Exports_1 = __webpack_require__(49);
+exports.CustomCommandsConfig = void 0;
+var Contracts_1 = __webpack_require__(63);
+var DialogServiceConfig_1 = __webpack_require__(118);
+var Exports_1 = __webpack_require__(61);
 /**
  * Class that defines configurations for the dialog service connector object for using a CustomCommands backend.
  * @class CustomCommandsConfig
@@ -13034,7 +13447,7 @@ var CustomCommandsConfig = /** @class */ (function (_super) {
         Contracts_1.Contracts.throwIfNullOrWhitespace(subscription, "subscription");
         Contracts_1.Contracts.throwIfNullOrWhitespace(region, "region");
         var customCommandsConfig = new DialogServiceConfig_1.DialogServiceConfigImpl();
-        customCommandsConfig.setProperty(Exports_1.PropertyId.Conversation_DialogType, "custom_commands");
+        customCommandsConfig.setProperty(Exports_1.PropertyId.Conversation_DialogType, DialogServiceConfig_1.DialogServiceConfig.DialogTypes.CustomCommands);
         customCommandsConfig.setProperty(Exports_1.PropertyId.Conversation_ApplicationId, applicationId);
         customCommandsConfig.setProperty(Exports_1.PropertyId.SpeechServiceConnection_Key, subscription);
         customCommandsConfig.setProperty(Exports_1.PropertyId.SpeechServiceConnection_Region, region);
@@ -13060,7 +13473,7 @@ var CustomCommandsConfig = /** @class */ (function (_super) {
         Contracts_1.Contracts.throwIfNullOrWhitespace(authorizationToken, "authorizationToken");
         Contracts_1.Contracts.throwIfNullOrWhitespace(region, "region");
         var customCommandsConfig = new DialogServiceConfig_1.DialogServiceConfigImpl();
-        customCommandsConfig.setProperty(Exports_1.PropertyId.Conversation_DialogType, "custom_commands");
+        customCommandsConfig.setProperty(Exports_1.PropertyId.Conversation_DialogType, DialogServiceConfig_1.DialogServiceConfig.DialogTypes.CustomCommands);
         customCommandsConfig.setProperty(Exports_1.PropertyId.Conversation_ApplicationId, applicationId);
         customCommandsConfig.setProperty(Exports_1.PropertyId.SpeechServiceAuthorization_Token, authorizationToken);
         customCommandsConfig.setProperty(Exports_1.PropertyId.SpeechServiceConnection_Region, region);
@@ -13088,7 +13501,7 @@ var CustomCommandsConfig = /** @class */ (function (_super) {
             Contracts_1.Contracts.throwIfNullOrWhitespace(value, "value");
             this.setProperty(Exports_1.PropertyId.Conversation_ApplicationId, value);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return CustomCommandsConfig;
@@ -13098,7 +13511,7 @@ exports.CustomCommandsConfig = CustomCommandsConfig;
 
 
 /***/ }),
-/* 109 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13155,13 +13568,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var DialogConnectorFactory_1 = __webpack_require__(110);
-var Exports_1 = __webpack_require__(44);
+exports.DialogServiceConnector = void 0;
+var DialogConnectorFactory_1 = __webpack_require__(122);
+var Exports_1 = __webpack_require__(53);
 var Exports_2 = __webpack_require__(4);
-var Contracts_1 = __webpack_require__(51);
-var Exports_3 = __webpack_require__(49);
-var PropertyId_1 = __webpack_require__(87);
-var SpeechSynthesisOutputFormat_1 = __webpack_require__(63);
+var Contracts_1 = __webpack_require__(63);
+var Exports_3 = __webpack_require__(61);
+var PropertyId_1 = __webpack_require__(99);
+var SpeechSynthesisOutputFormat_1 = __webpack_require__(75);
 /**
  * Dialog Service Connector
  * @class DialogServiceConnector
@@ -13230,7 +13644,7 @@ var DialogServiceConnector = /** @class */ (function (_super) {
             Contracts_1.Contracts.throwIfNullOrWhitespace(token, "token");
             this.properties.setProperty(PropertyId_1.PropertyId.SpeechServiceAuthorization_Token, token);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(DialogServiceConnector.prototype, "properties", {
@@ -13244,7 +13658,7 @@ var DialogServiceConnector = /** @class */ (function (_super) {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(DialogServiceConnector.prototype, "speechActivityTemplate", {
@@ -13263,7 +13677,7 @@ var DialogServiceConnector = /** @class */ (function (_super) {
         set: function (speechActivityTemplate) {
             this.properties.setProperty(PropertyId_1.PropertyId.Conversation_Speech_Activity_Template, speechActivityTemplate);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -13362,7 +13776,7 @@ var DialogServiceConnector = /** @class */ (function (_super) {
             botInfo: {
                 commType: communicationType,
                 commandsCulture: undefined,
-                connectionId: this.properties.getProperty(PropertyId_1.PropertyId.Conversation_ApplicationId),
+                connectionId: this.properties.getProperty(PropertyId_1.PropertyId.Conversation_Agent_Connection_Id),
                 conversationId: this.properties.getProperty(PropertyId_1.PropertyId.Conversation_Conversation_Id, undefined),
                 fromId: this.properties.getProperty(PropertyId_1.PropertyId.Conversation_From_Id, undefined),
                 ttsAudioFormat: SpeechSynthesisOutputFormat_1.SpeechSynthesisOutputFormat[this.properties.getProperty(PropertyId_1.PropertyId.SpeechServiceConnection_SynthOutputFormat, undefined)]
@@ -13377,7 +13791,7 @@ exports.DialogServiceConnector = DialogServiceConnector;
 
 
 /***/ }),
-/* 110 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13398,36 +13812,14 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DialogConnectionFactory = void 0;
 var Exports_1 = __webpack_require__(2);
-var Exports_2 = __webpack_require__(44);
-var Exports_3 = __webpack_require__(49);
-var ConnectionFactoryBase_1 = __webpack_require__(111);
-var Exports_4 = __webpack_require__(44);
-var QueryParameterNames_1 = __webpack_require__(112);
-var baseUrl = "convai.speech";
-var botFramework = {
-    authHeader: "X-DLS-Secret",
-    resourcePath: "",
-    version: "v3"
-};
-var customCommands = {
-    authHeader: "X-CommandsAppId",
-    resourcePath: "commands",
-    version: "v1"
-};
-var pathSuffix = "api";
-var connectionID = "connectionId";
-function getDialogSpecificValues(dialogType) {
-    switch (dialogType) {
-        case "custom_commands": {
-            return customCommands;
-        }
-        case "bot_framework": {
-            return botFramework;
-        }
-    }
-    throw new Error("Invalid dialog type '" + dialogType + "'");
-}
+var Exports_2 = __webpack_require__(53);
+var Exports_3 = __webpack_require__(61);
+var ConnectionFactoryBase_1 = __webpack_require__(123);
+var Exports_4 = __webpack_require__(53);
+var HeaderNames_1 = __webpack_require__(55);
+var QueryParameterNames_1 = __webpack_require__(124);
 var DialogConnectionFactory = /** @class */ (function (_super) {
     __extends(DialogConnectionFactory, _super);
     function DialogConnectionFactory() {
@@ -13437,34 +13829,53 @@ var DialogConnectionFactory = /** @class */ (function (_super) {
             var dialogType = config.parameters.getProperty(Exports_3.PropertyId.Conversation_DialogType);
             var region = config.parameters.getProperty(Exports_3.PropertyId.SpeechServiceConnection_Region);
             var language = config.parameters.getProperty(Exports_3.PropertyId.SpeechServiceConnection_RecoLanguage, "en-US");
+            var requestTurnStatus = config.parameters.getProperty(Exports_3.PropertyId.Conversation_Request_Bot_Status_Messages, "true");
             var queryParams = {};
-            queryParams[QueryParameterNames_1.QueryParameterNames.LanguageParamName] = language;
-            queryParams[QueryParameterNames_1.QueryParameterNames.FormatParamName] = config.parameters.getProperty(Exports_2.OutputFormatPropertyName, Exports_3.OutputFormat[Exports_3.OutputFormat.Simple]).toLowerCase();
-            queryParams[connectionID] = connectionId;
-            var _a = getDialogSpecificValues(dialogType), resourcePath = _a.resourcePath, version = _a.version, authHeader = _a.authHeader;
+            queryParams[HeaderNames_1.HeaderNames.ConnectionId] = connectionId;
+            queryParams[QueryParameterNames_1.QueryParameterNames.Format] = config.parameters.getProperty(Exports_2.OutputFormatPropertyName, Exports_3.OutputFormat[Exports_3.OutputFormat.Simple]).toLowerCase();
+            queryParams[QueryParameterNames_1.QueryParameterNames.Language] = language;
+            queryParams[QueryParameterNames_1.QueryParameterNames.RequestBotStatusMessages] = requestTurnStatus;
+            if (applicationId) {
+                queryParams[QueryParameterNames_1.QueryParameterNames.BotId] = applicationId;
+                if (dialogType === Exports_3.DialogServiceConfig.DialogTypes.CustomCommands) {
+                    queryParams[HeaderNames_1.HeaderNames.CustomCommandsAppId] = applicationId;
+                }
+            }
+            var resourceInfix = dialogType === Exports_3.DialogServiceConfig.DialogTypes.CustomCommands ? "commands/"
+                : "";
+            var version = dialogType === Exports_3.DialogServiceConfig.DialogTypes.CustomCommands ? "v1"
+                : dialogType === Exports_3.DialogServiceConfig.DialogTypes.BotFramework ? "v3"
+                    : "v0";
             var headers = {};
             if (authInfo.token != null && authInfo.token !== "") {
                 headers[authInfo.headerName] = authInfo.token;
             }
-            if (applicationId !== "") {
-                headers[authHeader] = applicationId;
-            }
+            // The URL used for connection is chosen in a priority order of specification:
+            //  1. If a custom endpoint is provided, that URL is used verbatim.
+            //  2. If a custom host is provided (e.g. "wss://my.custom.endpoint.com:1123"), a URL is constructed from it.
+            //  3. If no custom connection details are provided, a URL is constructed from default values.
             var endpoint = config.parameters.getProperty(Exports_3.PropertyId.SpeechServiceConnection_Endpoint, "");
-            if (endpoint === "") {
+            if (!endpoint) {
                 var hostSuffix = (region && region.toLowerCase().startsWith("china")) ? ".azure.cn" : ".microsoft.com";
-                // ApplicationId is only required for CustomCommands, so we're using that to determine default endpoint
-                if (applicationId === "") {
-                    endpoint = "wss://" + region + "." + baseUrl + hostSuffix + "/" + pathSuffix + "/" + version;
-                }
-                else {
-                    endpoint = "wss://" + region + "." + baseUrl + hostSuffix + "/" + resourcePath + "/" + pathSuffix + "/" + version;
-                }
+                var host = config.parameters.getProperty(Exports_3.PropertyId.SpeechServiceConnection_Host, "wss://" + region + "." + DialogConnectionFactory.Constants.BaseUrl + hostSuffix);
+                var standardizedHost = host.endsWith("/") ? host : host + "/";
+                endpoint = "" + standardizedHost + resourceInfix + DialogConnectionFactory.Constants.ApiKey + "/" + version;
             }
             _this.setCommonUrlParams(config, queryParams, endpoint);
-            return new Exports_1.WebsocketConnection(endpoint, queryParams, headers, new Exports_4.WebsocketMessageFormatter(), Exports_1.ProxyInfo.fromRecognizerConfig(config), connectionId);
+            var enableCompression = config.parameters.getProperty("SPEECH-EnableWebsocketCompression", "false") === "true";
+            return new Exports_1.WebsocketConnection(endpoint, queryParams, headers, new Exports_4.WebsocketMessageFormatter(), Exports_1.ProxyInfo.fromRecognizerConfig(config), enableCompression, connectionId);
         };
         return _this;
     }
+    var _a;
+    DialogConnectionFactory.Constants = (_a = /** @class */ (function () {
+            function class_1() {
+            }
+            return class_1;
+        }()),
+        _a.ApiKey = "api",
+        _a.BaseUrl = "convai.speech",
+        _a);
     return DialogConnectionFactory;
 }(ConnectionFactoryBase_1.ConnectionFactoryBase));
 exports.DialogConnectionFactory = DialogConnectionFactory;
@@ -13472,7 +13883,7 @@ exports.DialogConnectionFactory = DialogConnectionFactory;
 
 
 /***/ }),
-/* 111 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13480,16 +13891,17 @@ exports.DialogConnectionFactory = DialogConnectionFactory;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
-var Exports_2 = __webpack_require__(49);
-var QueryParameterNames_1 = __webpack_require__(112);
+exports.ConnectionFactoryBase = void 0;
+var Exports_1 = __webpack_require__(53);
+var Exports_2 = __webpack_require__(61);
+var QueryParameterNames_1 = __webpack_require__(124);
 var ConnectionFactoryBase = /** @class */ (function () {
     function ConnectionFactoryBase() {
     }
     ConnectionFactoryBase.prototype.setCommonUrlParams = function (config, queryParams, endpoint) {
         this.setUrlParameter(Exports_2.PropertyId.SpeechServiceConnection_EnableAudioLogging, QueryParameterNames_1.QueryParameterNames.EnableAudioLogging, config, queryParams, endpoint);
         this.setUrlParameter(Exports_2.PropertyId.SpeechServiceResponse_RequestWordLevelTimestamps, QueryParameterNames_1.QueryParameterNames.EnableWordLevelTimestamps, config, queryParams, endpoint);
-        this.setUrlParameter(Exports_2.PropertyId.SpeechServiceResponse_ProfanityOption, QueryParameterNames_1.QueryParameterNames.Profanify, config, queryParams, endpoint);
+        this.setUrlParameter(Exports_2.PropertyId.SpeechServiceResponse_ProfanityOption, QueryParameterNames_1.QueryParameterNames.Profanity, config, queryParams, endpoint);
         this.setUrlParameter(Exports_2.PropertyId.SpeechServiceConnection_InitialSilenceTimeoutMs, QueryParameterNames_1.QueryParameterNames.InitialSilenceTimeoutMs, config, queryParams, endpoint);
         this.setUrlParameter(Exports_2.PropertyId.SpeechServiceConnection_EndSilenceTimeoutMs, QueryParameterNames_1.QueryParameterNames.EndSilenceTimeoutMs, config, queryParams, endpoint);
         this.setUrlParameter(Exports_2.PropertyId.SpeechServiceResponse_StablePartialResultThreshold, QueryParameterNames_1.QueryParameterNames.StableIntermediateThreshold, config, queryParams, endpoint);
@@ -13511,7 +13923,7 @@ exports.ConnectionFactoryBase = ConnectionFactoryBase;
 
 
 /***/ }),
-/* 112 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13519,114 +13931,25 @@ exports.ConnectionFactoryBase = ConnectionFactoryBase;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.QueryParameterNames = void 0;
 var QueryParameterNames = /** @class */ (function () {
     function QueryParameterNames() {
     }
-    Object.defineProperty(QueryParameterNames, "TestHooksParamName", {
-        get: function () {
-            return "testhooks";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(QueryParameterNames, "ConnectionIdHeader", {
-        get: function () {
-            return "X-ConnectionId";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(QueryParameterNames, "DeploymentIdParamName", {
-        get: function () {
-            return "cid";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(QueryParameterNames, "FormatParamName", {
-        get: function () {
-            return "format";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(QueryParameterNames, "LanguageParamName", {
-        get: function () {
-            return "language";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(QueryParameterNames, "TranslationFromParamName", {
-        get: function () {
-            return "from";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(QueryParameterNames, "TranslationToParamName", {
-        get: function () {
-            return "to";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(QueryParameterNames, "Profanify", {
-        get: function () {
-            return "profanity";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(QueryParameterNames, "EnableAudioLogging", {
-        get: function () {
-            return "storeAudio";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(QueryParameterNames, "EnableWordLevelTimestamps", {
-        get: function () {
-            return "wordLevelTimestamps";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(QueryParameterNames, "InitialSilenceTimeoutMs", {
-        get: function () {
-            return "initialSilenceTimeoutMs";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(QueryParameterNames, "EndSilenceTimeoutMs", {
-        get: function () {
-            return "endSilenceTimeoutMs";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(QueryParameterNames, "StableIntermediateThreshold", {
-        get: function () {
-            return "stableIntermediateThreshold";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(QueryParameterNames, "StableTranslation", {
-        get: function () {
-            return "stableTranslation";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(QueryParameterNames, "EnableLanguageID", {
-        get: function () {
-            return "lidEnabled";
-        },
-        enumerable: true,
-        configurable: true
-    });
+    QueryParameterNames.BotId = "botid";
+    QueryParameterNames.CustomSpeechDeploymentId = "cid";
+    QueryParameterNames.CustomVoiceDeploymentId = "deploymentId";
+    QueryParameterNames.EnableAudioLogging = "storeAudio";
+    QueryParameterNames.EnableLanguageId = "lidEnabled";
+    QueryParameterNames.EnableWordLevelTimestamps = "wordLevelTimestamps";
+    QueryParameterNames.EndSilenceTimeoutMs = "endSilenceTimeoutMs";
+    QueryParameterNames.Format = "format";
+    QueryParameterNames.InitialSilenceTimeoutMs = "initialSilenceTimeoutMs";
+    QueryParameterNames.Language = "language";
+    QueryParameterNames.Profanity = "profanity";
+    QueryParameterNames.RequestBotStatusMessages = "enableBotMessageStatus";
+    QueryParameterNames.StableIntermediateThreshold = "stableIntermediateThreshold";
+    QueryParameterNames.StableTranslation = "stableTranslation";
+    QueryParameterNames.TestHooks = "testhooks";
     return QueryParameterNames;
 }());
 exports.QueryParameterNames = QueryParameterNames;
@@ -13634,7 +13957,7 @@ exports.QueryParameterNames = QueryParameterNames;
 
 
 /***/ }),
-/* 113 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13642,6 +13965,7 @@ exports.QueryParameterNames = QueryParameterNames;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ActivityReceivedEventArgs = void 0;
 /**
  * Defines contents of received message/events.
  * @class ActivityReceivedEventArgs
@@ -13667,14 +13991,14 @@ var ActivityReceivedEventArgs = /** @class */ (function () {
         get: function () {
             return this.privActivity;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ActivityReceivedEventArgs.prototype, "audioStream", {
         get: function () {
             return this.privAudioStream;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ActivityReceivedEventArgs;
@@ -13684,7 +14008,134 @@ exports.ActivityReceivedEventArgs = ActivityReceivedEventArgs;
 
 
 /***/ }),
-/* 114 */
+/* 126 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TurnStatusReceivedEventArgs = void 0;
+var TurnStatusPayload_1 = __webpack_require__(127);
+/**
+ * Defines contents of received message/events.
+ * @class TurnStatusReceivedEventArgs
+ */
+var TurnStatusReceivedEventArgs = /** @class */ (function () {
+    /**
+     * Creates and initializes an instance of this class.
+     * @constructor
+     * @param {string} turnStatus - The JSON-encoded turn status message.
+     */
+    function TurnStatusReceivedEventArgs(turnStatus) {
+        this.privTurnStatus = TurnStatusPayload_1.TurnStatusResponsePayload.fromJSON(turnStatus);
+    }
+    Object.defineProperty(TurnStatusReceivedEventArgs.prototype, "interactionId", {
+        /**
+         * Gets the interaction identifier associated with this turn status event.
+         * @member TurnStatusReceivedEventArgs.prototype.interactionId
+         * @function
+         * @public
+         * @returns {any} the received interaction id.
+         */
+        get: function () {
+            return this.privTurnStatus.interactionId;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(TurnStatusReceivedEventArgs.prototype, "conversationId", {
+        /**
+         * Gets the conversation identifier associated with this turn status event.
+         * @member TurnStatusReceivedEventArgs.prototype.conversationId
+         * @function
+         * @public
+         * @returns {any} the received conversation id.
+         */
+        get: function () {
+            return this.privTurnStatus.conversationId;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(TurnStatusReceivedEventArgs.prototype, "statusCode", {
+        /**
+         * Gets the received turn status code.
+         * @member TurnStatusReceivedEventArgs.prototype.statusCode
+         * @function
+         * @public
+         * @returns {number} the received turn status.
+         */
+        get: function () {
+            return this.privTurnStatus.statusCode;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return TurnStatusReceivedEventArgs;
+}());
+exports.TurnStatusReceivedEventArgs = TurnStatusReceivedEventArgs;
+
+
+
+/***/ }),
+/* 127 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TurnStatusResponsePayload = void 0;
+var TurnStatusResponsePayload = /** @class */ (function () {
+    function TurnStatusResponsePayload(json) {
+        this.privMessageStatusResponse = JSON.parse(json);
+    }
+    TurnStatusResponsePayload.fromJSON = function (json) {
+        return new TurnStatusResponsePayload(json);
+    };
+    Object.defineProperty(TurnStatusResponsePayload.prototype, "interactionId", {
+        get: function () {
+            return this.privMessageStatusResponse.interactionId;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(TurnStatusResponsePayload.prototype, "conversationId", {
+        get: function () {
+            return this.privMessageStatusResponse.conversationId;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(TurnStatusResponsePayload.prototype, "statusCode", {
+        get: function () {
+            // Payloads may contain a limited set of textual representations or a numeric status
+            // code. The textual values are here converted into numeric ones.
+            switch (this.privMessageStatusResponse.statusCode) {
+                case "Success":
+                    return 200;
+                case "Failed":
+                    return 400;
+                case "TimedOut":
+                    return 429;
+                default:
+                    return this.privMessageStatusResponse.statusCode;
+            }
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return TurnStatusResponsePayload;
+}());
+exports.TurnStatusResponsePayload = TurnStatusResponsePayload;
+
+
+
+/***/ }),
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13692,6 +14143,7 @@ exports.ActivityReceivedEventArgs = ActivityReceivedEventArgs;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ServicePropertyChannel = void 0;
 /**
  * Defines channels used to pass property settings to service.
  * Added in version 1.7.0.
@@ -13707,7 +14159,7 @@ var ServicePropertyChannel;
 
 
 /***/ }),
-/* 115 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13715,6 +14167,7 @@ var ServicePropertyChannel;
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ProfanityOption = void 0;
 /**
  * Profanity option.
  * Added in version 1.7.0.
@@ -13729,7 +14182,7 @@ var ProfanityOption;
 
 
 /***/ }),
-/* 116 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13773,10 +14226,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BaseAudioPlayer = void 0;
 var Error_1 = __webpack_require__(25);
-var Promise_1 = __webpack_require__(33);
-var Exports_1 = __webpack_require__(49);
-var AudioStreamFormat_1 = __webpack_require__(60);
+var Promise_1 = __webpack_require__(40);
+var Exports_1 = __webpack_require__(61);
+var AudioStreamFormat_1 = __webpack_require__(72);
 /**
  * Base audio player class
  * TODO: Plays only PCM for now.
@@ -13946,7 +14400,7 @@ exports.BaseAudioPlayer = BaseAudioPlayer;
 
 
 /***/ }),
-/* 117 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13956,6 +14410,7 @@ exports.BaseAudioPlayer = BaseAudioPlayer;
 // Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 //
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConnectionMessageEventArgs = void 0;
 var ConnectionMessageEventArgs = /** @class */ (function () {
     function ConnectionMessageEventArgs(message) {
         this.privConnectionMessage = message;
@@ -13967,7 +14422,7 @@ var ConnectionMessageEventArgs = /** @class */ (function () {
         get: function () {
             return this.privConnectionMessage;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -13983,7 +14438,7 @@ exports.ConnectionMessageEventArgs = ConnectionMessageEventArgs;
 
 
 /***/ }),
-/* 118 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13991,6 +14446,7 @@ exports.ConnectionMessageEventArgs = ConnectionMessageEventArgs;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.VoiceProfile = void 0;
 /**
  * Defines Voice Profile class for Speaker Recognition
  * @class VoiceProfile
@@ -14017,7 +14473,7 @@ var VoiceProfile = /** @class */ (function () {
         get: function () {
             return this.privId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(VoiceProfile.prototype, "profileType", {
@@ -14031,7 +14487,7 @@ var VoiceProfile = /** @class */ (function () {
         get: function () {
             return this.privProfileType;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return VoiceProfile;
@@ -14041,7 +14497,7 @@ exports.VoiceProfile = VoiceProfile;
 
 
 /***/ }),
-/* 119 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14062,9 +14518,10 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
-var Contracts_1 = __webpack_require__(51);
-var Exports_2 = __webpack_require__(49);
+exports.VoiceProfileEnrollmentCancellationDetails = exports.VoiceProfileEnrollmentResult = void 0;
+var Exports_1 = __webpack_require__(53);
+var Contracts_1 = __webpack_require__(63);
+var Exports_2 = __webpack_require__(61);
 /**
  * Output format
  * @class VoiceProfileEnrollmentResult
@@ -14089,42 +14546,42 @@ var VoiceProfileEnrollmentResult = /** @class */ (function () {
         get: function () {
             return this.privReason;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(VoiceProfileEnrollmentResult.prototype, "enrollmentsCount", {
         get: function () {
             return this.privDetails.enrollmentsCount;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(VoiceProfileEnrollmentResult.prototype, "enrollmentsLength", {
         get: function () {
             return this.privDetails.enrollmentsLength;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(VoiceProfileEnrollmentResult.prototype, "properties", {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(VoiceProfileEnrollmentResult.prototype, "enrollmentResultDetails", {
         get: function () {
             return this.privDetails;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(VoiceProfileEnrollmentResult.prototype, "errorDetails", {
         get: function () {
             return this.privErrorDetails;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return VoiceProfileEnrollmentResult;
@@ -14162,7 +14619,7 @@ exports.VoiceProfileEnrollmentCancellationDetails = VoiceProfileEnrollmentCancel
 
 
 /***/ }),
-/* 120 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14183,9 +14640,10 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
-var Contracts_1 = __webpack_require__(51);
-var Exports_2 = __webpack_require__(49);
+exports.VoiceProfileCancellationDetails = exports.VoiceProfileResult = void 0;
+var Exports_1 = __webpack_require__(53);
+var Contracts_1 = __webpack_require__(63);
+var Exports_2 = __webpack_require__(61);
 /**
  * Output format
  * @class VoiceProfileResult
@@ -14204,21 +14662,21 @@ var VoiceProfileResult = /** @class */ (function () {
         get: function () {
             return this.privReason;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(VoiceProfileResult.prototype, "properties", {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(VoiceProfileResult.prototype, "errorDetails", {
         get: function () {
             return this.privErrorDetails;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return VoiceProfileResult;
@@ -14256,7 +14714,7 @@ exports.VoiceProfileCancellationDetails = VoiceProfileCancellationDetails;
 
 
 /***/ }),
-/* 121 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14300,10 +14758,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.VoiceProfileClient = void 0;
+var Exports_1 = __webpack_require__(53);
 var Exports_2 = __webpack_require__(4);
-var Contracts_1 = __webpack_require__(51);
-var Exports_3 = __webpack_require__(49);
+var Contracts_1 = __webpack_require__(63);
+var Exports_3 = __webpack_require__(61);
 /**
  * Defines VoiceProfileClient class for Speaker Recognition
  * Handles operations from user for Voice Profile operations (e.g. createProfile, deleteProfile)
@@ -14343,7 +14802,7 @@ var VoiceProfileClient = /** @class */ (function () {
             Contracts_1.Contracts.throwIfNullOrWhitespace(token, "token");
             this.properties.setProperty(Exports_3.PropertyId.SpeechServiceAuthorization_Token, token);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(VoiceProfileClient.prototype, "properties", {
@@ -14357,7 +14816,7 @@ var VoiceProfileClient = /** @class */ (function () {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -14493,7 +14952,7 @@ exports.VoiceProfileClient = VoiceProfileClient;
 
 
 /***/ }),
-/* 122 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14537,10 +14996,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.SpeakerRecognizer = void 0;
+var Exports_1 = __webpack_require__(53);
 var Exports_2 = __webpack_require__(4);
-var Contracts_1 = __webpack_require__(51);
-var Exports_3 = __webpack_require__(49);
+var Contracts_1 = __webpack_require__(63);
+var Exports_3 = __webpack_require__(61);
 /**
  * Defines SpeakerRecognizer class for Speaker Recognition
  * Handles operations from user for Voice Profile operations (e.g. createProfile, deleteProfile)
@@ -14582,7 +15042,7 @@ var SpeakerRecognizer = /** @class */ (function () {
             Contracts_1.Contracts.throwIfNullOrWhitespace(token, "token");
             this.properties.setProperty(Exports_3.PropertyId.SpeechServiceAuthorization_Token, token);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeakerRecognizer.prototype, "properties", {
@@ -14596,7 +15056,7 @@ var SpeakerRecognizer = /** @class */ (function () {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -14663,7 +15123,7 @@ exports.SpeakerRecognizer = SpeakerRecognizer;
 
 
 /***/ }),
-/* 123 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14671,8 +15131,9 @@ exports.SpeakerRecognizer = SpeakerRecognizer;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Contracts_1 = __webpack_require__(51);
-var Exports_1 = __webpack_require__(49);
+exports.SpeakerIdentificationModel = void 0;
+var Contracts_1 = __webpack_require__(63);
+var Exports_1 = __webpack_require__(61);
 /**
  * Defines SpeakerIdentificationModel class for Speaker Recognition
  * Model contains a set of profiles against which to identify speaker(s)
@@ -14700,7 +15161,7 @@ var SpeakerIdentificationModel = /** @class */ (function () {
         get: function () {
             return this.privVoiceProfiles.map(function (profile) { return profile.profileId; }).join(",");
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SpeakerIdentificationModel;
@@ -14710,7 +15171,7 @@ exports.SpeakerIdentificationModel = SpeakerIdentificationModel;
 
 
 /***/ }),
-/* 124 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14718,8 +15179,9 @@ exports.SpeakerIdentificationModel = SpeakerIdentificationModel;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Contracts_1 = __webpack_require__(51);
-var Exports_1 = __webpack_require__(49);
+exports.SpeakerVerificationModel = void 0;
+var Contracts_1 = __webpack_require__(63);
+var Exports_1 = __webpack_require__(61);
 /**
  * Defines SpeakerVerificationModel class for Speaker Recognition
  * Model contains a profile against which to verify a speaker
@@ -14740,7 +15202,7 @@ var SpeakerVerificationModel = /** @class */ (function () {
         get: function () {
             return this.privVoiceProfile;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SpeakerVerificationModel;
@@ -14750,7 +15212,7 @@ exports.SpeakerVerificationModel = SpeakerVerificationModel;
 
 
 /***/ }),
-/* 125 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14758,9 +15220,10 @@ exports.SpeakerVerificationModel = SpeakerVerificationModel;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
-var Contracts_1 = __webpack_require__(51);
-var Exports_2 = __webpack_require__(49);
+exports.AutoDetectSourceLanguageConfig = void 0;
+var Exports_1 = __webpack_require__(53);
+var Contracts_1 = __webpack_require__(63);
+var Exports_2 = __webpack_require__(61);
 /**
  * Language auto detect configuration.
  * @class AutoDetectSourceLanguageConfig
@@ -14828,12 +15291,12 @@ var AutoDetectSourceLanguageConfig = /** @class */ (function () {
          * @function
          * @public
          * @return {PropertyCollection} Properties of the config.
-         * @summary Gets a auto detected language config properties
+         * @summary Gets an auto detected language config properties
          */
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return AutoDetectSourceLanguageConfig;
@@ -14843,7 +15306,7 @@ exports.AutoDetectSourceLanguageConfig = AutoDetectSourceLanguageConfig;
 
 
 /***/ }),
-/* 126 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14851,7 +15314,8 @@ exports.AutoDetectSourceLanguageConfig = AutoDetectSourceLanguageConfig;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Contracts_1 = __webpack_require__(51);
+exports.AutoDetectSourceLanguageResult = void 0;
+var Contracts_1 = __webpack_require__(63);
 /**
  * Output format
  * @class AutoDetectSourceLanguageResult
@@ -14878,14 +15342,14 @@ var AutoDetectSourceLanguageResult = /** @class */ (function () {
         get: function () {
             return this.privLanguage;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(AutoDetectSourceLanguageResult.prototype, "languageDetectionConfidence", {
         get: function () {
             return this.privLanguageDetectionConfidence;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return AutoDetectSourceLanguageResult;
@@ -14895,7 +15359,7 @@ exports.AutoDetectSourceLanguageResult = AutoDetectSourceLanguageResult;
 
 
 /***/ }),
-/* 127 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14903,7 +15367,8 @@ exports.AutoDetectSourceLanguageResult = AutoDetectSourceLanguageResult;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Contracts_1 = __webpack_require__(51);
+exports.SourceLanguageConfig = void 0;
+var Contracts_1 = __webpack_require__(63);
 /**
  * Source Language configuration.
  * @class SourceLanguageConfig
@@ -14931,14 +15396,14 @@ var SourceLanguageConfig = /** @class */ (function () {
         get: function () {
             return this.privLanguage;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SourceLanguageConfig.prototype, "endpointId", {
         get: function () {
             return this.privEndpointId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SourceLanguageConfig;
@@ -14948,7 +15413,7 @@ exports.SourceLanguageConfig = SourceLanguageConfig;
 
 
 /***/ }),
-/* 128 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14969,9 +15434,10 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
-var Contracts_1 = __webpack_require__(51);
-var Exports_2 = __webpack_require__(49);
+exports.SpeakerRecognitionCancellationDetails = exports.SpeakerRecognitionResult = exports.SpeakerRecognitionResultType = void 0;
+var Exports_1 = __webpack_require__(53);
+var Contracts_1 = __webpack_require__(63);
+var Exports_2 = __webpack_require__(61);
 var SpeakerRecognitionResultType;
 (function (SpeakerRecognitionResultType) {
     SpeakerRecognitionResultType[SpeakerRecognitionResultType["Verify"] = 0] = "Verify";
@@ -15017,35 +15483,35 @@ var SpeakerRecognitionResult = /** @class */ (function () {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeakerRecognitionResult.prototype, "reason", {
         get: function () {
             return this.privReason;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeakerRecognitionResult.prototype, "profileId", {
         get: function () {
             return this.privProfileId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeakerRecognitionResult.prototype, "errorDetails", {
         get: function () {
             return this.privErrorDetails;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeakerRecognitionResult.prototype, "score", {
         get: function () {
             return this.privScore;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SpeakerRecognitionResult;
@@ -15083,7 +15549,7 @@ exports.SpeakerRecognitionCancellationDetails = SpeakerRecognitionCancellationDe
 
 
 /***/ }),
-/* 129 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15092,35 +15558,35 @@ exports.SpeakerRecognitionCancellationDetails = SpeakerRecognitionCancellationDe
 // Licensed under the MIT license.
 // Multi-device Conversation is a Preview feature.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Conversation_1 = __webpack_require__(130);
-exports.Conversation = Conversation_1.Conversation;
-exports.ConversationImpl = Conversation_1.ConversationImpl;
-var ConversationCommon_1 = __webpack_require__(131);
-exports.ConversationCommon = ConversationCommon_1.ConversationCommon;
-var ConversationExpirationEventArgs_1 = __webpack_require__(132);
-exports.ConversationExpirationEventArgs = ConversationExpirationEventArgs_1.ConversationExpirationEventArgs;
-var ConversationParticipantsChangedEventArgs_1 = __webpack_require__(133);
-exports.ConversationParticipantsChangedEventArgs = ConversationParticipantsChangedEventArgs_1.ConversationParticipantsChangedEventArgs;
-var ConversationTranslationCanceledEventArgs_1 = __webpack_require__(134);
-exports.ConversationTranslationCanceledEventArgs = ConversationTranslationCanceledEventArgs_1.ConversationTranslationCanceledEventArgs;
-var ConversationTranslationEventArgs_1 = __webpack_require__(135);
-exports.ConversationTranslationEventArgs = ConversationTranslationEventArgs_1.ConversationTranslationEventArgs;
-var ConversationTranslationResult_1 = __webpack_require__(136);
-exports.ConversationTranslationResult = ConversationTranslationResult_1.ConversationTranslationResult;
-var ConversationTranslator_1 = __webpack_require__(137);
-exports.ConversationTranslator = ConversationTranslator_1.ConversationTranslator;
-var ConversationTranscriber_1 = __webpack_require__(138);
-exports.ConversationTranscriber = ConversationTranscriber_1.ConversationTranscriber;
-var IParticipant_1 = __webpack_require__(139);
-exports.Participant = IParticipant_1.Participant;
-exports.User = IParticipant_1.User;
-var ParticipantChangedReason_1 = __webpack_require__(140);
-exports.ParticipantChangedReason = ParticipantChangedReason_1.ParticipantChangedReason;
+var Conversation_1 = __webpack_require__(144);
+Object.defineProperty(exports, "Conversation", { enumerable: true, get: function () { return Conversation_1.Conversation; } });
+Object.defineProperty(exports, "ConversationImpl", { enumerable: true, get: function () { return Conversation_1.ConversationImpl; } });
+var ConversationCommon_1 = __webpack_require__(145);
+Object.defineProperty(exports, "ConversationCommon", { enumerable: true, get: function () { return ConversationCommon_1.ConversationCommon; } });
+var ConversationExpirationEventArgs_1 = __webpack_require__(146);
+Object.defineProperty(exports, "ConversationExpirationEventArgs", { enumerable: true, get: function () { return ConversationExpirationEventArgs_1.ConversationExpirationEventArgs; } });
+var ConversationParticipantsChangedEventArgs_1 = __webpack_require__(147);
+Object.defineProperty(exports, "ConversationParticipantsChangedEventArgs", { enumerable: true, get: function () { return ConversationParticipantsChangedEventArgs_1.ConversationParticipantsChangedEventArgs; } });
+var ConversationTranslationCanceledEventArgs_1 = __webpack_require__(148);
+Object.defineProperty(exports, "ConversationTranslationCanceledEventArgs", { enumerable: true, get: function () { return ConversationTranslationCanceledEventArgs_1.ConversationTranslationCanceledEventArgs; } });
+var ConversationTranslationEventArgs_1 = __webpack_require__(149);
+Object.defineProperty(exports, "ConversationTranslationEventArgs", { enumerable: true, get: function () { return ConversationTranslationEventArgs_1.ConversationTranslationEventArgs; } });
+var ConversationTranslationResult_1 = __webpack_require__(150);
+Object.defineProperty(exports, "ConversationTranslationResult", { enumerable: true, get: function () { return ConversationTranslationResult_1.ConversationTranslationResult; } });
+var ConversationTranslator_1 = __webpack_require__(151);
+Object.defineProperty(exports, "ConversationTranslator", { enumerable: true, get: function () { return ConversationTranslator_1.ConversationTranslator; } });
+var ConversationTranscriber_1 = __webpack_require__(152);
+Object.defineProperty(exports, "ConversationTranscriber", { enumerable: true, get: function () { return ConversationTranscriber_1.ConversationTranscriber; } });
+var IParticipant_1 = __webpack_require__(153);
+Object.defineProperty(exports, "Participant", { enumerable: true, get: function () { return IParticipant_1.Participant; } });
+Object.defineProperty(exports, "User", { enumerable: true, get: function () { return IParticipant_1.User; } });
+var ParticipantChangedReason_1 = __webpack_require__(154);
+Object.defineProperty(exports, "ParticipantChangedReason", { enumerable: true, get: function () { return ParticipantChangedReason_1.ParticipantChangedReason; } });
 
 
 
 /***/ }),
-/* 130 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15185,10 +15651,11 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
     return r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.ConversationImpl = exports.Conversation = void 0;
+var Exports_1 = __webpack_require__(53);
 var Exports_2 = __webpack_require__(4);
-var Contracts_1 = __webpack_require__(51);
-var Exports_3 = __webpack_require__(49);
+var Contracts_1 = __webpack_require__(63);
+var Exports_3 = __webpack_require__(61);
 var Conversation = /** @class */ (function () {
     function Conversation() {
     }
@@ -15482,7 +15949,7 @@ var ConversationImpl = /** @class */ (function (_super) {
         set: function (value) {
             this.privConversationTranslator = value;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationImpl.prototype, "room", {
@@ -15490,7 +15957,7 @@ var ConversationImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privRoom;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationImpl.prototype, "connection", {
@@ -15498,7 +15965,7 @@ var ConversationImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privConversationRecognizer; // this.privConnection;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationImpl.prototype, "authorizationToken", {
@@ -15510,7 +15977,7 @@ var ConversationImpl = /** @class */ (function (_super) {
             Contracts_1.Contracts.throwIfNullOrWhitespace(value, "authorizationToken");
             this.privToken = value;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationImpl.prototype, "config", {
@@ -15518,7 +15985,7 @@ var ConversationImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privConfig;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationImpl.prototype, "conversationId", {
@@ -15526,7 +15993,7 @@ var ConversationImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privRoom ? this.privRoom.roomId : this.privConversationId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationImpl.prototype, "properties", {
@@ -15534,7 +16001,7 @@ var ConversationImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationImpl.prototype, "speechRecognitionLanguage", {
@@ -15542,7 +16009,7 @@ var ConversationImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privLanguage;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationImpl.prototype, "isMutedByHost", {
@@ -15550,35 +16017,35 @@ var ConversationImpl = /** @class */ (function (_super) {
             var _a, _b;
             return ((_a = this.privParticipants.me) === null || _a === void 0 ? void 0 : _a.isHost) ? false : (_b = this.privParticipants.me) === null || _b === void 0 ? void 0 : _b.isMuted;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationImpl.prototype, "isConnected", {
         get: function () {
             return this.privIsConnected && this.privIsReady;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationImpl.prototype, "participants", {
         get: function () {
             return this.toParticipants(true);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationImpl.prototype, "me", {
         get: function () {
             return this.toParticipant(this.privParticipants.me);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationImpl.prototype, "host", {
         get: function () {
             return this.toParticipant(this.privParticipants.host);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -16035,7 +16502,7 @@ var ConversationImpl = /** @class */ (function (_super) {
         get: function () {
             return this.privTranscriberRecognizer;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ConversationImpl.prototype.connectTranscriberRecognizer = function (recognizer) {
@@ -16077,7 +16544,7 @@ var ConversationImpl = /** @class */ (function (_super) {
             var info = { id: convId, participants: p, conversationProperties: props };
             return info;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ConversationImpl.prototype.addParticipantImplAsync = function (participant) {
@@ -16132,7 +16599,7 @@ var ConversationImpl = /** @class */ (function (_super) {
             var _a;
             return this.privIsConnected && !((_a = this.privParticipants.me) === null || _a === void 0 ? void 0 : _a.isMuted);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationImpl.prototype, "canSendAsHost", {
@@ -16140,7 +16607,7 @@ var ConversationImpl = /** @class */ (function (_super) {
             var _a;
             return this.privIsConnected && ((_a = this.privParticipants.me) === null || _a === void 0 ? void 0 : _a.isHost);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ConversationImpl.prototype.handleCallback = function (cb, err) {
@@ -16263,7 +16730,7 @@ exports.ConversationImpl = ConversationImpl;
 
 
 /***/ }),
-/* 131 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16271,6 +16738,7 @@ exports.ConversationImpl = ConversationImpl;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConversationCommon = void 0;
 var ConversationCommon = /** @class */ (function () {
     function ConversationCommon(audioConfig) {
         this.privAudioConfig = audioConfig;
@@ -16306,7 +16774,7 @@ exports.ConversationCommon = ConversationCommon;
 
 
 /***/ }),
-/* 132 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16328,7 +16796,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.ConversationExpirationEventArgs = void 0;
+var Exports_1 = __webpack_require__(61);
 var ConversationExpirationEventArgs = /** @class */ (function (_super) {
     __extends(ConversationExpirationEventArgs, _super);
     function ConversationExpirationEventArgs(expirationTime, sessionId) {
@@ -16341,7 +16810,7 @@ var ConversationExpirationEventArgs = /** @class */ (function (_super) {
         get: function () {
             return this.privExpirationTime;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ConversationExpirationEventArgs;
@@ -16351,7 +16820,7 @@ exports.ConversationExpirationEventArgs = ConversationExpirationEventArgs;
 
 
 /***/ }),
-/* 133 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16373,7 +16842,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.ConversationParticipantsChangedEventArgs = void 0;
+var Exports_1 = __webpack_require__(61);
 var ConversationParticipantsChangedEventArgs = /** @class */ (function (_super) {
     __extends(ConversationParticipantsChangedEventArgs, _super);
     function ConversationParticipantsChangedEventArgs(reason, participants, sessionId) {
@@ -16386,14 +16856,14 @@ var ConversationParticipantsChangedEventArgs = /** @class */ (function (_super) 
         get: function () {
             return this.privReason;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationParticipantsChangedEventArgs.prototype, "participants", {
         get: function () {
             return this.privParticipant;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ConversationParticipantsChangedEventArgs;
@@ -16403,7 +16873,7 @@ exports.ConversationParticipantsChangedEventArgs = ConversationParticipantsChang
 
 
 /***/ }),
-/* 134 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16425,7 +16895,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var CancellationEventArgsBase_1 = __webpack_require__(78);
+exports.ConversationTranslationCanceledEventArgs = void 0;
+var CancellationEventArgsBase_1 = __webpack_require__(90);
 var ConversationTranslationCanceledEventArgs = /** @class */ (function (_super) {
     __extends(ConversationTranslationCanceledEventArgs, _super);
     function ConversationTranslationCanceledEventArgs() {
@@ -16438,7 +16909,7 @@ exports.ConversationTranslationCanceledEventArgs = ConversationTranslationCancel
 
 
 /***/ }),
-/* 135 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16460,7 +16931,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.ConversationTranslationEventArgs = void 0;
+var Exports_1 = __webpack_require__(61);
 var ConversationTranslationEventArgs = /** @class */ (function (_super) {
     __extends(ConversationTranslationEventArgs, _super);
     /**
@@ -16483,7 +16955,7 @@ var ConversationTranslationEventArgs = /** @class */ (function (_super) {
         get: function () {
             return this.privResult;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ConversationTranslationEventArgs;
@@ -16493,7 +16965,7 @@ exports.ConversationTranslationEventArgs = ConversationTranslationEventArgs;
 
 
 /***/ }),
-/* 136 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16515,7 +16987,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var TranslationRecognitionResult_1 = __webpack_require__(81);
+exports.ConversationTranslationResult = void 0;
+var TranslationRecognitionResult_1 = __webpack_require__(93);
 var ConversationTranslationResult = /** @class */ (function (_super) {
     __extends(ConversationTranslationResult, _super);
     function ConversationTranslationResult(participantId, translations, originalLanguage, resultId, reason, text, duration, offset, errorDetails, json, properties) {
@@ -16531,7 +17004,7 @@ var ConversationTranslationResult = /** @class */ (function (_super) {
         get: function () {
             return this.privId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationTranslationResult.prototype, "originalLang", {
@@ -16541,7 +17014,7 @@ var ConversationTranslationResult = /** @class */ (function (_super) {
         get: function () {
             return this.privOrigLang;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ConversationTranslationResult;
@@ -16551,7 +17024,7 @@ exports.ConversationTranslationResult = ConversationTranslationResult;
 
 
 /***/ }),
-/* 137 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16609,12 +17082,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.ConversationTranslator = exports.SpeechState = void 0;
+var Exports_1 = __webpack_require__(53);
 var Exports_2 = __webpack_require__(4);
-var Contracts_1 = __webpack_require__(51);
-var Exports_3 = __webpack_require__(49);
-var Conversation_1 = __webpack_require__(130);
-var Exports_4 = __webpack_require__(129);
+var Contracts_1 = __webpack_require__(63);
+var Exports_3 = __webpack_require__(61);
+var Conversation_1 = __webpack_require__(144);
+var Exports_4 = __webpack_require__(143);
 var SpeechState;
 (function (SpeechState) {
     SpeechState[SpeechState["Inactive"] = 0] = "Inactive";
@@ -16654,14 +17128,14 @@ var ConversationTranslator = /** @class */ (function (_super) {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationTranslator.prototype, "speechRecognitionLanguage", {
         get: function () {
             return this.privSpeechRecognitionLanguage;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationTranslator.prototype, "participants", {
@@ -16669,7 +17143,7 @@ var ConversationTranslator = /** @class */ (function (_super) {
             var _a;
             return (_a = this.privConversation) === null || _a === void 0 ? void 0 : _a.participants;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ConversationTranslator.prototype.joinConversationAsync = function (conversation, nickname, param1, param2, param3) {
@@ -17049,10 +17523,10 @@ var ConversationTranslator = /** @class */ (function (_super) {
      * @param error
      */
     ConversationTranslator.prototype.fireCancelEvent = function (error) {
-        var _a, _b, _c, _d, _e, _f, _g;
+        var _a, _b, _c;
         try {
             if (!!this.canceled) {
-                var cancelEvent = new Exports_4.ConversationTranslationCanceledEventArgs((_b = (_a = error) === null || _a === void 0 ? void 0 : _a.reason, (_b !== null && _b !== void 0 ? _b : Exports_3.CancellationReason.Error)), (_d = (_c = error) === null || _c === void 0 ? void 0 : _c.errorDetails, (_d !== null && _d !== void 0 ? _d : error)), (_f = (_e = error) === null || _e === void 0 ? void 0 : _e.errorCode, (_f !== null && _f !== void 0 ? _f : Exports_3.CancellationErrorCode.RuntimeError)), undefined, (_g = error) === null || _g === void 0 ? void 0 : _g.sessionId);
+                var cancelEvent = new Exports_4.ConversationTranslationCanceledEventArgs((_a = error === null || error === void 0 ? void 0 : error.reason) !== null && _a !== void 0 ? _a : Exports_3.CancellationReason.Error, (_b = error === null || error === void 0 ? void 0 : error.errorDetails) !== null && _b !== void 0 ? _b : error, (_c = error === null || error === void 0 ? void 0 : error.errorCode) !== null && _c !== void 0 ? _c : Exports_3.CancellationErrorCode.RuntimeError, undefined, error === null || error === void 0 ? void 0 : error.sessionId);
                 this.canceled(this, cancelEvent);
             }
         }
@@ -17076,7 +17550,7 @@ var ConversationTranslator = /** @class */ (function (_super) {
             }
             return true;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ConversationTranslator;
@@ -17086,7 +17560,7 @@ exports.ConversationTranslator = ConversationTranslator;
 
 
 /***/ }),
-/* 138 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17130,10 +17604,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.ConversationTranscriber = void 0;
+var Exports_1 = __webpack_require__(53);
 var Exports_2 = __webpack_require__(4);
-var Contracts_1 = __webpack_require__(51);
-var Exports_3 = __webpack_require__(49);
+var Contracts_1 = __webpack_require__(63);
+var Exports_3 = __webpack_require__(61);
 var ConversationTranscriber = /** @class */ (function () {
     /**
      * ConversationTranscriber constructor.
@@ -17181,7 +17656,7 @@ var ConversationTranscriber = /** @class */ (function () {
             Contracts_1.Contracts.throwIfNullOrWhitespace(token, "token");
             this.properties.setProperty(Exports_3.PropertyId.SpeechServiceAuthorization_Token, token);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationTranscriber.prototype, "speechRecognitionLanguage", {
@@ -17196,7 +17671,7 @@ var ConversationTranscriber = /** @class */ (function () {
             Contracts_1.Contracts.throwIfDisposed(this.privDisposedRecognizer);
             return this.properties.getProperty(Exports_3.PropertyId.SpeechServiceConnection_RecoLanguage);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationTranscriber.prototype, "properties", {
@@ -17210,7 +17685,7 @@ var ConversationTranscriber = /** @class */ (function () {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -17284,7 +17759,7 @@ exports.ConversationTranscriber = ConversationTranscriber;
 
 
 /***/ }),
-/* 139 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17293,7 +17768,8 @@ exports.ConversationTranscriber = ConversationTranscriber;
 // Licensed under the MIT license.
 // Multi-device Conversation is a Preview feature.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.Participant = exports.User = void 0;
+var Exports_1 = __webpack_require__(61);
 var User = /** @class */ (function () {
     function User(userId) {
         this.privUserId = userId;
@@ -17302,7 +17778,7 @@ var User = /** @class */ (function () {
         get: function () {
             return this.privUserId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return User;
@@ -17328,63 +17804,63 @@ var Participant = /** @class */ (function () {
         get: function () {
             return this.privAvatar;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Participant.prototype, "displayName", {
         get: function () {
             return this.privDisplayName;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Participant.prototype, "id", {
         get: function () {
             return this.privId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Participant.prototype, "preferredLanguage", {
         get: function () {
             return this.privPreferredLanguage;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Participant.prototype, "isHost", {
         get: function () {
             return this.privIsHost;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Participant.prototype, "isMuted", {
         get: function () {
             return this.privIsMuted;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Participant.prototype, "isUsingTts", {
         get: function () {
             return this.privIsUsingTts;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Participant.prototype, "voice", {
         get: function () {
             return this.privVoice;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(Participant.prototype, "properties", {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return Participant;
@@ -17394,7 +17870,7 @@ exports.Participant = Participant;
 
 
 /***/ }),
-/* 140 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17403,6 +17879,7 @@ exports.Participant = Participant;
 // Licensed under the MIT license.
 // Multi-device Conversation is a Preview feature.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ParticipantChangedReason = void 0;
 var ParticipantChangedReason;
 (function (ParticipantChangedReason) {
     /** Participant has joined the conversation. */
@@ -17418,7 +17895,7 @@ var ParticipantChangedReason;
 
 
 /***/ }),
-/* 141 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17462,13 +17939,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.SynthesisRequest = exports.SpeechSynthesizer = void 0;
+var Exports_1 = __webpack_require__(53);
 var Exports_2 = __webpack_require__(4);
-var AudioFileWriter_1 = __webpack_require__(52);
-var AudioOutputFormat_1 = __webpack_require__(62);
-var AudioOutputStream_1 = __webpack_require__(61);
-var Contracts_1 = __webpack_require__(51);
-var Exports_3 = __webpack_require__(49);
+var AudioFileWriter_1 = __webpack_require__(64);
+var AudioOutputFormat_1 = __webpack_require__(74);
+var AudioOutputStream_1 = __webpack_require__(73);
+var Contracts_1 = __webpack_require__(63);
+var Exports_3 = __webpack_require__(61);
 /**
  * Defines the class SpeechSynthesizer for text to speech.
  * Added in version 1.11.0
@@ -17521,7 +17999,7 @@ var SpeechSynthesizer = /** @class */ (function () {
             Contracts_1.Contracts.throwIfNullOrWhitespace(token, "token");
             this.properties.setProperty(Exports_3.PropertyId.SpeechServiceAuthorization_Token, token);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechSynthesizer.prototype, "properties", {
@@ -17535,7 +18013,7 @@ var SpeechSynthesizer = /** @class */ (function () {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechSynthesizer.prototype, "autoDetectSourceLanguage", {
@@ -17549,7 +18027,7 @@ var SpeechSynthesizer = /** @class */ (function () {
         get: function () {
             return this.properties.getProperty(Exports_3.PropertyId.SpeechServiceConnection_AutoDetectSourceLanguages) === Exports_1.AutoDetectSourceLanguagesOpenRangeOptionName;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -17678,7 +18156,7 @@ var SpeechSynthesizer = /** @class */ (function () {
         get: function () {
             return this.privAdapter;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /**
@@ -17849,7 +18327,7 @@ exports.SynthesisRequest = SynthesisRequest;
 
 
 /***/ }),
-/* 142 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17857,6 +18335,7 @@ exports.SynthesisRequest = SynthesisRequest;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SpeechSynthesisResult = void 0;
 /**
  * Defines result of speech synthesis.
  * @class SpeechSynthesisResult
@@ -17890,7 +18369,7 @@ var SpeechSynthesisResult = /** @class */ (function () {
         get: function () {
             return this.privResultId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechSynthesisResult.prototype, "reason", {
@@ -17904,7 +18383,7 @@ var SpeechSynthesisResult = /** @class */ (function () {
         get: function () {
             return this.privReason;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechSynthesisResult.prototype, "audioData", {
@@ -17918,7 +18397,7 @@ var SpeechSynthesisResult = /** @class */ (function () {
         get: function () {
             return this.privAudioData;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechSynthesisResult.prototype, "errorDetails", {
@@ -17932,7 +18411,7 @@ var SpeechSynthesisResult = /** @class */ (function () {
         get: function () {
             return this.privErrorDetails;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechSynthesisResult.prototype, "properties", {
@@ -17946,7 +18425,7 @@ var SpeechSynthesisResult = /** @class */ (function () {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SpeechSynthesisResult;
@@ -17956,7 +18435,7 @@ exports.SpeechSynthesisResult = SpeechSynthesisResult;
 
 
 /***/ }),
-/* 143 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -17964,6 +18443,7 @@ exports.SpeechSynthesisResult = SpeechSynthesisResult;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SpeechSynthesisEventArgs = void 0;
 /**
  * Defines contents of speech synthesis events.
  * @class SpeechSynthesisEventArgs
@@ -17989,7 +18469,7 @@ var SpeechSynthesisEventArgs = /** @class */ (function () {
         get: function () {
             return this.privResult;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SpeechSynthesisEventArgs;
@@ -17999,7 +18479,7 @@ exports.SpeechSynthesisEventArgs = SpeechSynthesisEventArgs;
 
 
 /***/ }),
-/* 144 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18007,6 +18487,7 @@ exports.SpeechSynthesisEventArgs = SpeechSynthesisEventArgs;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SpeechSynthesisWordBoundaryEventArgs = void 0;
 /**
  * Defines contents of speech synthesis word boundary event.
  * @class SpeechSynthesisWordBoundaryEventArgs
@@ -18038,7 +18519,7 @@ var SpeechSynthesisWordBoundaryEventArgs = /** @class */ (function () {
         get: function () {
             return this.privAudioOffset;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechSynthesisWordBoundaryEventArgs.prototype, "text", {
@@ -18052,7 +18533,7 @@ var SpeechSynthesisWordBoundaryEventArgs = /** @class */ (function () {
         get: function () {
             return this.privText;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechSynthesisWordBoundaryEventArgs.prototype, "wordLength", {
@@ -18066,7 +18547,7 @@ var SpeechSynthesisWordBoundaryEventArgs = /** @class */ (function () {
         get: function () {
             return this.privWordLength;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechSynthesisWordBoundaryEventArgs.prototype, "textOffset", {
@@ -18080,7 +18561,7 @@ var SpeechSynthesisWordBoundaryEventArgs = /** @class */ (function () {
         get: function () {
             return this.privTextOffset;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SpeechSynthesisWordBoundaryEventArgs;
@@ -18090,7 +18571,7 @@ exports.SpeechSynthesisWordBoundaryEventArgs = SpeechSynthesisWordBoundaryEventA
 
 
 /***/ }),
-/* 145 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18135,10 +18616,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.SpeakerAudioDestination = void 0;
+var Exports_1 = __webpack_require__(53);
 var Exports_2 = __webpack_require__(4);
-var AudioOutputFormat_1 = __webpack_require__(62);
-var AudioOutputStream_1 = __webpack_require__(61);
+var AudioOutputFormat_1 = __webpack_require__(74);
+var AudioOutputStream_1 = __webpack_require__(73);
 var MediaDurationPlaceholderSeconds = 60 * 30;
 var AudioFormatToMimeType = (_a = {},
     _a[AudioOutputFormat_1.AudioFormatTag.PCM] = "audio/wav",
@@ -18268,14 +18750,14 @@ var SpeakerAudioDestination = /** @class */ (function () {
                 }
             }
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeakerAudioDestination.prototype, "isClosed", {
         get: function () {
             return this.privIsClosed;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeakerAudioDestination.prototype, "currentTime", {
@@ -18285,7 +18767,7 @@ var SpeakerAudioDestination = /** @class */ (function () {
             }
             return -1;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     SpeakerAudioDestination.prototype.pause = function () {
@@ -18312,7 +18794,7 @@ var SpeakerAudioDestination = /** @class */ (function () {
         get: function () {
             return this.privAudio;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     SpeakerAudioDestination.prototype.updateSourceBuffer = function () {
@@ -18403,7 +18885,7 @@ exports.SpeakerAudioDestination = SpeakerAudioDestination;
 
 
 /***/ }),
-/* 146 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18424,7 +18906,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var CancellationEventArgsBase_1 = __webpack_require__(78);
+exports.ConversationTranscriptionCanceledEventArgs = void 0;
+var CancellationEventArgsBase_1 = __webpack_require__(90);
 /**
  * Defines content of a RecognitionErrorEvent.
  * @class ConversationTranscriptionCanceledEventArgs
@@ -18441,7 +18924,321 @@ exports.ConversationTranscriptionCanceledEventArgs = ConversationTranscriptionCa
 
 
 /***/ }),
-/* 147 */
+/* 161 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PronunciationAssessmentGradingSystem = void 0;
+/**
+ * Defines the point system for pronunciation score calibration; default value is FivePoint.
+ * Added in version 1.15.0
+ * @class PronunciationAssessmentGradingSystem
+ */
+var PronunciationAssessmentGradingSystem;
+(function (PronunciationAssessmentGradingSystem) {
+    /**
+     * Five point calibration
+     * @member PronunciationAssessmentGradingSystem.FivePoint
+     */
+    PronunciationAssessmentGradingSystem[PronunciationAssessmentGradingSystem["FivePoint"] = 1] = "FivePoint";
+    /**
+     * Hundred mark
+     * @member PronunciationAssessmentGradingSystem.HundredMark
+     */
+    PronunciationAssessmentGradingSystem[PronunciationAssessmentGradingSystem["HundredMark"] = 2] = "HundredMark";
+})(PronunciationAssessmentGradingSystem = exports.PronunciationAssessmentGradingSystem || (exports.PronunciationAssessmentGradingSystem = {}));
+
+
+
+/***/ }),
+/* 162 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PronunciationAssessmentGranularity = void 0;
+/**
+ * Defines the pronunciation evaluation granularity; default value is Phoneme.
+ * Added in version 1.15.0
+ * @class PronunciationAssessmentGranularity
+ */
+var PronunciationAssessmentGranularity;
+(function (PronunciationAssessmentGranularity) {
+    /**
+     * Shows the score on the full text, word and phoneme level
+     * @member PronunciationAssessmentGranularity.Phoneme
+     */
+    PronunciationAssessmentGranularity[PronunciationAssessmentGranularity["Phoneme"] = 1] = "Phoneme";
+    /**
+     * Shows the score on the full text and word level
+     * @member PronunciationAssessmentGranularity.Word
+     */
+    PronunciationAssessmentGranularity[PronunciationAssessmentGranularity["Word"] = 2] = "Word";
+    /**
+     * Shows the score on the full text level only
+     * @member PronunciationAssessmentGranularity.FullText
+     */
+    PronunciationAssessmentGranularity[PronunciationAssessmentGranularity["FullText"] = 3] = "FullText";
+})(PronunciationAssessmentGranularity = exports.PronunciationAssessmentGranularity || (exports.PronunciationAssessmentGranularity = {}));
+
+
+
+/***/ }),
+/* 163 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PronunciationAssessmentConfig = void 0;
+var Contracts_1 = __webpack_require__(63);
+var Exports_1 = __webpack_require__(61);
+/**
+ * Pronunciation assessment configuration.
+ * @class PronunciationAssessmentConfig
+ * Added in version 1.15.0.
+ */
+var PronunciationAssessmentConfig = /** @class */ (function () {
+    /**
+     * PronunciationAssessmentConfig constructor.
+     * @constructor
+     * @param {string} referenceText
+     * @param gradingSystem
+     * @param granularity
+     * @param enableMiscue
+     */
+    function PronunciationAssessmentConfig(referenceText, gradingSystem, granularity, enableMiscue) {
+        if (gradingSystem === void 0) { gradingSystem = Exports_1.PronunciationAssessmentGradingSystem.FivePoint; }
+        if (granularity === void 0) { granularity = Exports_1.PronunciationAssessmentGranularity.Phoneme; }
+        if (enableMiscue === void 0) { enableMiscue = false; }
+        Contracts_1.Contracts.throwIfNullOrUndefined(referenceText, "referenceText");
+        this.privProperties = new Exports_1.PropertyCollection();
+        this.privProperties.setProperty(Exports_1.PropertyId.PronunciationAssessment_ReferenceText, referenceText);
+        this.privProperties.setProperty(Exports_1.PropertyId.PronunciationAssessment_GradingSystem, Exports_1.PronunciationAssessmentGradingSystem[gradingSystem]);
+        this.privProperties.setProperty(Exports_1.PropertyId.PronunciationAssessment_Granularity, Exports_1.PronunciationAssessmentGranularity[gradingSystem]);
+        this.privProperties.setProperty(Exports_1.PropertyId.PronunciationAssessment_EnableMiscue, String(enableMiscue));
+    }
+    /**
+     * @member PronunciationAssessmentConfig.fromJSON
+     * @function
+     * @public
+     * @param {string} json The json string containing the pronunciation assessment parameters.
+     * @return {PronunciationAssessmentConfig} Instance of PronunciationAssessmentConfig
+     * @summary Creates an instance of the PronunciationAssessmentConfig from json.
+     */
+    PronunciationAssessmentConfig.fromJSON = function (json) {
+        Contracts_1.Contracts.throwIfNullOrUndefined(json, "json");
+        var config = new PronunciationAssessmentConfig("");
+        config.privProperties = new Exports_1.PropertyCollection();
+        config.properties.setProperty(Exports_1.PropertyId.PronunciationAssessment_Json, json);
+        return config;
+    };
+    PronunciationAssessmentConfig.prototype.toJSON = function () {
+        this.updateJson();
+        return this.privProperties.getProperty(Exports_1.PropertyId.PronunciationAssessment_Params);
+    };
+    PronunciationAssessmentConfig.prototype.applyTo = function (recognizer) {
+        this.updateJson();
+        var recoBase = recognizer.internalData;
+        recoBase.speechContext.setPronunciationAssessmentParams(this.properties.getProperty(Exports_1.PropertyId.PronunciationAssessment_Params));
+    };
+    Object.defineProperty(PronunciationAssessmentConfig.prototype, "referenceText", {
+        /**
+         * Gets the reference text.
+         * @member PronunciationAssessmentConfig.prototype.referenceText
+         * @function
+         * @public
+         * @returns {string} Reference text.
+         */
+        get: function () {
+            return this.properties.getProperty(Exports_1.PropertyId.PronunciationAssessment_ReferenceText);
+        },
+        /**
+         * Gets/Sets the reference text.
+         * @member PronunciationAssessmentConfig.prototype.referenceText
+         * @function
+         * @public
+         * @param {string} referenceText - Reference text.
+         */
+        set: function (referenceText) {
+            Contracts_1.Contracts.throwIfNullOrWhitespace(referenceText, "referenceText");
+            this.properties.setProperty(Exports_1.PropertyId.PronunciationAssessment_ReferenceText, referenceText);
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PronunciationAssessmentConfig.prototype, "properties", {
+        /**
+         * @member PronunciationAssessmentConfig.prototype.properties
+         * @function
+         * @public
+         * @return {PropertyCollection} Properties of the config.
+         * @summary Gets a pronunciation assessment config properties
+         */
+        get: function () {
+            return this.privProperties;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    PronunciationAssessmentConfig.prototype.updateJson = function () {
+        var jsonString = this.privProperties.getProperty(Exports_1.PropertyId.PronunciationAssessment_Json, "{}");
+        var paramsJson = JSON.parse(jsonString);
+        var referenceText = this.privProperties.getProperty(Exports_1.PropertyId.PronunciationAssessment_ReferenceText);
+        if (referenceText) {
+            paramsJson.referenceText = referenceText;
+        }
+        var gradingSystem = this.privProperties.getProperty(Exports_1.PropertyId.PronunciationAssessment_GradingSystem);
+        if (gradingSystem) {
+            paramsJson.gradingSystem = gradingSystem;
+        }
+        var granularity = this.privProperties.getProperty(Exports_1.PropertyId.PronunciationAssessment_Granularity);
+        if (granularity) {
+            paramsJson.granularity = granularity;
+        }
+        // always set dimension to Comprehensive
+        paramsJson.dimension = "Comprehensive";
+        var enableMiscueString = this.privProperties.getProperty(Exports_1.PropertyId.PronunciationAssessment_EnableMiscue);
+        if (enableMiscueString === "true") {
+            paramsJson.enableMiscue = true;
+        }
+        else if (enableMiscueString === "false") {
+            paramsJson.enableMiscue = false;
+        }
+        this.privProperties.setProperty(Exports_1.PropertyId.PronunciationAssessment_Params, JSON.stringify(paramsJson));
+    };
+    return PronunciationAssessmentConfig;
+}());
+exports.PronunciationAssessmentConfig = PronunciationAssessmentConfig;
+
+
+
+/***/ }),
+/* 164 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PronunciationAssessmentResult = void 0;
+var Contracts_1 = __webpack_require__(63);
+var Exports_1 = __webpack_require__(61);
+/**
+ * Pronunciation assessment results.
+ * @class PronunciationAssessmentResult
+ * Added in version 1.15.0.
+ */
+var PronunciationAssessmentResult = /** @class */ (function () {
+    function PronunciationAssessmentResult(jsonString) {
+        var j = JSON.parse(jsonString);
+        Contracts_1.Contracts.throwIfNullOrUndefined(j.NBest[0], "NBest");
+        this.privPronJson = j.NBest[0];
+    }
+    /**
+     * @member PronunciationAssessmentResult.fromResult
+     * @function
+     * @public
+     * @param {RecognitionResult} result The recognition result.
+     * @return {PronunciationAssessmentConfig} Instance of PronunciationAssessmentConfig
+     * @summary Creates an instance of the PronunciationAssessmentResult from recognition result.
+     */
+    PronunciationAssessmentResult.fromResult = function (result) {
+        Contracts_1.Contracts.throwIfNullOrUndefined(result, "result");
+        var json = result.properties.getProperty(Exports_1.PropertyId.SpeechServiceResponse_JsonResult);
+        Contracts_1.Contracts.throwIfNullOrUndefined(json, "json");
+        return new PronunciationAssessmentResult(json);
+    };
+    Object.defineProperty(PronunciationAssessmentResult.prototype, "detailResult", {
+        /**
+         * Gets the detail result of pronunciation assessment.
+         * @member PronunciationAssessmentConfig.prototype.detailResult
+         * @function
+         * @public
+         * @returns {any} detail result.
+         */
+        get: function () {
+            return this.privPronJson;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PronunciationAssessmentResult.prototype, "accuracyScore", {
+        /**
+         * The score indicating the pronunciation accuracy of the given speech, which indicates
+         * how closely the phonemes match a native speaker's pronunciation.
+         * @member PronunciationAssessmentResult.prototype.accuracyScore
+         * @function
+         * @public
+         * @returns {number} Accuracy score.
+         */
+        get: function () {
+            return this.detailResult.PronunciationAssessment.AccuracyScore;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PronunciationAssessmentResult.prototype, "pronunciationScore", {
+        /**
+         * The overall score indicating the pronunciation quality of the given speech.
+         * This is calculated from AccuracyScore, FluencyScore and CompletenessScore with weight.
+         * @member PronunciationAssessmentResult.prototype.pronunciationScore
+         * @function
+         * @public
+         * @returns {number} Pronunciation score.
+         */
+        get: function () {
+            return this.detailResult.PronunciationAssessment.PronScore;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PronunciationAssessmentResult.prototype, "completenessScore", {
+        /**
+         * The score indicating the completeness of the given speech by calculating the ratio of pronounced words towards entire input.
+         * @member PronunciationAssessmentResult.prototype.completenessScore
+         * @function
+         * @public
+         * @returns {number} Completeness score.
+         */
+        get: function () {
+            return this.detailResult.PronunciationAssessment.CompletenessScore;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PronunciationAssessmentResult.prototype, "fluencyScore", {
+        /**
+         * The score indicating the fluency of the given speech.
+         * @member PronunciationAssessmentResult.prototype.fluencyScore
+         * @function
+         * @public
+         * @returns {number} Fluency score.
+         */
+        get: function () {
+            return this.detailResult.PronunciationAssessment.FluencyScore;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return PronunciationAssessmentResult;
+}());
+exports.PronunciationAssessmentResult = PronunciationAssessmentResult;
+
+
+
+/***/ }),
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18462,6 +19259,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RecognitionEndedEvent = exports.RecognitionCompletionStatus = exports.RecognitionStartedEvent = exports.ConnectingToServiceEvent = exports.ListeningStartedEvent = exports.RecognitionTriggeredEvent = exports.SpeechRecognitionEvent = void 0;
+// tslint:disable:max-classes-per-file
 var Exports_1 = __webpack_require__(4);
 var SpeechRecognitionEvent = /** @class */ (function (_super) {
     __extends(SpeechRecognitionEvent, _super);
@@ -18476,20 +19275,19 @@ var SpeechRecognitionEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privRequestId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechRecognitionEvent.prototype, "sessionId", {
         get: function () {
             return this.privSessionId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SpeechRecognitionEvent;
 }(Exports_1.PlatformEvent));
 exports.SpeechRecognitionEvent = SpeechRecognitionEvent;
-// tslint:disable-next-line:max-classes-per-file
 var RecognitionTriggeredEvent = /** @class */ (function (_super) {
     __extends(RecognitionTriggeredEvent, _super);
     function RecognitionTriggeredEvent(requestId, sessionId, audioSourceId, audioNodeId) {
@@ -18502,20 +19300,19 @@ var RecognitionTriggeredEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privAudioSourceId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognitionTriggeredEvent.prototype, "audioNodeId", {
         get: function () {
             return this.privAudioNodeId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return RecognitionTriggeredEvent;
 }(SpeechRecognitionEvent));
 exports.RecognitionTriggeredEvent = RecognitionTriggeredEvent;
-// tslint:disable-next-line:max-classes-per-file
 var ListeningStartedEvent = /** @class */ (function (_super) {
     __extends(ListeningStartedEvent, _super);
     function ListeningStartedEvent(requestId, sessionId, audioSourceId, audioNodeId) {
@@ -18528,20 +19325,19 @@ var ListeningStartedEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privAudioSourceId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ListeningStartedEvent.prototype, "audioNodeId", {
         get: function () {
             return this.privAudioNodeId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ListeningStartedEvent;
 }(SpeechRecognitionEvent));
 exports.ListeningStartedEvent = ListeningStartedEvent;
-// tslint:disable-next-line:max-classes-per-file
 var ConnectingToServiceEvent = /** @class */ (function (_super) {
     __extends(ConnectingToServiceEvent, _super);
     function ConnectingToServiceEvent(requestId, authFetchEventid, sessionId) {
@@ -18553,13 +19349,12 @@ var ConnectingToServiceEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privAuthFetchEventid;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ConnectingToServiceEvent;
 }(SpeechRecognitionEvent));
 exports.ConnectingToServiceEvent = ConnectingToServiceEvent;
-// tslint:disable-next-line:max-classes-per-file
 var RecognitionStartedEvent = /** @class */ (function (_super) {
     __extends(RecognitionStartedEvent, _super);
     function RecognitionStartedEvent(requestId, audioSourceId, audioNodeId, authFetchEventId, sessionId) {
@@ -18573,21 +19368,21 @@ var RecognitionStartedEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privAudioSourceId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognitionStartedEvent.prototype, "audioNodeId", {
         get: function () {
             return this.privAudioNodeId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognitionStartedEvent.prototype, "authFetchEventId", {
         get: function () {
             return this.privAuthFetchEventId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return RecognitionStartedEvent;
@@ -18606,7 +19401,6 @@ var RecognitionCompletionStatus;
     RecognitionCompletionStatus[RecognitionCompletionStatus["ClientRecognitionActivityTimeout"] = 8] = "ClientRecognitionActivityTimeout";
     RecognitionCompletionStatus[RecognitionCompletionStatus["UnknownError"] = 9] = "UnknownError";
 })(RecognitionCompletionStatus = exports.RecognitionCompletionStatus || (exports.RecognitionCompletionStatus = {}));
-// tslint:disable-next-line:max-classes-per-file
 var RecognitionEndedEvent = /** @class */ (function (_super) {
     __extends(RecognitionEndedEvent, _super);
     function RecognitionEndedEvent(requestId, audioSourceId, audioNodeId, authFetchEventId, sessionId, serviceTag, status, error) {
@@ -18623,42 +19417,42 @@ var RecognitionEndedEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privAudioSourceId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognitionEndedEvent.prototype, "audioNodeId", {
         get: function () {
             return this.privAudioNodeId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognitionEndedEvent.prototype, "authFetchEventId", {
         get: function () {
             return this.privAuthFetchEventId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognitionEndedEvent.prototype, "serviceTag", {
         get: function () {
             return this.privServiceTag;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognitionEndedEvent.prototype, "status", {
         get: function () {
             return this.privStatus;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognitionEndedEvent.prototype, "error", {
         get: function () {
             return this.privError;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return RecognitionEndedEvent;
@@ -18668,7 +19462,7 @@ exports.RecognitionEndedEvent = RecognitionEndedEvent;
 
 
 /***/ }),
-/* 148 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18712,11 +19506,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ServiceRecognizerBase = void 0;
 var Exports_1 = __webpack_require__(2);
 var Exports_2 = __webpack_require__(4);
-var Exports_3 = __webpack_require__(49);
-var Exports_4 = __webpack_require__(44);
-var SpeechConnectionMessage_Internal_1 = __webpack_require__(149);
+var Exports_3 = __webpack_require__(61);
+var Exports_4 = __webpack_require__(53);
+var SpeechConnectionMessage_Internal_1 = __webpack_require__(167);
 var ServiceRecognizerBase = /** @class */ (function () {
     function ServiceRecognizerBase(authentication, connectionFactory, audioSource, recognizerConfig, recognizer) {
         var _this = this;
@@ -18778,47 +19573,63 @@ var ServiceRecognizerBase = /** @class */ (function () {
         if (typeof (Blob) !== "undefined" && typeof (Worker) !== "undefined") {
             this.privSetTimeout = Exports_2.Timeout.setTimeout;
         }
+        this.connectionEvents.attach(function (connectionEvent) { return __awaiter(_this, void 0, void 0, function () {
+            var connectionClosedEvent;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(connectionEvent.name === "ConnectionClosedEvent")) return [3 /*break*/, 2];
+                        connectionClosedEvent = connectionEvent;
+                        if (!(connectionClosedEvent.statusCode !== 1000)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.cancelRecognitionLocal(Exports_3.CancellationReason.Error, connectionClosedEvent.statusCode === 1007 ? Exports_3.CancellationErrorCode.BadRequestParameters : Exports_3.CancellationErrorCode.ConnectionFailure, connectionClosedEvent.reason + " websocket error code: " + connectionClosedEvent.statusCode)];
+                    case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2: return [2 /*return*/];
+                }
+            });
+        }); });
     }
     Object.defineProperty(ServiceRecognizerBase.prototype, "audioSource", {
         get: function () {
             return this.privAudioSource;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ServiceRecognizerBase.prototype, "speechContext", {
         get: function () {
             return this.privSpeechContext;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ServiceRecognizerBase.prototype, "dynamicGrammar", {
         get: function () {
             return this.privDynamicGrammar;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ServiceRecognizerBase.prototype, "agentConfig", {
         get: function () {
             return this.privAgentConfig;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ServiceRecognizerBase.prototype, "conversationTranslatorToken", {
         set: function (token) {
             this.privRecognizerConfig.parameters.setProperty(Exports_3.PropertyId.ConversationTranslator_Token, token);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ServiceRecognizerBase.prototype, "authentication", {
         set: function (auth) {
             this.privAuthentication = this.authentication;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ServiceRecognizerBase.prototype.isDisposed = function () {
@@ -18855,21 +19666,21 @@ var ServiceRecognizerBase = /** @class */ (function () {
         get: function () {
             return this.privConnectionEvents;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ServiceRecognizerBase.prototype, "serviceEvents", {
         get: function () {
             return this.privServiceEvents;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ServiceRecognizerBase.prototype, "recognitionMode", {
         get: function () {
             return this.privRecognizerConfig.recognitionMode;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ServiceRecognizerBase.prototype.recognize = function (recoMode, successCallback, errorCallBack) {
@@ -19051,7 +19862,7 @@ var ServiceRecognizerBase = /** @class */ (function () {
     Object.defineProperty(ServiceRecognizerBase.prototype, "activityTemplate", {
         get: function () { return this.privActivityTemplate; },
         set: function (messagePayload) { this.privActivityTemplate = messagePayload; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ServiceRecognizerBase.prototype.sendTelemetryData = function () {
@@ -19371,9 +20182,8 @@ var ServiceRecognizerBase = /** @class */ (function () {
                         readAndUploadCycle = function () { return __awaiter(_this, void 0, void 0, function () {
                             var connection, audioStreamChunk, payload, sendDelay;
                             var _this = this;
-                            var _a;
-                            return __generator(this, function (_b) {
-                                switch (_b.label) {
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
                                     case 0:
                                         if (!(!this.privIsDisposed &&
                                             !this.privRequestSession.isSpeechEnded &&
@@ -19381,10 +20191,10 @@ var ServiceRecognizerBase = /** @class */ (function () {
                                             this.privRequestSession.recogNumber === startRecogNumber)) return [3 /*break*/, 5];
                                         return [4 /*yield*/, this.fetchConnection()];
                                     case 1:
-                                        connection = _b.sent();
+                                        connection = _a.sent();
                                         return [4 /*yield*/, audioStreamNode.read()];
                                     case 2:
-                                        audioStreamChunk = _b.sent();
+                                        audioStreamChunk = _a.sent();
                                         // we have a new audio chunk to upload.
                                         if (this.privRequestSession.isSpeechEnded) {
                                             // If service already recognized audio end then don't send any more audio
@@ -19409,8 +20219,8 @@ var ServiceRecognizerBase = /** @class */ (function () {
                                         if (!(0 !== sendDelay)) return [3 /*break*/, 4];
                                         return [4 /*yield*/, this.delay(sendDelay)];
                                     case 3:
-                                        _b.sent();
-                                        _b.label = 4;
+                                        _a.sent();
+                                        _a.label = 4;
                                     case 4:
                                         if (payload !== null) {
                                             nextSendTime = Date.now() + (payload.byteLength * 1000 / (audioFormat.avgBytesPerSec * 2));
@@ -19423,7 +20233,7 @@ var ServiceRecognizerBase = /** @class */ (function () {
                                             connection.send(new SpeechConnectionMessage_Internal_1.SpeechConnectionMessage(Exports_2.MessageType.Binary, "audio", this.privRequestSession.requestId, null, payload)).catch(function () {
                                                 _this.privRequestSession.onServiceTurnEndResponse(_this.privRecognizerConfig.isContinuousRecognition).catch(function () { });
                                             });
-                                            if (!((_a = audioStreamChunk) === null || _a === void 0 ? void 0 : _a.isEnd)) {
+                                            if (!(audioStreamChunk === null || audioStreamChunk === void 0 ? void 0 : audioStreamChunk.isEnd)) {
                                                 // this.writeBufferToConsole(payload);
                                                 // Regardless of success or failure, schedule the next upload.
                                                 // If the underlying connection was broken, the next cycle will
@@ -19436,7 +20246,7 @@ var ServiceRecognizerBase = /** @class */ (function () {
                                                 this.privRequestSession.onSpeechEnded();
                                             }
                                         }
-                                        _b.label = 5;
+                                        _a.label = 5;
                                     case 5: return [2 /*return*/];
                                 }
                             });
@@ -19514,7 +20324,7 @@ exports.ServiceRecognizerBase = ServiceRecognizerBase;
 
 
 /***/ }),
-/* 149 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19535,12 +20345,9 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SpeechConnectionMessage = void 0;
 var Exports_1 = __webpack_require__(4);
-var PathHeaderName = "Path";
-var ContentTypeHeaderName = "Content-Type";
-var RequestIdHeaderName = "X-RequestId";
-var RequestTimestampHeaderName = "X-Timestamp";
-var RequestStreamIdHeaderName = "x-streamid";
+var HeaderNames_1 = __webpack_require__(55);
 var SpeechConnectionMessage = /** @class */ (function (_super) {
     __extends(SpeechConnectionMessage, _super);
     function SpeechConnectionMessage(messageType, path, requestId, contentType, body, streamId, additionalHeaders, id) {
@@ -19552,14 +20359,14 @@ var SpeechConnectionMessage = /** @class */ (function (_super) {
             throw new Exports_1.ArgumentNullError("requestId");
         }
         var headers = {};
-        headers[PathHeaderName] = path;
-        headers[RequestIdHeaderName] = requestId;
-        headers[RequestTimestampHeaderName] = new Date().toISOString();
+        headers[HeaderNames_1.HeaderNames.Path] = path;
+        headers[HeaderNames_1.HeaderNames.RequestId] = requestId;
+        headers[HeaderNames_1.HeaderNames.RequestTimestamp] = new Date().toISOString();
         if (contentType) {
-            headers[ContentTypeHeaderName] = contentType;
+            headers[HeaderNames_1.HeaderNames.ContentType] = contentType;
         }
         if (streamId) {
-            headers[RequestStreamIdHeaderName] = streamId;
+            headers[HeaderNames_1.HeaderNames.RequestStreamId] = streamId;
         }
         if (additionalHeaders) {
             for (var headerName in additionalHeaders) {
@@ -19585,35 +20392,35 @@ var SpeechConnectionMessage = /** @class */ (function (_super) {
         get: function () {
             return this.privPath;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechConnectionMessage.prototype, "requestId", {
         get: function () {
             return this.privRequestId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechConnectionMessage.prototype, "contentType", {
         get: function () {
             return this.privContentType;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechConnectionMessage.prototype, "streamId", {
         get: function () {
             return this.privStreamId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechConnectionMessage.prototype, "additionalHeaders", {
         get: function () {
             return this.privAdditionalHeaders;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     SpeechConnectionMessage.fromConnectionMessage = function (message) {
@@ -19626,19 +20433,19 @@ var SpeechConnectionMessage = /** @class */ (function (_super) {
         if (message.headers) {
             for (var headerName in message.headers) {
                 if (headerName) {
-                    if (headerName.toLowerCase() === PathHeaderName.toLowerCase()) {
+                    if (headerName.toLowerCase() === HeaderNames_1.HeaderNames.Path.toLowerCase()) {
                         path = message.headers[headerName];
                     }
-                    else if (headerName.toLowerCase() === RequestIdHeaderName.toLowerCase()) {
+                    else if (headerName.toLowerCase() === HeaderNames_1.HeaderNames.RequestId.toLowerCase()) {
                         requestId = message.headers[headerName];
                     }
-                    else if (headerName.toLowerCase() === RequestTimestampHeaderName.toLowerCase()) {
+                    else if (headerName.toLowerCase() === HeaderNames_1.HeaderNames.RequestTimestamp.toLowerCase()) {
                         requestTimestamp = message.headers[headerName];
                     }
-                    else if (headerName.toLowerCase() === ContentTypeHeaderName.toLowerCase()) {
+                    else if (headerName.toLowerCase() === HeaderNames_1.HeaderNames.ContentType.toLowerCase()) {
                         contentType = message.headers[headerName];
                     }
-                    else if (headerName.toLowerCase() === RequestStreamIdHeaderName.toLowerCase()) {
+                    else if (headerName.toLowerCase() === HeaderNames_1.HeaderNames.RequestStreamId.toLowerCase()) {
                         streamId = message.headers[headerName];
                     }
                     else {
@@ -19656,7 +20463,7 @@ exports.SpeechConnectionMessage = SpeechConnectionMessage;
 
 
 /***/ }),
-/* 150 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19664,7 +20471,9 @@ exports.SpeechConnectionMessage = SpeechConnectionMessage;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.type = exports.connectivity = exports.Device = exports.OS = exports.System = exports.Context = exports.SpeechServiceConfig = exports.RecognizerConfig = exports.SpeechResultFormat = exports.RecognitionMode = void 0;
+// tslint:disable:max-classes-per-file
+var Exports_1 = __webpack_require__(61);
 var RecognitionMode;
 (function (RecognitionMode) {
     RecognitionMode[RecognitionMode["Interactive"] = 0] = "Interactive";
@@ -19686,7 +20495,7 @@ var RecognizerConfig = /** @class */ (function () {
         get: function () {
             return this.privParameters;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognizerConfig.prototype, "recognitionMode", {
@@ -19698,42 +20507,41 @@ var RecognizerConfig = /** @class */ (function () {
             this.privRecognitionActivityTimeout = value === RecognitionMode.Interactive ? 8000 : 25000;
             this.privSpeechServiceConfig.Recognition = RecognitionMode[value];
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognizerConfig.prototype, "SpeechServiceConfig", {
         get: function () {
             return this.privSpeechServiceConfig;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognizerConfig.prototype, "recognitionActivityTimeout", {
         get: function () {
             return this.privRecognitionActivityTimeout;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognizerConfig.prototype, "isContinuousRecognition", {
         get: function () {
             return this.privRecognitionMode !== RecognitionMode.Interactive;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RecognizerConfig.prototype, "autoDetectSourceLanguages", {
         get: function () {
             return this.parameters.getProperty(Exports_1.PropertyId.SpeechServiceConnection_AutoDetectSourceLanguages, undefined);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return RecognizerConfig;
 }());
 exports.RecognizerConfig = RecognizerConfig;
 // The config is serialized and sent as the Speech.Config
-// tslint:disable-next-line:max-classes-per-file
 var SpeechServiceConfig = /** @class */ (function () {
     function SpeechServiceConfig(context) {
         var _this = this;
@@ -19757,7 +20565,7 @@ var SpeechServiceConfig = /** @class */ (function () {
         get: function () {
             return this.context;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechServiceConfig.prototype, "Recognition", {
@@ -19767,13 +20575,12 @@ var SpeechServiceConfig = /** @class */ (function () {
         set: function (value) {
             this.recognition = value.toLowerCase();
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SpeechServiceConfig;
 }());
 exports.SpeechServiceConfig = SpeechServiceConfig;
-// tslint:disable-next-line:max-classes-per-file
 var Context = /** @class */ (function () {
     function Context(os) {
         this.system = new System();
@@ -19782,11 +20589,10 @@ var Context = /** @class */ (function () {
     return Context;
 }());
 exports.Context = Context;
-// tslint:disable-next-line:max-classes-per-file
 var System = /** @class */ (function () {
     function System() {
         // Note: below will be patched for official builds.
-        var SPEECHSDK_CLIENTSDK_VERSION = "1.14.0";
+        var SPEECHSDK_CLIENTSDK_VERSION = "1.15.1";
         this.name = "SpeechSDK";
         this.version = SPEECHSDK_CLIENTSDK_VERSION;
         this.build = "JavaScript";
@@ -19795,7 +20601,6 @@ var System = /** @class */ (function () {
     return System;
 }());
 exports.System = System;
-// tslint:disable-next-line:max-classes-per-file
 var OS = /** @class */ (function () {
     function OS(platform, name, version) {
         this.platform = platform;
@@ -19805,7 +20610,6 @@ var OS = /** @class */ (function () {
     return OS;
 }());
 exports.OS = OS;
-// tslint:disable-next-line:max-classes-per-file
 var Device = /** @class */ (function () {
     function Device(manufacturer, model, version) {
         this.manufacturer = manufacturer;
@@ -19842,7 +20646,7 @@ var type;
 
 
 /***/ }),
-/* 151 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19850,6 +20654,19 @@ var type;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+
+
+
+/***/ }),
+/* 170 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.WebsocketMessageFormatter = void 0;
 var Exports_1 = __webpack_require__(4);
 var CRLF = "\r\n";
 var WebsocketMessageFormatter = /** @class */ (function () {
@@ -19978,7 +20795,7 @@ exports.WebsocketMessageFormatter = WebsocketMessageFormatter;
 
 
 /***/ }),
-/* 152 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19999,12 +20816,14 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SpeechConnectionFactory = void 0;
 var Exports_1 = __webpack_require__(2);
-var Exports_2 = __webpack_require__(44);
-var Exports_3 = __webpack_require__(49);
-var ConnectionFactoryBase_1 = __webpack_require__(111);
-var Exports_4 = __webpack_require__(44);
-var QueryParameterNames_1 = __webpack_require__(112);
+var Exports_2 = __webpack_require__(53);
+var Exports_3 = __webpack_require__(61);
+var ConnectionFactoryBase_1 = __webpack_require__(123);
+var Exports_4 = __webpack_require__(53);
+var HeaderNames_1 = __webpack_require__(55);
+var QueryParameterNames_1 = __webpack_require__(124);
 var SpeechConnectionFactory = /** @class */ (function (_super) {
     __extends(SpeechConnectionFactory, _super);
     function SpeechConnectionFactory() {
@@ -20021,20 +20840,20 @@ var SpeechConnectionFactory = /** @class */ (function (_super) {
             var endpointId = config.parameters.getProperty(Exports_3.PropertyId.SpeechServiceConnection_EndpointId, undefined);
             var language = config.parameters.getProperty(Exports_3.PropertyId.SpeechServiceConnection_RecoLanguage, undefined);
             if (endpointId) {
-                if (!endpoint || endpoint.search(QueryParameterNames_1.QueryParameterNames.DeploymentIdParamName) === -1) {
-                    queryParams[QueryParameterNames_1.QueryParameterNames.DeploymentIdParamName] = endpointId;
+                if (!endpoint || endpoint.search(QueryParameterNames_1.QueryParameterNames.CustomSpeechDeploymentId) === -1) {
+                    queryParams[QueryParameterNames_1.QueryParameterNames.CustomSpeechDeploymentId] = endpointId;
                 }
             }
             else if (language) {
-                if (!endpoint || endpoint.search(QueryParameterNames_1.QueryParameterNames.LanguageParamName) === -1) {
-                    queryParams[QueryParameterNames_1.QueryParameterNames.LanguageParamName] = language;
+                if (!endpoint || endpoint.search(QueryParameterNames_1.QueryParameterNames.Language) === -1) {
+                    queryParams[QueryParameterNames_1.QueryParameterNames.Language] = language;
                 }
             }
-            if (!endpoint || endpoint.search(QueryParameterNames_1.QueryParameterNames.FormatParamName) === -1) {
-                queryParams[QueryParameterNames_1.QueryParameterNames.FormatParamName] = config.parameters.getProperty(Exports_2.OutputFormatPropertyName, Exports_3.OutputFormat[Exports_3.OutputFormat.Simple]).toLowerCase();
+            if (!endpoint || endpoint.search(QueryParameterNames_1.QueryParameterNames.Format) === -1) {
+                queryParams[QueryParameterNames_1.QueryParameterNames.Format] = config.parameters.getProperty(Exports_2.OutputFormatPropertyName, Exports_3.OutputFormat[Exports_3.OutputFormat.Simple]).toLowerCase();
             }
             if (config.autoDetectSourceLanguages !== undefined) {
-                queryParams[QueryParameterNames_1.QueryParameterNames.EnableLanguageID] = "true";
+                queryParams[QueryParameterNames_1.QueryParameterNames.EnableLanguageId] = "true";
             }
             _this.setCommonUrlParams(config, queryParams, endpoint);
             if (!endpoint) {
@@ -20059,9 +20878,10 @@ var SpeechConnectionFactory = /** @class */ (function (_super) {
             if (authInfo.token !== undefined && authInfo.token !== "") {
                 headers[authInfo.headerName] = authInfo.token;
             }
-            headers[QueryParameterNames_1.QueryParameterNames.ConnectionIdHeader] = connectionId;
+            headers[HeaderNames_1.HeaderNames.ConnectionId] = connectionId;
             config.parameters.setProperty(Exports_3.PropertyId.SpeechServiceConnection_Url, endpoint);
-            return new Exports_1.WebsocketConnection(endpoint, queryParams, headers, new Exports_4.WebsocketMessageFormatter(), Exports_1.ProxyInfo.fromRecognizerConfig(config), connectionId);
+            var enableCompression = config.parameters.getProperty("SPEECH-EnableWebsocketCompression", "false") === "true";
+            return new Exports_1.WebsocketConnection(endpoint, queryParams, headers, new Exports_4.WebsocketMessageFormatter(), Exports_1.ProxyInfo.fromRecognizerConfig(config), enableCompression, connectionId);
         };
         return _this;
     }
@@ -20072,7 +20892,7 @@ exports.SpeechConnectionFactory = SpeechConnectionFactory;
 
 
 /***/ }),
-/* 153 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20093,11 +20913,13 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TranscriberConnectionFactory = void 0;
 var Exports_1 = __webpack_require__(2);
-var Exports_2 = __webpack_require__(49);
-var ConnectionFactoryBase_1 = __webpack_require__(111);
-var Exports_3 = __webpack_require__(44);
-var QueryParameterNames_1 = __webpack_require__(112);
+var Exports_2 = __webpack_require__(61);
+var ConnectionFactoryBase_1 = __webpack_require__(123);
+var Exports_3 = __webpack_require__(53);
+var HeaderNames_1 = __webpack_require__(55);
+var QueryParameterNames_1 = __webpack_require__(124);
 var TranscriberConnectionFactory = /** @class */ (function (_super) {
     __extends(TranscriberConnectionFactory, _super);
     function TranscriberConnectionFactory() {
@@ -20113,13 +20935,13 @@ var TranscriberConnectionFactory = /** @class */ (function (_super) {
             var endpointId = config.parameters.getProperty(Exports_2.PropertyId.SpeechServiceConnection_EndpointId, undefined);
             var language = config.parameters.getProperty(Exports_2.PropertyId.SpeechServiceConnection_RecoLanguage, undefined);
             if (endpointId) {
-                if (!endpoint || endpoint.search(QueryParameterNames_1.QueryParameterNames.DeploymentIdParamName) === -1) {
-                    queryParams[QueryParameterNames_1.QueryParameterNames.DeploymentIdParamName] = endpointId;
+                if (!endpoint || endpoint.search(QueryParameterNames_1.QueryParameterNames.CustomSpeechDeploymentId) === -1) {
+                    queryParams[QueryParameterNames_1.QueryParameterNames.CustomSpeechDeploymentId] = endpointId;
                 }
             }
             else if (language) {
-                if (!endpoint || endpoint.search(QueryParameterNames_1.QueryParameterNames.LanguageParamName) === -1) {
-                    queryParams[QueryParameterNames_1.QueryParameterNames.LanguageParamName] = language;
+                if (!endpoint || endpoint.search(QueryParameterNames_1.QueryParameterNames.Language) === -1) {
+                    queryParams[QueryParameterNames_1.QueryParameterNames.Language] = language;
                 }
             }
             _this.setCommonUrlParams(config, queryParams, endpoint);
@@ -20130,9 +20952,10 @@ var TranscriberConnectionFactory = /** @class */ (function (_super) {
             if (authInfo.token !== undefined && authInfo.token !== "") {
                 headers[authInfo.headerName] = authInfo.token;
             }
-            headers[QueryParameterNames_1.QueryParameterNames.ConnectionIdHeader] = connectionId;
+            headers[HeaderNames_1.HeaderNames.ConnectionId] = connectionId;
             config.parameters.setProperty(Exports_2.PropertyId.SpeechServiceConnection_Url, endpoint);
-            return new Exports_1.WebsocketConnection(endpoint, queryParams, headers, new Exports_3.WebsocketMessageFormatter(), Exports_1.ProxyInfo.fromRecognizerConfig(config), connectionId);
+            var enableCompression = config.parameters.getProperty("SPEECH-EnableWebsocketCompression", "false") === "true";
+            return new Exports_1.WebsocketConnection(endpoint, queryParams, headers, new Exports_3.WebsocketMessageFormatter(), Exports_1.ProxyInfo.fromRecognizerConfig(config), enableCompression, connectionId);
         };
         return _this;
     }
@@ -20143,7 +20966,7 @@ exports.TranscriberConnectionFactory = TranscriberConnectionFactory;
 
 
 /***/ }),
-/* 154 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20164,13 +20987,13 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TranslationConnectionFactory = void 0;
 var Exports_1 = __webpack_require__(2);
-var Exports_2 = __webpack_require__(49);
-var ConnectionFactoryBase_1 = __webpack_require__(111);
-var Exports_3 = __webpack_require__(44);
-var QueryParameterNames_1 = __webpack_require__(112);
-var TestHooksParamName = "testhooks";
-var ConnectionIdHeader = "X-ConnectionId";
+var Exports_2 = __webpack_require__(61);
+var ConnectionFactoryBase_1 = __webpack_require__(123);
+var Exports_3 = __webpack_require__(53);
+var HeaderNames_1 = __webpack_require__(55);
+var QueryParameterNames_1 = __webpack_require__(124);
 var TranslationConnectionFactory = /** @class */ (function (_super) {
     __extends(TranslationConnectionFactory, _super);
     function TranslationConnectionFactory() {
@@ -20199,9 +21022,10 @@ var TranslationConnectionFactory = /** @class */ (function (_super) {
             if (authInfo.token !== undefined && authInfo.token !== "") {
                 headers[authInfo.headerName] = authInfo.token;
             }
-            headers[ConnectionIdHeader] = connectionId;
+            headers[HeaderNames_1.HeaderNames.ConnectionId] = connectionId;
             config.parameters.setProperty(Exports_2.PropertyId.SpeechServiceConnection_Url, endpoint);
-            return new Exports_1.WebsocketConnection(endpoint, queryParams, headers, new Exports_3.WebsocketMessageFormatter(), Exports_1.ProxyInfo.fromRecognizerConfig(config), connectionId);
+            var enableCompression = config.parameters.getProperty("SPEECH-EnableWebsocketCompression", "false") === "true";
+            return new Exports_1.WebsocketConnection(endpoint, queryParams, headers, new Exports_3.WebsocketMessageFormatter(), Exports_1.ProxyInfo.fromRecognizerConfig(config), enableCompression, connectionId);
         };
         return _this;
     }
@@ -20212,7 +21036,7 @@ exports.TranslationConnectionFactory = TranslationConnectionFactory;
 
 
 /***/ }),
-/* 155 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20220,10 +21044,12 @@ exports.TranslationConnectionFactory = TranslationConnectionFactory;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SpeechSynthesisConnectionFactory = void 0;
 var Exports_1 = __webpack_require__(2);
-var Exports_2 = __webpack_require__(49);
-var Exports_3 = __webpack_require__(44);
-var QueryParameterNames_1 = __webpack_require__(112);
+var Exports_2 = __webpack_require__(61);
+var Exports_3 = __webpack_require__(53);
+var HeaderNames_1 = __webpack_require__(55);
+var QueryParameterNames_1 = __webpack_require__(124);
 var SpeechSynthesisConnectionFactory = /** @class */ (function () {
     function SpeechSynthesisConnectionFactory() {
         var _this = this;
@@ -20232,7 +21058,9 @@ var SpeechSynthesisConnectionFactory = /** @class */ (function () {
             var endpoint = config.parameters.getProperty(Exports_2.PropertyId.SpeechServiceConnection_Endpoint, undefined);
             var region = config.parameters.getProperty(Exports_2.PropertyId.SpeechServiceConnection_Region, undefined);
             var hostSuffix = (region && region.toLowerCase().startsWith("china")) ? ".azure.cn" : ".microsoft.com";
-            var host = config.parameters.getProperty(Exports_2.PropertyId.SpeechServiceConnection_Host, "wss://" + region + ".tts.speech" + hostSuffix);
+            var endpointId = config.parameters.getProperty(Exports_2.PropertyId.SpeechServiceConnection_EndpointId, undefined);
+            var hostPrefix = (endpointId === undefined) ? "tts" : "voice";
+            var host = config.parameters.getProperty(Exports_2.PropertyId.SpeechServiceConnection_Host, "wss://" + region + "." + hostPrefix + ".speech" + hostSuffix);
             var queryParams = {};
             if (!endpoint) {
                 endpoint = host + _this.synthesisUri;
@@ -20241,9 +21069,13 @@ var SpeechSynthesisConnectionFactory = /** @class */ (function () {
             if (authInfo.token !== undefined && authInfo.token !== "") {
                 headers[authInfo.headerName] = authInfo.token;
             }
-            headers[QueryParameterNames_1.QueryParameterNames.ConnectionIdHeader] = connectionId;
+            headers[HeaderNames_1.HeaderNames.ConnectionId] = connectionId;
+            if (endpointId !== undefined) {
+                headers[QueryParameterNames_1.QueryParameterNames.CustomVoiceDeploymentId] = endpointId;
+            }
             config.parameters.setProperty(Exports_2.PropertyId.SpeechServiceConnection_Url, endpoint);
-            return new Exports_1.WebsocketConnection(endpoint, queryParams, headers, new Exports_3.WebsocketMessageFormatter(), Exports_1.ProxyInfo.fromParameters(config.parameters), connectionId);
+            var enableCompression = config.parameters.getProperty("SPEECH-EnableWebsocketCompression", "false") === "true";
+            return new Exports_1.WebsocketConnection(endpoint, queryParams, headers, new Exports_3.WebsocketMessageFormatter(), Exports_1.ProxyInfo.fromParameters(config.parameters), enableCompression, connectionId);
         };
     }
     return SpeechSynthesisConnectionFactory;
@@ -20253,7 +21085,7 @@ exports.SpeechSynthesisConnectionFactory = SpeechSynthesisConnectionFactory;
 
 
 /***/ }),
-/* 156 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20261,8 +21093,9 @@ exports.SpeechSynthesisConnectionFactory = SpeechSynthesisConnectionFactory;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
-var Exports_2 = __webpack_require__(44);
+exports.EnumTranslation = void 0;
+var Exports_1 = __webpack_require__(61);
+var Exports_2 = __webpack_require__(53);
 var EnumTranslation = /** @class */ (function () {
     function EnumTranslation() {
     }
@@ -20324,7 +21157,7 @@ exports.EnumTranslation = EnumTranslation;
 
 
 /***/ }),
-/* 157 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20332,6 +21165,7 @@ exports.EnumTranslation = EnumTranslation;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RecognitionStatus = exports.SynthesisStatus = void 0;
 /**
  * @class SynthesisStatus
  * @private
@@ -20368,7 +21202,7 @@ var RecognitionStatus;
 
 
 /***/ }),
-/* 158 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20376,7 +21210,8 @@ var RecognitionStatus;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.TranslationSynthesisEnd = void 0;
+var Exports_1 = __webpack_require__(53);
 var TranslationSynthesisEnd = /** @class */ (function () {
     function TranslationSynthesisEnd(json) {
         this.privSynthesisEnd = JSON.parse(json);
@@ -20389,14 +21224,14 @@ var TranslationSynthesisEnd = /** @class */ (function () {
         get: function () {
             return this.privSynthesisEnd.SynthesisStatus;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranslationSynthesisEnd.prototype, "FailureReason", {
         get: function () {
             return this.privSynthesisEnd.FailureReason;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return TranslationSynthesisEnd;
@@ -20406,7 +21241,7 @@ exports.TranslationSynthesisEnd = TranslationSynthesisEnd;
 
 
 /***/ }),
-/* 159 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20414,7 +21249,8 @@ exports.TranslationSynthesisEnd = TranslationSynthesisEnd;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var TranslationStatus_1 = __webpack_require__(38);
+exports.TranslationHypothesis = void 0;
+var TranslationStatus_1 = __webpack_require__(45);
 var TranslationHypothesis = /** @class */ (function () {
     function TranslationHypothesis(json) {
         this.privTranslationHypothesis = JSON.parse(json);
@@ -20427,28 +21263,28 @@ var TranslationHypothesis = /** @class */ (function () {
         get: function () {
             return this.privTranslationHypothesis.Duration;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranslationHypothesis.prototype, "Offset", {
         get: function () {
             return this.privTranslationHypothesis.Offset;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranslationHypothesis.prototype, "Text", {
         get: function () {
             return this.privTranslationHypothesis.Text;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranslationHypothesis.prototype, "Translation", {
         get: function () {
             return this.privTranslationHypothesis.Translation;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return TranslationHypothesis;
@@ -20458,7 +21294,7 @@ exports.TranslationHypothesis = TranslationHypothesis;
 
 
 /***/ }),
-/* 160 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20466,8 +21302,9 @@ exports.TranslationHypothesis = TranslationHypothesis;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
-var TranslationStatus_1 = __webpack_require__(38);
+exports.TranslationPhrase = void 0;
+var Exports_1 = __webpack_require__(53);
+var TranslationStatus_1 = __webpack_require__(45);
 var TranslationPhrase = /** @class */ (function () {
     function TranslationPhrase(json) {
         this.privTranslationPhrase = JSON.parse(json);
@@ -20483,35 +21320,35 @@ var TranslationPhrase = /** @class */ (function () {
         get: function () {
             return this.privTranslationPhrase.RecognitionStatus;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranslationPhrase.prototype, "Offset", {
         get: function () {
             return this.privTranslationPhrase.Offset;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranslationPhrase.prototype, "Duration", {
         get: function () {
             return this.privTranslationPhrase.Duration;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranslationPhrase.prototype, "Text", {
         get: function () {
             return this.privTranslationPhrase.Text;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranslationPhrase.prototype, "Translation", {
         get: function () {
             return this.privTranslationPhrase.Translation;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return TranslationPhrase;
@@ -20521,7 +21358,7 @@ exports.TranslationPhrase = TranslationPhrase;
 
 
 /***/ }),
-/* 161 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20578,9 +21415,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TranslationServiceRecognizer = void 0;
 var Exports_1 = __webpack_require__(4);
-var Exports_2 = __webpack_require__(49);
-var Exports_3 = __webpack_require__(44);
+var Exports_2 = __webpack_require__(61);
+var Exports_3 = __webpack_require__(53);
 // tslint:disable-next-line:max-classes-per-file
 var TranslationServiceRecognizer = /** @class */ (function (_super) {
     __extends(TranslationServiceRecognizer, _super);
@@ -20819,7 +21657,7 @@ exports.TranslationServiceRecognizer = TranslationServiceRecognizer;
 
 
 /***/ }),
-/* 162 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20827,6 +21665,7 @@ exports.TranslationServiceRecognizer = TranslationServiceRecognizer;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SpeechDetected = void 0;
 var SpeechDetected = /** @class */ (function () {
     function SpeechDetected(json) {
         this.privSpeechStartDetected = JSON.parse(json);
@@ -20838,7 +21677,7 @@ var SpeechDetected = /** @class */ (function () {
         get: function () {
             return this.privSpeechStartDetected.Offset;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SpeechDetected;
@@ -20848,7 +21687,7 @@ exports.SpeechDetected = SpeechDetected;
 
 
 /***/ }),
-/* 163 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20856,6 +21695,7 @@ exports.SpeechDetected = SpeechDetected;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SpeechHypothesis = void 0;
 var SpeechHypothesis = /** @class */ (function () {
     function SpeechHypothesis(json) {
         this.privSpeechHypothesis = JSON.parse(json);
@@ -20867,42 +21707,42 @@ var SpeechHypothesis = /** @class */ (function () {
         get: function () {
             return this.privSpeechHypothesis.Text;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechHypothesis.prototype, "Offset", {
         get: function () {
             return this.privSpeechHypothesis.Offset;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechHypothesis.prototype, "Duration", {
         get: function () {
             return this.privSpeechHypothesis.Duration;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechHypothesis.prototype, "Language", {
         get: function () {
             return this.privSpeechHypothesis.PrimaryLanguage === undefined ? undefined : this.privSpeechHypothesis.PrimaryLanguage.Language;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechHypothesis.prototype, "LanguageDetectionConfidence", {
         get: function () {
             return this.privSpeechHypothesis.PrimaryLanguage === undefined ? undefined : this.privSpeechHypothesis.PrimaryLanguage.Confidence;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechHypothesis.prototype, "SpeakerId", {
         get: function () {
             return this.privSpeechHypothesis.SpeakerId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SpeechHypothesis;
@@ -20912,7 +21752,7 @@ exports.SpeechHypothesis = SpeechHypothesis;
 
 
 /***/ }),
-/* 164 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20969,8 +21809,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
-var Exports_2 = __webpack_require__(44);
+exports.SpeechServiceRecognizer = void 0;
+var Exports_1 = __webpack_require__(61);
+var Exports_2 = __webpack_require__(53);
 // tslint:disable-next-line:max-classes-per-file
 var SpeechServiceRecognizer = /** @class */ (function (_super) {
     __extends(SpeechServiceRecognizer, _super);
@@ -21124,7 +21965,7 @@ exports.SpeechServiceRecognizer = SpeechServiceRecognizer;
 
 
 /***/ }),
-/* 165 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21181,10 +22022,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TranscriptionServiceRecognizer = void 0;
 var Exports_1 = __webpack_require__(4);
-var Exports_2 = __webpack_require__(49);
-var Exports_3 = __webpack_require__(44);
-var SpeechConnectionMessage_Internal_1 = __webpack_require__(149);
+var Exports_2 = __webpack_require__(61);
+var Exports_3 = __webpack_require__(53);
+var SpeechConnectionMessage_Internal_1 = __webpack_require__(167);
 // tslint:disable-next-line:max-classes-per-file
 var TranscriptionServiceRecognizer = /** @class */ (function (_super) {
     __extends(TranscriptionServiceRecognizer, _super);
@@ -21379,7 +22221,7 @@ exports.TranscriptionServiceRecognizer = TranscriptionServiceRecognizer;
 
 
 /***/ }),
-/* 166 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21387,7 +22229,8 @@ exports.TranscriptionServiceRecognizer = TranscriptionServiceRecognizer;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.DetailedSpeechPhrase = void 0;
+var Exports_1 = __webpack_require__(53);
 var DetailedSpeechPhrase = /** @class */ (function () {
     function DetailedSpeechPhrase(json) {
         this.privDetailedSpeechPhrase = JSON.parse(json);
@@ -21400,42 +22243,42 @@ var DetailedSpeechPhrase = /** @class */ (function () {
         get: function () {
             return this.privDetailedSpeechPhrase.RecognitionStatus;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(DetailedSpeechPhrase.prototype, "NBest", {
         get: function () {
             return this.privDetailedSpeechPhrase.NBest;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(DetailedSpeechPhrase.prototype, "Duration", {
         get: function () {
             return this.privDetailedSpeechPhrase.Duration;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(DetailedSpeechPhrase.prototype, "Offset", {
         get: function () {
             return this.privDetailedSpeechPhrase.Offset;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(DetailedSpeechPhrase.prototype, "Language", {
         get: function () {
             return this.privDetailedSpeechPhrase.PrimaryLanguage === undefined ? undefined : this.privDetailedSpeechPhrase.PrimaryLanguage.Language;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(DetailedSpeechPhrase.prototype, "LanguageDetectionConfidence", {
         get: function () {
             return this.privDetailedSpeechPhrase.PrimaryLanguage === undefined ? undefined : this.privDetailedSpeechPhrase.PrimaryLanguage.Confidence;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return DetailedSpeechPhrase;
@@ -21445,7 +22288,7 @@ exports.DetailedSpeechPhrase = DetailedSpeechPhrase;
 
 
 /***/ }),
-/* 167 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21453,7 +22296,8 @@ exports.DetailedSpeechPhrase = DetailedSpeechPhrase;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.SimpleSpeechPhrase = void 0;
+var Exports_1 = __webpack_require__(53);
 var SimpleSpeechPhrase = /** @class */ (function () {
     function SimpleSpeechPhrase(json) {
         this.privSimpleSpeechPhrase = JSON.parse(json);
@@ -21466,49 +22310,49 @@ var SimpleSpeechPhrase = /** @class */ (function () {
         get: function () {
             return this.privSimpleSpeechPhrase.RecognitionStatus;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SimpleSpeechPhrase.prototype, "DisplayText", {
         get: function () {
             return this.privSimpleSpeechPhrase.DisplayText;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SimpleSpeechPhrase.prototype, "Offset", {
         get: function () {
             return this.privSimpleSpeechPhrase.Offset;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SimpleSpeechPhrase.prototype, "Duration", {
         get: function () {
             return this.privSimpleSpeechPhrase.Duration;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SimpleSpeechPhrase.prototype, "Language", {
         get: function () {
             return this.privSimpleSpeechPhrase.PrimaryLanguage === undefined ? undefined : this.privSimpleSpeechPhrase.PrimaryLanguage.Language;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SimpleSpeechPhrase.prototype, "LanguageDetectionConfidence", {
         get: function () {
             return this.privSimpleSpeechPhrase.PrimaryLanguage === undefined ? undefined : this.privSimpleSpeechPhrase.PrimaryLanguage.Confidence;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SimpleSpeechPhrase.prototype, "SpeakerId", {
         get: function () {
             return this.privSimpleSpeechPhrase.SpeakerId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SimpleSpeechPhrase;
@@ -21518,7 +22362,7 @@ exports.SimpleSpeechPhrase = SimpleSpeechPhrase;
 
 
 /***/ }),
-/* 168 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21526,6 +22370,7 @@ exports.SimpleSpeechPhrase = SimpleSpeechPhrase;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AddedLmIntent = void 0;
 /**
  * @class AddedLmIntent
  */
@@ -21548,7 +22393,7 @@ exports.AddedLmIntent = AddedLmIntent;
 
 
 /***/ }),
-/* 169 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21605,9 +22450,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.IntentServiceRecognizer = void 0;
 var Exports_1 = __webpack_require__(4);
-var Exports_2 = __webpack_require__(49);
-var Exports_3 = __webpack_require__(44);
+var Exports_2 = __webpack_require__(61);
+var Exports_3 = __webpack_require__(53);
 // tslint:disable-next-line:max-classes-per-file
 var IntentServiceRecognizer = /** @class */ (function (_super) {
     __extends(IntentServiceRecognizer, _super);
@@ -21797,7 +22643,7 @@ exports.IntentServiceRecognizer = IntentServiceRecognizer;
 
 
 /***/ }),
-/* 170 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21806,6 +22652,7 @@ exports.IntentServiceRecognizer = IntentServiceRecognizer;
 // Licensed under the MIT license.
 // response
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.IntentResponse = void 0;
 var IntentResponse = /** @class */ (function () {
     function IntentResponse(json) {
         this.privIntentResponse = JSON.parse(json);
@@ -21817,21 +22664,21 @@ var IntentResponse = /** @class */ (function () {
         get: function () {
             return this.privIntentResponse.query;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(IntentResponse.prototype, "topScoringIntent", {
         get: function () {
             return this.privIntentResponse.topScoringIntent;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(IntentResponse.prototype, "entities", {
         get: function () {
             return this.privIntentResponse.entities;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return IntentResponse;
@@ -21841,7 +22688,7 @@ exports.IntentResponse = IntentResponse;
 
 
 /***/ }),
-/* 171 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21885,9 +22732,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RequestSession = void 0;
 var Exports_1 = __webpack_require__(4);
-var RecognitionEvents_1 = __webpack_require__(147);
-var ServiceTelemetryListener_Internal_1 = __webpack_require__(172);
+var RecognitionEvents_1 = __webpack_require__(165);
+var ServiceTelemetryListener_Internal_1 = __webpack_require__(191);
 var RequestSession = /** @class */ (function () {
     function RequestSession(audioSourceId) {
         var _this = this;
@@ -21940,56 +22788,56 @@ var RequestSession = /** @class */ (function () {
         get: function () {
             return this.privSessionId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RequestSession.prototype, "requestId", {
         get: function () {
             return this.privRequestId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RequestSession.prototype, "audioNodeId", {
         get: function () {
             return this.privAudioNodeId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RequestSession.prototype, "turnCompletionPromise", {
         get: function () {
             return this.privTurnDeferral.promise;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RequestSession.prototype, "isSpeechEnded", {
         get: function () {
             return this.privIsSpeechEnded;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RequestSession.prototype, "isRecognizing", {
         get: function () {
             return this.privIsRecognizing;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RequestSession.prototype, "currentTurnAudioOffset", {
         get: function () {
             return this.privTurnStartAudioOffset;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RequestSession.prototype, "recogNumber", {
         get: function () {
             return this.privRecogNumber;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RequestSession.prototype, "bytesSent", {
@@ -21998,7 +22846,7 @@ var RequestSession = /** @class */ (function () {
         get: function () {
             return this.privBytesSent;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     RequestSession.prototype.listenForServiceTelemetry = function (eventSource) {
@@ -22202,7 +23050,7 @@ exports.RequestSession = RequestSession;
 
 
 /***/ }),
-/* 172 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22210,9 +23058,10 @@ exports.RequestSession = RequestSession;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ServiceTelemetryListener = void 0;
+// tslint:disable:max-classes-per-file
 var Exports_1 = __webpack_require__(4);
-var RecognitionEvents_1 = __webpack_require__(147);
-// tslint:disable-next-line:max-classes-per-file
+var RecognitionEvents_1 = __webpack_require__(165);
 var ServiceTelemetryListener = /** @class */ (function () {
     function ServiceTelemetryListener(requestId, audioSourceId, audioNodeId) {
         var _this = this;
@@ -22400,7 +23249,7 @@ var ServiceTelemetryListener = /** @class */ (function () {
                 this.privPhraseLatencies.length !== 0 ||
                 this.privHypothesisLatencies.length !== 0);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ServiceTelemetryListener;
@@ -22410,7 +23259,7 @@ exports.ServiceTelemetryListener = ServiceTelemetryListener;
 
 
 /***/ }),
-/* 173 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22418,6 +23267,7 @@ exports.ServiceTelemetryListener = ServiceTelemetryListener;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SpeechContext = void 0;
 /**
  * Represents the JSON used in the speech.context message sent to the speech service.
  * The dynamic grammar is always refreshed from the encapsulated dynamic grammar object.
@@ -22435,6 +23285,34 @@ var SpeechContext = /** @class */ (function () {
     SpeechContext.prototype.setSection = function (sectionName, value) {
         this.privContext[sectionName] = value;
     };
+    /**
+     * @Internal
+     * This is only used by pronunciation assessment config.
+     * Do not use externally, object returned will change without warning or notice.
+     */
+    SpeechContext.prototype.setPronunciationAssessmentParams = function (params) {
+        if (this.privContext.phraseDetection === undefined) {
+            this.privContext.phraseDetection = {
+                enrichment: {
+                    pronunciationAssessment: {}
+                }
+            };
+        }
+        this.privContext.phraseDetection.enrichment.pronunciationAssessment = JSON.parse(params);
+        if (this.privContext.phraseOutput === undefined) {
+            this.privContext.phraseOutput = {
+                detailed: {
+                    options: []
+                },
+                format: {}
+            };
+        }
+        this.privContext.phraseOutput.format = "Detailed";
+        this.privContext.phraseOutput.detailed.options.push("PronunciationAssessment");
+        if (this.privContext.phraseOutput.detailed.options.indexOf("WordTimings") === -1) {
+            this.privContext.phraseOutput.detailed.options.push("WordTimings");
+        }
+    };
     SpeechContext.prototype.toJSON = function () {
         var dgi = this.privDynamicGrammar.generateGrammarObject();
         this.setSection("dgi", dgi);
@@ -22448,7 +23326,7 @@ exports.SpeechContext = SpeechContext;
 
 
 /***/ }),
-/* 174 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22456,6 +23334,7 @@ exports.SpeechContext = SpeechContext;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DynamicGrammarBuilder = void 0;
 /**
  * Responsible for building the object to be sent to the speech service to support dynamic grammars.
  * @class DynamicGrammarBuilder
@@ -22523,7 +23402,19 @@ exports.DynamicGrammarBuilder = DynamicGrammarBuilder;
 
 
 /***/ }),
-/* 175 */
+/* 194 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
+Object.defineProperty(exports, "__esModule", { value: true });
+
+
+
+/***/ }),
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22580,24 +23471,29 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DialogServiceAdapter = void 0;
 var Exports_1 = __webpack_require__(2);
+var DialogEvents_1 = __webpack_require__(27);
 var Exports_2 = __webpack_require__(4);
-var Exports_3 = __webpack_require__(49);
-var DialogServiceTurnStateManager_1 = __webpack_require__(176);
-var Exports_4 = __webpack_require__(44);
-var ActivityResponsePayload_1 = __webpack_require__(178);
-var SpeechConnectionMessage_Internal_1 = __webpack_require__(149);
+var Exports_3 = __webpack_require__(61);
+var DialogServiceTurnStateManager_1 = __webpack_require__(196);
+var Exports_4 = __webpack_require__(53);
+var ActivityResponsePayload_1 = __webpack_require__(198);
+var SpeechConnectionMessage_Internal_1 = __webpack_require__(167);
 var DialogServiceAdapter = /** @class */ (function (_super) {
     __extends(DialogServiceAdapter, _super);
     function DialogServiceAdapter(authentication, connectionFactory, audioSource, recognizerConfig, dialogServiceConnector) {
         var _this = _super.call(this, authentication, connectionFactory, audioSource, recognizerConfig, dialogServiceConnector) || this;
         _this.sendAgentConfig = function (connection) {
             if (_this.agentConfig && !_this.agentConfigSent) {
-                if (_this.privRecognizerConfig.parameters.getProperty(Exports_3.PropertyId.Conversation_DialogType) === "custom_commands") {
+                if (_this.privRecognizerConfig
+                    .parameters
+                    .getProperty(Exports_3.PropertyId.Conversation_DialogType) === Exports_3.DialogServiceConfig.DialogTypes.CustomCommands) {
                     var config = _this.agentConfig.get();
                     config.botInfo.commandsCulture = _this.privRecognizerConfig.parameters.getProperty(Exports_3.PropertyId.SpeechServiceConnection_RecoLanguage, "en-us");
                     _this.agentConfig.set(config);
                 }
+                _this.onEvent(new DialogEvents_1.SendingAgentContextMessageEvent(_this.agentConfig));
                 var agentConfigJson = _this.agentConfig.toJsonString();
                 // guard against sending this multiple times on one connection
                 _this.agentConfigSent = true;
@@ -22619,6 +23515,52 @@ var DialogServiceAdapter = /** @class */ (function (_super) {
             var agentContextJson = JSON.stringify(agentContext);
             return connection.send(new SpeechConnectionMessage_Internal_1.SpeechConnectionMessage(Exports_2.MessageType.Text, "speech.agent.context", _this.privRequestSession.requestId, "application/json", agentContextJson));
         };
+        _this.handleResponseMessage = function (responseMessage) {
+            // "response" messages can contain either "message" (activity) or "MessageStatus" data. Fire the appropriate
+            // event according to the message type that's specified.
+            var responsePayload = JSON.parse(responseMessage.textBody);
+            switch (responsePayload.messageType.toLowerCase()) {
+                case "message":
+                    var responseRequestId = responseMessage.requestId.toUpperCase();
+                    var activityPayload = ActivityResponsePayload_1.ActivityPayloadResponse.fromJSON(responseMessage.textBody);
+                    var turn = _this.privTurnStateManager.GetTurn(responseRequestId);
+                    // update the conversation Id
+                    if (activityPayload.conversationId) {
+                        var updateAgentConfig = _this.agentConfig.get();
+                        updateAgentConfig.botInfo.conversationId = activityPayload.conversationId;
+                        _this.agentConfig.set(updateAgentConfig);
+                    }
+                    var pullAudioOutputStream = turn.processActivityPayload(activityPayload, Exports_3.SpeechSynthesisOutputFormat[_this.privDialogServiceConnector.properties.getProperty(Exports_3.PropertyId.SpeechServiceConnection_SynthOutputFormat, undefined)]);
+                    var activity = new Exports_3.ActivityReceivedEventArgs(activityPayload.messagePayload, pullAudioOutputStream);
+                    if (!!_this.privDialogServiceConnector.activityReceived) {
+                        try {
+                            _this.privDialogServiceConnector.activityReceived(_this.privDialogServiceConnector, activity);
+                            /* tslint:disable:no-empty */
+                        }
+                        catch (error) {
+                            // Not going to let errors in the event handler
+                            // trip things up.
+                        }
+                    }
+                    break;
+                case "messagestatus":
+                    if (!!_this.privDialogServiceConnector.turnStatusReceived) {
+                        try {
+                            _this.privDialogServiceConnector.turnStatusReceived(_this.privDialogServiceConnector, new Exports_3.TurnStatusReceivedEventArgs(responseMessage.textBody));
+                            /* tslint:disable:no-empty */
+                        }
+                        catch (error) {
+                            // Not going to let errors in the event handler
+                            // trip things up.
+                        }
+                    }
+                    break;
+                default:
+                    Exports_2.Events.instance.onEvent(new Exports_2.BackgroundEvent("Unexpected response of type " + responsePayload.messageType + ". Ignoring."));
+                    break;
+            }
+        };
+        _this.privEvents = new Exports_2.EventSource();
         _this.privDialogServiceConnector = dialogServiceConnector;
         _this.receiveMessageOverride = _this.receiveDialogMessageOverride;
         _this.privTurnStateManager = new DialogServiceTurnStateManager_1.DialogServiceTurnStateManager();
@@ -22674,7 +23616,7 @@ var DialogServiceAdapter = /** @class */ (function (_super) {
     };
     DialogServiceAdapter.prototype.processTypeSpecificMessages = function (connectionMessage) {
         return __awaiter(this, void 0, void 0, function () {
-            var resultProps, result, processed, speechPhrase, args, hypothesis, offset, ev, audioRequestId, turn, responseRequestId, activityPayload, turn, updateAgentConfig, pullAudioOutputStream, activity;
+            var resultProps, result, processed, speechPhrase, args, hypothesis, offset, ev, audioRequestId, turn;
             return __generator(this, function (_a) {
                 resultProps = new Exports_3.PropertyCollection();
                 if (connectionMessage.messageType === Exports_2.MessageType.Text) {
@@ -22740,27 +23682,7 @@ var DialogServiceAdapter = /** @class */ (function (_super) {
                         break;
                     case "response":
                         {
-                            responseRequestId = connectionMessage.requestId.toUpperCase();
-                            activityPayload = ActivityResponsePayload_1.ActivityPayloadResponse.fromJSON(connectionMessage.textBody);
-                            turn = this.privTurnStateManager.GetTurn(responseRequestId);
-                            // update the conversation Id
-                            if (activityPayload.conversationId) {
-                                updateAgentConfig = this.agentConfig.get();
-                                updateAgentConfig.botInfo.conversationId = activityPayload.conversationId;
-                                this.agentConfig.set(updateAgentConfig);
-                            }
-                            pullAudioOutputStream = turn.processActivityPayload(activityPayload, Exports_3.SpeechSynthesisOutputFormat[this.privDialogServiceConnector.properties.getProperty(Exports_3.PropertyId.SpeechServiceConnection_SynthOutputFormat, undefined)]);
-                            activity = new Exports_3.ActivityReceivedEventArgs(activityPayload.messagePayload, pullAudioOutputStream);
-                            if (!!this.privDialogServiceConnector.activityReceived) {
-                                try {
-                                    this.privDialogServiceConnector.activityReceived(this.privDialogServiceConnector, activity);
-                                    /* tslint:disable:no-empty */
-                                }
-                                catch (error) {
-                                    // Not going to let errors in the event handler
-                                    // trip things up.
-                                }
-                            }
+                            this.handleResponseMessage(connectionMessage);
                         }
                         processed = true;
                         break;
@@ -23091,6 +24013,10 @@ var DialogServiceAdapter = /** @class */ (function (_super) {
         var ev = new Exports_3.SpeechRecognitionEventArgs(result, offset, this.privRequestSession.sessionId);
         return ev;
     };
+    DialogServiceAdapter.prototype.onEvent = function (event) {
+        this.privEvents.onEvent(event);
+        Exports_2.Events.instance.onEvent(event);
+    };
     return DialogServiceAdapter;
 }(Exports_4.ServiceRecognizerBase));
 exports.DialogServiceAdapter = DialogServiceAdapter;
@@ -23098,7 +24024,7 @@ exports.DialogServiceAdapter = DialogServiceAdapter;
 
 
 /***/ }),
-/* 176 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23106,8 +24032,9 @@ exports.DialogServiceAdapter = DialogServiceAdapter;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.DialogServiceTurnStateManager = void 0;
 var Error_1 = __webpack_require__(25);
-var DialogServiceTurnState_1 = __webpack_require__(177);
+var DialogServiceTurnState_1 = __webpack_require__(197);
 var DialogServiceTurnStateManager = /** @class */ (function () {
     function DialogServiceTurnStateManager() {
         this.privTurnMap = new Map();
@@ -23140,7 +24067,7 @@ exports.DialogServiceTurnStateManager = DialogServiceTurnStateManager;
 
 
 /***/ }),
-/* 177 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23148,9 +24075,10 @@ exports.DialogServiceTurnStateManager = DialogServiceTurnStateManager;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var AudioOutputFormat_1 = __webpack_require__(62);
-var AudioOutputStream_1 = __webpack_require__(61);
-var ActivityResponsePayload_1 = __webpack_require__(178);
+exports.DialogServiceTurnState = void 0;
+var AudioOutputFormat_1 = __webpack_require__(74);
+var AudioOutputStream_1 = __webpack_require__(73);
+var ActivityResponsePayload_1 = __webpack_require__(198);
 var DialogServiceTurnState = /** @class */ (function () {
     function DialogServiceTurnState(manager, requestId) {
         this.privRequestId = requestId;
@@ -23167,7 +24095,7 @@ var DialogServiceTurnState = /** @class */ (function () {
             this.resetTurnEndTimeout();
             return this.privAudioStream;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     DialogServiceTurnState.prototype.processActivityPayload = function (payload, audioFormat) {
@@ -23211,7 +24139,7 @@ exports.DialogServiceTurnState = DialogServiceTurnState;
 
 
 /***/ }),
-/* 178 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23220,6 +24148,7 @@ exports.DialogServiceTurnState = DialogServiceTurnState;
 // Licensed under the MIT license.
 // response
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MessageDataStreamType = exports.ActivityPayloadResponse = void 0;
 var ActivityPayloadResponse = /** @class */ (function () {
     function ActivityPayloadResponse(json) {
         this.privActivityResponse = JSON.parse(json);
@@ -23231,28 +24160,28 @@ var ActivityPayloadResponse = /** @class */ (function () {
         get: function () {
             return this.privActivityResponse.conversationId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ActivityPayloadResponse.prototype, "messageDataStreamType", {
         get: function () {
             return this.privActivityResponse.messageDataStreamType;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ActivityPayloadResponse.prototype, "messagePayload", {
         get: function () {
             return this.privActivityResponse.messagePayload;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ActivityPayloadResponse.prototype, "version", {
         get: function () {
             return this.privActivityResponse.version;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ActivityPayloadResponse;
@@ -23267,7 +24196,7 @@ var MessageDataStreamType;
 
 
 /***/ }),
-/* 179 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23275,6 +24204,7 @@ var MessageDataStreamType;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AgentConfig = void 0;
 /**
  * Represents the JSON used in the agent.config message sent to the speech service.
  */
@@ -23301,7 +24231,7 @@ exports.AgentConfig = AgentConfig;
 
 
 /***/ }),
-/* 180 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23309,30 +24239,30 @@ exports.AgentConfig = AgentConfig;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var ConversationManager_1 = __webpack_require__(181);
-exports.ConversationManager = ConversationManager_1.ConversationManager;
-var ConversationConnectionConfig_1 = __webpack_require__(182);
-exports.ConversationConnectionConfig = ConversationConnectionConfig_1.ConversationConnectionConfig;
-var ConversationTranslatorRecognizer_1 = __webpack_require__(185);
-exports.ConversationRecognizerFactory = ConversationTranslatorRecognizer_1.ConversationRecognizerFactory;
-var TranscriberRecognizer_1 = __webpack_require__(197);
-exports.TranscriberRecognizer = TranscriberRecognizer_1.TranscriberRecognizer;
-var ConversationTranslatorEventArgs_1 = __webpack_require__(191);
-exports.ConversationReceivedTranslationEventArgs = ConversationTranslatorEventArgs_1.ConversationReceivedTranslationEventArgs;
-exports.LockRoomEventArgs = ConversationTranslatorEventArgs_1.LockRoomEventArgs;
-exports.MuteAllEventArgs = ConversationTranslatorEventArgs_1.MuteAllEventArgs;
-exports.ParticipantAttributeEventArgs = ConversationTranslatorEventArgs_1.ParticipantAttributeEventArgs;
-exports.ParticipantEventArgs = ConversationTranslatorEventArgs_1.ParticipantEventArgs;
-exports.ParticipantsListEventArgs = ConversationTranslatorEventArgs_1.ParticipantsListEventArgs;
-var ConversationTranslatorInterfaces_1 = __webpack_require__(192);
-exports.ConversationTranslatorCommandTypes = ConversationTranslatorInterfaces_1.ConversationTranslatorCommandTypes;
-exports.ConversationTranslatorMessageTypes = ConversationTranslatorInterfaces_1.ConversationTranslatorMessageTypes;
-exports.InternalParticipants = ConversationTranslatorInterfaces_1.InternalParticipants;
+var ConversationManager_1 = __webpack_require__(201);
+Object.defineProperty(exports, "ConversationManager", { enumerable: true, get: function () { return ConversationManager_1.ConversationManager; } });
+var ConversationConnectionConfig_1 = __webpack_require__(202);
+Object.defineProperty(exports, "ConversationConnectionConfig", { enumerable: true, get: function () { return ConversationConnectionConfig_1.ConversationConnectionConfig; } });
+var ConversationTranslatorRecognizer_1 = __webpack_require__(206);
+Object.defineProperty(exports, "ConversationRecognizerFactory", { enumerable: true, get: function () { return ConversationTranslatorRecognizer_1.ConversationRecognizerFactory; } });
+var TranscriberRecognizer_1 = __webpack_require__(218);
+Object.defineProperty(exports, "TranscriberRecognizer", { enumerable: true, get: function () { return TranscriberRecognizer_1.TranscriberRecognizer; } });
+var ConversationTranslatorEventArgs_1 = __webpack_require__(212);
+Object.defineProperty(exports, "ConversationReceivedTranslationEventArgs", { enumerable: true, get: function () { return ConversationTranslatorEventArgs_1.ConversationReceivedTranslationEventArgs; } });
+Object.defineProperty(exports, "LockRoomEventArgs", { enumerable: true, get: function () { return ConversationTranslatorEventArgs_1.LockRoomEventArgs; } });
+Object.defineProperty(exports, "MuteAllEventArgs", { enumerable: true, get: function () { return ConversationTranslatorEventArgs_1.MuteAllEventArgs; } });
+Object.defineProperty(exports, "ParticipantAttributeEventArgs", { enumerable: true, get: function () { return ConversationTranslatorEventArgs_1.ParticipantAttributeEventArgs; } });
+Object.defineProperty(exports, "ParticipantEventArgs", { enumerable: true, get: function () { return ConversationTranslatorEventArgs_1.ParticipantEventArgs; } });
+Object.defineProperty(exports, "ParticipantsListEventArgs", { enumerable: true, get: function () { return ConversationTranslatorEventArgs_1.ParticipantsListEventArgs; } });
+var ConversationTranslatorInterfaces_1 = __webpack_require__(213);
+Object.defineProperty(exports, "ConversationTranslatorCommandTypes", { enumerable: true, get: function () { return ConversationTranslatorInterfaces_1.ConversationTranslatorCommandTypes; } });
+Object.defineProperty(exports, "ConversationTranslatorMessageTypes", { enumerable: true, get: function () { return ConversationTranslatorInterfaces_1.ConversationTranslatorMessageTypes; } });
+Object.defineProperty(exports, "InternalParticipants", { enumerable: true, get: function () { return ConversationTranslatorInterfaces_1.InternalParticipants; } });
 
 
 
 /***/ }),
-/* 181 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23340,10 +24270,11 @@ exports.InternalParticipants = ConversationTranslatorInterfaces_1.InternalPartic
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Contracts_1 = __webpack_require__(51);
-var Exports_1 = __webpack_require__(49);
-var ConversationConnectionConfig_1 = __webpack_require__(182);
-var ConversationUtils_1 = __webpack_require__(184);
+exports.ConversationManager = void 0;
+var Contracts_1 = __webpack_require__(63);
+var Exports_1 = __webpack_require__(61);
+var ConversationConnectionConfig_1 = __webpack_require__(202);
+var ConversationUtils_1 = __webpack_require__(204);
 var ConversationManager = /** @class */ (function () {
     function ConversationManager() {
         //
@@ -23503,7 +24434,7 @@ exports.ConversationManager = ConversationManager;
 
 
 /***/ }),
-/* 182 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23524,7 +24455,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var RestConfigBase_1 = __webpack_require__(183);
+exports.ConversationConnectionConfig = void 0;
+var RestConfigBase_1 = __webpack_require__(203);
 var ConversationConnectionConfig = /** @class */ (function (_super) {
     __extends(ConversationConnectionConfig, _super);
     function ConversationConnectionConfig() {
@@ -23534,63 +24466,63 @@ var ConversationConnectionConfig = /** @class */ (function (_super) {
         get: function () {
             return ConversationConnectionConfig.privHost;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationConnectionConfig, "apiVersion", {
         get: function () {
             return ConversationConnectionConfig.privApiVersion;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationConnectionConfig, "clientAppId", {
         get: function () {
             return ConversationConnectionConfig.privClientAppId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationConnectionConfig, "defaultLanguageCode", {
         get: function () {
             return ConversationConnectionConfig.privDefaultLanguageCode;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationConnectionConfig, "restPath", {
         get: function () {
             return ConversationConnectionConfig.privRestPath;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationConnectionConfig, "webSocketPath", {
         get: function () {
             return ConversationConnectionConfig.privWebSocketPath;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationConnectionConfig, "speechHost", {
         get: function () {
             return ConversationConnectionConfig.privSpeechHost;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationConnectionConfig, "speechPath", {
         get: function () {
             return ConversationConnectionConfig.privSpeechPath;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationConnectionConfig, "transcriptionEventKeys", {
         get: function () {
             return ConversationConnectionConfig.privTranscriptionEventKeys;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ConversationConnectionConfig.privHost = "dev.microsofttranslator.com";
@@ -23609,7 +24541,7 @@ exports.ConversationConnectionConfig = ConversationConnectionConfig;
 
 
 /***/ }),
-/* 183 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23617,6 +24549,7 @@ exports.ConversationConnectionConfig = ConversationConnectionConfig;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RestConfigBase = void 0;
 var RestConfigBase = /** @class */ (function () {
     function RestConfigBase() {
     }
@@ -23624,21 +24557,21 @@ var RestConfigBase = /** @class */ (function () {
         get: function () {
             return RestConfigBase.privDefaultRequestOptions;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RestConfigBase, "configParams", {
         get: function () {
             return RestConfigBase.privDefaultParams;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(RestConfigBase, "restErrors", {
         get: function () {
             return RestConfigBase.privRestErrors;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     RestConfigBase.privDefaultRequestOptions = {
@@ -23683,15 +24616,37 @@ exports.RestConfigBase = RestConfigBase;
 
 
 /***/ }),
-/* 184 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var RestConfigBase_1 = __webpack_require__(183);
+exports.PromiseToEmptyCallback = exports.request = exports.extractHeaderValue = void 0;
+var RestConfigBase_1 = __webpack_require__(203);
+// Node.JS specific xmlhttprequest / browser support.
+var XHR = __importStar(__webpack_require__(205));
 /**
  * Config settings for Conversation Translator
  */
@@ -23758,7 +24713,13 @@ function request(method, url, queryParams, body, options, callback) {
     var ignoreCache = options.ignoreCache || defaultRequestOptions.ignoreCache;
     var headers = options.headers || defaultRequestOptions.headers;
     var timeout = options.timeout || defaultRequestOptions.timeout;
-    var xhr = new XMLHttpRequest();
+    var xhr;
+    if (typeof window === "undefined") { // Node
+        xhr = new XHR.XMLHttpRequest();
+    }
+    else {
+        xhr = new XMLHttpRequest();
+    }
     xhr.open(method, withQuery(url, queryParams), true);
     if (headers) {
         Object.keys(headers).forEach(function (key) { return xhr.setRequestHeader(key, headers[key]); });
@@ -23820,7 +24781,13 @@ exports.PromiseToEmptyCallback = PromiseToEmptyCallback;
 
 
 /***/ }),
-/* 185 */
+/* 205 */
+/***/ (function(module, exports) {
+
+/* (ignored) */
+
+/***/ }),
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23877,13 +24844,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.ConversationTranslatorRecognizer = exports.ConversationRecognizerFactory = void 0;
+var Exports_1 = __webpack_require__(53);
 var Exports_2 = __webpack_require__(4);
-var Contracts_1 = __webpack_require__(51);
-var Exports_3 = __webpack_require__(49);
-var ConversationConnectionFactory_1 = __webpack_require__(186);
-var ConversationServiceAdapter_1 = __webpack_require__(189);
-var ConversationUtils_1 = __webpack_require__(184);
+var Contracts_1 = __webpack_require__(63);
+var Exports_3 = __webpack_require__(61);
+var ConversationConnectionFactory_1 = __webpack_require__(207);
+var ConversationServiceAdapter_1 = __webpack_require__(210);
+var ConversationUtils_1 = __webpack_require__(204);
 var ConversationRecognizerFactory = /** @class */ (function () {
     function ConversationRecognizerFactory() {
     }
@@ -23914,14 +24882,14 @@ var ConversationTranslatorRecognizer = /** @class */ (function (_super) {
         set: function (cb) {
             this.privConnection.connected = cb;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationTranslatorRecognizer.prototype, "disconnected", {
         set: function (cb) {
             this.privConnection.disconnected = cb;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationTranslatorRecognizer.prototype, "speechRecognitionLanguage", {
@@ -23931,7 +24899,7 @@ var ConversationTranslatorRecognizer = /** @class */ (function (_super) {
         get: function () {
             return this.privSpeechRecognitionLanguage;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationTranslatorRecognizer.prototype, "properties", {
@@ -23941,7 +24909,7 @@ var ConversationTranslatorRecognizer = /** @class */ (function (_super) {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ConversationTranslatorRecognizer.prototype.isDisposed = function () {
@@ -24108,7 +25076,7 @@ exports.ConversationTranslatorRecognizer = ConversationTranslatorRecognizer;
 
 
 /***/ }),
-/* 186 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24129,13 +25097,14 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConversationConnectionFactory = void 0;
 var Exports_1 = __webpack_require__(2);
 var Exports_2 = __webpack_require__(4);
-var Contracts_1 = __webpack_require__(51);
-var Exports_3 = __webpack_require__(49);
-var ConnectionFactoryBase_1 = __webpack_require__(111);
-var ConversationConnectionConfig_1 = __webpack_require__(182);
-var ConversationWebsocketMessageFormatter_1 = __webpack_require__(187);
+var Contracts_1 = __webpack_require__(63);
+var Exports_3 = __webpack_require__(61);
+var ConnectionFactoryBase_1 = __webpack_require__(123);
+var ConversationConnectionConfig_1 = __webpack_require__(202);
+var ConversationWebsocketMessageFormatter_1 = __webpack_require__(208);
 /**
  * Create a connection to the Conversation Translator websocket for sending instant messages and commands, and for receiving translated messages.
  * The conversation must already have been started or joined.
@@ -24155,7 +25124,8 @@ var ConversationConnectionFactory = /** @class */ (function (_super) {
         queryParams[ConversationConnectionConfig_1.ConversationConnectionConfig.configParams.apiVersion] = ConversationConnectionConfig_1.ConversationConnectionConfig.apiVersion;
         queryParams[ConversationConnectionConfig_1.ConversationConnectionConfig.configParams.token] = token;
         queryParams[ConversationConnectionConfig_1.ConversationConnectionConfig.configParams.correlationId] = correlationId;
-        return new Exports_1.WebsocketConnection(endpoint, queryParams, {}, new ConversationWebsocketMessageFormatter_1.ConversationWebsocketMessageFormatter(), Exports_1.ProxyInfo.fromRecognizerConfig(config), connectionId);
+        var enableCompression = config.parameters.getProperty("SPEECH-EnableWebsocketCompression", "false") === "true";
+        return new Exports_1.WebsocketConnection(endpoint, queryParams, {}, new ConversationWebsocketMessageFormatter_1.ConversationWebsocketMessageFormatter(), Exports_1.ProxyInfo.fromRecognizerConfig(config), enableCompression, connectionId);
     };
     return ConversationConnectionFactory;
 }(ConnectionFactoryBase_1.ConnectionFactoryBase));
@@ -24164,7 +25134,7 @@ exports.ConversationConnectionFactory = ConversationConnectionFactory;
 
 
 /***/ }),
-/* 187 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24172,8 +25142,9 @@ exports.ConversationConnectionFactory = ConversationConnectionFactory;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConversationWebsocketMessageFormatter = void 0;
 var Exports_1 = __webpack_require__(4);
-var ConversationConnectionMessage_1 = __webpack_require__(188);
+var ConversationConnectionMessage_1 = __webpack_require__(209);
 /**
  * Based off WebsocketMessageFormatter. The messages for Conversation Translator have some variations from the Speech messages.
  */
@@ -24222,7 +25193,7 @@ exports.ConversationWebsocketMessageFormatter = ConversationWebsocketMessageForm
 
 
 /***/ }),
-/* 188 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24243,6 +25214,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConversationConnectionMessage = void 0;
 var Exports_1 = __webpack_require__(4);
 var ConversationConnectionMessage = /** @class */ (function (_super) {
     __extends(ConversationConnectionMessage, _super);
@@ -24258,7 +25230,7 @@ var ConversationConnectionMessage = /** @class */ (function (_super) {
         get: function () {
             return this.privConversationMessageType;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ConversationConnectionMessage;
@@ -24268,7 +25240,7 @@ exports.ConversationConnectionMessage = ConversationConnectionMessage;
 
 
 /***/ }),
-/* 189 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24325,14 +25297,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConversationServiceAdapter = void 0;
 var Exports_1 = __webpack_require__(4);
-var Exports_2 = __webpack_require__(49);
-var Exports_3 = __webpack_require__(44);
-var ConversationConnectionMessage_1 = __webpack_require__(188);
-var ConversationRequestSession_1 = __webpack_require__(190);
-var ConversationTranslatorEventArgs_1 = __webpack_require__(191);
-var ConversationTranslatorInterfaces_1 = __webpack_require__(192);
-var Exports_4 = __webpack_require__(193);
+var Exports_2 = __webpack_require__(61);
+var Exports_3 = __webpack_require__(53);
+var ConversationConnectionMessage_1 = __webpack_require__(209);
+var ConversationRequestSession_1 = __webpack_require__(211);
+var ConversationTranslatorEventArgs_1 = __webpack_require__(212);
+var ConversationTranslatorInterfaces_1 = __webpack_require__(213);
+var Exports_4 = __webpack_require__(214);
 /***
  * The service adapter handles sending and receiving messages to the Conversation Translator websocket.
  */
@@ -24751,7 +25724,7 @@ exports.ConversationServiceAdapter = ConversationServiceAdapter;
 
 
 /***/ }),
-/* 190 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24795,6 +25768,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConversationRequestSession = void 0;
 var Exports_1 = __webpack_require__(4);
 /**
  * Placeholder class for the Conversation Request Session. Based off RequestSession.
@@ -24840,21 +25814,21 @@ var ConversationRequestSession = /** @class */ (function () {
         get: function () {
             return this.privSessionId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationRequestSession.prototype, "requestId", {
         get: function () {
             return this.privRequestId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationRequestSession.prototype, "completionPromise", {
         get: function () {
             return this.privRequestCompletionDeferral.promise;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     ConversationRequestSession.prototype.dispose = function (error) {
@@ -24890,7 +25864,7 @@ exports.ConversationRequestSession = ConversationRequestSession;
 
 
 /***/ }),
-/* 191 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24909,9 +25883,10 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConversationReceivedTranslationEventArgs = exports.ParticipantsListEventArgs = exports.ParticipantAttributeEventArgs = exports.ParticipantEventArgs = exports.LockRoomEventArgs = exports.MuteAllEventArgs = void 0;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
-var Exports_1 = __webpack_require__(49);
+var Exports_1 = __webpack_require__(61);
 var MuteAllEventArgs = /** @class */ (function (_super) {
     __extends(MuteAllEventArgs, _super);
     function MuteAllEventArgs(isMuted, sessionId) {
@@ -24923,7 +25898,7 @@ var MuteAllEventArgs = /** @class */ (function (_super) {
         get: function () {
             return this.privIsMuted;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return MuteAllEventArgs;
@@ -24941,7 +25916,7 @@ var LockRoomEventArgs = /** @class */ (function (_super) {
         get: function () {
             return this.privIsLocked;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return LockRoomEventArgs;
@@ -24959,7 +25934,7 @@ var ParticipantEventArgs = /** @class */ (function (_super) {
         get: function () {
             return this.privParticipant;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ParticipantEventArgs;
@@ -24979,21 +25954,21 @@ var ParticipantAttributeEventArgs = /** @class */ (function (_super) {
         get: function () {
             return this.privValue;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantAttributeEventArgs.prototype, "key", {
         get: function () {
             return this.privKey;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantAttributeEventArgs.prototype, "id", {
         get: function () {
             return this.privParticipantId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ParticipantAttributeEventArgs;
@@ -25018,56 +25993,56 @@ var ParticipantsListEventArgs = /** @class */ (function (_super) {
         get: function () {
             return this.privSessionToken;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantsListEventArgs.prototype, "conversationId", {
         get: function () {
             return this.privRoomId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantsListEventArgs.prototype, "translateTo", {
         get: function () {
             return this.privTranslateTo;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantsListEventArgs.prototype, "profanityFilter", {
         get: function () {
             return this.privProfanityFilter;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantsListEventArgs.prototype, "roomProfanityFilter", {
         get: function () {
             return this.privRoomProfanityFilter;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantsListEventArgs.prototype, "isRoomLocked", {
         get: function () {
             return this.privIsRoomLocked;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantsListEventArgs.prototype, "isMuteAll", {
         get: function () {
             return this.privIsMuteAll;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantsListEventArgs.prototype, "participants", {
         get: function () {
             return this.privParticipants;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ParticipantsListEventArgs;
@@ -25084,21 +26059,21 @@ var ConversationReceivedTranslationEventArgs = /** @class */ (function () {
         get: function () {
             return this.privPayload;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationReceivedTranslationEventArgs.prototype, "command", {
         get: function () {
             return this.privCommand;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ConversationReceivedTranslationEventArgs.prototype, "sessionId", {
         get: function () {
             return this.privSessionId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ConversationReceivedTranslationEventArgs;
@@ -25108,7 +26083,7 @@ exports.ConversationReceivedTranslationEventArgs = ConversationReceivedTranslati
 
 
 /***/ }),
-/* 192 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25116,6 +26091,7 @@ exports.ConversationReceivedTranslationEventArgs = ConversationReceivedTranslati
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ConversationTranslatorCommandTypes = exports.ConversationTranslatorMessageTypes = exports.InternalParticipants = void 0;
 /** Users participating in the conversation */
 var InternalParticipants = /** @class */ (function () {
     function InternalParticipants(participants, meId) {
@@ -25168,7 +26144,7 @@ var InternalParticipants = /** @class */ (function () {
         get: function () {
             return this.participants.find(function (p) { return p.isHost === true; });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(InternalParticipants.prototype, "me", {
@@ -25178,7 +26154,7 @@ var InternalParticipants = /** @class */ (function () {
         get: function () {
             return this.getParticipant(this.meId);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return InternalParticipants;
@@ -25219,25 +26195,25 @@ exports.ConversationTranslatorCommandTypes = {
 
 
 /***/ }),
-/* 193 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var CommandResponsePayload_1 = __webpack_require__(194);
-exports.CommandResponsePayload = CommandResponsePayload_1.CommandResponsePayload;
-var ParticipantResponsePayload_1 = __webpack_require__(195);
-exports.ParticipantsListPayloadResponse = ParticipantResponsePayload_1.ParticipantsListPayloadResponse;
-exports.ParticipantPayloadResponse = ParticipantResponsePayload_1.ParticipantPayloadResponse;
-var TranslationResponsePayload_1 = __webpack_require__(196);
-exports.SpeechResponsePayload = TranslationResponsePayload_1.SpeechResponsePayload;
-exports.TextResponsePayload = TranslationResponsePayload_1.TextResponsePayload;
+var CommandResponsePayload_1 = __webpack_require__(215);
+Object.defineProperty(exports, "CommandResponsePayload", { enumerable: true, get: function () { return CommandResponsePayload_1.CommandResponsePayload; } });
+var ParticipantResponsePayload_1 = __webpack_require__(216);
+Object.defineProperty(exports, "ParticipantsListPayloadResponse", { enumerable: true, get: function () { return ParticipantResponsePayload_1.ParticipantsListPayloadResponse; } });
+Object.defineProperty(exports, "ParticipantPayloadResponse", { enumerable: true, get: function () { return ParticipantResponsePayload_1.ParticipantPayloadResponse; } });
+var TranslationResponsePayload_1 = __webpack_require__(217);
+Object.defineProperty(exports, "SpeechResponsePayload", { enumerable: true, get: function () { return TranslationResponsePayload_1.SpeechResponsePayload; } });
+Object.defineProperty(exports, "TextResponsePayload", { enumerable: true, get: function () { return TranslationResponsePayload_1.TextResponsePayload; } });
 
 
 
 /***/ }),
-/* 194 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25245,6 +26221,7 @@ exports.TextResponsePayload = TranslationResponsePayload_1.TextResponsePayload;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CommandResponsePayload = void 0;
 var CommandResponsePayload = /** @class */ (function () {
     function CommandResponsePayload(json) {
         this.privCommandResponse = JSON.parse(json);
@@ -25256,49 +26233,49 @@ var CommandResponsePayload = /** @class */ (function () {
         get: function () {
             return this.privCommandResponse.type;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(CommandResponsePayload.prototype, "command", {
         get: function () {
             return this.privCommandResponse.command;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(CommandResponsePayload.prototype, "id", {
         get: function () {
             return this.privCommandResponse.id;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(CommandResponsePayload.prototype, "nickname", {
         get: function () {
             return this.privCommandResponse.nickname;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(CommandResponsePayload.prototype, "participantId", {
         get: function () {
             return this.privCommandResponse.participantId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(CommandResponsePayload.prototype, "roomid", {
         get: function () {
             return this.privCommandResponse.roomid;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(CommandResponsePayload.prototype, "value", {
         get: function () {
             return this.privCommandResponse.value;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return CommandResponsePayload;
@@ -25308,7 +26285,7 @@ exports.CommandResponsePayload = CommandResponsePayload;
 
 
 /***/ }),
-/* 195 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25316,6 +26293,7 @@ exports.CommandResponsePayload = CommandResponsePayload;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ParticipantPayloadResponse = exports.ParticipantsListPayloadResponse = void 0;
 var ParticipantsListPayloadResponse = /** @class */ (function () {
     function ParticipantsListPayloadResponse(json) {
         this.privParticipantsPayloadResponse = JSON.parse(json);
@@ -25327,77 +26305,77 @@ var ParticipantsListPayloadResponse = /** @class */ (function () {
         get: function () {
             return this.privParticipantsPayloadResponse.roomid;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantsListPayloadResponse.prototype, "id", {
         get: function () {
             return this.privParticipantsPayloadResponse.id;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantsListPayloadResponse.prototype, "command", {
         get: function () {
             return this.privParticipantsPayloadResponse.command;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantsListPayloadResponse.prototype, "participants", {
         get: function () {
             return this.privParticipantsPayloadResponse.participants;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantsListPayloadResponse.prototype, "token", {
         get: function () {
             return this.privParticipantsPayloadResponse.token;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantsListPayloadResponse.prototype, "translateTo", {
         get: function () {
             return this.privParticipantsPayloadResponse.translateTo;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantsListPayloadResponse.prototype, "profanityFilter", {
         get: function () {
             return this.privParticipantsPayloadResponse.profanityFilter;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantsListPayloadResponse.prototype, "roomProfanityFilter", {
         get: function () {
             return this.privParticipantsPayloadResponse.roomProfanityFilter;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantsListPayloadResponse.prototype, "roomLocked", {
         get: function () {
             return this.privParticipantsPayloadResponse.roomLocked;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantsListPayloadResponse.prototype, "muteAll", {
         get: function () {
             return this.privParticipantsPayloadResponse.muteAll;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantsListPayloadResponse.prototype, "type", {
         get: function () {
             return this.privParticipantsPayloadResponse.type;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ParticipantsListPayloadResponse;
@@ -25415,49 +26393,49 @@ var ParticipantPayloadResponse = /** @class */ (function () {
         get: function () {
             return this.privParticipantPayloadResponse.nickname;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantPayloadResponse.prototype, "locale", {
         get: function () {
             return this.privParticipantPayloadResponse.locale;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantPayloadResponse.prototype, "usetts", {
         get: function () {
             return this.privParticipantPayloadResponse.usetts;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantPayloadResponse.prototype, "ismuted", {
         get: function () {
             return this.privParticipantPayloadResponse.ismuted;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantPayloadResponse.prototype, "ishost", {
         get: function () {
             return this.privParticipantPayloadResponse.ishost;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantPayloadResponse.prototype, "participantId", {
         get: function () {
             return this.privParticipantPayloadResponse.participantId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ParticipantPayloadResponse.prototype, "avatar", {
         get: function () {
             return this.privParticipantPayloadResponse.avatar;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ParticipantPayloadResponse;
@@ -25467,7 +26445,7 @@ exports.ParticipantPayloadResponse = ParticipantPayloadResponse;
 
 
 /***/ }),
-/* 196 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25475,6 +26453,7 @@ exports.ParticipantPayloadResponse = ParticipantPayloadResponse;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TextResponsePayload = exports.SpeechResponsePayload = void 0;
 var SpeechResponsePayload = /** @class */ (function () {
     function SpeechResponsePayload(json) {
         this.privSpeechResponse = JSON.parse(json);
@@ -25486,70 +26465,70 @@ var SpeechResponsePayload = /** @class */ (function () {
         get: function () {
             return this.privSpeechResponse.recognition;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechResponsePayload.prototype, "translations", {
         get: function () {
             return this.privSpeechResponse.translations;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechResponsePayload.prototype, "id", {
         get: function () {
             return this.privSpeechResponse.id;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechResponsePayload.prototype, "language", {
         get: function () {
             return this.privSpeechResponse.language;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechResponsePayload.prototype, "nickname", {
         get: function () {
             return this.privSpeechResponse.nickname;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechResponsePayload.prototype, "participantId", {
         get: function () {
             return this.privSpeechResponse.participantId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechResponsePayload.prototype, "roomid", {
         get: function () {
             return this.privSpeechResponse.roomid;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechResponsePayload.prototype, "timestamp", {
         get: function () {
             return this.privSpeechResponse.timestamp;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechResponsePayload.prototype, "type", {
         get: function () {
             return this.privSpeechResponse.type;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeechResponsePayload.prototype, "isFinal", {
         get: function () {
             return this.privSpeechResponse.type === "final";
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SpeechResponsePayload;
@@ -25567,63 +26546,63 @@ var TextResponsePayload = /** @class */ (function () {
         get: function () {
             return this.privTextResponse.originalText;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TextResponsePayload.prototype, "translations", {
         get: function () {
             return this.privTextResponse.translations;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TextResponsePayload.prototype, "id", {
         get: function () {
             return this.privTextResponse.id;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TextResponsePayload.prototype, "language", {
         get: function () {
             return this.privTextResponse.language;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TextResponsePayload.prototype, "nickname", {
         get: function () {
             return this.privTextResponse.nickname;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TextResponsePayload.prototype, "participantId", {
         get: function () {
             return this.privTextResponse.participantId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TextResponsePayload.prototype, "roomid", {
         get: function () {
             return this.privTextResponse.roomid;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TextResponsePayload.prototype, "timestamp", {
         get: function () {
             return this.privTextResponse.timestamp;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TextResponsePayload.prototype, "type", {
         get: function () {
             return this.privTextResponse.type;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return TextResponsePayload;
@@ -25633,7 +26612,7 @@ exports.TextResponsePayload = TextResponsePayload;
 
 
 /***/ }),
-/* 197 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25690,10 +26669,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TranscriberRecognizer = void 0;
 var Exports_1 = __webpack_require__(4);
-var Contracts_1 = __webpack_require__(51);
-var Exports_2 = __webpack_require__(49);
-var Exports_3 = __webpack_require__(44);
+var Contracts_1 = __webpack_require__(63);
+var Exports_2 = __webpack_require__(61);
+var Exports_3 = __webpack_require__(53);
 var TranscriberRecognizer = /** @class */ (function (_super) {
     __extends(TranscriberRecognizer, _super);
     /**
@@ -25722,7 +26702,7 @@ var TranscriberRecognizer = /** @class */ (function (_super) {
             Contracts_1.Contracts.throwIfNullOrWhitespace(token, "token");
             this.properties.setProperty(Exports_2.PropertyId.SpeechServiceAuthorization_Token, token);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranscriberRecognizer.prototype, "conversation", {
@@ -25730,7 +26710,7 @@ var TranscriberRecognizer = /** @class */ (function (_super) {
             Contracts_1.Contracts.throwIfNullOrUndefined(c, "Conversation");
             this.privConversation = c;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranscriberRecognizer.prototype, "speechRecognitionLanguage", {
@@ -25738,14 +26718,14 @@ var TranscriberRecognizer = /** @class */ (function (_super) {
             Contracts_1.Contracts.throwIfDisposed(this.privDisposedRecognizer);
             return this.properties.getProperty(Exports_2.PropertyId.SpeechServiceConnection_RecoLanguage);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(TranscriberRecognizer.prototype, "properties", {
         get: function () {
             return this.privProperties;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     TranscriberRecognizer.prototype.startContinuousRecognitionAsync = function (cb, err) {
@@ -25862,7 +26842,7 @@ exports.TranscriberRecognizer = TranscriberRecognizer;
 
 
 /***/ }),
-/* 198 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25870,6 +26850,7 @@ exports.TranscriberRecognizer = TranscriberRecognizer;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SynthesisAudioMetadata = void 0;
 var SynthesisAudioMetadata = /** @class */ (function () {
     function SynthesisAudioMetadata(json) {
         this.privSynthesisAudioMetadata = JSON.parse(json);
@@ -25881,7 +26862,7 @@ var SynthesisAudioMetadata = /** @class */ (function () {
         get: function () {
             return this.privSynthesisAudioMetadata.Metadata;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SynthesisAudioMetadata;
@@ -25891,7 +26872,7 @@ exports.SynthesisAudioMetadata = SynthesisAudioMetadata;
 
 
 /***/ }),
-/* 199 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25935,10 +26916,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SynthesisTurn = void 0;
 var Exports_1 = __webpack_require__(4);
-var AudioOutputStream_1 = __webpack_require__(61);
-var SynthesisAdapterBase_1 = __webpack_require__(200);
-var SynthesisEvents_1 = __webpack_require__(201);
+var AudioOutputStream_1 = __webpack_require__(73);
+var SynthesisAdapterBase_1 = __webpack_require__(221);
+var SynthesisEvents_1 = __webpack_require__(222);
 var SynthesisTurn = /** @class */ (function () {
     function SynthesisTurn() {
         var _this = this;
@@ -25999,6 +26981,7 @@ var SynthesisTurn = /** @class */ (function () {
                 _this.privIsSynthesizing = false;
                 _this.privIsSynthesisEnded = true;
                 _this.privAudioOutputStream.close();
+                _this.privInTurn = false;
                 if (_this.privTurnAudioDestination !== undefined) {
                     _this.privTurnAudioDestination.close();
                     _this.privTurnAudioDestination = undefined;
@@ -26014,7 +26997,7 @@ var SynthesisTurn = /** @class */ (function () {
         get: function () {
             return this.privRequestId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SynthesisTurn.prototype, "streamId", {
@@ -26024,7 +27007,7 @@ var SynthesisTurn = /** @class */ (function () {
         set: function (value) {
             this.privStreamId = value;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SynthesisTurn.prototype, "audioOutputFormat", {
@@ -26034,35 +27017,35 @@ var SynthesisTurn = /** @class */ (function () {
         set: function (format) {
             this.privAudioOutputFormat = format;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SynthesisTurn.prototype, "turnCompletionPromise", {
         get: function () {
             return this.privTurnDeferral.promise;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SynthesisTurn.prototype, "isSynthesisEnded", {
         get: function () {
             return this.privIsSynthesisEnded;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SynthesisTurn.prototype, "isSynthesizing", {
         get: function () {
             return this.privIsSynthesizing;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SynthesisTurn.prototype, "currentTextOffset", {
         get: function () {
             return this.privTextOffset;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SynthesisTurn.prototype, "bytesReceived", {
@@ -26070,7 +27053,7 @@ var SynthesisTurn = /** @class */ (function () {
         get: function () {
             return this.privBytesReceived;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     SynthesisTurn.prototype.getAllReceivedAudio = function () {
@@ -26193,7 +27176,7 @@ exports.SynthesisTurn = SynthesisTurn;
 
 
 /***/ }),
-/* 200 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26237,10 +27220,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SynthesisAdapterBase = void 0;
 var Exports_1 = __webpack_require__(4);
-var Exports_2 = __webpack_require__(49);
-var Exports_3 = __webpack_require__(44);
-var SpeechConnectionMessage_Internal_1 = __webpack_require__(149);
+var Exports_2 = __webpack_require__(61);
+var Exports_3 = __webpack_require__(53);
+var SpeechConnectionMessage_Internal_1 = __webpack_require__(167);
 var SynthesisAdapterBase = /** @class */ (function () {
     function SynthesisAdapterBase(authentication, connectionFactory, synthesizerConfig, speechSynthesizer, audioDestination) {
         var _this = this;
@@ -26248,7 +27232,6 @@ var SynthesisAdapterBase = /** @class */ (function () {
         this.receiveMessageOverride = undefined;
         this.connectImplOverride = undefined;
         this.configConnectionOverride = undefined;
-        this.fetchConnectionOverride = undefined;
         this.sendSynthesisContext = function (connection) {
             var synthesisContextJson = _this.synthesisContext.toJSON();
             if (synthesisContextJson) {
@@ -26263,12 +27246,6 @@ var SynthesisAdapterBase = /** @class */ (function () {
         };
         this.sendSsmlMessage = function (connection, ssml, requestId) {
             return connection.send(new SpeechConnectionMessage_Internal_1.SpeechConnectionMessage(Exports_1.MessageType.Text, "ssml", requestId, "application/ssml+xml", ssml));
-        };
-        this.fetchConnection = function () {
-            if (_this.fetchConnectionOverride !== undefined) {
-                return _this.fetchConnectionOverride();
-            }
-            return _this.configureConnection();
         };
         if (!authentication) {
             throw new Exports_1.ArgumentNullError("authentication");
@@ -26293,7 +27270,9 @@ var SynthesisAdapterBase = /** @class */ (function () {
         this.connectionEvents.attach(function (connectionEvent) {
             if (connectionEvent.name === "ConnectionClosedEvent") {
                 var connectionClosedEvent = connectionEvent;
-                _this.cancelSynthesisLocal(Exports_2.CancellationReason.Error, connectionClosedEvent.statusCode === 1007 ? Exports_2.CancellationErrorCode.BadRequestParameters : Exports_2.CancellationErrorCode.ConnectionFailure, connectionClosedEvent.reason + " websocket error code: " + connectionClosedEvent.statusCode);
+                if (connectionClosedEvent.statusCode !== 1000) {
+                    _this.cancelSynthesisLocal(Exports_2.CancellationReason.Error, connectionClosedEvent.statusCode === 1007 ? Exports_2.CancellationErrorCode.BadRequestParameters : Exports_2.CancellationErrorCode.ConnectionFailure, connectionClosedEvent.reason + " websocket error code: " + connectionClosedEvent.statusCode);
+                }
             }
         });
     }
@@ -26301,34 +27280,34 @@ var SynthesisAdapterBase = /** @class */ (function () {
         get: function () {
             return this.privSynthesisContext;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SynthesisAdapterBase.prototype, "agentConfig", {
         get: function () {
             return this.privAgentConfig;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SynthesisAdapterBase.prototype, "connectionEvents", {
         get: function () {
             return this.privConnectionEvents;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SynthesisAdapterBase.prototype, "serviceEvents", {
         get: function () {
             return this.privServiceEvents;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SynthesisAdapterBase.prototype, "activityTemplate", {
         get: function () { return this.privActivityTemplate; },
         set: function (messagePayload) { this.privActivityTemplate = messagePayload; },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SynthesisAdapterBase.prototype, "audioOutputFormat", {
@@ -26342,7 +27321,7 @@ var SynthesisAdapterBase = /** @class */ (function () {
                 this.synthesisContext.audioOutputFormat = format;
             }
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     SynthesisAdapterBase.addHeader = function (audio, format) {
@@ -26429,27 +27408,30 @@ var SynthesisAdapterBase = /** @class */ (function () {
                         this.privSynthesisTurn.startNewSynthesis(requestId, text, isSSML, audioDestination);
                         _a.label = 1;
                     case 1:
-                        _a.trys.push([1, 5, , 6]);
-                        return [4 /*yield*/, this.fetchConnection()];
+                        _a.trys.push([1, 6, , 7]);
+                        return [4 /*yield*/, this.connectImpl()];
                     case 2:
+                        _a.sent();
+                        return [4 /*yield*/, this.fetchConnection()];
+                    case 3:
                         connection = _a.sent();
                         return [4 /*yield*/, this.sendSynthesisContext(connection)];
-                    case 3:
+                    case 4:
                         _a.sent();
                         return [4 /*yield*/, this.sendSsmlMessage(connection, ssml, requestId)];
-                    case 4:
+                    case 5:
                         _a.sent();
                         synthesisStartEventArgs = new Exports_2.SpeechSynthesisEventArgs(new Exports_2.SpeechSynthesisResult(requestId, Exports_2.ResultReason.SynthesizingAudioStarted));
                         if (!!this.privSpeechSynthesizer.synthesisStarted) {
                             this.privSpeechSynthesizer.synthesisStarted(this.privSpeechSynthesizer, synthesisStartEventArgs);
                         }
                         messageRetrievalPromise = this.receiveMessage();
-                        return [3 /*break*/, 6];
-                    case 5:
+                        return [3 /*break*/, 7];
+                    case 6:
                         e_1 = _a.sent();
                         this.cancelSynthesisLocal(Exports_2.CancellationReason.Error, Exports_2.CancellationErrorCode.ConnectionFailure, e_1);
                         return [2 /*return*/, Promise.reject(e_1)];
-                    case 6: return [2 /*return*/];
+                    case 7: return [2 /*return*/];
                 }
             });
         });
@@ -26688,6 +27670,35 @@ var SynthesisAdapterBase = /** @class */ (function () {
         this.privConnectionPromise.catch(function () { });
         return this.privConnectionPromise;
     };
+    SynthesisAdapterBase.prototype.fetchConnection = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (this.privConnectionConfigurationPromise) {
+                            return [2 /*return*/, this.privConnectionConfigurationPromise.then(function (connection) {
+                                    if (connection.state() === Exports_1.ConnectionState.Disconnected) {
+                                        _this.privConnectionId = null;
+                                        _this.privConnectionConfigurationPromise = null;
+                                        _this.privServiceHasSentMessage = false;
+                                        return _this.fetchConnection();
+                                    }
+                                    return _this.privConnectionConfigurationPromise;
+                                }, function (error) {
+                                    _this.privConnectionId = null;
+                                    _this.privConnectionConfigurationPromise = null;
+                                    _this.privServiceHasSentMessage = false;
+                                    return _this.fetchConnection();
+                                })];
+                        }
+                        this.privConnectionConfigurationPromise = this.configureConnection();
+                        return [4 /*yield*/, this.privConnectionConfigurationPromise];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
     // Takes an established websocket connection to the endpoint and sends speech configuration information.
     SynthesisAdapterBase.prototype.configureConnection = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -26716,7 +27727,7 @@ exports.SynthesisAdapterBase = SynthesisAdapterBase;
 
 
 /***/ }),
-/* 201 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26737,6 +27748,8 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SynthesisStartedEvent = exports.ConnectingToSynthesisServiceEvent = exports.SynthesisTriggeredEvent = exports.SpeechSynthesisEvent = void 0;
+// tslint:disable:max-classes-per-file
 var Exports_1 = __webpack_require__(4);
 var SpeechSynthesisEvent = /** @class */ (function (_super) {
     __extends(SpeechSynthesisEvent, _super);
@@ -26750,13 +27763,12 @@ var SpeechSynthesisEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privRequestId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SpeechSynthesisEvent;
 }(Exports_1.PlatformEvent));
 exports.SpeechSynthesisEvent = SpeechSynthesisEvent;
-// tslint:disable-next-line:max-classes-per-file
 var SynthesisTriggeredEvent = /** @class */ (function (_super) {
     __extends(SynthesisTriggeredEvent, _super);
     function SynthesisTriggeredEvent(requestId, sessionAudioDestinationId, turnAudioDestinationId) {
@@ -26769,20 +27781,19 @@ var SynthesisTriggeredEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privSessionAudioDestinationId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SynthesisTriggeredEvent.prototype, "audioTurnDestinationId", {
         get: function () {
             return this.privTurnAudioDestinationId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SynthesisTriggeredEvent;
 }(SpeechSynthesisEvent));
 exports.SynthesisTriggeredEvent = SynthesisTriggeredEvent;
-// tslint:disable-next-line:max-classes-per-file
 var ConnectingToSynthesisServiceEvent = /** @class */ (function (_super) {
     __extends(ConnectingToSynthesisServiceEvent, _super);
     function ConnectingToSynthesisServiceEvent(requestId, authFetchEventId) {
@@ -26794,13 +27805,12 @@ var ConnectingToSynthesisServiceEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privAuthFetchEventId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ConnectingToSynthesisServiceEvent;
 }(SpeechSynthesisEvent));
 exports.ConnectingToSynthesisServiceEvent = ConnectingToSynthesisServiceEvent;
-// tslint:disable-next-line:max-classes-per-file
 var SynthesisStartedEvent = /** @class */ (function (_super) {
     __extends(SynthesisStartedEvent, _super);
     function SynthesisStartedEvent(requestId, authFetchEventId) {
@@ -26812,7 +27822,7 @@ var SynthesisStartedEvent = /** @class */ (function (_super) {
         get: function () {
             return this.privAuthFetchEventId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SynthesisStartedEvent;
@@ -26822,7 +27832,7 @@ exports.SynthesisStartedEvent = SynthesisStartedEvent;
 
 
 /***/ }),
-/* 202 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26830,7 +27840,8 @@ exports.SynthesisStartedEvent = SynthesisStartedEvent;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.SynthesizerConfig = exports.SynthesisServiceType = void 0;
+var Exports_1 = __webpack_require__(53);
 var SynthesisServiceType;
 (function (SynthesisServiceType) {
     SynthesisServiceType[SynthesisServiceType["Standard"] = 0] = "Standard";
@@ -26846,7 +27857,7 @@ var SynthesizerConfig = /** @class */ (function () {
         get: function () {
             return this.privParameters;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SynthesizerConfig.prototype, "synthesisServiceType", {
@@ -26856,14 +27867,14 @@ var SynthesizerConfig = /** @class */ (function () {
         set: function (value) {
             this.privSynthesisServiceType = value;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SynthesizerConfig.prototype, "SpeechServiceConfig", {
         get: function () {
             return this.privSpeechServiceConfig;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SynthesizerConfig;
@@ -26873,7 +27884,7 @@ exports.SynthesizerConfig = SynthesizerConfig;
 
 
 /***/ }),
-/* 203 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26881,6 +27892,7 @@ exports.SynthesizerConfig = SynthesizerConfig;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SynthesisContext = void 0;
 /**
  * Represents the JSON used in the synthesis.context message sent to the speech service.
  * The dynamic grammar is always refreshed from the encapsulated dynamic grammar object.
@@ -26906,7 +27918,7 @@ var SynthesisContext = /** @class */ (function () {
         set: function (format) {
             this.privAudioOutputFormat = format;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     SynthesisContext.prototype.toJSON = function () {
@@ -26935,7 +27947,7 @@ exports.SynthesisContext = SynthesisContext;
 
 
 /***/ }),
-/* 204 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26943,7 +27955,8 @@ exports.SynthesisContext = SynthesisContext;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.SpeakerRecognitionConfig = void 0;
+var Exports_1 = __webpack_require__(53);
 var SpeakerRecognitionConfig = /** @class */ (function () {
     function SpeakerRecognitionConfig(context, parameters) {
         this.privContext = context ? context : new Exports_1.Context(null);
@@ -26953,14 +27966,14 @@ var SpeakerRecognitionConfig = /** @class */ (function () {
         get: function () {
             return this.privParameters;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(SpeakerRecognitionConfig.prototype, "Context", {
         get: function () {
             return this.privContext;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return SpeakerRecognitionConfig;
@@ -26970,7 +27983,7 @@ exports.SpeakerRecognitionConfig = SpeakerRecognitionConfig;
 
 
 /***/ }),
-/* 205 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27012,8 +28025,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SpeakerIdMessageAdapter = void 0;
 var Exports_1 = __webpack_require__(2);
-var Exports_2 = __webpack_require__(49);
+var Exports_2 = __webpack_require__(61);
 /**
  * Implements methods for speaker recognition classes, sending requests to endpoint
  * and parsing response into expected format
@@ -27158,7 +28172,7 @@ exports.SpeakerIdMessageAdapter = SpeakerIdMessageAdapter;
 
 
 /***/ }),
-/* 206 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27202,9 +28216,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(44);
+exports.FileAudioSource = void 0;
+var Exports_1 = __webpack_require__(53);
 var Exports_2 = __webpack_require__(4);
-var AudioStreamFormat_1 = __webpack_require__(60);
+var AudioStreamFormat_1 = __webpack_require__(72);
 var FileAudioSource = /** @class */ (function () {
     function FileAudioSource(file, audioSourceId) {
         var _this = this;
@@ -27297,21 +28312,21 @@ var FileAudioSource = /** @class */ (function () {
         get: function () {
             return this.privAudioFormatPromise;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(FileAudioSource.prototype, "blob", {
         get: function () {
             return Promise.resolve(this.privFile);
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(FileAudioSource.prototype, "events", {
         get: function () {
             return this.privEvents;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(FileAudioSource.prototype, "deviceInfo", {
@@ -27328,7 +28343,7 @@ var FileAudioSource = /** @class */ (function () {
                 });
             });
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     FileAudioSource.prototype.readHeader = function () {
@@ -27417,7 +28432,7 @@ exports.FileAudioSource = FileAudioSource;
 
 
 /***/ }),
-/* 207 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27425,6 +28440,7 @@ exports.FileAudioSource = FileAudioSource;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.PcmRecorder = void 0;
 var Exports_1 = __webpack_require__(4);
 var PcmRecorder = /** @class */ (function () {
     function PcmRecorder() {
@@ -27538,7 +28554,7 @@ exports.PcmRecorder = PcmRecorder;
 
 
 /***/ }),
-/* 208 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27582,11 +28598,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.WebsocketConnection = void 0;
 var Exports_1 = __webpack_require__(4);
-var WebsocketMessageAdapter_1 = __webpack_require__(209);
+var WebsocketMessageAdapter_1 = __webpack_require__(230);
 var WebsocketConnection = /** @class */ (function () {
-    function WebsocketConnection(uri, queryParameters, headers, messageFormatter, proxyInfo, connectionId) {
+    function WebsocketConnection(uri, queryParameters, headers, messageFormatter, proxyInfo, enableCompression, connectionId) {
         var _this = this;
+        if (enableCompression === void 0) { enableCompression = false; }
         this.privIsDisposed = false;
         this.isDisposed = function () {
             return _this.privIsDisposed;
@@ -27634,7 +28652,7 @@ var WebsocketConnection = /** @class */ (function () {
         }
         this.privUri = uri + queryParams;
         this.privId = connectionId ? connectionId : Exports_1.createNoDashGuid();
-        this.privConnectionMessageAdapter = new WebsocketMessageAdapter_1.WebsocketMessageAdapter(this.privUri, this.id, this.privMessageFormatter, proxyInfo, headers);
+        this.privConnectionMessageAdapter = new WebsocketMessageAdapter_1.WebsocketMessageAdapter(this.privUri, this.id, this.privMessageFormatter, proxyInfo, headers, enableCompression);
     }
     WebsocketConnection.prototype.dispose = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -27656,14 +28674,14 @@ var WebsocketConnection = /** @class */ (function () {
         get: function () {
             return this.privId;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(WebsocketConnection.prototype, "events", {
         get: function () {
             return this.privConnectionMessageAdapter.events;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return WebsocketConnection;
@@ -27673,7 +28691,7 @@ exports.WebsocketConnection = WebsocketConnection;
 
 
 /***/ }),
-/* 209 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27720,12 +28738,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.WebsocketMessageAdapter = void 0;
+var HeaderNames_1 = __webpack_require__(55);
 var Exports_1 = __webpack_require__(4);
 // Node.JS specific web socket / browser support.
-var ws_1 = __importDefault(__webpack_require__(210));
-var CertChecks_1 = __webpack_require__(211);
+var ws_1 = __importDefault(__webpack_require__(231));
+var CertChecks_1 = __webpack_require__(232);
 var WebsocketMessageAdapter = /** @class */ (function () {
-    function WebsocketMessageAdapter(uri, connectionId, messageFormatter, proxyInfo, headers) {
+    function WebsocketMessageAdapter(uri, connectionId, messageFormatter, proxyInfo, headers, enableCompression) {
         var _this = this;
         this.open = function () {
             if (_this.privConnectionState === Exports_1.ConnectionState.Disconnected) {
@@ -27744,7 +28764,7 @@ var WebsocketMessageAdapter = /** @class */ (function () {
                     _this.privWebsocketClient = new WebSocket(_this.privUri);
                 }
                 else {
-                    var options = { headers: _this.privHeaders };
+                    var options = { headers: _this.privHeaders, perMessageDeflate: _this.privEnableCompression };
                     // The ocsp library will handle validation for us and fail the connection if needed.
                     _this.privCertificateValidatedDeferral.resolve();
                     var checkAgent = new CertChecks_1.CertCheckAgent(_this.proxyInfo);
@@ -27899,22 +28919,23 @@ var WebsocketMessageAdapter = /** @class */ (function () {
         this.privConnectionState = Exports_1.ConnectionState.None;
         this.privUri = uri;
         this.privHeaders = headers;
+        this.privEnableCompression = enableCompression;
         // Add the connection ID to the headers
-        this.privHeaders["X-ConnectionId"] = this.privConnectionId;
+        this.privHeaders[HeaderNames_1.HeaderNames.ConnectionId] = this.privConnectionId;
         this.privLastErrorReceived = "";
     }
     Object.defineProperty(WebsocketMessageAdapter.prototype, "state", {
         get: function () {
             return this.privConnectionState;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(WebsocketMessageAdapter.prototype, "events", {
         get: function () {
             return this.privConnectionEvents;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     WebsocketMessageAdapter.prototype.onClose = function (code, reason) {
@@ -27980,7 +29001,7 @@ var WebsocketMessageAdapter = /** @class */ (function () {
         get: function () {
             return this.privWebsocketClient && this.privWebsocketClient.readyState === this.privWebsocketClient.OPEN;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     WebsocketMessageAdapter.forceNpmWebSocket = false;
@@ -27991,13 +29012,13 @@ exports.WebsocketMessageAdapter = WebsocketMessageAdapter;
 
 
 /***/ }),
-/* 210 */
+/* 231 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 211 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28014,6 +29035,25 @@ var __assign = (this && this.__assign) || function () {
         return t;
     };
     return __assign.apply(this, arguments);
+};
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -28051,27 +29091,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var tls = __importStar(__webpack_require__(213));
-var url = __importStar(__webpack_require__(214));
-var ocsp = __importStar(__webpack_require__(221));
+exports.CertCheckAgent = void 0;
+var tls = __importStar(__webpack_require__(234));
+var url = __importStar(__webpack_require__(235));
+var ocsp = __importStar(__webpack_require__(242));
 var Exports_1 = __webpack_require__(4);
-var agent_base_1 = __importDefault(__webpack_require__(222));
+var agent_base_1 = __importDefault(__webpack_require__(243));
 // @ts-ignore
-var async_disk_cache_1 = __importDefault(__webpack_require__(223));
-var https_proxy_agent_1 = __importDefault(__webpack_require__(224));
-var net = __importStar(__webpack_require__(225));
-var OCSPEvents_1 = __webpack_require__(41);
+var async_disk_cache_1 = __importDefault(__webpack_require__(244));
+var https_proxy_agent_1 = __importDefault(__webpack_require__(245));
+var net = __importStar(__webpack_require__(246));
+var OCSPEvents_1 = __webpack_require__(49);
 var CertCheckAgent = /** @class */ (function () {
     function CertCheckAgent(proxyInfo) {
         if (!!proxyInfo) {
@@ -28422,10 +29456,10 @@ var CertCheckAgent = /** @class */ (function () {
 exports.CertCheckAgent = CertCheckAgent;
 
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(212), __webpack_require__(55).Buffer))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(233), __webpack_require__(67).Buffer))
 
 /***/ }),
-/* 212 */
+/* 233 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -28615,13 +29649,13 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 213 */
+/* 234 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 214 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28648,8 +29682,8 @@ process.umask = function() { return 0; };
 
 
 
-var punycode = __webpack_require__(215);
-var util = __webpack_require__(217);
+var punycode = __webpack_require__(236);
+var util = __webpack_require__(238);
 
 exports.parse = urlParse;
 exports.resolve = urlResolve;
@@ -28724,7 +29758,7 @@ var protocolPattern = /^([a-z0-9.+-]+:)/i,
       'gopher:': true,
       'file:': true
     },
-    querystring = __webpack_require__(218);
+    querystring = __webpack_require__(239);
 
 function urlParse(url, parseQueryString, slashesDenoteHost) {
   if (url && util.isObject(url) && url instanceof Url) return url;
@@ -29360,7 +30394,7 @@ Url.prototype.parseHost = function() {
 
 
 /***/ }),
-/* 215 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(module, global) {var __WEBPACK_AMD_DEFINE_RESULT__;/*! https://mths.be/punycode v1.4.1 by @mathias */
@@ -29883,10 +30917,10 @@ Url.prototype.parseHost = function() {
 
 }(this));
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(216)(module), __webpack_require__(56)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(237)(module), __webpack_require__(68)))
 
 /***/ }),
-/* 216 */
+/* 237 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -29914,7 +30948,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 217 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29937,18 +30971,18 @@ module.exports = {
 
 
 /***/ }),
-/* 218 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-exports.decode = exports.parse = __webpack_require__(219);
-exports.encode = exports.stringify = __webpack_require__(220);
+exports.decode = exports.parse = __webpack_require__(240);
+exports.encode = exports.stringify = __webpack_require__(241);
 
 
 /***/ }),
-/* 219 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30039,7 +31073,7 @@ var isArray = Array.isArray || function (xs) {
 
 
 /***/ }),
-/* 220 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30131,37 +31165,37 @@ var objectKeys = Object.keys || function (obj) {
 
 
 /***/ }),
-/* 221 */
+/* 242 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 222 */
+/* 243 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 223 */
+/* 244 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 224 */
+/* 245 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 225 */
+/* 246 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 226 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30169,6 +31203,7 @@ var objectKeys = Object.keys || function (obj) {
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ReplayableAudioNode = void 0;
 var ReplayableAudioNode = /** @class */ (function () {
     function ReplayableAudioNode(audioSource, bytesPerSecond) {
         var _this = this;
@@ -30291,7 +31326,7 @@ var BufferEntry = /** @class */ (function () {
 
 
 /***/ }),
-/* 227 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30299,7 +31334,8 @@ var BufferEntry = /** @class */ (function () {
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 Object.defineProperty(exports, "__esModule", { value: true });
-var Exports_1 = __webpack_require__(49);
+exports.ProxyInfo = void 0;
+var Exports_1 = __webpack_require__(61);
 var ProxyInfo = /** @class */ (function () {
     function ProxyInfo(proxyHostName, proxyPort, proxyUserName, proxyPassword) {
         this.privProxyHostName = proxyHostName;
@@ -30317,28 +31353,28 @@ var ProxyInfo = /** @class */ (function () {
         get: function () {
             return this.privProxyHostName;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ProxyInfo.prototype, "Port", {
         get: function () {
             return this.privProxyPort;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ProxyInfo.prototype, "UserName", {
         get: function () {
             return this.privProxyUserName;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     Object.defineProperty(ProxyInfo.prototype, "Password", {
         get: function () {
             return this.privProxyPassword;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     return ProxyInfo;
@@ -30348,24 +31384,37 @@ exports.ProxyInfo = ProxyInfo;
 
 
 /***/ }),
-/* 228 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.RestMessageAdapter = exports.RestRequestType = void 0;
 var Exports_1 = __webpack_require__(4);
 // Node.JS specific xmlhttprequest / browser support.
-var XHR = __importStar(__webpack_require__(229));
+var XHR = __importStar(__webpack_require__(250));
 var RestRequestType;
 (function (RestRequestType) {
     RestRequestType["Get"] = "get";
@@ -30469,7 +31518,7 @@ exports.RestMessageAdapter = RestMessageAdapter;
 
 
 /***/ }),
-/* 229 */
+/* 250 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
