@@ -106,11 +106,22 @@
      * Display Webchat (closed or open)
      */
     display() {
-
       if (sessionStorage.duke_visible) {
         this.pusher.instanciate(this.persist_duke());
       } else {
         this.pusher.instanciate(this.$btn_chat.show());
+      }
+    };
+
+    is_active() {
+      if (Date.now() - parseInt(sessionStorage.duke_stamp) > D.DukeUtils.session_inactivity) {
+        this.$msg_container.append(D.DukeUtils.templates.session_expired);
+        this.scrollDown();
+        this.create_session();
+        sessionStorage.setItem("duke_stamp", Date.now());
+        return false 
+      } else {
+        return true
       }
     };
 
@@ -160,23 +171,26 @@
      * @param {String} user_intent - Intent user want's to trigger (optional)
      */
     send_msg(msg = this.$duke_input.val().replace(/\n/g, "") , user_intent = undefined) {
-      if (msg.toString().match(D.DukeUtils.cancelationReg)) {
-        user_intent = "Exit";
-      }
       this.reset_textarea();
       this.clear_textarea();
-      $.ajax('/duke_send_msg', {
-        type: 'post',
-        data: {
-          "msg": msg,
-          "user_intent": user_intent,
-          "user_id": this.account,
-          "tenant": this.tenant,
-          "duke_id": sessionStorage.getItem('duke_id'),
-          "assistant_id": sessionStorage.getItem('assistant_id')
-        },
-        dataType: 'json'
-      });
+      if (this.is_active()){
+        if (msg.toString().match(D.DukeUtils.cancelationReg)) {
+          user_intent = "Exit";
+        }
+        sessionStorage.setItem("duke_stamp", Date.now());
+        $.ajax('/duke_send_msg', {
+          type: 'post',
+          data: {
+            "msg": msg,
+            "user_intent": user_intent,
+            "user_id": this.account,
+            "tenant": this.tenant,
+            "duke_id": sessionStorage.getItem('duke_id'),
+            "assistant_id": sessionStorage.getItem('assistant_id')
+          },
+          dataType: 'json'
+        });
+      };
     };
 
     /**
@@ -213,6 +227,9 @@
      * @param {PusherMsg} data 
      */
     integrate_received(data) {
+      if ($(".duke-session-expired").length > 0){
+        this.$msg_container.children().remove();
+      }
       $.each(data, function(idx, value) {
         var text = value.response_type == "text" ? value.text : value.title;
         var options = value.response_type == "option" ? value.options : value.suggestions;
