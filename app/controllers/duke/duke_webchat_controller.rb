@@ -1,6 +1,5 @@
 module Duke
   class DukeWebchatController < ApplicationController
-    skip_before_action :verify_authenticity_token
 
     def create_assistant
       Assistant.new(api_key: WATSON_APIKEY, version: WATSON_VERSION, url: WATSON_URL)

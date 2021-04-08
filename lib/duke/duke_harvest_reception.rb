@@ -1,8 +1,9 @@
 module Duke
   class DukeHarvestReception < DukeArticle
+    using Duke::DukeRefinements
 
-    attr_accessor :plant, :crop_groups, :destination, :press, :retry, :ambiguities, :parameters, :description, :user_input, :id
-
+    attr_accessor :plant, :crop_groups, :destination, :press, :ambiguities, :parameters
+    
     def initialize(**args)
       super() 
       @plant, @crop_groups, @destination, @press= Array.new(4, DukeMatchingArray.new)
@@ -11,7 +12,7 @@ module Duke
       @parameters = {complementary: {}}
       args.each{|k, v| instance_variable_set("@#{k}", v)}
       @description = @user_input.clone
-      @matchArrs = [:plant, :crop_groups, :destination, :press]
+      @matchArrs.concat([:plant, :crop_groups, :destination, :press])
     end 
 
     # @param [String] type : type_of parameter
@@ -53,6 +54,11 @@ module Duke
       targets_attributes.each{|wihT| WineIncomingHarvestPlant.create(wihT)}
       storages_attributes.each{|wihS| WineIncomingHarvestStorage.create(wihS)}
       press_attributes.each{|wihP|WineIncomingHarvestPress.create(wihP)}
+    end 
+    
+    # Return link to created harvest reception
+    def front_redirection
+      {link: "/backend/wine_incoming_harvests/#{@id}"}
     end 
 
     # @param [SplatArray] args : Every instance variable we'll try to extract
@@ -160,6 +166,8 @@ module Duke
     end
 
     private
+
+    attr_accessor :id, :retry
 
     # returns an unit from user_input
     def find_quantity_unit 
