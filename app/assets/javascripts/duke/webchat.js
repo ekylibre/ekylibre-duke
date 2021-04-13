@@ -2,7 +2,7 @@
 
   class DukeWebchat{
 
-    constructor(data_att, container, btn_chat) {
+    constructor(container, btn_chat) {
       this.$container = container;
       this.$duke_input = this.$container.find('#duke-input');
       this.$bottom = this.$container.find('.input-flex');
