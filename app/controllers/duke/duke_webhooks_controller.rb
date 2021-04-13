@@ -4,7 +4,7 @@ module Duke
     skip_before_action :verify_authenticity_token    
 
     # check if token concords with user email for authentication
-    def authenticate_by_token
+    def webhook_token_auth
       Ekylibre::Tenant.switch params[:main_param][:tenant] do
         if User.find_by(authentication_token: request.env['HTTP_EKYLIBRE_TOKEN']).email == request.env['HTTP_EKYLIBRE_EMAIL']
           handle_webhook
