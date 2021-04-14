@@ -113,10 +113,10 @@ module Duke
 
     # @param [DukeIntervention] int : intervention to concatenate with it's specific attributes
     def concat_specific(int:)
+      @ambiguities = int.ambiguities
       [int.specific].flatten.each do |var| 
-        self.instance_variable_set("@#{var}", DukeMatchingArray.new(arr: (self.instance_variable_get("@#{var}").to_a + int.instance_variable_get("@#{var}").to_a)).uniq_by_key)
+        self.instance_variable_set("@#{var}", DukeMatchingArray.new(arr: (self.instance_variable_get("@#{var}").to_a + int.instance_variable_get("@#{var}").to_a)).uniq_allow_ambiguity(@ambiguities))
       end
-      @ambiguities = @ambiguities.to_a + int.ambiguities
       self.update_description(int.description) unless int.description.eql?("*cancel*")
     end 
 

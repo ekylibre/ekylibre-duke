@@ -68,7 +68,7 @@ module Duke
     # @params [Integer] key : key of ambiguous item
     def correct_ambiguity(type:, key:)
       current_hash = self.instance_variable_get("@#{type}").find_by_key(key)
-      self.instance_variable_get("@#{type}").delete(current_hash)
+      self.instance_variable_get("@#{type}").delete_one(current_hash)
       begin
         @user_input.split(/[|]{3}/).map{|chosen| eval(chosen)}.each do |chosen_one| 
           chosen_one[:rate] = {unit: :population, value: nil} if current_hash.conflicting_rate?(chosen_one)
