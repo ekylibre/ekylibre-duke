@@ -146,7 +146,7 @@
      * Get Welcoming Message by sending empty string on Pusher instanciation
      */
     msg_callback() {
-      setTimeout(( () => Duke.webchat.send_msg("")), 1000);
+      setTimeout(( () => this.send_msg("")), 1000);
     };
 
     /**
