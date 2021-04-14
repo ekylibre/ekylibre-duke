@@ -75,7 +75,7 @@
       $.each(this.options, function(index, op) {
         if (op.hasOwnProperty('source_dialog_node')) {
           var intent = op.value.input.intents.length == 0 ? "none_of_the_above" : op.value.input.intents[0].intent
-          return $('.msg_container.options').last().append(D.DukeUtils.templates.suggestion(op.value.input.text, intent));
+          return $('.msg_container.options').last().append(D.DukeUtils.templates.suggestion(op, intent));
         } else {
           return $('.msg_container.options').last().append(D.DukeUtils.templates.option(op.value.input.text, op.label));
         }
@@ -108,6 +108,7 @@
         }
       }
       sessionStorage.setItem('duke-chat', duke_chat);
+      sessionStorage.setItem("duke_stamp", Date.now());
     };
 
     /**
