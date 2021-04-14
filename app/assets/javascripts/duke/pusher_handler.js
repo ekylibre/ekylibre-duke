@@ -29,7 +29,7 @@
         this.channel.bind('duke', (data => D.webchat.onMsg(data)))
         this.instance.connection.bind('pusher_interval:subscription_succeeded', connBack)
       } else {
-        setTimeout(( () => this.instanciate(connBack)), 200);
+        setTimeout(( () => this.instanciate(connBack)), D.DukeUtils.pusher_retry);
       }
     };
   }

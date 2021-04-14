@@ -32,7 +32,7 @@
     start() { 
       this.inUse = true;
       D.webchat.$btn_mic.toggleClass("send-enabled", true)
-      this.timeout = setTimeout(( () => { if (this.inUse){ this.stop()}}), 20000);
+      this.timeout = setTimeout(( () => { if (this.inUse){ this.stop()}}), D.DukeUtils.stt_timeout);
       this.recognizer.startContinuousRecognitionAsync();
       this.recognizer.recognizing = ((s, e) => this.display(e));
       this.recognizer.recognized = ((s, e) => { if (this.inUse){ this.transcript += e.result.text.replace(/.$/, " ")}});
