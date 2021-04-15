@@ -27,7 +27,7 @@
                             if (sessionStorage.getItem('duke-chat')) {
                               this.display();
                             } else {
-                              this.create_session();
+                              this.create_session(this.msg_callback);
                             };})
       });
       this.bind_events();
@@ -104,11 +104,20 @@
      * Display Webchat (closed or open)
      */
     display() {
-
       if (sessionStorage.duke_visible) {
-        this.pusher.instanciate(this.persist_duke());
+        this.pusher.instanciate(this.persist_duke);
       } else {
-        this.pusher.instanciate(this.$btn_chat.show());
+        this.pusher.instanciate(this.display_btn_chat);
+      }
+    };
+
+    is_active() {
+      if (Date.now() - parseInt(sessionStorage.duke_stamp) > D.DukeUtils.session_inactivity) {
+        this.$msg_container.append(D.DukeUtils.templates.session_expired);
+        this.new_active_session(this.msg_callback);
+        return false 
+      } else {
+        return true
       }
     };
 
@@ -116,13 +125,14 @@
      * AJAX call to create IBM-WA session
      * Stores Assistant ID, SessionId & creates Pusher connection
      */
-    create_session() {
+    create_session(callback) {
       $.ajax('/duke_create_session', {
         type: 'post',
         dataType: 'json',
-        success: ((data, status, xhr) => {sessionStorage.setItem('duke_id', data.session_id);
-                                          sessionStorage.setItem('assistant_id', data.assistant_id);
-                                          this.pusher.instanciate(this.msg_callback());})
+      success: ((data) => { this.empty_container();
+                            sessionStorage.setItem('duke_id', data.session_id);
+                            sessionStorage.setItem('assistant_id', data.assistant_id);
+                            this.pusher.instanciate(callback);})
       });
     };
 
@@ -154,21 +164,23 @@
      * @param {String} user_intent - Intent user want's to trigger (optional)
      */
     send_msg(msg = this.$duke_input.val().replace(/\n/g, "") , user_intent = undefined) {
-      if (msg.toString().match(D.DukeUtils.cancelationReg)) {
-        user_intent = "Exit";
-      }
       this.reset_textarea();
       this.clear_textarea();
-      $.ajax('/duke_send_msg', {
-        type: 'post',
-        data: {
-          "msg": msg,
-          "user_intent": user_intent,
-          "duke_id": sessionStorage.getItem('duke_id'),
-          "assistant_id": sessionStorage.getItem('assistant_id')
-        },
-        dataType: 'json'
-      });
+      if (this.is_active()){
+        if (msg.toString().match(D.DukeUtils.cancelationReg)) {
+          user_intent = "Exit";
+        }
+        $.ajax('/duke_send_msg', {
+          type: 'post',
+          data: {
+            "msg": msg,
+            "user_intent": user_intent,
+            "duke_id": sessionStorage.getItem('duke_id'),
+            "assistant_id": sessionStorage.getItem('assistant_id')
+          },
+          dataType: 'json'
+        });
+      };
     };
 
     /**
@@ -262,7 +274,21 @@
      */
     scrollDown() {
       this.$msg_container.scrollTop(this.$msg_container[0].scrollHeight);
+    };
+
+    empty_container() {
+      this.$msg_container.children().remove();
+    };
+
+    display_btn_chat() {
+      this.$btn_chat.show();
     }
+
+    new_active_session(callback) {
+      this.scrollDown();
+      this.create_session(callback);
+      sessionStorage.setItem("duke_stamp", Date.now());
+    };
   }
   D.DukeWebchat = DukeWebchat;
 })(window.Duke = window.Duke || {}, jQuery);

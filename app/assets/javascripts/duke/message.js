@@ -100,7 +100,7 @@
       var duke_chat = Array.from(D.webchat.$msg_container.children()).map(msg => msg.outerHTML).join("")
       var redirection = this.text.match(D.DukeUtils.redirectionReg)
       if (redirection) {
-        location.replace(D.DukeUtils.base_url + redirection[2]);
+        location.href = redirection[2];
         D.webchat.pusher.reset();
         var duke_chat = redirection[1] ? duke_chat : D.DukeUtils.templates.welcome
         if (redirection[1]) {
@@ -108,6 +108,7 @@
         }
       }
       sessionStorage.setItem('duke-chat', duke_chat);
+      sessionStorage.setItem("duke_stamp", Date.now());
     };
 
     /**

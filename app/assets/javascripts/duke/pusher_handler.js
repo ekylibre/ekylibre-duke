@@ -27,7 +27,7 @@
         this.instance = new Pusher(this.key, {cluster: this.cluster});
         this.channel = this.instance.subscribe(sessionStorage.getItem('duke_id'))
         this.channel.bind('duke', (data => D.webchat.onMsg(data)))
-        this.instance.connection.bind('pusher_interval:subscription_succeeded', connBack)
+        this.instance.connection.bind('pusher_interval:subscription_succeeded', connBack.bind(D.webchat)())
       } else {
         setTimeout(( () => this.instanciate(connBack)), D.DukeUtils.pusher_retry);
       }
