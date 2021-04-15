@@ -3,7 +3,7 @@
     if (D.webchat){
       D.webchat.pusher.reset();
     }
-    D.webchat = new D.DukeWebchat($("duke"), $('#bottom_left'), $('.btn-chat'));
+    D.webchat = new D.DukeWebchat($('#bottom_left'), $('.btn-chat'));
   });
 
   $(document).on('click', '.duke-default-option', function() { // Display dropdown list

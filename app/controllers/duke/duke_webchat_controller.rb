@@ -18,9 +18,9 @@ module Duke
       assistant = create_assistant
       auth = Assistant::Auth.new(session_id: params[:duke_id], assistant_id: params[:assistant_id])
       if (intent = params[:user_intent]).present?
-        assistant.send_message_intent(auth: auth, intent: intent, message: params[:msg], user_id: params[:user_id])
+        assistant.send_message_intent(auth: auth, intent: intent, message: params[:msg], user_defined: user_defined)
       else
-        assistant.send_message(auth: auth, message: params[:msg], user_id: params[:user_id])
+        assistant.send_message(auth: auth, message: params[:msg], user_defined: user_defined)
       end
       render json: {}
     end
@@ -29,5 +29,14 @@ module Duke
       render json: {pusher_key: ENV['PUSHER_KEY'], azure_key: AZURE_API_KEY, azure_region: AZURE_REGION}
     end 
 
+    private 
+
+    def user_defined
+      {
+        tenant: Ekylibre::Tenant.current,
+        user_token: current_user.authentication_token, 
+        user_email: current_user.email
+      }
+    end 
   end
 end

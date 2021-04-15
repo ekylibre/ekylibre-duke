@@ -18,6 +18,18 @@ module Duke
       self.uniq{|it|it[:key]}
     end 
 
+    # Uniq by key or duplicate allowed if this item is ambiguous
+    # @param [Array of DukeAmbiguity] ambiguities
+    def uniq_allow_ambiguity(ambiguities)
+      self.select{|itm| self.uniq_by_key.include?(itm) or ambiguities.any?{|amb| amb.first[:description][:key] == itm.key}}
+    end 
+    
+    # Remove first occurence of an item in the array 
+    # @param [DukeMatchingItem] itm
+    def delete_one itm 
+      self.delete_at(self.index(itm))
+    end 
+
     # Returns element with highest distance
     def max 
       self.max_by{|item| item.distance}

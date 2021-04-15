@@ -2,9 +2,7 @@
 
   class DukeWebchat{
 
-    constructor(data_att, container, btn_chat) {
-      this.account = data_att.data('current-account');
-      this.tenant = data_att.data('current-tenant');
+    constructor(container, btn_chat) {
       this.$container = container;
       this.$duke_input = this.$container.find('#duke-input');
       this.$bottom = this.$container.find('.input-flex');
@@ -131,10 +129,6 @@
       $.ajax('/duke_create_session', {
         type: 'post',
         dataType: 'json',
-        data: {
-          "user_id": this.account,
-          "tenant": this.tenant
-        },
       success: ((data) => { this.empty_container();
                             sessionStorage.setItem('duke_id', data.session_id);
                             sessionStorage.setItem('assistant_id', data.assistant_id);
@@ -181,8 +175,6 @@
           data: {
             "msg": msg,
             "user_intent": user_intent,
-            "user_id": this.account,
-            "tenant": this.tenant,
             "duke_id": sessionStorage.getItem('duke_id'),
             "assistant_id": sessionStorage.getItem('assistant_id')
           },
