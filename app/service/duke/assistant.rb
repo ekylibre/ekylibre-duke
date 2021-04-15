@@ -47,18 +47,18 @@ module Duke
     # @param [Auth] auth
     # @param [String] message
     # @param [String] user_id -> Current Account Email
-    def send_message(auth:, message:, user_id:)
+    def send_message(auth:, message:, user_defined:)
       body = {
         input: { text: message },
         context: {
           global: {
             system: {
-              user_id: user_id
+              user_id: user_defined[:user_email]
             }
           },
           skills: {
             "main skill": {
-              user_defined: { tenant: Ekylibre::Tenant.current }
+              user_defined: user_defined
             }
           }
         }
@@ -70,7 +70,7 @@ module Duke
     # @param [String] intent
     # @param [String] message
     # @param [String] user_id -> Current Account Email
-    def send_message_intent(auth:, intent:, message:, user_id:)
+    def send_message_intent(auth:, intent:, message:, user_defined:)
       body = {
         input: { text: message,
                  intents: [{intent: intent,
@@ -78,12 +78,12 @@ module Duke
         context: {
           global: {
             system: {
-              user_id: user_id
+              user_id: user_defined[:user_email]
             }
           },
           skills: {
             "main skill": {
-              user_defined: { tenant: Ekylibre::Tenant.current }
+              user_defined: user_defined
             }
           }
         }
