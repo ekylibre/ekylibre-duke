@@ -12,7 +12,6 @@ module Duke
       @parameters = {complementary: {}}
       args.each{|k, v| instance_variable_set("@#{k}", v)}
       @description = @user_input.clone
-      @matchArrs.concat([:plant, :crop_groups, :destination, :press])
     end 
 
     # @param [String] type : type_of parameter
@@ -63,7 +62,7 @@ module Duke
 
     # @param [SplatArray] args : Every instance variable we'll try to extract
     def parse_specifics(*args)
-      extract_user_specifics(jsonD: self.to_jsonD(*args))
+      extract_user_specifics(duke_json: self.duke_json(*args))
       extract_plant_area if args.include? :plant
     end 
 
@@ -168,7 +167,11 @@ module Duke
     private
 
     attr_accessor :id, :retry
-
+        
+    def parseable
+      [*super(), :plant, :crop_groups, :destination, :press]
+    end
+    
     # returns an unit from user_input
     def find_quantity_unit 
       return 'kg' if @user_input.match('(?i)(kg|kilo)')

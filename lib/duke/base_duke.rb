@@ -42,5 +42,48 @@ module Duke
       return [optJson]
     end 
 
+    # @returns exclusive farming type :vine_farming || :plant_farming if exists
+    def exclusive_farming_type
+      farming_types = Activity.availables.select("distinct family").map(&:family)
+      if (type = farming_types & %w[plant_farming vine_farming]).size.eql?(1) 
+        return type.first.to_sym
+      end 
+    end 
+
+    def btn_click_response?(str)
+      str.match(/^(\d{1,5}(\|{3}|\b))*$/).present?
+    end
+
+    def btn_click_cancelled? str 
+      str.eql?("*cancel*")
+    end 
+
+    def btn_click_responses(str)
+      str.split(/\|{3}/).map{|num| num.to_i}
+    end 
+
+    def procedure_entities
+      JSON.parse(File.read(Duke.proc_entities_path)).deep_symbolize_keys
+    end 
+
+    # is Tenant ekyagri ?
+    def ekyagri? 
+      Activity.availables.none? {|act| act.family == :vine_farming}
+    end 
+
+    # does Tenant have any vegetal activity ?
+    def vegetal? 
+      Activity.availables.any? {|act| act.family == :plant_farming}
+    end 
+
+    # does Tenant have any animal activity ?
+    def animal? 
+      Activity.availables.any? {|act| act.family == :animal_farming}
+    end 
+
+    def regex_template 
+      
+    end 
+
   end 
 end 

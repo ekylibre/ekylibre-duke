@@ -1,0 +1,2755 @@
+{ 
+  "vegetal": [ 
+    {
+      "id": "crop_maintenance",
+      "name": "",
+      "partials": [
+        "crop_maintenance"
+      ]
+    },
+    {
+      "id": "crop_protection",
+      "name": "",
+      "partials": [
+        "crop_protection"
+      ]
+    },
+    {
+      "id": "installations_modification",
+      "name": "",
+      "partials": [
+        "batiments",
+        "foncier",
+        "travaux fonciers"
+      ]
+    },
+    {
+      "id": "irrigating",
+      "name": "",
+      "partials": [
+        "irrigating",
+        "iriguer",
+        "irrigation",
+        "irrige",
+        "irriger",
+        "irrigue",
+        "irriguer"
+      ]
+    },
+    {
+      "id": "planting",
+      "name": "",
+      "partials": [
+        "planting"
+      ]
+    },
+    {
+      "id": "chemical_mechanical_weeding",
+      "name": "",
+      "partials": [
+        "desherbinage",
+        "desherbine",
+        "desherbiner"
+      ]
+    },
+    {
+      "id": "crop_maintenance",
+      "name": "",
+      "partials": [
+        "crop_maintenance",
+        "entretien"
+      ]
+    },
+    {
+      "id": "crop_protection",
+      "name": "",
+      "partials": [
+        "crop_protection",
+        "protection"
+      ]
+    },
+    {
+      "id": "crop_residues_grinding",
+      "name": "",
+      "partials": [
+        "broyage de residus",
+        "broyage de residus",
+        "broyage des residus"
+      ]
+    },
+    {
+      "id": "cutting",
+      "name": "",
+      "partials": [
+        "effeuillage",
+        "effeuille",
+        "taille",
+        "taille",
+        "tailler"
+      ]
+    },
+    {
+      "id": "detasseling",
+      "name": "",
+      "partials": [
+        "ecimage",
+        "ecime",
+        "ecimer"
+      ]
+    },
+    {
+      "id": "direct_silage",
+      "name": "",
+      "partials": [
+        "ensilage",
+        "ensile",
+        "ensiler"
+      ]
+    },
+    {
+      "id": "earth_work",
+      "name": "",
+      "partials": [
+        "terrasse",
+        "terrassement",
+        "terrasser"
+      ]
+    },
+    {
+      "id": "fertilizing",
+      "name": "",
+      "partials": [
+        "amende",
+        "amendement",
+        "amender",
+        "epandage",
+        "epandre",
+        "epandu",
+        "ferti",
+        "fertilisation",
+        "fertilise",
+        "fertiliser"
+      ]
+    },
+    {
+      "id": "gas_weeding",
+      "name": "",
+      "partials": [
+        "desherbage au gaz",
+        "desherbage au gaz",
+        "desherbage avec du gaz",
+        "desherbage avec du gaz",
+        "desherbage thermique",
+        "desherbage thermique"
+      ]
+    },
+    {
+      "id": {
+          "procedures": [
+            {
+              "name": "gas_weeding"
+            },
+            {
+              "name": "steam_weeding"
+            },
+            {
+              "name": "hand_weeding"
+            }
+          ]
+        },
+      "name": "",
+      "partials": [
+        "deshebre",
+        "desherbage",
+        "desherbage",
+        "desherbe",
+        "desherber",
+        "desherber"
+      ]
+    },
+    {
+      "id": "greenhouse_assembling",
+      "name": "",
+      "partials": [
+        "montage de serre",
+        "monte la serre",
+        "monter une serre",
+        "monte une serre"
+      ]
+    },
+    {
+      "id": "ground_destratification",
+      "name": "",
+      "partials": [
+        "destratification",
+        "destratifie",
+        "destratifier"
+      ]
+    },
+    {
+      "id": "hand_weeding",
+      "name": "",
+      "partials": [
+        "desherbage manuel",
+        "desherbage manuellement",
+        "desherbe a la main",
+        "desherbe manuellement",
+        "desherber manuellement"
+      ]
+    },
+    {
+      "id": "harvesting",
+      "name": "",
+      "partials": [
+        "recolte",
+        "recolte",
+        "recoltee",
+        "recolter",
+        "cueillette",
+        "fenaison",
+        "moisson",
+        "moissonne",
+        "moissonner"
+      ]
+    },
+    {
+      "id": "harvest_transportation",
+      "name": "",
+      "partials": [
+        "transport de recolte",
+        "transport de la recolte"
+      ]
+    },
+    {
+      "id": "hilling",
+      "name": "",
+      "partials": [
+        "buttage",
+        "butte",
+        "butter"
+      ]
+    },
+    {
+      "id": "hilling_for_sifting",
+      "name": "",
+      "partials": [
+        "buttage pour tamisage"
+      ]
+    },
+    {
+      "id": "hoeing",
+      "name": "",
+      "partials": [
+        "binage",
+        "bine",
+        "biner"
+      ]
+    },
+    {
+      "id": "indirect_silage",
+      "name": "",
+      "partials": [
+        "ensilage indirect"
+      ]
+    },
+    {
+      "id": "inter_row_hoeing",
+      "name": "",
+      "partials": [
+        "binage entre les rangs",
+        "binage inter rang",
+        "binage inter rangs",
+        "binage interrangs",
+        "bine entre les rangs"
+      ]
+    },
+    {
+      "id": "irrigating",
+      "name": "",
+      "partials": [
+        "irrigating",
+        "irigation",
+        "irigue",
+        "iriguee",
+        "iriguer",
+        "irrigation",
+        "irrigu",
+        "irriguation",
+        "irrigue",
+        "irriguees",
+        "irriguer"
+      ]
+    },
+    {
+      "id": "land_parcel_grinding",
+      "name": "",
+      "partials": [
+        "broyage du sol",
+        "broyees les sol",
+        "broye le sol",
+        "broyer le sol"
+      ]
+    },
+    {
+      "id": {
+        "procedures": [
+          {
+            "name": "land_parcel_grinding"
+          },
+          {
+            "name": "crop_residues_grinding"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "broyage",
+        "broye",
+        "broyer"
+      ]
+    },
+    {
+      "id": "lifting",
+      "name": "",
+      "partials": [
+        "soulevage",
+        "souleve",
+        "soulever"
+      ]
+    },
+    {
+      "id": "mechanical_planting",
+      "name": "",
+      "partials": [
+        "plantation",
+        "plante",
+        "planter"
+      ]
+    },
+    {
+      "id": "net_installation",
+      "name": "",
+      "partials": [
+        "pose de filet",
+        "poser un filet",
+        "pose un filet"
+      ]
+    },
+    {
+      "id": "net_removing",
+      "name": "",
+      "partials": [
+        "enleve le filet",
+        "enlever le filet",
+        "enlever un filet",
+        "enleve un filet",
+        "retire le filet",
+        "retirer le filet",
+        "retirer un filet",
+        "retire un filet"
+      ]
+    },
+    {
+      "id": "plantation_unfixing",
+      "name": "",
+      "partials": [
+        "dechaussage",
+        "dechaussage",
+        "dechausse",
+        "dechausse",
+        "dechausse",
+        "dechausse",
+        "dechausser",
+        "dechausser"
+      ]
+    },
+    {
+      "id": "plant_covering",
+      "name": "",
+      "partials": [
+        "bachage",
+        "bachage",
+        "bache",
+        "bacher"
+      ]
+    },
+    {
+      "id": "plant_cover_sowing",
+      "name": "",
+      "partials": [
+        "semis de couvert"
+      ]
+    },
+    {
+      "id": "plant_farming",
+      "name": "",
+      "partials": []
+    },
+    {
+      "id": "planting",
+      "name": "",
+      "partials": [
+        "implantation",
+        "implante",
+        "implanter"
+      ]
+    },
+    {
+      "id": "plant_mowing",
+      "name": "",
+      "partials": [
+        "fauchage",
+        "fauche",
+        "fauche",
+        "faucher"
+      ]
+    },
+    {
+      "id": "plant_mulching",
+      "name": "",
+      "partials": [
+        "paillage",
+        "paille",
+        "pailler"
+      ]
+    },
+    {
+      "id": "plants_sorting",
+      "name": "",
+      "partials": [
+        "triage de culture",
+        "triage de cultures",
+        "triage des cultures",
+        "trier les cultures"
+      ]
+    },
+    {
+      "id": "plant_uncovering",
+      "name": "",
+      "partials": [
+        "debachage",
+        "debachage",
+        "debache",
+        "debache",
+        "debacher",
+        "debacher",
+        "enlever la bache",
+        "enlever une bache"
+      ]
+    },
+    {
+      "id": "plant_watering",
+      "name": "",
+      "partials": [
+        "arrosage",
+        "arrose",
+        "arroser"
+      ]
+    },
+    {
+      "id": "plant_watering_installation",
+      "name": "",
+      "partials": [
+        "installation de l'irrigation",
+        "installe l'arrosage",
+        "installe l'arrosage",
+        "installe l'irrigation",
+        "installe une irrigation",
+        "mise en place de l'irrigation",
+        "mise en place l'arrosage",
+        "mis en place l'irrigation"
+      ]
+    },
+    {
+      "id": "plowing",
+      "name": "",
+      "partials": [
+        "labour",
+        "laboure",
+        "labourer"
+      ]
+    },
+    {
+      "id": "pollination",
+      "name": "",
+      "partials": [
+        "polenisation",
+        "polenise",
+        "polenise",
+        "polenise",
+        "pollenisation",
+        "pollenisation",
+        "pollenise",
+        "pollenise"
+      ]
+    },
+    {
+      "id": "raking",
+      "name": "",
+      "partials": [
+        "hersage",
+        "herse",
+        "herser"
+      ]
+    },
+    {
+      "id": "seedbed_preparing",
+      "name": "",
+      "partials": [
+        "preparation de semences",
+        "preparation de semences",
+        "preparation des semences",
+        "preparation des semences",
+        "preparation du lit de semence",
+        "preparation du lit de semences"
+      ]
+    },
+    {
+      "id": "seedling_sorting",
+      "name": "",
+      "partials": [
+        "triage de graines",
+        "triage de plants",
+        "trie des graines",
+        "trie des plants"
+      ]
+    },
+    {
+      "id": "sifting",
+      "name": "",
+      "partials": [
+        "tamisage",
+        "tamise",
+        "tamiser"
+      ]
+    },
+    {
+      "id": "soil_working",
+      "name": "",
+      "partials": [
+        "travail du sol",
+        "travaille le sol"
+      ]
+    },
+    {
+      "id": "sowing",
+      "name": "",
+      "partials": [
+        "seme",
+        "semer",
+        "semis",
+        "semi"
+      ]
+    },
+    {
+      "id": "sowing_with_spraying",
+      "name": "",
+      "partials": [
+        "seme et pulverise",
+        "semer et pulveriser",
+        "semis avec pluverisation"
+      ]
+    },
+    {
+      "id": "all_in_one_sowing",
+      "name": "",
+      "partials": [
+        "semis tout en un"
+      ]
+    },
+    {
+      "id": "spraying",
+      "name": "",
+      "partials": [
+        "pulve",
+        "pulverisation",
+        "pulverisations",
+        "pulverisations",
+        "pulverise",
+        "pulveriser"
+      ]
+    },
+    {
+      "id": "standard_enclosing",
+      "name": "",
+      "partials": [
+        "mettre une cloture",
+        "mis une cloture",
+        "pose de cloture",
+        "pose de cloture",
+        "pose une cloture"
+      ]
+    },
+    {
+      "id": "steam_weeding",
+      "name": "",
+      "partials": [
+        "desherbage a la vapeur",
+        "desherbage a la vapeur",
+        "desherbage a vapeur",
+        "desherbage vapeur",
+        "desherbage vapeur"
+      ]
+    },
+    {
+      "id": "straw_bunching",
+      "name": "",
+      "partials": [
+        "pressage",
+        "presse",
+        "presser"
+      ]
+    },
+    {
+      "id": "superficial_plowing",
+      "name": "",
+      "partials": [
+        "dechaumage",
+        "dechaumage",
+        "dechaume",
+        "dechaume",
+        "dechaumer"
+      ]
+    },
+    {
+      "id": "swathing",
+      "name": "",
+      "partials": [
+        "andainage",
+        "andaine",
+        "andainer"
+      ]
+    },
+    {
+      "id": "topkilling",
+      "name": "",
+      "partials": [
+        "defanage",
+        "defane",
+        "defaner",
+        "destruction des fanes",
+        "enleve les fanes"
+      ]
+    },
+    {
+      "id": "trellising",
+      "name": "",
+      "partials": [
+        "palissage",
+        "palisse",
+        "palisser",
+        "pallissage",
+        "pallisser"
+      ]
+    },
+    {
+      "id": "uncompacting",
+      "name": "",
+      "partials": [
+        "decompactage",
+        "decompacte",
+        "decompacter"
+      ]
+    },
+    {
+      "id": "tunnel_installation",
+      "name": "",
+      "partials": [
+        "installation d'un tunnel",
+        "installation de tunnel"
+      ]
+    },
+    {
+      "id": "tunnel_removing",
+      "name": "",
+      "partials": [
+        "enleve un tunnel",
+        "enleve le tunnel"
+      ]
+    }
+  ],
+  "viti_vegetal": [
+    {
+      "id": {
+        "category": "trellising"
+      },
+      "name": "",
+      "partials": [
+        "palissage",
+        "palisse",
+        "palisser",
+        "pallissage",
+        "pallisse",
+        "pallisser",
+        "police et",
+        "pollissage",
+        "pollisser"
+      ]
+    },
+    {
+      "id": "vine_planting",
+      "name": "",
+      "partials": [
+        "implantation de la vigne",
+        "implantation des vignes",
+        "implantation de vigne",
+        "implantation de vignoble",
+        "implantation du vignoble",
+        "implante de la vigne",
+        "implante des pieds",
+        "implante les vignes",
+        "implanter de le vigne",
+        "implanter des pieds",
+        "implanter des vignes",
+        "implanter du vignoble",
+        "implanter la vigne",
+        "implanter le vignoble"
+      ]
+    },
+    {
+      "id": "vine_protection",
+      "name": "",
+      "partials": [
+        "protection des vignes",
+        "protection du vignoble"
+      ]
+    },
+    {
+      "id": {
+        "categories": [
+          {
+            "family": "viti",
+            "name": "vineyard_maintenance"
+          },
+          {
+            "family": "viti",
+            "name": "vine_soil_working_and_maintenance"
+          },
+          {
+            "family": "vegetal",
+            "name": "crop_maintenance"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "entretenir",
+        "entretenu",
+        "entretien"
+      ]
+    },
+    {
+      "id": "vineyard_maintenance",
+      "name": "",
+      "partials": [
+        "entretenir la vigne",
+        "entretenir les vignes",
+        "entretenir le vignoble",
+        "entretenu la vigne",
+        "entretenu les vignes",
+        "entretenu le vignoble",
+        "entretien de la vigne",
+        "entretien des vignes",
+        "entretien du vignoble",
+        "entretient de la vigne"
+      ]
+    },
+    {
+      "id": {
+        "categories": [
+          {
+            "family": "viti",
+            "name": "vine_planting"
+          },
+          {
+            "family": "vegetal",
+            "name": "planting"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "implantation",
+        "implante",
+        "implanter"
+      ]
+    },
+    {
+      "id": {
+        "categories":[
+          {
+            "family": "viti",
+            "name": "vine_fertilizing"
+          },
+          {
+            "family": "vegetal",
+            "name": "fertilizing"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "ferti",
+        "fertilisation",
+        "fertilise",
+        "fertiliser"
+      ]
+    },
+    {
+      "id": {
+        "categories": [
+          {
+            "family": "viti",
+            "name": "vine_soil_working_and_maintenance"
+          },
+          {
+            "family": "vegetal",
+            "name": "soil_working"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "entretenir le sol",
+        "entretenu le sol",
+        "entretien du sol",
+        "travail du sol",
+        "travaille le sol",
+        "travailler le sol"
+      ]
+    },
+    {
+      "id": {
+        "categories": [
+          {
+            "family": "viti",
+            "name": "vine_protection"
+          },
+          {
+            "family": "vegetal",
+            "name": "crop_protection"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "protection",
+        "protege",
+        "protege",
+        "proteger"
+      ]
+    },
+    {
+      "id": {
+        "procedures": [
+          {
+            "family": "viti",
+            "name": "vine_spraying_without_fertilizing"
+          },
+          {
+            "family": "vegetal",
+            "name": "spraying"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "pulve",
+        "pulverisation",
+        "pulverisations",
+        "pulverisations",
+        "pulverise",
+        "pulveriser"
+      ]
+    },
+    {
+      "id": {
+        "procedures": [
+          {
+            "family": "viti",
+            "name": "vine_raking"
+          },
+          {
+            "family": "vegetal",
+            "name": "raking"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "hersage",
+        "herse",
+        "herser"
+      ]
+    },
+    {
+      "id": {
+        "procedures": [
+          {
+            "family": "viti",
+            "name": "vine_soil_fertilizing"
+          },
+          {
+            "family": "vegetal",
+            "name": "fertilizing"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "amende",
+        "amendement",
+        "amender",
+        "epandage",
+        "epandre",
+        "epandu"
+      ]
+    },
+    {
+      "id": {
+        "procedures": [
+          {
+            "family": "viti",
+            "name": "vine_pruning"
+          },
+          {
+            "family": "vegetal",
+            "name": "cutting"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "effeuillage",
+        "effeuille",
+        "taillage",
+        "taille",
+        "taille",
+        "tailler"
+      ]
+    },
+    {
+      "id": {
+        "procedures": [
+          {
+            "family": "viti",
+            "name": "vine_plowing"
+          },
+          {
+            "family": "vegetal",
+            "name": "plowing"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "labour",
+        "laboure",
+        "labourer"
+      ]
+    },
+    {
+      "id": {
+        "procedures": [
+          {
+            "family": "viti",
+            "name": "vine_planting"
+          },
+          {
+            "family": "vegetal",
+            "name": "mechanical_planting"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "plantation",
+        "plante",
+        "planter"
+      ]
+    },
+    {
+      "id": {
+        "categories": [
+          {
+            "family": "viti",
+            "name": "vine_protection"
+          },
+          {
+            "family": "vegetal",
+            "name": "crop_protection"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "protection",
+        "protege",
+        "proteger"
+      ]
+    },
+    {
+      "id": "vine_capsuls_dispersing",
+      "name": "",
+      "partials": [
+        "pose de capsule",
+        "pose de capsule de bio controle",
+        "pose des capsules"
+      ]
+    },
+    {
+      "id": "vine_complanting",
+      "name": "",
+      "partials": [
+        "complantation",
+        "complante",
+        "complanter",
+        "coplantation",
+        "coplantation",
+        "entreplantation",
+        "entreplantation"
+      ]
+    },
+    {
+      "id": "vine_farming",
+      "name": "",
+      "partials": []
+    },
+    {
+      "id": "vine_folding",
+      "name": "",
+      "partials": [
+        "pliage",
+        "plie",
+        "plier"
+      ]
+    },
+    {
+      "id": "vine_frost_protecting",
+      "name": "",
+      "partials": [
+        "protection antigel",
+        "protection au gel",
+        "protege du gel"
+      ]
+    },
+    {
+      "id": "vine_grapes_removing",
+      "name": "",
+      "partials": [
+        "eclaircir",
+        "eclaircissage",
+        "eclaircit"
+      ]
+    },
+    {
+      "id": "vine_grubbing",
+      "name": "",
+      "partials": [
+        "arrachage",
+        "arrache",
+        "arrachee",
+        "arrachees",
+        "arracher"
+      ]
+    },
+    {
+      "id": "vine_inter_row_grinding",
+      "name": "",
+      "partials": [
+        "broyage entre les rangs",
+        "broyage inter rang",
+        "broyage interrang",
+        "broye entre les rangs",
+        "broye inter rang"
+      ]
+    },
+    {
+      "id": "vine_inter_row_hilling",
+      "name": "",
+      "partials": [
+        "chaussage",
+        "chausse",
+        "chausser",
+        "rechaussage",
+        "rechausse",
+        "rechausser"
+      ]
+    },
+    {
+      "id": {
+        "procedures": [
+          {
+            "family": "viti",
+            "name": "vine_inter_row_hill_removing"
+          },
+          {
+            "family": "vegetal",
+            "name": "plantation_unfixing"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "dechaussage",
+        "dechausse",
+        "dechausser"
+      ]
+    },
+    {
+      "id": {
+        "procedures": [
+          {
+            "family": "viti",
+            "name": "vine_inter_row_sowing"
+          },
+          {
+            "family": "vegetal",
+            "name": "sowing"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "semi",
+        "semer",
+        "seme",
+        "semis"
+      ]
+    },
+    {
+      "id": "vine_inter_row_sowing",
+      "name": "",
+      "partials": [
+        "semi inter rang",
+        "semer entre les rangs",
+        "seme entre rangees",
+        "semis interrang"
+      ]
+    },
+    {
+      "id": "vine_layering",
+      "name": "",
+      "partials": [
+        "marcottage",
+        "marcotte",
+        "marcotter",
+        "superpose",
+        "superposer",
+        "superposition"
+      ]
+    },
+    {
+      "id": "vine_leaves_fertilizing_with_spraying",
+      "name": "",
+      "partials": [
+        "fertilisation foliaire",
+        "fertilise les feuilles",
+        "fertiliser des feuilles"
+      ]
+    },
+    {
+      "id": "vine_leaves_removing",
+      "name": "",
+      "partials": [
+        "efeuillage",
+        "efeuille",
+        "efeuiller",
+        "retire des feuilles"
+      ]
+    },
+    {
+      "id": {
+        "procedures": [
+          {
+            "family": "viti",
+            "name": "vine_lifting"
+          },
+          {
+            "family": "vegetal",
+            "name": "lifting"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "relevage",
+        "releve",
+        "relever"
+      ]
+    },
+    {
+      "id": "vine_pre_pruning",
+      "name": "",
+      "partials": [
+        "pre taillage",
+        "pretaillage",
+        "pretaillage",
+        "pretaille",
+        "pre taille",
+        "pretaille",
+        "pretaille",
+        "taille preliminaire"
+      ]
+    },
+    {
+      "id": "vine_pulling",
+      "name": "",
+      "partials": [
+        "enleve des pieds",
+        "enleve un pied",
+        "retire des pieds",
+        "retire un pied",
+        "retrait de pieds"
+      ]
+    },
+    {
+      "id": "vine_shearing",
+      "name": "",
+      "partials": [
+        "tondre",
+        "tondu",
+        "tonte"
+      ]
+    },
+    {
+      "id": "vine_shoot_extracting",
+      "name": "",
+      "partials": [
+        "tirage",
+        "tirage des bois",
+        "tire du bois",
+        "tirer de bois"
+      ]
+    },
+    {
+      "id": "vine_shoot_grinding",
+      "name": "",
+      "partials": [
+        "broyage de serments",
+        "broyage des sarments",
+        "broyage des serment",
+        "broye des sarments",
+        "broye des serments",
+        "broyer des sarments",
+        "broyer des serments"
+      ]
+    },
+    {
+      "id": "land_parcel_grinding",
+      "name": "",
+      "partials": [
+        "broyage du sol",
+        "broyees les sol",
+        "broye le sol",
+        "broyer le sol"
+      ]
+    },
+    {
+      "id": {
+        "procedures": [
+          {
+            "family": "viti",
+            "name": "vine_inter_row_grinding"
+          },
+          {
+            "family": "viti",
+            "name": "vine_shoot_grinding"
+          },
+          {
+            "family": "vegetal",
+            "name": "land_parcel_grinding"
+          },
+          {
+            "family": "vegetal",
+            "name": "crop_residues_grinding"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "broyage",
+        "broyer",
+        "broye"
+      ]
+    },
+    {
+      "id": {
+        "procedures": [
+          {
+            "family": "viti",
+            "name": "vine_sleeves_net_protecting"
+          },
+          {
+            "family": "vegetal",
+            "name": "net_installation"
+          }
+        ] 
+      },
+      "name": "",
+      "partials": [
+        "pose de filet",
+        "pose de filet de protection",
+        "pose de manchons",
+        "pose des manchons",
+        "pose un filet de protection",
+        "pose un manchon"
+      ]
+    },
+    {
+      "id": "vine_stakes_replacing",
+      "name": "",
+      "partials": [
+        "change des piquets",
+        "change les piquets",
+        "changement de pics",
+        "changement de piquet",
+        "changement de piquets",
+        "changement des pics",
+        "changement des piquets",
+        "changement l'epique",
+        "changement piquet",
+        "changement piquets",
+        "changements des piquets",
+        "change piquets",
+        "changer les pics",
+        "changer les piquet",
+        "changer les piquets"
+      ]
+    },
+    {
+      "id": "vine_trellising_construction",
+      "name": "",
+      "partials": [
+        "construction d'un pallissage",
+        "construction du pallisage",
+        "construction pallissage",
+        "construction polissage",
+        "constructoin d'un pollissage",
+        "construit un pollissage",
+        "creation d'un pas lissage",
+        "creation du pallissage",
+        "creation du pas lissage",
+        "creation pallissage",
+        "creation pollissage",
+        "cree pallissage",
+        "cree pas lissage",
+        "cree pollissage",
+        "dree un pas lissage"
+      ]
+    },
+    {
+      "id": "vine_trellising_destruction",
+      "name": "",
+      "partials": [
+        "casse le pallissage",
+        "casse le pas lissage",
+        "casse le pollissage",
+        "destruction de pallissage",
+        "destruction de pas lissage",
+        "destruction d'un pollissage",
+        "destruction du pallissage",
+        "destruction pallissage",
+        "destruiction pollissage",
+        "detruit le pallissage",
+        "detruit le pas lissage",
+        "detruit le pollissage",
+        "detruit pallissage",
+        "detruit un pollissage",
+        "enleve le pallissage",
+        "enleve le pas lissage",
+        "enleve le pollissage",
+        "enlever le pallissage",
+        "enlever le pollissage",
+        "enleve un pollissage",
+        "pallissage detruit",
+        "pollissage detruit"
+      ]
+    },
+    {
+      "id": "vine_trellising_maintenance",
+      "name": "",
+      "partials": [
+        "car a son age",
+        "carassonage",
+        "carassone",
+        "carassoner",
+        "cartonnage",
+        "ecaillage",
+        "ecaille",
+        "ecailler",
+        "gare a son age",
+        "secaillage",
+        "secaillage",
+        "secaille",
+        "secailler"
+      ]
+    },
+    {
+      "id": {
+        "procedures": [
+          {
+            "family": "viti",
+            "name": "vine_trimming"
+          },
+          {
+            "family": "vegetal",
+            "name": "detasseling"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "ecimage",
+        "ecime",
+        "ecimer",
+        "rognage",
+        "rogne",
+        "rogner"
+      ]
+    },
+    {
+      "id": "vine_trunk_cleaning_debudding",
+      "name": "",
+      "partials": [
+        "ebourgeonnage",
+        "ebourgeonne",
+        "ebourgeonner",
+        "epamprage",
+        "epampre",
+        "epamprer"
+      ]
+    },
+    {
+      "id": {
+        "procedures": [
+          {
+            "family": "viti",
+            "name": "vine_chemical_weeding"
+          },
+          {
+            "family": "vegetal",
+            "name": "gas_weeding"
+          },
+          {
+            "family": "vegetal",
+            "name": "steam_weeding"
+          },
+          {
+            "family": "vegetal",
+            "name": "hand_weeding"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "desherbage",
+        "desherbe",
+        "desherber"
+      ]
+    },
+    {
+      "id": "vine_wire_lifting_dropping",
+      "name": "",
+      "partials": [
+        "enleve les fils de levage",
+        "enlever fils de levage",
+        "fil de levage",
+        "fils de levage",
+        "fils de pallissage",
+        "tombee de fils",
+        "tombee des fils",
+        "tombee des fils de levage",
+        "tombee deux fils",
+        "tomber les fils"
+      ]
+    },
+    {
+      "id": "vine_wire_tension",
+      "name": "",
+      "partials": [
+        "attention des fils",
+        "tendu des fils",
+        "tendu les fils",
+        "tension",
+        "tension des fils"
+      ]
+    },
+    {
+      "id": "chaptalization",
+      "name": "",
+      "partials": [
+        "chaptalisation",
+        "chaptaliser"
+      ]
+    },
+    {
+      "id": "complete_wine_transfer",
+      "name": "",
+      "partials": [
+        "transfert de vin",
+        "transfere du vin"
+      ]
+    },
+    {
+      "id": "enzyme_addition",
+      "name": "",
+      "partials": [
+        "ajout d'enzymes",
+        "ajoute des enzymes"
+      ]
+    },
+    {
+      "id": "sulfur_addition",
+      "name": "",
+      "partials": [
+        "ajout de sulfites",
+        "ajoute des sulfites",
+        "sulfitage",
+        "sulfiter"
+      ]
+    },
+    {
+      "id": "fermentation",
+      "name": "",
+      "partials": [
+        "fermentation",
+        "fermenter"
+      ]
+    },
+    {
+      "id": "direct_silage",
+      "name": "",
+      "partials": [
+        "ensilage",
+        "ensile",
+        "ensiler"
+      ]
+    },
+    {
+      "id": "earth_work",
+      "name": "",
+      "partials": [
+        "terrasse",
+        "terrassement",
+        "terrasser"
+      ]
+    },
+    {
+      "id": "plants_sorting",
+      "name": "",
+      "partials": [
+        "triage de culture",
+        "triage de cultures",
+        "triage des cultures",
+        "trier les cultures"
+      ]
+    },
+    {
+      "id": "gas_weeding",
+      "name": "",
+      "partials": [
+        "desherbage au gaz",
+        "desherbage au gaz",
+        "desherbage avec du gaz",
+        "desherbage avec du gaz",
+        "desherbage thermique",
+        "desherbage thermique"
+      ]
+    },
+    {
+      "id": "hand_weeding",
+      "name": "",
+      "partials": [
+        "desherbage manuel",
+        "desherbage manuellement",
+        "desherbe a la main",
+        "desherbe manuellement",
+        "desherber manuellement"
+      ]
+    },
+    {
+      "id": "steam_weeding",
+      "name": "",
+      "partials": [
+        "desherbage a la vapeur",
+        "desherbage a la vapeur",
+        "desherbage a vapeur",
+        "desherbage vapeur",
+        "desherbage vapeur"
+      ]
+    },
+    {
+      "id": "vine_chemical_weeding",
+      "name": "",
+      "partials": [
+        "desherbage chimique",
+        "desherbe chimiquement",
+        "desherber chimiquement"
+      ]
+    },
+    {
+      "id": "greenhouse_assembling",
+      "name": "",
+      "partials": [
+        "montage de serre",
+        "monte la serre",
+        "monter une serre",
+        "monte une serre"
+      ]
+    },
+    {
+      "id": "ground_destratification",
+      "name": "",
+      "partials": [
+        "destratification",
+        "destratifie",
+        "destratifier"
+      ]
+    },
+    {
+      "id": "harvesting",
+      "name": "",
+      "partials": [
+        "harvesting",
+        "recolte",
+        "recolte",
+        "recoltee",
+        "recolter",
+        "cueillette",
+        "fenaison",
+        "moisson",
+        "moissonne",
+        "moissonner"
+      ]
+    },
+    {
+      "id": "hilling",
+      "name": "",
+      "partials": [
+        "buttage",
+        "butte",
+        "butter"
+      ]
+    },
+    {
+      "id": "hilling_for_sifting",
+      "name": "",
+      "partials": [
+        "buttage pour tamisage"
+      ]
+    },
+    {
+      "id": "hoeing",
+      "name": "",
+      "partials": [
+        "binage",
+        "bine",
+        "biner"
+      ]
+    },
+    {
+      "id": "indirect_silage",
+      "name": "",
+      "partials": [
+        "ensilage indirect"
+      ]
+    },
+    {
+      "id": "inter_row_hoeing",
+      "name": "",
+      "partials": [
+        "binage entre les rangs",
+        "binage inter rang",
+        "binage inter rangs",
+        "binage interrangs",
+        "bine entre les rangs"
+      ]
+    },
+    {
+      "id": "net_removing",
+      "name": "",
+      "partials": [
+        "enleve le filet",
+        "enlever le filet",
+        "enlever un filet",
+        "enleve un filet",
+        "retire le filet",
+        "retirer le filet",
+        "retirer un filet",
+        "retire un filet"
+      ]
+    },
+    {
+      "id": "plant_cover_sowing",
+      "name": "",
+      "partials": [
+        "semis de couvert"
+      ]
+    },
+    {
+      "id": "plant_covering",
+      "name": "",
+      "partials": [
+        "bachage",
+        "bachage",
+        "bache",
+        "bacher"
+      ]
+    },
+    {
+      "id": "plant_mowing",
+      "name": "",
+      "partials": [
+        "fauchage",
+        "fauche",
+        "fauche",
+        "faucher"
+      ]
+    },
+    {
+      "id": "plant_mulching",
+      "name": "",
+      "partials": [
+        "paillage",
+        "paille",
+        "pailler"
+      ]
+    },
+    {
+      "id": "plant_uncovering",
+      "name": "",
+      "partials": [
+        "debachage",
+        "debachage",
+        "debache",
+        "debache",
+        "debacher",
+        "debacher",
+        "enlever la bache",
+        "enlever une bache"
+      ]
+    },
+    {
+      "id": "plant_watering",
+      "name": "",
+      "partials": [
+        "arrosage",
+        "arrose",
+        "arroser"
+      ]
+    },
+    {
+      "id": "plant_watering_installation",
+      "name": "",
+      "partials": [
+        "installation de l'irrigation",
+        "installe l'arrosage",
+        "installe l'arrosage",
+        "installe l'irrigation",
+        "installe une irrigation",
+        "mise en place de l'irrigation",
+        "mise en place l'arrosage",
+        "mis en place l'irrigation"
+      ]
+    },
+    {
+      "id": "pollination",
+      "name": "",
+      "partials": [
+        "polenisation",
+        "polenise",
+        "polenise",
+        "polenise",
+        "pollenisation",
+        "pollenisation",
+        "pollenise",
+        "pollenise"
+      ]
+    },
+    {
+      "id": "seedbed_preparing",
+      "name": "",
+      "partials": [
+        "preparation de semences",
+        "preparation de semences",
+        "preparation des semences",
+        "preparation des semences",
+        "preparation du lit de semence",
+        "preparation du lit de semences"
+      ]
+    },
+    {
+      "id": "seedling_sorting",
+      "name": "",
+      "partials": [
+        "triage de graines",
+        "triage de plants",
+        "trie des graines",
+        "trie des plants"
+      ]
+    },
+    {
+      "id": "sifting",
+      "name": "",
+      "partials": [
+        "tamisage",
+        "tamise",
+        "tamiser"
+      ]
+    },
+    {
+      "id": "sowing_with_spraying",
+      "name": "",
+      "partials": [
+        "seme et pulverise",
+        "semer et pulveriser",
+        "semis avec pluverisation"
+      ]
+    },
+    {
+      "id": "standard_enclosing",
+      "name": "",
+      "partials": [
+        "mettre une cloture",
+        "mis une cloture",
+        "pose de cloture",
+        "pose de cloture",
+        "pose une cloture"
+      ]
+    },
+    {
+      "id": "straw_bunching",
+      "name": "",
+      "partials": [
+        "pressage",
+        "presse",
+        "presser"
+      ]
+    },
+    {
+      "id": "superficial_plowing",
+      "name": "",
+      "partials": [
+        "dechaumage",
+        "dechaumage",
+        "dechaume",
+        "dechaume",
+        "dechaumer"
+      ]
+    },
+    {
+      "id": "swathing",
+      "name": "",
+      "partials": [
+        "andainage",
+        "andaine",
+        "andainer"
+      ]
+    },
+    {
+      "id": "topkilling",
+      "name": "",
+      "partials": [
+        "defanage",
+        "defane",
+        "defaner",
+        "destruction des fanes",
+        "enleve les fanes"
+      ]
+    },
+    {
+      "id": "harvest_transportation",
+      "name": "",
+      "partials": [
+        "transport de recolte",
+        "transport de la recolte"
+      ]
+    },
+    {
+      "id": "tunnel_installation",
+      "name": "",
+      "partials": [
+        "installation d'un tunnel",
+        "installation de tunnel"
+      ]
+    },
+    {
+      "id": "tunnel_removing",
+      "name": "",
+      "partials": [
+        "enleve un tunnel",
+        "enleve le tunnel"
+      ]
+    },
+    { 
+      "id": {
+        "procedures": [
+          {
+            "family": "viti",
+            "name": "vine_uncompacting"
+          },
+          {
+            "family": "vegetal",
+            "name": "uncompacting"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "decompactage",
+        "decompacte",
+        "decompacter",
+        "sous solage", 
+        "sous soler",
+        "soussolage"
+      ]
+    },
+    {
+      "id": "installations_modification",
+      "name": "",
+      "partials": [
+        "batiments",
+        "foncier",
+        "travaux fonciers"
+      ]
+    }
+  ],
+  "viti": [
+    {
+      "id": {
+        "category": "trellising"
+      },
+      "name": "",
+      "partials": [
+        "palissage",
+        "palisse",
+        "palisser",
+        "pallissage",
+        "pallisse",
+        "pallisser",
+        "police et",
+        "pollissage",
+        "pollisser"
+      ]
+    },
+    {
+      "id": "vine_spraying_without_fertilizing",
+      "name": "",
+      "partials": [
+        "pulve",
+        "pulverisation",
+        "pulverisations",
+        "pulverisations",
+        "pulverise",
+        "pulveriser"
+      ]
+    },
+    {
+      "id": "vine_raking",
+      "name": "",
+      "partials": [
+        "hersage",
+        "herse",
+        "herser"
+      ]
+    },
+    {
+      "id": "vine_soil_fertilizing",
+      "name": "",
+      "partials": [
+        "amende",
+        "amendement",
+        "amender",
+        "epandage",
+        "epandre",
+        "epandu",
+        "ferti"
+      ]
+    },
+    {
+      "id": "vine_pruning",
+      "name": "",
+      "partials": [
+        "effeuillage",
+        "effeuille",
+        "taillage",
+        "taille",
+        "taille",
+        "tailler"
+      ]
+    },
+    {
+      "id": "vine_plowing",
+      "name": "",
+      "partials": [
+        "labour",
+        "laboure",
+        "labourer"
+      ]
+    },
+    {
+      "id": "vine_planting",
+      "name": "",
+      "partials": [
+        "plantation",
+        "plante",
+        "planter"
+      ]
+    },
+    {
+      "id": {
+          "categories": [
+            {
+              "name": "vineyard_maintenance"
+            },
+            {
+              "name": "vine_soil_working_and_maintenance"
+            }
+          ]
+        },
+      "name": "",
+      "partials": [
+        "entretenir",
+        "entretenu",
+        "entretien"
+      ]
+    },
+    {
+      "id": "vineyard_maintenance",
+      "name": "",
+      "partials": [
+        "entretenir la vigne",
+        "entretenir les vignes",
+        "entretenir le vignoble",
+        "entretenu la vigne",
+        "entretenu les vignes",
+        "entretenu le vignoble",
+        "entretien de la vigne",
+        "entretien des vignes",
+        "entretien du vignoble",
+        "entretient de la vigne"
+      ]
+    },
+    {
+      "id": "vine_soil_working_and_maintenance",
+      "name": "",
+      "partials": [
+        "entretien du sol",
+        "entretenir le sol"
+      ]
+    },
+    {
+      "id": "vine_protection",
+      "name": "",
+      "partials": [
+        "protection de la vigne",
+        "protection",
+        "protege",
+        "proteger"
+      ]
+    },
+    {
+      "id": {
+        "category": "vine_planting"
+      },
+      "name": "",
+      "partials": [
+        "implantation de la vigne",
+        "implantation des vignes",
+        "implantation de vigne",
+        "implantation de vignoble",
+        "implantation du vignoble",
+        "implante de la vigne",
+        "implante des pieds",
+        "implante les vignes",
+        "implanter de le vigne",
+        "implanter des pieds",
+        "implanter des vignes",
+        "implanter du vignoble",
+        "implanter la vigne",
+        "implanter le vignoble"
+      ]
+    },
+    {
+      "id": "vine_capsuls_dispersing",
+      "name": "",
+      "partials": [
+        "pose de capsule",
+        "pose de capsule de bio controle",
+        "pose des capsules"
+      ]
+    },
+    {
+      "id": "vine_complanting",
+      "name": "",
+      "partials": [
+        "complantation",
+        "complante",
+        "complanter",
+        "coplantation",
+        "coplantation",
+        "entreplantation",
+        "entreplantation"
+      ]
+    },
+    {
+      "id": "vine_farming",
+      "name": "",
+      "partials": []
+    },
+    {
+      "id": "vine_fertilizing",
+      "name": "",
+      "partials": [
+        "ferti",
+        "fertilisation",
+        "fertiliser",
+        "fertilise"
+      ]
+    },
+    {
+      "id": "vine_folding",
+      "name": "",
+      "partials": [
+        "pliage",
+        "plie",
+        "plier"
+      ]
+    },
+    {
+      "id": "vine_frost_protecting",
+      "name": "",
+      "partials": [
+        "protection antigel",
+        "protection au gel",
+        "protege du gel"
+      ]
+    },
+    {
+      "id": "vine_grapes_removing",
+      "name": "",
+      "partials": [
+        "eclaircir",
+        "eclaircissage",
+        "eclaircit"
+      ]
+    },
+    {
+      "id": "vine_grubbing",
+      "name": "",
+      "partials": [
+        "arrachage",
+        "arrache",
+        "arrachee",
+        "arrachees",
+        "arracher"
+      ]
+    },
+    {
+      "id": "vine_inter_row_grinding",
+      "name": "",
+      "partials": [
+        "broyage entre les rangs",
+        "broyage inter rang",
+        "broyage interrang",
+        "broye entre les rangs",
+        "broye inter rang"
+      ]
+    },
+    {
+      "id": {
+        "procedures": [
+          {
+            "name": "vine_inter_row_grinding"
+          },
+          {
+            "name": "vine_shoot_grinding"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "broyage",
+        "broyer",
+        "broye"
+      ]
+    },
+    {
+      "id": "vine_inter_row_hilling",
+      "name": "",
+      "partials": [
+        "chaussage",
+        "chausse",
+        "chausser",
+        "rechaussage",
+        "rechausse",
+        "rechausser"
+      ]
+    },
+    {
+      "id": "vine_inter_row_hill_removing",
+      "name": "",
+      "partials": [
+        "dechaussage",
+        "dechausse",
+        "dechausser"
+      ]
+    },
+    {
+      "id": "vine_inter_row_sowing",
+      "name": "",
+      "partials": [
+        "seme entre les rangs",
+        "semer inter rang",
+        "semi inter rang",
+        "semis entre les rangs",
+        "seme",
+        "semis",
+        "semi"
+      ]
+    },
+    {
+      "id": "vine_layering",
+      "name": "",
+      "partials": [
+        "marcottage",
+        "marcotte",
+        "marcotter",
+        "superpose",
+        "superposer",
+        "superposition"
+      ]
+    },
+    {
+      "id": "vine_leaves_fertilizing_with_spraying",
+      "name": "",
+      "partials": [
+        "fertilisation foliaire",
+        "fertilise les feuilles",
+        "fertiliser des feuilles"
+      ]
+    },
+    {
+      "id": "vine_leaves_removing",
+      "name": "",
+      "partials": [
+        "efeuillage",
+        "efeuille",
+        "efeuiller",
+        "retire des feuilles"
+      ]
+    },
+    {
+      "id": "vine_lifting",
+      "name": "",
+      "partials": [
+        "relevage",
+        "releve",
+        "relever"
+      ]
+    },
+    {
+      "id": "vine_pre_pruning",
+      "name": "",
+      "partials": [
+        "pre taillage",
+        "pretaillage",
+        "pretaillage",
+        "pretaille",
+        "pre taille",
+        "pretaille",
+        "pretaille",
+        "taille preliminaire"
+      ]
+    },
+    {
+      "id": "vine_pulling",
+      "name": "",
+      "partials": [
+        "enleve des pieds",
+        "enleve un pied",
+        "retire des pieds",
+        "retire un pied",
+        "retrait de pieds"
+      ]
+    },
+    {
+      "id": "vine_shearing",
+      "name": "",
+      "partials": [
+        "tondre",
+        "tondu",
+        "tonte"
+      ]
+    },
+    {
+      "id": "vine_shoot_extracting",
+      "name": "",
+      "partials": [
+        "tirage",
+        "tirage des bois",
+        "tire du bois",
+        "tirer de bois"
+      ]
+    },
+    {
+      "id": "vine_shoot_grinding",
+      "name": "",
+      "partials": [
+        "broyage de serments",
+        "broyage des sarments",
+        "broyage des serment",
+        "broye des sarments",
+        "broye des serments",
+        "broyer des sarments",
+        "broyer des serments"
+      ]
+    },
+    {
+      "id": "vine_sleeves_net_protecting",
+      "name": "",
+      "partials": [
+        "pose de filet",
+        "pose de filet de protection",
+        "pose de manchons",
+        "pose des manchons",
+        "pose un filet de protection",
+        "pose un manchon"
+      ]
+    },
+    {
+      "id": "vine_stakes_replacing",
+      "name": "",
+      "partials": [
+        "change des piquets",
+        "change les piquets",
+        "changement de pics",
+        "changement de piquet",
+        "changement de piquets",
+        "changement des pics",
+        "changement des piquets",
+        "changement l'epique",
+        "changement piquet",
+        "changement piquets",
+        "changements des piquets",
+        "change piquets",
+        "changer les pics",
+        "changer les piquet",
+        "changer les piquets"
+      ]
+    },
+    {
+      "id": "vine_trellising_construction",
+      "name": "",
+      "partials": [
+        "construction d'un pallissage",
+        "construction du pallisage",
+        "construction pallissage",
+        "construction polissage",
+        "constructoin d'un pollissage",
+        "construit un pollissage",
+        "creation d'un pas lissage",
+        "creation du pallissage",
+        "creation du pas lissage",
+        "creation pallissage",
+        "creation pollissage",
+        "cree pallissage",
+        "cree pas lissage",
+        "cree pollissage",
+        "dree un pas lissage"
+      ]
+    },
+    {
+      "id": "vine_trellising_destruction",
+      "name": "",
+      "partials": [
+        "casse le pallissage",
+        "casse le pas lissage",
+        "casse le pollissage",
+        "destruction de pallissage",
+        "destruction de pas lissage",
+        "destruction d'un pollissage",
+        "destruction du pallissage",
+        "destruction pallissage",
+        "destruiction pollissage",
+        "detruit le pallissage",
+        "detruit le pas lissage",
+        "detruit le pollissage",
+        "detruit pallissage",
+        "detruit un pollissage",
+        "enleve le pallissage",
+        "enleve le pas lissage",
+        "enleve le pollissage",
+        "enlever le pallissage",
+        "enlever le pollissage",
+        "enleve un pollissage",
+        "pallissage detruit",
+        "pollissage detruit"
+      ]
+    },
+    {
+      "id": "vine_trellising_maintenance",
+      "name": "",
+      "partials": [
+        "car a son age",
+        "carassonage",
+        "carassone",
+        "carassoner",
+        "cartonnage",
+        "ecaillage",
+        "ecaille",
+        "ecailler",
+        "gare a son age",
+        "secaillage",
+        "secaillage",
+        "secaille",
+        "secailler"
+      ]
+    },
+    {
+      "id": "vine_trimming",
+      "name": "",
+      "partials": [
+        "ecimage",
+        "ecime",
+        "ecimer",
+        "rognage",
+        "rogne",
+        "rogner"
+      ]
+    },
+    {
+      "id": "vine_trunk_cleaning_debudding",
+      "name": "",
+      "partials": [
+        "ebourgeonnage",
+        "ebourgeonne",
+        "ebourgeonner",
+        "epamprage",
+        "epampre",
+        "epamprer"
+      ]
+    },
+    {
+      "id": "vine_chemical_weeding",
+      "name": "",
+      "partials": [
+        "desherbage",
+        "desherbe",
+        "desherber"
+      ]
+    },
+    {
+      "id": "vine_chemical_weeding",
+      "name": "",
+      "partials": [
+        "desherbage chimique",
+        "desherbe chimiquement",
+        "desherber chimiquement"
+      ]
+    },
+    {
+      "id": "vine_wire_lifting_dropping",
+      "name": "",
+      "partials": [
+        "enleve les fils de levage",
+        "enlever fils de levage",
+        "fil de levage",
+        "fils de levage",
+        "fils de pallissage",
+        "tombee de fils",
+        "tombee des fils",
+        "tombee des fils de levage",
+        "tombee deux fils",
+        "tomber les fils"
+      ]
+    },
+    {
+      "id": "vine_wire_tension",
+      "name": "",
+      "partials": [
+        "attention des fils",
+        "tendu des fils",
+        "tendu les fils",
+        "tension",
+        "tension des fils"
+      ]
+    },
+    {
+      "id": "chaptalization",
+      "name": "",
+      "partials": [
+        "chaptalisation",
+        "chaptaliser"
+      ]
+    },
+    {
+      "id": "complete_wine_transfer",
+      "name": "",
+      "partials": [
+        "transfert de vin",
+        "transfere du vin"
+      ]
+    },
+    {
+      "id": "enzyme_addition",
+      "name": "",
+      "partials": [
+        "ajout d'enzymes",
+        "ajoute des enzymes"
+      ]
+    },
+    {
+      "id": "fermentation",
+      "name": "",
+      "partials": [
+        "fermentation",
+        "fermenter"
+      ]
+    },
+    {
+      "id": "vine_uncompacting",
+      "name": "",
+      "partials": [
+        "decompactage",
+        "decompacte",
+        "decompacter",
+        "sous solage",
+        "sous soler",
+        "soussolage"
+      ]
+    }
+  ],
+  "common": [
+    {
+      "id": "administrative_tasks",
+      "name": "",
+      "partials": [
+        "taches administratives",
+        "taches administratives"
+      ]
+    },
+    {
+      "id": "equipment_item_replacement",
+      "name": "",
+      "partials": [
+        "changement de piece",
+        "changer une piece",
+        "change une piece"
+      ]
+    },
+    {
+      "id": "equipment_maintenance",
+      "name": "",
+      "partials": [
+        "maintenance",
+        "reparation",
+        "reparation et maintenance",
+        "repare",
+        "reparer"
+      ]
+    },
+    {
+      "id": "fuel_up",
+      "name": "",
+      "partials": [
+        "faire le plein",
+        "fait le plein",
+        "plein de carburant"
+      ]
+    },
+    {
+      "id": "handling",
+      "name": "",
+      "partials": [
+        "manutention"
+      ]
+    },
+    {
+      "id": "installation_maintenance",
+      "name": "",
+      "partials": [
+        "entretenu les batiments",
+        "entretenu les installations",
+        "entretien des batiments",
+        "entretien des installations"
+      ]
+    },
+    {
+      "id": "installation_modification",
+      "name": "",
+      "partials": [
+        "installation_modification",
+        "travaux fonciers"
+      ]
+    },
+    {
+      "id": "oil_replacement",
+      "name": "",
+      "partials": [
+        "vidange",
+        "vidange",
+        "vidange de l'huile",
+        "vidange d’huile",
+        "vidange l'huile"
+      ]
+    },
+    {
+      "id": "packaging",
+      "name": "",
+      "partials": [
+        "conditionnement"
+      ]
+    }
+  ],
+  "animal": [
+    {
+      "id": "animal_artificial_insemination",
+      "name": "",
+      "partials": [
+        "insemination",
+        "insemination artificielle"
+      ]
+    },
+    {
+      "id": "animal_group_changing",
+      "name": "",
+      "partials": [
+        "deplace des animaux",
+        "deplace les animaux",
+        "deplace les poules",
+        "deplace les vaches",
+        "deplacement d'animaux"
+      ]
+    },
+    {
+      "id": "animal_housing_cleaning",
+      "name": "",
+      "partials": [
+        "nettoyage de l'habitat",
+        "nettoye l'enclos",
+        "nettoye l'habitat",
+        "nettoyer l'enclos"
+      ]
+    },
+    {
+      "id": "animal_housing_disinfection",
+      "name": "",
+      "partials": [
+        "desinfection de l'enclos",
+        "desinfection de l'habitat",
+        "desinfection du poullailler"
+      ]
+    },
+    {
+      "id": "animal_veterinary_treatment",
+      "name": "",
+      "partials": [
+        "traitement veterinaire",
+        "traitement veto",
+        "veterinaire",
+        "voir le veterinaire"
+      ]
+    },
+    {
+      "id": "egg_collecting",
+      "name": "",
+      "partials": [
+        "ramassage d'oeufs",
+        "ramassage d'œufs",
+        "ramasse des œufs",
+        "ramasse les oeufs",
+        "rammasser les oeufs"
+      ]
+    },
+    {
+      "id": "parturition",
+      "name": "",
+      "partials": [
+        "agnelage",
+        "mettre bas",
+        "mis bas",
+        "mise a bas",
+        "mise a bas",
+        "poulinage",
+        "velage"
+      ]
+    },
+    {
+      "id": "milking",
+      "name": "",
+      "partials": [
+        "traire",
+        "traite",
+        "traite"
+      ]
+    },
+    {
+      "id": "manual_feeding",
+      "name": "",
+      "partials": [
+        "donne a manger",
+        "donner a manger",
+        "nourri"
+      ]
+    },
+    {
+      "id": "individual_feeding",
+      "name": "",
+      "partials": [
+        "alimentation individuelle"
+      ]
+    },
+    {
+      "id": "identification",
+      "name": "",
+      "partials": [
+        "identification"
+      ]
+    },
+    {
+      "id": "herd_feeding",
+      "name": "",
+      "partials": [
+        "alimentation d'un troupeau",
+        "alimentation du troupeau",
+        "alimente le troupeau",
+        "alimenter le troupeau",
+        "alimente un troupeau"
+      ]
+    },
+    {
+      "id": "food_preparation",
+      "name": "",
+      "partials": [
+        "preparation alimentaire",
+        "preparation d'alimentation",
+        "preparation d'aliments",
+        "preparation des aliments",
+        "prepare des aliments",
+        "prepare l'alimentation",
+        "preparer des aliments",
+        "preparer les aliments"
+      ]
+    },
+    {
+      "id": "grazing",
+      "name": "",
+      "partials": [
+        "paturage sur parcours",
+        "paturage sur parcours"
+      ]
+    },
+    {
+      "id": "pasturing",
+      "name": "",
+      "partials": [
+        "paturage",
+        "paturage",
+        "pature",
+        "pature"
+      ]
+    }
+  ]
+} 

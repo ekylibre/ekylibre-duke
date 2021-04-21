@@ -9,38 +9,37 @@ module Duke
       @description, @user_input = "", ""
       @date = Time.now
       @duration = 60 
-      @matchArrs = [:tool, :cultivablezones]
       args.each{|k, v| instance_variable_set("@#{k}", v)}
     end 
 
     # Create intervention from json
-    # @param [Json] jsonD - Json representation of dukeIntervention
+    # @param [Json] duke_json - Json representation of dukeIntervention
     # @param [Boolean] all - Should we recover everything, or only user_specifics
     # @returns DukeIntervention
-    def recover_from_hash(jsonD, all=true) 
-      jsonD.slice(*@matchArrs).each{|k,v| self.instance_variable_set("@#{k}", DukeMatchingArray.new(arr: v))}
-      jsonD.except(*@matchArrs).each{|k,v| self.instance_variable_set("@#{k}", v)} if all
+    def recover_from_hash(duke_json, all=true) 
+      duke_json.slice(*parseable).each{|k,v| self.instance_variable_set("@#{k}", DukeMatchingArray.new(arr: v))}
+      duke_json.except(*parseable).each{|k,v| self.instance_variable_set("@#{k}", v)} if all
       self
     end 
 
     # @returns DukeIntervention to_json with given parameters
-    def to_jsonD(*args) 
+    def duke_json(*args) 
       return ActiveSupport::HashWithIndifferentAccess.new(self.as_json) if args.empty?
       return ActiveSupport::HashWithIndifferentAccess.new(Hash[args.flatten.map{|arg| [arg, self.send(arg)] if self.respond_to?(arg, true)}.compact])
     end 
 
-    # @param [json] jsonD : DukeArticle.as_json
+    # @param [json] duke_json : DukeArticle.as_json
     # @param [Float] level : min_match_level
     # Extract user specifics & recreates DukeArticle
-    def extract_user_specifics(jsonD: self.to_jsonD, level: 80)
+    def extract_user_specifics(duke_json: self.duke_json, level: 80)
       @user_input = @user_input.duke_clear # Get clean string before parsing
-      user_specifics = jsonD.select{ |key, value| @matchArrs.include?(key.to_sym)}
+      user_specifics = duke_json.select{ |key, value| parseable.include?(key.to_sym)}
       attributes = user_specifics.to_h{|key, mArr|[key, {iterator: iterator(key.to_sym), list: mArr}]}
       create_words_combo.each do |combo| # Creating all combo_words from user_input
         parser = DukeParser.new(word_combo: combo, level: level, attributes: attributes) # create new DukeParser
         parser.parse # parse user_specifics
       end
-      self.recover_from_hash(jsonD, false) # recreate DukeArticle
+      self.recover_from_hash(duke_json, false) # recreate DukeArticle
     end
           
     def update_description(ds)
@@ -54,7 +53,7 @@ module Duke
     # Find ambiguities in what's been parsed
     def find_ambiguity
       self.as_json.each do |key, reco|
-        if @matchArrs.include?(key.to_sym)
+        if parseable.include?(key.to_sym)
           ambiguity_attr = ambiguities_attributes(key.to_sym)
           reco.each do |anItem|
             ambiguity = DukeAmbiguity.new(itm: anItem, ambiguity_attr: ambiguity_attr, itm_type: key).check_ambiguity
@@ -85,7 +84,7 @@ module Duke
 
     def to_ibm(**opt)
       what_next, sentence, optional = redirect
-      return { parsed: self.to_jsonD, sentence: sentence, redirect: what_next, optional: optional}.merge(opt)
+      return { parsed: self.duke_json, sentence: sentence, redirect: what_next, optional: optional}.merge(opt)
     end 
 
     # Extracts date with correct hour from @user_input
@@ -137,6 +136,10 @@ module Duke
     private 
 
     attr_accessor :retry, :tool, :cultivablezones, :offset
+    
+    def parseable 
+      [:tool, :cultivablezones]
+    end 
 
     # Extracts duration from user_input
     # @return nil but set @duration in minutes

@@ -8,12 +8,14 @@ module Duke
       #   [String] user_input : User Utterance
 
       # First entry into Intervention Skill
-      # @params [String] procedure_word : Literal procedure word
       def handle_parse_sentence params
-        dukeInt = Duke::DukeIntervention.new(procedure: params[:procedure], user_input: params[:user_input])
-        return dukeInt.guide_to_procedure unless dukeInt.ok_procedure? # help user find his procedure if current_proc is not accepted
-        dukeInt.parse_sentence(proc_word: params[:procedure_word]) # Parse user sentence
-        return dukeInt.to_ibm(modifiable: dukeInt.modification_candidates, moreable: dukeInt.complement_candidates) # return Json with what'll be displayed on .click modify-btn
+        dukeInt = Duke::DukeIntervention.new(user_input: params[:user_input], procedure: params[:procedure])
+        if dukeInt.ok_procedure? 
+          dukeInt.parse_sentence
+          return dukeInt.to_ibm(modifiable: dukeInt.modification_candidates, moreable: dukeInt.complement_candidates)
+        else
+          return dukeInt.guide_to_procedure unless dukeInt.ok_procedure? # help user find his procedure if current_proc is not accepted
+        end
       end 
 
       # Modify a specific type of element
@@ -40,7 +42,7 @@ module Duke
       # @params [String] type: Type of items we want to display
       def handle_get_complement_items params 
         dukeInt = Duke::DukeIntervention.new.recover_from_hash(params[:parsed])
-        return dukeInt.to_ibm(optionAll: dukeInt.optionAll(params[:type]))
+        return dukeInt.to_ibm(optionAll: dukeInt.all_options(params[:type]))
       end 
 
       # Add element(s) from everything available

@@ -1,0 +1,13 @@
+1. Remove Skills as existing currently
+2. Create folders for each skill.
+3. Inside folder, optionnaly have main duke_article child (ex: current duke_intervention)
+4. Create a handler folder (or just throw new files inside skill folder)
+5. New files must be handlers for each particular request
+  - each file inherits from duke_article or duke_#{skill} 
+  - remove methods from duke_#{skill} if method is only used in one of the request, and add it as private method of new handler
+  - each file is initialized with an unique arg : [DukeEvent] event
+  - each initializer returns a DukeResponse
+6. Create a dukeEvent class (takes params[;main_param] from controller as entry)
+7. Create a DukeResponse class (response to IBM) which returns a json 
+8. Store every regexes in Duke::Utils::Regex 
+9. Put refinements & baseDuke inside Duke::Utils 

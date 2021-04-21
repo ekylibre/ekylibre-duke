@@ -4,7 +4,6 @@ module Duke
     def initialize(**args)
       super() 
       args.each{|k, v| instance_variable_set("@#{k}", v)}
-      @matchArrs.concat([:financial_year, :entity, :activity_variety])
       extract_best(args.keys)
     end 
 
@@ -68,6 +67,10 @@ module Duke
     private 
 
     attr_accessor :financial_year, :entity, :activity_variety
+
+    def parseable 
+      [*super(), :financial_year, :entity, :activity_variety]
+    end 
     
     # Returns best entity
     def best_entity
@@ -104,7 +107,7 @@ module Duke
 
     # Extract uniq best element for each arg entry
     def extract_best(args)
-      extract_user_specifics(jsonD: self.to_jsonD(args), level: 71)
+      extract_user_specifics(duke_json: self.duke_json(args), level: 71)
       args.each do |arg|
         instance_variable_set("@#{arg}", send("best_#{arg}")) if respond_to?("best_#{arg}", true)
       end 
