@@ -24,5 +24,9 @@ require "duke/skill/harvest_receptions"
 require "duke/version"
 require "duke/engine"
 module Duke
-  
+
+  def self.proc_entities_path
+    File.join(File.dirname(__dir__), 'config', 'entities', 'procedures.json')
+  end
+
 end

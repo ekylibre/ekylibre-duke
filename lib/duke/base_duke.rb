@@ -42,5 +42,10 @@ module Duke
       return [optJson]
     end 
 
+    # @return [Json] all procedure entities ready to be parsed
+    def procedure_entities
+      JSON.parse(File.read(Duke.proc_entities_path)).deep_symbolize_keys
+    end
+
   end 
 end 

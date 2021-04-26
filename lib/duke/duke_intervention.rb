@@ -14,6 +14,7 @@ module Duke
       args.each{|k, v| instance_variable_set("@#{k}", v)}
       @description = @user_input.clone
       @matchArrs.concat([:input, :doer, :tool, :crop_groups, :plant, :cultivation, :land_parcel])
+      extract_procedure unless permitted_procedure_or_categorie?
     end 
 
     # @creates intervention from json
@@ -45,39 +46,23 @@ module Duke
 
     # @returns bln, is procedure_parseable?
     def ok_procedure? 
-      return false if @procedure.blank?
-      return true if Procedo::Procedure.find(@procedure).present? && (Procedo::Procedure.find(@procedure).activity_families & [:vine_farming, :plant_farming]).any?
-      if @procedure.scan(/[|]/).present? && !Activity.availables.any? {|act| act[:family] != :vine_farming} # Not any? | all? 
-        @procedure = @procedure.split(/[|]/).first
-        return true
-      end 
-      false
+      procedo = Procedo::Procedure.find(@procedure)
+      procedo.present? && (procedo.activity_families & [:vine_farming, :plant_farming]).any?
     end 
     
     # @return json with next_step if procedure is not parseable
     def guide_to_procedure
-      if @procedure.blank? # Suggest categories if family.uniq, family
-        return (suggest_categories_from_fam(exclusive_farming_type) if exclusive_farming_type.present?) ||asking_intervention_family
-      elsif @procedure.scan(/[&]/).present? # (One or multiple category(ies) matched
-        if @procedure.split(/[&]/).size.eql?(1)
-          @procedure = @procedure.split(/[&]/).first  # Only one category matched, we suggest procedures from category
-          return suggest_proc_from_category
-        else 
-          return suggest_categories_from_amb # Multiple categories matched, we suggest those
-        end 
-      end 
-      return suggest_categories_from_fam(@procedure) if [:plant_farming, :vine_farming].include? @procedure.to_sym # Received a family
-      return suggest_viti_vegetal_proc if @procedure.scan(/[|]/).present? # Ambiguity between vegetal & viti proc
-      return suggest_procedure_disambiguation if @procedure.scan(/[~]/).present?
-      return {redirect: :get_help, sentence: I18n.t("duke.interventions.help.example")} if @procedure.match(/get_help/)
-      return {redirect: :non_supported_proc} if Procedo::Procedure.find(@procedure).present? && (Procedo::Procedure.find(@procedure).activity_families & [:vine_farming, :plant_farming]).empty?
-      return {redirect: :cancel} if @procedure.scan(/cancel/).present?
-      return {redirect: :not_understanding}
+      if @procedure.blank?
+        suggest_procedure_from_blank
+      elsif @procedure.kind_of?(Hash)
+        suggest_procedure_from_hash
+      else
+        suggest_procedure_from_string 
+      end
     end 
 
     # Parse every Intervention Parameters
-    def parse_sentence(proc_word: nil)
-      @user_input = @user_input.duke_del(proc_word)
+    def parse_sentence
       extract_date_and_duration  # getting cleaned user_input and finding when it happened and how long it lasted
       tag_specific_targets  # Tag the specific types of targets for this intervention
       extract_user_specifics  # Then extract every possible user_specifics elements form the sentence (here : input, doer, tool, targets)
@@ -232,56 +217,164 @@ module Duke
 
     attr_accessor  :retry
 
+    def permitted_procedure_or_categorie?
+      ok_procedure? or Onoma::ProcedureCategory.find(@procedure).present? or Onoma::ActivityFamily.find(@procedure).present?
+    end
+
+
+    # Extract procedure from user sentence
+    def extract_procedure
+      procs = Duke::DukeMatchingArray.new
+      @user_input += " - #{@procedure}" if @procedure.present?
+      @user_input = @user_input.duke_clear # Get clean string before parsing
+      attributes =  [
+                      [
+                        :procedure,
+                        {
+                          iterator: procedure_iterator,
+                          list: procs
+                        }
+                      ]
+                    ]
+      create_words_combo.each do |combo| # Creating all combo_words from user_input
+        parser = DukeParser.new(word_combo: combo, level: 80, attributes: attributes) # create new DukeParser
+        parser.parse # parse procedure
+      end
+      @procedure = procs.max.key if procs.present?
+    end
+
+
+      # Procedures iterator depending on user activity scope
+      def procedure_iterator
+        procedure_scope =
+        [
+          :common,
+          if ekyagri?
+            :vegetal
+          else
+            vegetal? ? :viti_vegetal : :viti
+          end,
+          animal? ? :animal : nil
+        ]
+        procedure_entities.slice(*procedure_scope).values.flatten
+      end
+
+
     def extract_user_specifics(jsonD: self.to_jsonD, level: 80)
       super(jsonD: jsonD, level: level)
     end 
 
-    # @returns json
-    def asking_intervention_family
-      families = [:plant_farming, :vine_farming].map{|fam| optJsonify(Onoma::ActivityFamily[fam].human_name, fam) }
-      families.push(optJsonify(I18n.t("duke.interventions.cancel"), :cancel))
-      return {parsed: {user_input: @user_input}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_family"), families)}
+    # is Tenant ekyagri ?
+    def ekyagri? 
+      Activity.availables.none? {|act| act.family == :vine_farming}
     end 
 
-    # @returns json
-    def suggest_categories_from_fam(farming_type)
-      categories = Onoma::ProcedureCategory.select { |c| c.activity_family.include?(farming_type.to_sym) and !Procedo::Procedure.of_main_category(c).empty? }
-      categories = ListSorter.new(:procedure_categories, categories).sort if defined?(ListSorter)
-      categories.map!{|cat|optJsonify(cat.human_name, "#{cat.name}&")}.push(optJsonify(I18n.t("duke.interventions.help.get_help"), :get_help))
-      return {parsed: {user_input: @user_input}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_category"), categories)}
+    # does Tenant have any vegetal activity ?
+    def vegetal? 
+      Activity.availables.any? {|act| act.family == :plant_farming}
     end 
 
-    # @returns json
-    def suggest_categories_from_amb
-      categories = @procedure.split(/[&]/).map{|c| optJsonify(Onoma::ProcedureCategory.find(c).human_name, "#{c}&")}
-      return {parsed: {user_input: @user_input}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.what_category"), categories)}
+    # does Tenant have any animal activity ?
+    def animal? 
+      Activity.availables.any? {|act| act.family == :animal_farming}
     end 
 
-    # @returns json
-    def suggest_proc_from_category
+    # Handles blank procedure accordingly
+    def suggest_procedure_from_blank
+      if (farming_type = exclusive_farming_type).present?
+        suggest_categories_from_family(farming_type)
+      else
+        suggest_families_disambiguation
+      end
+    end
+    
+    # Handles string (not accepted procedure) accordingly
+    def suggest_procedure_from_string
+      procedo = Procedo::Procedure.find(@procedure)
+      if Onoma::ActivityFamily.find(@procedure).present?
+        suggest_categories_from_family(@procedure)
+      elsif Onoma::ProcedureCategory.find(@procedure).present?
+        suggest_procedures_from_category
+      elsif procedo.present? && (procedo.activity_families & %i[vine_farming plant_farming]).empty?
+        non_supported_redirect
+      elsif @procedure.scan(/cancel/).present?
+        cancel_redirect
+      else
+        not_understanding_redirect
+      end
+    end
+
+    # Handles hash procedure (matched a category or an ambiguity) accordingly
+    def suggest_procedure_from_hash
+      if @procedure.key?(:categories)
+        suggest_categories_disambiguation
+      elsif @procedure.key?(:procedures)
+        suggest_procedures_disambiguation
+      elsif @procedure.key?(:category)
+        @procedure = @procedure[:category]
+        suggest_procedures_from_category
+      end
+    end
+
+    # Suggest disambiguation to the user for his selected procedure
+    # @returns json
+    def suggest_procedures_disambiguation
+      procs = @procedure[:procedures].map do |proc|
+        label = Procedo::Procedure.find(proc[:name]).human_name
+        label +=  " - Prod. #{proc[:family]}" if proc.key?(:family)
+        optJsonify(label, proc[:name])
+      end
+      w_procedure_redirect(dynamic_options(I18n.t('duke.interventions.ask.which_procedure'), procs))
+    end
+
+    # Suggest disambiguation to the user for his selected category
+    # @returns json
+    def suggest_categories_disambiguation
+      categories = @procedure[:categories].map do |cat|
+        label = Onoma::ProcedureCategory.find(cat[:name]).human_name
+        label += " - Prod. #{cat[:family]}" if cat.key?(:family)
+        optJsonify(label, cat[:name])
+      end
+      w_procedure_redirect(dynamic_options(I18n.t('duke.interventions.ask.what_category'), categories))
+    end
+
+    # Suggest disambiguation to the user for the intervention family
+    def suggest_families_disambiguation
+      families = %i[plant_farming vine_farming].map do |fam|
+        optJsonify(Onoma::ActivityFamily[fam].human_name, fam)
+      end
+      families += [optJsonify(I18n.t('duke.interventions.cancel'), :cancel)]
+      w_procedure_redirect(dynamic_options(I18n.t('duke.interventions.ask.what_family'), families))
+    end
+
+    # Suggest procedures to the user for selected category
+    def suggest_procedures_from_category
       procs = Procedo::Procedure.of_main_category(@procedure)
       procs.sort_by!(&:position) if procs.all?{|proc| defined?(proc.position)}
-      procs.map!{|proc| optJsonify(proc.human_name.to_sym, proc.name)}
-      return {parsed: {user_input: @user_input}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.which_procedure"), procs)}
-    end 
+      procs.map! do |proc|
+        optJsonify(proc.human_name.to_sym, proc.name)
+      end
+      w_procedure_redirect(dynamic_options(I18n.t('duke.interventions.ask.which_procedure'), procs))
+    end
 
-    # @returns json
-    def suggest_viti_vegetal_proc
-      procs = @procedure.split(/[|]/).map{|p_name| Procedo::Procedure.find(p_name) }.map{|proc|optJsonify("#{proc.human_name} - #{I18n.t("duke.interventions.#{proc.of_activity_family?(:vine_farming)}_vine_production")} ", proc.name)}
-      return {parsed: {user_input: @user_input}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.which_procedure"), procs)}
-    end 
-
-    # @returns json
-    def suggest_procedure_disambiguation
-      procs = @procedure.split(/[~]/).map{|p_name| optJsonify(Procedo::Procedure.find(p_name).human_name, p_name)}
-      return {parsed: {user_input: @user_input}, redirect: :what_procedure, optional: dynamic_options(I18n.t("duke.interventions.ask.which_procedure"), procs)}
-    end 
+    # Suggest categories to the user for selected family
+    def suggest_categories_from_family(family)
+      categories = Onoma::ProcedureCategory.select do |cat|
+        cat.activity_family.include?(family.to_sym) and Procedo::Procedure.of_main_category(cat).present?
+      end
+      categories = ListSorter.new(:procedure_categories, categories).sort if defined?(ListSorter)
+      categories.map! do |cat|
+        optJsonify(cat.human_name, cat.name)
+      end
+      w_procedure_redirect(dynamic_options(I18n.t('duke.interventions.ask.what_category'), categories))
+    end
 
     # @returns exclusive farming type :vine_farming || :plant_farming if exists
     def exclusive_farming_type
-      farming_types = Activity.availables.map{|act| act[:family] if [:vine_farming, :plant_farming].include? act[:family].to_sym}.compact.uniq
-      return farming_types.first if farming_types.size.eql? 1 
-      nil
+      farming_types = Activity.availables.select("distinct family").map(&:family)
+      if (type = farming_types & %w[plant_farming vine_farming]).size.eql?(1) 
+        return type.first.to_sym
+      end 
     end 
 
     # @clean sentence
@@ -425,6 +518,37 @@ module Duke
       return ["ask_ambiguity", nil, @ambiguities.first] unless @ambiguities.blank?
       return ["ask_input_rate", speak_input_rate].flatten if @input.to_a.any? {|input| input[:rate][:value].nil?}
       return "save", speak_intervention, nil
+    end
+    
+    # Redirect to user procedure selection
+    # params [IBM-options] options - options to display
+    def w_procedure_redirect(options)
+      {
+        user_input: @description,
+        redirect: :what_procedure,
+        optional: options
+      }
+    end
+
+    # Redirect to non supported procedure msg
+    def non_supported_redirect
+      {
+        redirect: :non_supported_proc
+      }
+    end
+
+    # Redirect to cancelation msg
+    def cancel_redirect
+      {
+        redirect: :cancel
+      }
+    end
+
+    # Redirect to misunderstanding msg
+    def not_understanding_redirect
+      {
+        redirect: :not_understanding
+      }
     end
 
     def working_periods_attributes
