@@ -81,9 +81,5 @@ module Duke
       Activity.availables.any? {|act| act.family == :animal_farming}
     end 
 
-    def regex_template 
-      
-    end 
-
   end 
 end 

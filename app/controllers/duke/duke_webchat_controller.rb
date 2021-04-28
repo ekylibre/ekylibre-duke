@@ -32,11 +32,18 @@ module Duke
     private 
 
     def user_defined
-      {
-        tenant: Ekylibre::Tenant.current,
-        user_token: current_user.authentication_token, 
-        user_email: current_user.email
-      }
+      if current_user
+        {
+          tenant: Ekylibre::Tenant.current,
+          user_token: current_user.authentication_token, 
+          user_email: current_user.email
+        }
+      else
+        {
+          tenant: Ekylibre::Tenant.current
+        }
+      end
     end 
+
   end
 end
