@@ -135,5 +135,6 @@ fra:
       mechanical: 'mécanique'
       manual_f: 'manuelle'
       last_load: "Dernier chargement"
+      saved: "Cette réception est enregistrée.<br>Je vous y redirige. redirect=/backend/wine_incoming_harvests/%{id}"
     ambiguities: 
       ask: "Veuillez séléctionner les éléments correspondant au terme '%{item}'=multiple_choices"

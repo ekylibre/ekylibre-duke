@@ -7,6 +7,7 @@ require 'duke/utils/duke_refinements'
 require 'duke/utils/base_duke'
 require 'duke/duke_article'
 require 'duke/skill/duke_intervention'
+require 'duke/skill/duke_harvest_reception'
 
 files = Dir[File.join(__dir__, "/duke/**/*")].reject{|fn| File.directory?(fn)}
 files.each do |file|
