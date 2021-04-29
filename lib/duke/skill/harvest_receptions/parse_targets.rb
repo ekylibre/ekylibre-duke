@@ -23,7 +23,7 @@ module Duke
         # @param [DukeHarvestReception] harv
         def update_targets harv 
           if harv.plant.blank? && harv.crop_groups.blank? 
-            pct_regex = harv.user_input.match(/(\d{1,2}) *(%|pour( )?cent(s)?)/)
+            pct_regex = harv.user_input.match(Duke::Utils::Regex.percentage)
             if pct_regex
               @crop_groups.to_a.each { |crop_group| crop_group[:area] = pct_regex[1]}
               @plant.to_a.each { |target| target[:area] = pct_regex[1]}

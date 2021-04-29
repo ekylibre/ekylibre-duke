@@ -31,7 +31,7 @@ module Duke
 
         def extract_quantity
           # Extracting quantity data
-          quantity = @user_input.matchdel(/(\d{1,5}(\.|,)\d{1,2}|\d{1,5}) *(kilo|kg|hecto|expo|texto|hl|t\b|tonne)/)
+          quantity = @user_input.matchdel(Duke::Utils::Regex.quantity)
           if quantity
             unit = if quantity[3].match(/(kilo|kg)/)
                     "kg" 

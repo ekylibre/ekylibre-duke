@@ -57,15 +57,15 @@ module Duke
 
       # Extract values when conflicted between °C degrees & ° vol degrees
       def extract_conflicting_degrees
-        tav = @user_input.matchdel(/(degré d\'alcool|alcool|degré|tavp|t avp2|tav|avp|t svp|pourcentage|t avait) *(jus de presse)? *(est|était)? *(égal +(a *|à *)?|= *|de *|à *)?(\d{1,2}(\.|,)\d{1,2}|\d{1,2}) *(degré)?/)
+        tav = @user_input.matchdel(Duke::Utils::Regex.conflicting_tav)
         @parameters['tav'] = tav[6].gsub(',','.') if tav
-        temp = @user_input.matchdel(/(température|temp) *(est|était)? *(égal *|= *|de *|à *)?(\d{1,2}(\.|,)\d{1,2}|\d{1,2}) *(degré)?/)
+        temp = @user_input.matchdel(Duke::Utils::Regex.conflicting_temp)
         @parameters['temperature'] = temp[4].gsub(',','.') if temp
       end
 
       # Extracting TAV value in @user_input
       def extract_tav
-        tav = @user_input.matchdel(/(\d{1,2}|\d{1,2}(\.|,)\d{1,2}) ?((degré(s)?|°|%)|(de|en|d\')? *(tavp|t avp|tav|(t)? *avp|(t)? *svp|t avait|thé avait|thé à l\'épée|alcool|(entea|mta) *vp))/)
+        tav = @user_input.matchdel(Duke::Utils::Regex.tav)
         unless @parameters.key?('tav')
           @parameters['tav'] = (tav[1].gsub(',','.') if tav)||nil
         end
@@ -73,7 +73,7 @@ module Duke
 
       # Extracting Temperature value in @user_input
       def extract_temp
-        temp = @user_input.matchdel(/(\d{1,2}|\d{1,2}(\.|,)\d{1,2}) +(degré|°)/)
+        temp = @user_input.matchdel(Duke::Utils::Regex.temp)
         unless @parameters.key?('temperature')
           @parameters['temperature'] = (temp[1].gsub(',','.') if temp)||nil
         end
@@ -81,8 +81,8 @@ module Duke
 
       # Extracting pH value in @user_input
       def extract_ph
-        ph = @user_input.matchdel(/(\d{1,2}|\d{1,2}(\.|,)\d{1,2}) +(de +)?(ph|péage)/)
-        second_ph = @user_input.matchdel(/((ph|péage) *(est|était)? *(égal *(a|à)? *|= ?|de +|à +)?)(\d{1,2}(\.|,)\d{1,2}|\d{1,2})/)
+        ph = @user_input.matchdel(Duke::Utils::Regex.ph)
+        second_ph = @user_input.matchdel(Duke::Utils::Regex.second_ph)
         @parameters['ph'] = if ph
                               ph[1].gsub(',','.') # ph is the first capturing group
                             elsif second_ph
@@ -94,8 +94,8 @@ module Duke
 
       # Extract Nitrogen value in @user_input
       def extract_amino_nitrogen
-        nitrogen = @user_input.matchdel(/(azote aminé *(est|était)? *(égal +|= ?|de +)?(à)? *)(\d{1,3}(\.|,)\d{1,2}|\d{1,3})/)
-        second_nitrogen = @user_input.matchdel(/(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(mg|milligramme)?.?(par l|\/l|par litre)? ?+(d\'|de|en)? *azote aminé/)
+        nitrogen = @user_input.matchdel(Duke::Utils::Regex.nitrogen)
+        second_nitrogen = @user_input.matchdel(Duke::Utils::Regex.second_nitrogen)
         @parameters['amino_nitrogen'] =  if nitrogen
                                             nitrogen[1].gsub(',','.') # nitrogen is the first capturing group
                                           elsif second_nitrogen
@@ -107,8 +107,8 @@ module Duke
 
       # Extract Nitrogen value in @user_input
       def extract_ammoniacal_nitrogen
-        nitrogen = @user_input.matchdel(/(azote (ammoniacal|ammoniaque) *(est|était)? *(égal +|= ?|de +)?(à)? *)(\d{1,3}(\.|,)\d{1,2}|\d{1,3})/)
-        second_nitrogen = @user_input.matchdel(/(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(mg|milligramme)?.?(par l|\/l|par litre)? ?+(d\'|de|en)? *azote ammonia/)
+        nitrogen = @user_input.matchdel(Duke::Utils::Regex.ammo_nitrogen)
+        second_nitrogen = @user_input.matchdel(Duke::Utils::Regex.second_ammo_nitrogen)
         @parameters['ammoniacal_nitrogen'] =  if nitrogen
                                                 nitrogen[1].gsub(',','.') # nitrogen is the first capturing group
                                               elsif second_nitrogen
@@ -120,8 +120,8 @@ module Duke
 
       # Extract Nitrogen value in @user_input
       def extract_assimilated_nitrogen
-        nitrogen = @user_input.matchdel(/(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(mg|milligramme)?.?(par l|\/l|par litre)? ?+(d\'|de|en)? ?+(azote *(assimilable)?|sel d\'ammonium|substance(s)? azotée)/)
-        second_nitrogen = @user_input.matchdel(/((azote *(assimilable)?|sel d\'ammonium|substance azotée) *(est|était)? *(égal +|= ?|de +)?(à)? *)(\d{1,3}(\.|,)\d{1,2}|\d{1,3})/)
+        nitrogen = @user_input.matchdel(Duke::Utils::Regex.assi_nitrogen)
+        second_nitrogen = @user_input.matchdel(Duke::Utils::Regex.second_assi_nitrogen)
         @parameters['assimilated_nitrogen'] = if nitrogen
                                                 nitrogen[1].gsub(',','.') # nitrogen is the first capturing group
                                               elsif second_nitrogen
@@ -133,14 +133,21 @@ module Duke
 
       # Extract SanitaryState value in @user_input
       def extract_sanitarystate
-        sanitary_match = @user_input.match('(état sanitaire) *(.*?)(destination|tav|\d{1,3} *(kg|hecto|kilo|hl|tonne)|cuve|degré|température|pourcentage|alcool|ph|péage|azote|acidité|malique|manuel|mécanique|hectare|$)')
+        sanitary_match = @user_input.match(Duke::Utils::Regex.sanitary_state)
         sanitarystate = ""
         if sanitary_match
           sanitarystate += sanitary_match[2]
           @user_input.gsub!(sanitary_match[1], '')
           @user_input.gsub!(sanitary_match[2], '')
         end
-        {sain: /s(a|e)in/, correct: /correct/, nromal: /normal/, botrytis: /(botrytis|beau titre is)/, oïdium: /o.dium/, pourriture: /pourriture/}.each do |val, regex|
+        {
+          sain: /s(a|e)in/,
+          correct: /correct/,
+          nromal: /normal/,
+          botrytis: /(botrytis|beau titre is)/,
+          oïdium: /o.dium/,
+          pourriture: /pourriture/
+        }.each do |val, regex|
           sanitarystate += val.to_s if @user_input.matchdel regex   
         end
         @parameters['sanitarystate'] = (sanitarystate if sanitarystate != "")||nil
@@ -148,8 +155,8 @@ module Duke
 
       # Extract SO Acid value in @user_input
       def extrat_h2SO4
-        h2so4 = @user_input.matchdel(/(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(g|gramme)?.? *(par l|\/l|par litre)? ?+(d\'|de|en)? ?+(acidité|acide|h2so4)/)
-        second_h2so4 = @user_input.matchdel(/(acide|acidité|h2so4) *(est|était)? *(égal.? *(a|à)?|=|de|à|a)? *(\d{1,3}(\.|,)\d{1,2}|\d{1,3})/)
+        h2so4 = @user_input.matchdel(Duke::Utils::Regex.h2so4)
+        second_h2so4 = @user_input.matchdel(Duke::Utils::Regex.second_h2so4)
         @parameters['h2so4'] =  if h2so4
                                   h2so4[1].gsub(',','.') # h2so4 is the first capturing group
                                 elsif second_h2so4
@@ -161,8 +168,8 @@ module Duke
 
       # Extract Malic Acid value in @user_input
       def extract_malic
-        malic = @user_input.matchdel(/(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) *(g|gramme)?.?(par l|\/l|par litre)? *(d\'|de|en)? *(acide?) *(malique|malic)/)
-        second_malic = @user_input.matchdel(/((acide *)?(malic|malique) *(est|était)? *(égal +|= ?|de +|à +)?)(\d{1,3}(\.|,)\d{1,2}|\d{1,3})/)
+        malic = @user_input.matchdel(Duke::Utils::Regex.malic)
+        second_malic = @user_input.matchdel(Duke::Utils::Regex.second_malic)
         @parameters['malic'] =  if malic
                                   malic[1].gsub(',','.') # malic is the first capturing group
                                 elsif second_malic
@@ -192,8 +199,8 @@ module Duke
         # Extracts a plant area from a sentence
         [@plant, @crop_groups].each do |crops|
           crops.to_a.each do |target|
-            first_area = @user_input.match(/(\d{1,2}) *(%|pour( )?cent(s)?) *(de *(la|l\')?|du|des|sur|à|a|au)? #{target.matched}/)
-            second_area = @user_input.match( /(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) *((hect)?are(s)?) *(de *(la|l\')?|du|des|sur|à|a|au)? #{target.matched}/)
+            first_area = @user_input.match(Duke::Utils::Regex.first_area(target.matched))
+            second_area = @user_input.match(Duke::Utils::Regex.second_area(target.matched))
             if first_area  # If percentage -> Area value
               target[:area] = first_area[1].to_i
             elsif second_area && !Plant.find_by(id: target[:key]).nil? # If area -> convert in percentage -> Area value

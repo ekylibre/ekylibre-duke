@@ -82,26 +82,21 @@ module Duke
       end 
     end 
 
-    def to_ibm(**opt)
-      redirection, sentence, options = redirect
-      Duke::DukeResponse.new(parsed: self.duke_json, sentence: sentence, redirect: redirection, options: options, **opt)
-    end 
-
     # Extracts date with correct hour from @user_input
     # @return nil, but set @date
     def extract_date
       now = Time.now
       time = extract_hour(@user_input) # Extract hour from user_input
-      if @user_input.matchdel(/avant( |-)?hier/) # Look for specific keywords
+      if @user_input.matchdel(Duke::Utils::Regex.before_yesterday) # Look for specific keywords
         d = Date.yesterday.prev_day
       elsif @user_input.matchdel("hier")
         d = Date.yesterday
       elsif @user_input.matchdel("demain")
         d = Date.tomorrow
       else
-        if full_date = @user_input.matchdel(/(\d|\d{2})(er|eme|ème)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre) ?(\d{4})?/)
+        if full_date = @user_input.matchdel(Duke::Utils::Regex.full_date)
           @date = Time.new(year_from_str(full_date[4]), month_int(full_date[3]), full_date[1].to_i, time.hour, time.min, time.sec); return 
-        elsif slash_date = @user_input.matchdel(/(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?/)
+        elsif slash_date = @user_input.matchdel(Duke::Utils::Regex.slash_date)
           @date = Time.new(year_from_str(slash_date[4]), slash_date[2].to_i, slash_date[1].to_i, time.hour, time.min, time.sec); return
         else # If nothing matched, we return todays date
           @date = Time.new(now.year, now.month, now.day, time.hour, time.min, time.sec); return
@@ -111,12 +106,61 @@ module Duke
       @offset = "+0#{Time.at(@date.to_time).utc_offset / 3600}:00"
     end
 
+    private 
+
+    attr_accessor :retry, :tool, :cultivablezones, :offset
+    
+    def parseable 
+      [:tool, :cultivablezones]
+    end 
+
+    def to_ibm(**opt)
+      redirection, sentence, options = redirect
+      Duke::DukeResponse.new(parsed: self.duke_json, sentence: sentence, redirect: redirection, options: options, **opt)
+    end 
+
+    # Extracts duration from user_input
+    # @return nil but set @duration in minutes
+    def extract_duration
+        if @user_input.matchdel("trois quarts d'heure") # Look for non-numeric values
+          @duration = 45 ; return
+        elsif @user_input.matchdel("quart d'heure")
+          @duration = 15; return
+        elsif @user_input.matchdel("demi heure")
+          @duration = 30; return
+        end
+        delta_in_mins = 0
+        if min_time = @user_input.matchdel(Duke::Utils::Regex.minutes) # Extract MM regex
+          delta_in_mins += min_time[0].to_i
+        elsif hour_min_time = @user_input.matchdel(Duke::Utils::Regex.hours_minutes) # Extract HH:MM regex
+          delta_in_mins += hour_min_time[2].to_i*60 + hour_min_time[4].to_i
+        elsif hour_time = @user_input.matchdel(Duke::Utils::Regex.hours) # Extract HH: regex
+          delta_in_mins += hour_time[2].to_i*60
+          delta_in_mins += 30 if @user_input.matchdel("et demi") # Check for "et demi" in user_input
+        else
+          delta_in_mins = nil # Set duration to nil on default
+        end 
+        @duration = delta_in_mins
+    end
+
+    # @param [String] content
+    # @return Datetime
+    def extract_hour(content = @user_input)
+      now = Time.now
+      time = content.matchdel(Duke::Utils::Regex.time) # matching time regex
+      return Time.new(now.year, now.month, now.day, time[1].to_i, (0 if time[4].nil?)||time[4].to_i, 0) if time
+      {8 => "matin", 14 => "après-midi", 12 => "midi", 20 => "soir", 0 => "minuit"}.each do |hour, val|
+        return Time.new(now.year, now.month, now.day, hour, 0, 0) if content.matchdel(val) 
+      end 
+      return Time.now # If nothing matches, we return current hour
+    end
+
     # @return [Datetime(start), Datetime(end)]
     def extract_time_interval
       now = Time.now
-      since_date = @user_input.matchdel(/(depuis|à partir|a partir) *(du|de|le|la)? *(\d|\d{2}) *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)( *\d{4})?/)
-      since_slash_date = @user_input.matchdel(/(depuis|à partir|a partir) * (du|de|le|la)? *(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?/)
-      since_month_date = @user_input.matchdel(/(depuis|à partir|a partir) *(du|de|le|la)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)/)
+      since_date = @user_input.matchdel(Duke::Utils::Regex.since_date)
+      since_slash_date = @user_input.matchdel(Duke::Utils::Regex.since_slash_date)
+      since_month_date = @user_input.matchdel(Duke::Utils::Regex.since_month_date)
       if @user_input.matchdel("ce mois")
         return Time.new(now.year, now.month, 1, 0, 0, 0), now
       elsif @user_input.matchdel("cette semaine")
@@ -132,50 +176,6 @@ module Duke
         return Time.new(now.year, 1, 1, 0, 0, 0), now
       end 
     end 
-
-    private 
-
-    attr_accessor :retry, :tool, :cultivablezones, :offset
-    
-    def parseable 
-      [:tool, :cultivablezones]
-    end 
-
-    # Extracts duration from user_input
-    # @return nil but set @duration in minutes
-    def extract_duration
-        if @user_input.matchdel("trois quarts d'heure") # Look for non-numeric values
-          @duration = 45 ; return
-        elsif @user_input.matchdel("quart d'heure")
-          @duration = 15; return
-        elsif @user_input.matchdel("demi heure")
-          @duration = 30; return
-        end
-        delta_in_mins = 0
-        if min_time = @user_input.matchdel(/\d+\s(\w*minute\w*|mins)/) # Extract MM regex
-          delta_in_mins += min_time[0].to_i
-        elsif hour_min_time = @user_input.matchdel(/(de|pendant|durée) *(\d{1,2})\s?(heures|h|heure)\s?(\d\d)/) # Extract HH:MM regex
-          delta_in_mins += hour_min_time[2].to_i*60 + hour_min_time[4].to_i
-        elsif hour_time = @user_input.matchdel(/(de|pendant|durée) *(\d{1,2})\s?(h\b|h\s|heure)/) # Extract HH: regex
-          delta_in_mins += hour_time[2].to_i*60
-          delta_in_mins += 30 if @user_input.matchdel("et demi") # Check for "et demi" in user_input
-        else
-          delta_in_mins = nil # Set duration to nil on default
-        end 
-        @duration = delta_in_mins
-    end
-
-    # @param [String] content
-    # @return Datetime
-    def extract_hour(content = @user_input)
-      now = Time.now
-      time = content.matchdel(/\b(00|[0-9]|1[0-9]|2[0-3]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b/) # matching time regex
-      return Time.new(now.year, now.month, now.day, time[1].to_i, (0 if time[4].nil?)||time[4].to_i, 0) if time # if we match, we return correct hour
-      {8 => "matin", 14 => "après-midi", 12 => "midi", 20 => "soir", 0 => "minuit"}.each do |hour, val| # if any_word matches, we return correct hour
-        return Time.new(now.year, now.month, now.day, hour, 0, 0) if content.matchdel(val) 
-      end 
-      return Time.now # If nothing matches, we return current hour
-    end
 
     # @param [Str|Integer|Float] year
     # @return [Integer] parsed year
@@ -198,8 +198,8 @@ module Duke
     # @param [Integer] value : Integer extracted by ibm
     # @return [Stringified float or integer] || [nilType]
     def extract_number_parameter(value)
-      match_to_float = @user_input.match(/#{value}((\.|,)\d{1,2})/) unless value.nil? #check for float when watson returns integer
-      hasNumbers = @user_input.match('\d{1,4}((\.|,)\d{1,2})?') #check for number inside user_input
+      match_to_float = @user_input.match(Duke::Utils::Regex.int_to_float) unless value.nil? # check for float when watson returns integer
+      hasNumbers = @user_input.match(Duke::Utils::Regex.up_to_four_digits_float) #check for number inside user_input
       if value.nil?
         value = hasNumbers[0].gsub(',','.').gsub(' ','') if hasNumbers
         return nil unless hasNumbers

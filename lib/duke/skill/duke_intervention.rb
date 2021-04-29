@@ -59,7 +59,7 @@ module Duke
         extract_date
         extract_wp_from_interval(input_clone)
         unless @working_periods.present?
-          if input_clone.match(/\b(00|[0-9]|1[0-1]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b *(du|de|ce)? *matin/)
+          if input_clone.match(Duke::Utils::Regex.morning_hour)
             @duration = 60 if @duration.nil?
           elsif input_clone.match(Duke::Utils::Regex.afternoon_hour)
             @date = @date.change(hour: @date.hour+12)
@@ -77,7 +77,7 @@ module Duke
                   }
                 ]
             end
-          elsif input_clone.match(/(apr(e|è)?s( |-)?midi|apr(e|è)m|apm)/)
+          elsif input_clone.match(Duke::Utils::Regex.afternoon)
             if @duration.present?
               working_periods_attributes
               return
@@ -258,13 +258,13 @@ module Duke
 
       # Extract vine stock bud charge reading
       def extract_vine_stock_bud_charge
-        if charge = @user_input.match(/(\d{1,2}) *(bourgeons|yeux|oeil)/)
+        if charge = @user_input.match(Duke::Utils::Regex.bud_charge)
           @readings[:target].push(
             {
               indicator_name: :vine_stock_bud_charge, indicator_datatype: :integer, integer_value: charge[1]
             }
           )
-        elsif sec_charge = @user_input.match(/charge *(de|à|avec|a)? *(\d{1,2})/)
+        elsif sec_charge = @user_input.match(Duke::Utils::Regex.second_bud_charge)
           @readings[:target].push(
             {
               indicator_name: :vine_stock_bud_charge, indicator_datatype: :integer, integer_value: sec_charge[2]
