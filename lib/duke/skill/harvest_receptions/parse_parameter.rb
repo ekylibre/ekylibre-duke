@@ -21,6 +21,22 @@ module Duke
           to_ibm
         end
         
+        private
+
+        # @param [String] type : type_of parameter
+        # @param [String] value : Float.to_s 
+        def add_parameter(type, value)
+          value = {rate: value.to_f, unit: find_quantity_unit } if type.to_sym == :quantity
+          @parameters[type] = value
+        end 
+        
+        # returns an unit from user_input
+        def find_quantity_unit 
+          return 'kg' if @user_input.match('(?i)(kg|kilo)')
+          return 't' if @user_input.match('(?i)\d *t\b|tonne')
+          return 'hl'
+        end 
+
       end
     end
   end

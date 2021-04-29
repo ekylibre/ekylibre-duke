@@ -18,6 +18,15 @@ module Duke
           to_ibm
         end
         
+        private
+
+        # @param [DukeHarvestReception] harv
+        def update_press harv 
+          harv.find_ambiguity
+          [:press, :ambiguities].each{|type| self.instance_variable_set("@#{type}", harv.send(type))}
+          update_description harv.user_input
+        end 
+
       end
     end
   end

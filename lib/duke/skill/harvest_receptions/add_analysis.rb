@@ -17,6 +17,19 @@ module Duke
           update_description(@event.user_input)
           to_ibm
         end
+
+        private
+
+        # @param [DukeHarvestReception] harv
+        def concatenate_analysis harv
+          final_parameters = harv.parameters.dup.map(&:dup).to_h
+          harv.parameters.each do |key, value|
+            if (['key','tav'].include?(key)||value.nil?)
+              final_parameters[key] = @parameters[key]
+            end
+          end
+          @parameters = final_parameters
+        end
         
       end
     end

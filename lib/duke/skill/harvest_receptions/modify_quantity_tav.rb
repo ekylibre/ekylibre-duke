@@ -19,6 +19,32 @@ module Duke
           update_description(@event.user_input)
           to_ibm
         end
+
+        private 
+
+        # Perform Quantity/Tavp regex extractions 
+        def extract_quantity_tavp
+          extract_quantity
+          extract_conflicting_degrees
+          extract_tav
+        end 
+
+        def extract_quantity
+          # Extracting quantity data
+          quantity = @user_input.matchdel(/(\d{1,5}(\.|,)\d{1,2}|\d{1,5}) *(kilo|kg|hecto|expo|texto|hl|t\b|tonne)/)
+          if quantity
+            unit = if quantity[3].match(/(kilo|kg)/)
+                    "kg" 
+                    elsif quantity[3].match(/(hecto|hl|texto|expo)/)
+                    "hl"
+                    else
+                    "t"
+                    end
+            @parameters['quantity'] = {"rate" => quantity[1].gsub(',','.').to_f, "unit" => unit} # rate is the first capturing group
+          else
+            @parameters['quantity'] = nil
+          end
+        end
         
       end
     end

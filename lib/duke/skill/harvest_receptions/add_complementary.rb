@@ -16,6 +16,15 @@ module Duke
           to_ibm
         end
         
+        private
+
+        # @param [String] ComplementaryType
+        def update_complementary type
+          @parameters[:complementary] = {} if @parameters[:complementary].nil?
+          @parameters[:complementary][type] = @user_input
+          update_description(@user_input)
+        end
+
       end
     end
   end

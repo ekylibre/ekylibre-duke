@@ -18,16 +18,6 @@ module Duke
         @description = @user_input.clone
       end
 
-      # Create intervention from json
-      # @param [Json] duke_json - Json representation of dukeIntervention
-      # @param [Boolean] all - Should we recover everything, or only user_specifics
-      # @returns DukeIntervention
-      def recover_from_hash(duke_json, all = true)
-        duke_json.slice(*parseable).each{|k, v| self.instance_variable_set("@#{k}", DukeMatchingArray.new(arr: v))}
-        duke_json.except(*parseable).each{|k, v| self.instance_variable_set("@#{k}", v)} if all
-        self
-      end
-
       # Parse every Intervention Parameters
       def parse_sentence
         extract_date_and_duration  # getting cleaned user_input and finding when it happened and how long it lasted
@@ -37,27 +27,6 @@ module Duke
         extract_intervention_readings  # extract_readings
         find_ambiguity # Look for ambiguities in what has been parsed
         @specific = parseable # Set specifics searched items to all
-      end
-
-      # Parse a specific item type, if user can answer via buttons
-      # @param [String] sp : specific item type
-      def parse_specific_buttons(specific)
-        if btn_click_response? @user_input # If response type matches a multiple click response
-          products = btn_click_responses(@user_input).map do |id| # Creating a list with all chosen products
-            Product.find_by_id id
-          end
-          products.each{|product| unless product.nil?
-                                    send(specific).push DukeMatchingItem.new(name: product.name,
-                                                                            key: product.id,
-                                                                            distance: 1,
-                                                                            matched: product.name)
-                                  end}
-          add_input_rate if specific.to_sym == :input
-          @specific = specific.to_sym
-          @description = products.map(&:name).join(', ')
-        else
-          parse_specific(specific)
-        end
       end
 
       # Parse a specific item type, if user input isn't a button click
@@ -73,32 +42,6 @@ module Duke
         extract_user_specifics(duke_json: self.duke_json(@specific, :procedure, :date, :user_input))
         add_input_rate if specific.to_sym == :input
         find_ambiguity
-      end
-
-      # @param [DukeIntervention] int : intervention to concatenate with it's specific attributes
-      def concat_specific(int:)
-        @ambiguities = int.ambiguities
-        [int.specific].flatten.each do |var|
-          new_var = DukeMatchingArray.new(arr: send(var).to_a + int.send(var).to_a)
-          self.instance_variable_set("@#{var}", new_var.uniq_allow_ambiguity(@ambiguities))
-        end
-        self.update_description(int.description) unless btn_click_cancelled?(int.description)
-      end
-
-      # @param [DukeIntervention] int : previous DukeIntervention
-      def join_temporality(int)
-        self.update_description(int.description)
-        if int.working_periods.size > 1 && int.duration.present?
-          @working_periods = int.working_periods
-          return
-        elsif (int.date.to_date == @date.to_date || int.date.to_date != @date.to_date && int.date.to_date == Time.now.to_date)
-          @date = @date.to_time.change(hour: int.date.hour, min: int.date.min) if int.not_current_time?
-        elsif int.date.to_date != Time.now.to_date
-          @date = @date.to_time.change(year: int.date.year, month: int.date.month, day: int.date.day)
-          @date = @date.to_time.change(hour: int.date.hour, min: int.date.min) if int.not_current_time?
-        end
-        @duration = int.duration if int.duration.present? && (@duration.nil? || @duration.eql?(60) || !int.duration.eql?(60))
-        working_periods_attributes
       end
 
       # @param [Integer] value : Integer parsed by ibm
@@ -184,6 +127,16 @@ module Duke
       # @returns Array of symbols
       def parseable
         [*super(), :input, :doer, :tool, :crop_groups, :plant, :cultivation, :land_parcel]
+      end
+
+      # @param [DukeIntervention] int : intervention to concatenate with it's specific attributes
+      def concat_specific(int:)
+        @ambiguities = int.ambiguities
+        [int.specific].flatten.each do |var|
+          new_var = DukeMatchingArray.new(arr: send(var).to_a + int.send(var).to_a)
+          self.instance_variable_set("@#{var}", new_var.uniq_allow_ambiguity(@ambiguities))
+        end
+        self.update_description(int.description) unless btn_click_cancelled?(int.description)
       end
 
       # @returns json Option with all clickable buttons understandable by IBM
