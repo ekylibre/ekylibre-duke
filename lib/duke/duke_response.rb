@@ -1,24 +1,14 @@
 module Duke 
   class DukeResponse 
 
-    def initialize(**args)
-      args.each do |key, value|
-        if permitted_params.include?(key)
-          instance_variable_set("@#{key}", value)
-        else
-          raise ArgumentError
-        end
-      end
-      self.to_json
+    def initialize(redirect: nil, parsed: nil, sentence: nil, options: nil, moreable: nil, modifiable: nil, user_input: nil)
+      @redirect = redirect
+      @parsed = parsed
+      @sentence = sentence
+      @options = options
+      @moreable = moreable
+      @modifiable = modifiable
     end
-
-    private 
-
-    attr_accessor :parsed, :redirect, :options, :optional
-
-    def permitted_params 
-      [:parsed, :redirect, :options, :optional]
-    end 
 
   end 
 end

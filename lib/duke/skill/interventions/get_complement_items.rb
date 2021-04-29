@@ -11,7 +11,7 @@ module Duke
         end 
 
         def handle
-          to_ibm(optionAll: all_options(@event.options.specific))
+          to_ibm(options: all_options(@event.options.specific))
         end
 
         private 

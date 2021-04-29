@@ -10,9 +10,7 @@ module Duke
         end 
 
         def handle
-          {
-            link: "/backend/interventions/#{save_intervention.id}"
-          }
+          Duke::DukeResponse.new(sentence: I18n.t("duke.interventions.saved", id: save_intervention.id))
         end
         
         private 

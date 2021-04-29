@@ -209,7 +209,7 @@ module Duke
           sentence += "<br>&#8226 #{I18n.t('duke.interventions.group')} : #{@crop_groups.map(&:name).join(', ')}"
         end
         tar_type = procedo.parameters.find {|param| param.type == :target}
-        if tar_type.present? || send(tar_type.name).to_a.present?
+        if tar_type.present? && send(tar_type.name).to_a.present?
           sentence += "<br>&#8226 #{I18n.t("duke.interventions.#{tar_type.name}")} : #{send(tar_type.name).map(&:name).join(', ')}"
         end
         sentence += "<br>&#8226 #{I18n.t('duke.interventions.tool')} : #{@tool.map(&:name).join(', ')}" if @tool.to_a.present?
@@ -217,12 +217,12 @@ module Duke
         if @input.to_a.present?
           sentence += "<br>&#8226 #{I18n.t('duke.interventions.input')} : "
           @input.each do |input|
-            sentence += "#{input.name} (#{input[:rate][:value].to_f}"
+            sentence += "#{input.name} (#{input[:rate][:value].to_f} "
             if input[:rate][:unit].to_sym == :population
-              sentence += "#{Matter.find_by_id(input.key)&.unit_name})"
+              sentence += "#{Matter.find_by_id(input.key)&.unit_name}), "
             else
               input_param = procedo.parameters_of_type(:input).find {|inp| Matter.find_by_id(input.key).of_expression(inp.filter)}
-              sentence += I18n.t("duke.interventions.units.#{input_param.handler(input[:rate][:unit]).unit.name}")
+              sentence += "#{I18n.t("duke.interventions.units.#{input_param.handler(input[:rate][:unit]).unit.name}")}), "
             end
           end
         end
@@ -393,40 +393,14 @@ module Duke
       # @return [String, String, Hash|Array|Integer] what_next, sentence, optional
       def redirect
         if @retry == 2
-          return 'cancel'
+          return :cancel
         elsif @ambiguities.present?
-          return 'ask_ambiguity', nil, @ambiguities.first
+          return :ask_ambiguity, nil, @ambiguities.first
         elsif @input.to_a.any? {|input| input[:rate][:value].nil?}
-          return 'ask_input_rate', *speak_input_rate
+          return :ask_input_rate, *speak_input_rate
         else
-          return 'save', speak_intervention
+          return :save, speak_intervention
         end
-      end
-
-      def w_procedure_redirect(options)
-        {
-          user_input: @description,
-          redirect: :what_procedure,
-          optional: options
-        }
-      end
-
-      def non_supported_redirect
-        {
-          redirect: :non_supported_proc
-        }
-      end
-
-      def cancel_redirect
-        {
-          redirect: :cancel
-        }
-      end
-
-      def not_understanding_redirect
-        {
-          redirect: :not_understanding
-        }
       end
 
       def working_periods_attributes

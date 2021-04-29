@@ -13,7 +13,6 @@ module Duke
         def handle
           tmpInt = Duke::Skill::DukeIntervention.new(procedure: @procedure,  date: @date, user_input: @event.user_input)
           tmpInt.extract_date_and_duration
-          concat_specific(int: tmpInt)
           join_temporality(tmpInt)
           to_ibm
         end

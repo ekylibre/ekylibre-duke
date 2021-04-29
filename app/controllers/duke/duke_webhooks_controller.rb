@@ -25,7 +25,7 @@ module Duke
       class_ = ("Duke::Skill::#{event.handler}").constantize.new(event)
       I18n.with_locale(:fra) do
         response = class_.handle
-        render json: response
+        render json: response.as_json
       end 
     end
 

@@ -83,8 +83,8 @@ module Duke
     end 
 
     def to_ibm(**opt)
-      what_next, sentence, optional = redirect
-      return { parsed: self.duke_json, sentence: sentence, redirect: what_next, optional: optional}.merge(opt)
+      redirection, sentence, options = redirect
+      Duke::DukeResponse.new(parsed: self.duke_json, sentence: sentence, redirect: redirection, options: options, **opt)
     end 
 
     # Extracts date with correct hour from @user_input

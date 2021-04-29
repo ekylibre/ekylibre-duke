@@ -115,37 +115,6 @@ module Duke
           end
         end
 
-        # Suggest disambiguation to the user for his selected procedure
-        # @returns json
-        def suggest_procedures_disambiguation
-          procs = @procedure[:procedures].map do |proc|
-            label = Procedo::Procedure.find(proc[:name]).human_name
-            label +=  " - Prod. #{proc[:family]}" if proc.key?(:family)
-            optJsonify(label, proc[:name])
-          end
-          w_procedure_redirect(dynamic_options(I18n.t('duke.interventions.ask.which_procedure'), procs))
-        end
-
-        # Suggest disambiguation to the user for his selected category
-        # @returns json
-        def suggest_categories_disambiguation
-          categories = @procedure[:categories].map do |cat|
-            label = Onoma::ProcedureCategory.find(cat[:name]).human_name
-            label += " - Prod. #{cat[:family]}" if cat.key?(:family)
-            optJsonify(label, cat[:name])
-          end
-          w_procedure_redirect(dynamic_options(I18n.t('duke.interventions.ask.what_category'), categories))
-        end
-
-        # Suggest disambiguation to the user for the intervention family
-        def suggest_families_disambiguation
-          families = %i[plant_farming vine_farming].map do |fam|
-            optJsonify(Onoma::ActivityFamily[fam].human_name, fam)
-          end
-          families += [optJsonify(I18n.t('duke.interventions.cancel'), :cancel)]
-          w_procedure_redirect(dynamic_options(I18n.t('duke.interventions.ask.what_family'), families))
-        end
-
         # Suggest procedures to the user for selected category
         def suggest_procedures_from_category
           procs = Procedo::Procedure.of_main_category(@procedure)
@@ -204,23 +173,7 @@ module Duke
             suggest_families_disambiguation
           end
         end
-  
-        # Handles string (not accepted procedure) accordingly
-        def suggest_procedure_from_string
-          procedo = Procedo::Procedure.find(@procedure)
-          if Onoma::ActivityFamily.find(@procedure).present?
-            suggest_categories_from_family(@procedure)
-          elsif Onoma::ProcedureCategory.find(@procedure).present?
-            suggest_procedures_from_category
-          elsif procedo.present? && (procedo.activity_families & %i[vine_farming plant_farming]).empty?
-            non_supported_redirect
-          elsif @procedure.scan(/cancel/).present?
-            cancel_redirect
-          else
-            not_understanding_redirect
-          end
-        end
-  
+
         # Handles hash procedure (matched a category or an ambiguity) accordingly
         def suggest_procedure_from_hash
           if @procedure.key?(:categories)
@@ -233,6 +186,22 @@ module Duke
           end
         end
   
+        # Handles string (not accepted procedure) accordingly
+        def suggest_procedure_from_string
+          procedo = Procedo::Procedure.find(@procedure)
+          if Onoma::ActivityFamily.find(@procedure).present?
+            suggest_categories_from_family(@procedure)
+          elsif Onoma::ProcedureCategory.find(@procedure).present?
+            suggest_procedures_from_category
+          elsif procedo.present? && (procedo.activity_families & %i[vine_farming plant_farming]).empty?
+            Duke::DukeResponse.new(redirect: :non_supported_proc)
+          elsif @procedure.scan(/cancel/).present?
+            Duke::DukeResponse.new(redirect: :cancel)
+          else
+            Duke::DukeResponse.new(redirect: :not_understanding)
+          end
+        end
+  
         # Suggest disambiguation to the user for his selected procedure
         # @returns json
         def suggest_procedures_disambiguation
@@ -241,7 +210,8 @@ module Duke
             label +=  " - Prod. #{proc[:family]}" if proc.key?(:family)
             optJsonify(label, proc[:name])
           end
-          w_procedure_redirect(dynamic_options(I18n.t('duke.interventions.ask.which_procedure'), procs))
+          options = dynamic_options(I18n.t('duke.interventions.ask.which_procedure'), procs)
+          Duke::DukeResponse.new(parsed: @description, redirect: :what_procedure, options: options)
         end
   
         # Suggest disambiguation to the user for his selected category
@@ -252,7 +222,8 @@ module Duke
             label += " - Prod. #{cat[:family]}" if cat.key?(:family)
             optJsonify(label, cat[:name])
           end
-          w_procedure_redirect(dynamic_options(I18n.t('duke.interventions.ask.what_category'), categories))
+          options = dynamic_options(I18n.t('duke.interventions.ask.what_category'), categories)
+          Duke::DukeResponse.new(parsed: @description, redirect: :what_procedure, options: options)
         end
   
         # Suggest disambiguation to the user for the intervention family
@@ -261,7 +232,8 @@ module Duke
             optJsonify(Onoma::ActivityFamily[fam].human_name, fam)
           end
           families += [optJsonify(I18n.t('duke.interventions.cancel'), :cancel)]
-          w_procedure_redirect(dynamic_options(I18n.t('duke.interventions.ask.what_family'), families))
+          options = dynamic_options(I18n.t('duke.interventions.ask.what_family'), families)
+          Duke::DukeResponse.new(parsed: @description, redirect: :what_procedure, options: options)
         end
   
         # Suggest procedures to the user for selected category
@@ -271,7 +243,8 @@ module Duke
           procs.map! do |proc|
             optJsonify(proc.human_name.to_sym, proc.name)
           end
-          w_procedure_redirect(dynamic_options(I18n.t('duke.interventions.ask.which_procedure'), procs))
+          options = dynamic_options(I18n.t('duke.interventions.ask.which_procedure'), procs)
+          Duke::DukeResponse.new(parsed: @description, redirect: :what_procedure, options: options)
         end
     
         # Suggest categories to the user for selected family
@@ -283,7 +256,8 @@ module Duke
           categories.map! do |cat|
             optJsonify(cat.human_name, cat.name)
           end
-          w_procedure_redirect(dynamic_options(I18n.t('duke.interventions.ask.what_category'), categories))
+          options = dynamic_options(I18n.t('duke.interventions.ask.what_category'), categories)
+          Duke::DukeResponse.new(parsed: @description, redirect: :what_procedure, options: options)
         end
 
         # Suggest categories to the user for selected family
@@ -295,7 +269,8 @@ module Duke
           categories.map! do |cat|
             optJsonify(cat.human_name, cat.name)
           end
-          w_procedure_redirect(dynamic_options(I18n.t('duke.interventions.ask.what_category'), categories))
+          options = dynamic_options(I18n.t('duke.interventions.ask.what_category'), categories)
+          Duke::DukeResponse.new(parsed: @description, redirect: :what_procedure, options: options)
         end
 
         # @returns json Option with all clickable buttons understandable by IBM
@@ -304,7 +279,7 @@ module Duke
           candidates = %i[target tool doer input].select{|type| procedo.parameters_of_type(type).present?}
                                                       .map{|type| optJsonify(I18n.t("duke.interventions.#{type}"))}
           candidates.push optJsonify(I18n.t('duke.interventions.working_period'))
-          return dynamic_options(I18n.t('duke.interventions.ask.what_add'), candidates)
+          dynamic_options(I18n.t('duke.interventions.ask.what_add'), candidates)
         end
         
       end

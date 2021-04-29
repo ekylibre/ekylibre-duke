@@ -106,6 +106,7 @@ fra:
       crop_groups: "Groupements"
       false_vine_production: "Prod. Veg."
       true_vine_production: "Prod. Viti."
+      saved: "L'intervention est enregistrée.<br>Je vous y redirige.redirect=/backend/interventions/%{id}"
       cancel: "Je ne souhaite pas saisir une intervention"
     harvest_reception:
       ask:
