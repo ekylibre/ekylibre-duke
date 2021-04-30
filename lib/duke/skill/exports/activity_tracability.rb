@@ -11,10 +11,12 @@ module Duke
         end 
 
         def handle
-          Duke::DukeSingleMatch.new(user_input: params[:user_input],
-            email: params[:user_id],
-            session_id: params[:session_id],
-            activity_variety: Duke::DukeMatchingArray.new).activity_traca_redirect
+          if @activity_variety.blank?
+            {status: :no_cultivation, sentence: I18n.t("duke.exports.no_var_found")}
+          else
+            InterventionExportJob.perform_later(activity_id: @activity_variety.key, campaign_ids: Activity.find_by(id: @activity_variety.key).campaigns.pluck(:id), user: User.find_by(email: @email), duke_id: @session_id)
+            {status: :started, sentence: I18n.t("duke.exports.activity_export_started" , activity: @activity_variety.name)}
+          end
         end
 
         private

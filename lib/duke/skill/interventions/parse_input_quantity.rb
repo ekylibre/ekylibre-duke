@@ -11,7 +11,6 @@ module Duke
         end 
 
         def handle
-          byebug
           @user_input = @event.user_input
           value = extract_number_parameter(@event.options.quantity)
           if value.present?

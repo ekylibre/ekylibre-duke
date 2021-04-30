@@ -1,5 +1,5 @@
 module Duke
-  class DukeParser < DukeArticle
+  class DukeParser < Skill::DukeArticle
     using Duke::DukeRefinements
 
     def initialize(word_combo:, level:, **args) 

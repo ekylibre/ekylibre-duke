@@ -12,7 +12,6 @@ module Duke
 
         def handle
           tmpInt = Duke::Skill::DukeIntervention.new(procedure: @procedure,  date: @date, user_input: @event.user_input.duke_clear)
-          byebug
           tmpInt.extract_wp_from_interval
           add_working_interval(tmpInt.working_periods)
           to_ibm

@@ -1,0 +1,23 @@
+module Duke
+  module Skill
+    module Redirections
+      class ToBankReconciliationFromSuggestion < Duke::Skill::DukeSingleMatch
+        using Duke::DukeRefinements
+
+        def initialize(event)
+          super(user_input: event.user_input)
+        end 
+
+        def handle
+          cash = Cash.find_by_id(@user_input)
+          if cash.present?
+            {status: :over, sentence: I18n.t("duke.redirections.to_reconciliation_account", id: cash.id, name: cash.name)}
+          else
+            {status: :over, sentence: I18n.t("duke.redirections.to_reconcialiation_accounts")}
+          end
+        end
+        
+      end
+    end
+  end
+end

@@ -11,9 +11,13 @@ module Duke
         end 
 
         def handle
-          Duke::DukeSingleMatch.new(user_input: params[:user_input],
-            email: params[:user_id],
-            session_id: params[:session_id]).balance_sheet_redirect(params[:financial_year], params[:printer], params[:template_nature])
+          year_from_id(@event.options.specific)
+          if @financial_year.nil?
+            w_fy
+          else
+            PrinterJob.perform_later(@event.options.printer, template: DocumentTemplate.find_by_nature(@event.options.template), financial_year: FinancialYear.find_by_id(@financial_year[:key]), perform_as: User.find_by(email: @email), duke_id: @session_id)
+            {redirect: :started, sentence: I18n.t("duke.exports.#{template_nature}_started", year: @financial_year[:name])}
+          end
         end
 
         private

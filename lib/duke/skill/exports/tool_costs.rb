@@ -11,10 +11,12 @@ module Duke
         end 
 
         def handle
-          Duke::DukeSingleMatch.new(user_input: params[:user_input],
-            email: params[:user_id],
-            session_id: params[:session_id],
-            tool: Duke::DukeMatchingArray.new).tool_costs_redirect
+          if @tool.blank?
+            {status: :no_tool, sentence: I18n.t("duke.exports.no_tool_found")}
+          else
+            ToolCostExportJob.perform_later(equipment_ids: [@tool.key], campaign_ids: Campaign.current.ids, user: User.find_by(email: @email, duke_id: @session_id))
+            {status: :started, sentence: I18n.t("duke.exports.tool_export_started" , tool: @tool.name)}
+          end
         end
 
         private
