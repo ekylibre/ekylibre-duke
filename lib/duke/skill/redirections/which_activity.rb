@@ -13,9 +13,13 @@ module Duke
         def handle
           act = Activity.find_by_id(@user_input.to_i)
           if act.present?
-            {found: :yes, sentence: I18n.t("duke.redirections.activity", variety: act.cultivation_variety_name), key: act.id} 
+            Duke::DukeResponse.new(
+              redirect: :yes,
+              sentence: I18n.t("duke.redirections.activity", variety: act.cultivation_variety_name),
+              parsed: act.id
+            )
           else
-            {found: :no, sentence: I18n.t("duke.redirections.no_activity")}
+            Duke::DukeResponse.new(redirect: :no, sentence: I18n.t("duke.redirections.no_activity"))
           end
         end
         

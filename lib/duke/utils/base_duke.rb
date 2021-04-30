@@ -11,7 +11,8 @@ module Duke
     # @param [String] label - Displayed btn text
     # @param [String] text - Sent value on btn.click
     def optJsonify(label, text=label)
-      {label: label,
+      {
+        label: label,
         value: {
           input: {
             text: text

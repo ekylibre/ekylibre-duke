@@ -8,6 +8,7 @@ module Duke
           super(user_input: event.user_input)
           @financial_year = Duke::DukeMatchingArray.new
           extract_best(:financial_year)
+          @event = event
         end 
 
         def handle
@@ -16,15 +17,28 @@ module Duke
           if @financial_year.nil?
             w_fy
           elsif FinancialYear.find_by_id(@financial_year[:key]).exchanges.any?{|exc| exc.opened?}
-            {redirect: :already_open, sentence: I18n.t("duke.exports.exchange_already_opened", fy: @financial_year[:name], id: @financial_year[:key])}
-          elsif Journal.where("nature = 'various'").empty? 
-            {redirect: :create_journal, sentence: I18n.t("duke.exports.need_journal_creation")}
+            Duke::DukeResponse.new(
+              redirect: :already_open,
+              sentence: I18n.t("duke.exports.exchange_already_opened", fy: @financial_year[:name], id: @financial_year[:key])
+            )
+          elsif Journal.where("nature = 'various'").empty?
+            Duke::DukeResponse.new(
+              redirect: :create_journal,
+              sentence: I18n.t("duke.exports.need_journal_creation")
+            )
           elsif FinancialYear.find_by_id(@financial_year[:key]).accountant.nil?
-            {redirect: :add_accountant, sentence: I18n.t("duke.exports.need_fy_accountant", id: @financial_year[:key])}
-          elsif Journal.where("nature = 'various'").none?{|jr|jr.accountant == FinancialYear.find_by_id(@financial_year[:key]).accountant}
-            {redirect: :modify_accountant, fy: @financial_year[:key], sentence: I18n.t("duke.exports.unconcording_accountants", accountant: FinancialYear.find_by_id(@financial_year[:key]).accountant.full_name)}
+            Duke::DukeResponse.new(
+              redirect: :add_accountant,
+              sentence: I18n.t("duke.exports.need_fy_accountant", id: @financial_year[:key])
+            )
+          elsif Journal.where("nature = 'various'").none?{ |j| j.accountant == FinancialYear.find_by_id(@financial_year[:key]).accountant}
+            accountant = FinancialYear.find_by_id(@financial_year[:key]).accountant.full_name
+            Duke::DukeResponse.new(
+              redirect: :modify_accountant,
+              sentence: I18n.t("duke.exports.unconcording_accountants", accountant: accountant)
+            )
           else
-            {redirect: :done, sentence: I18n.t("duke.exports.create_exchange", id: @financial_year[:key])}
+            Duke::DukeResponse.new(redirect: :done, sentence: I18n.t("duke.exports.create_exchange", id: @financial_year[:key]))
           end
         end
         

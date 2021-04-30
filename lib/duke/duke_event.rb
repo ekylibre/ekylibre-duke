@@ -9,14 +9,14 @@ module Duke
       @user_id = params[:user_id]
       @session_id = params[:session_id]
       @user_input = params[:user_input]
+      @parsed = params[:parsed]
       @options = params.fetch(:options, {}).permit(*options_params).to_h.to_struct
-      @parsed = params.fetch(:parsed, {}).permit!
     end 
 
     private 
 
     def options_params 
-      %I[ambiguity_key ambiguity_type procedure specific index quantity]
+      %I[ambiguity_key ambiguity_type procedure specific index quantity number]
     end 
 
   end 

@@ -22,9 +22,10 @@ module Duke
             w_fec_format
           elsif (ex = FinancialYear.find_by_id(@financial_year[:key])).respond_to?("fec_format")
             FecExportJob.perform_later(ex, ex.fec_format, 'year', User.find_by(email: @email), exportFormat.to_s, @session_id)
-            {redirect: :startedExport, sentence: I18n.t("duke.exports.fec_started_redirection", code: @financial_year[:name], id: @financial_year[:key])}
+            sentence = I18n.t("duke.exports.fec_started_redirection", code: @financial_year[:name], id: @financial_year[:key])
+            Duke::DukeResponse.new(redirect: :startedExport, sentence: sentence)
           else
-            {redirect: :startedExport, sentence: I18n.t("duke.exports.fec_ekyviti")}
+            Duke::DukeResponse.new(redirect: :startedExport, sentence: I18n.t("duke.exports.fec_ekyviti"))
           end
         end
 
@@ -33,7 +34,7 @@ module Duke
         # Correct FEC_format ambiguity
         def w_fec_format
           options = dynamic_options(I18n.t("duke.exports.which_fec_format"), [optJsonify(:Texte, :text), optJsonify(:XML, :xml)])
-          {redirect: :ask_fec_format, options: options, financial_year: @financial_year[:key]}
+          Duke::DukeResponse.new(redirect: :ask_fec_format, options: options, parsed: @financial_year[:key])
         end 
         
       end

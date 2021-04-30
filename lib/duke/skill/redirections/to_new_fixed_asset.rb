@@ -12,9 +12,12 @@ module Duke
 
         def handle
           if @depreciable.blank?
-            {redirect: :speak, sentence: I18n.t("duke.redirections.to_undefined_fixed_asset")}
+            Duke::DukeResponse.new(redirect: :speak, sentence: I18n.t("duke.redirections.to_undefined_fixed_asset"))
           else
-            {redirect: :speak, sentence: I18n.t("duke.redirections.to_specific_fixed_asset",id: @depreciable.key, name: @depreciable.name)}
+            Duke::DukeResponse.new(
+              redirect: :speak,
+              sentence: I18n.t("duke.redirections.to_specific_fixed_asset",id: @depreciable.key, name: @depreciable.name)
+            )
           end
         end
         

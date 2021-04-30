@@ -176,6 +176,24 @@ module Duke
         /charge *(de|à|avec|a)? *(\d{1,2})/
       end
 
+      # Sentence cleaning 
+      
+      def self.numeroes
+        /(\bnum(e|é)ro\b|n ?°)/
+      end 
+
+      def self.useless_words
+        /\b(le|la|les)\b/
+      end 
+
+      def self.useless_characters
+        /(#|-|_|\\)/
+      end
+
+      def self.multiple_whitespaces
+        /(?<=\s)\s/
+      end
+
     end
   end
 end

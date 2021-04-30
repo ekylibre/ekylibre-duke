@@ -67,9 +67,7 @@ module Duke
       # Extracting TAV value in @user_input
       def extract_tav
         tav = @user_input.matchdel(Duke::Utils::Regex.tav)
-        unless @parameters.key?('tav')
-          @parameters['tav'] = tav ? tav[1].gsub(',','.') : nil
-        end
+        @parameters['tav'] = tav ? tav[1].gsub(',','.') : nil unless @parameters.key?('tav')
       end
 
       # Extracting Temperature value in @user_input

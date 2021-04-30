@@ -65,22 +65,33 @@ module Duke
 
       # Correct financialYear ambiguity
       def w_fy(fec_format: nil)
-        return {redirect: :createFinancialYear, sentence: I18n.t("duke.exports.need_financial_year_creation")} if FinancialYear.all.empty?
-        options = dynamic_options(I18n.t("duke.exports.which_financial_year"), FinancialYear.all.map{|fY| optJsonify(fY.code, fY.id.to_s)})
-        {redirect: :ask_financialyear, options: options, format: fec_format}
+        if FinancialYear.all.empty?
+          Duke::DukeResponse.new(
+            redirect: :createFinancialYear,
+            sentence: I18n.t("duke.exports.need_financial_year_creation")
+          )
+        else
+          fys = FinancialYear.all.map{|fY| optJsonify(fY.code, fY.id.to_s)}
+          Duke::DukeResponse.new(
+            redirect: :ask_financialyear,
+            options: dynamic_options(I18n.t("duke.exports.which_financial_year"), fys),
+            format: fec_format
+          )
       end 
 
       # Set @financialYear from btn-suggestion-click
       # @param [String] id - optional btn-click-fy-id
       def year_from_id id
-        @financial_year = {key: id.to_i, name: FinancialYear.find_by_id(id.to_i).code} if id.present? && FinancialYear.all.collect(&:id).include?(id.to_i) 
+        @financial_year = {
+          key: id.to_i,
+          name: FinancialYear.find_by_id(id.to_i).code
+          } if id.present? && FinancialYear.all.collect(&:id).include?(id.to_i) 
       end 
 
       # Returns sale|purchase type 
       # @param [String] type - recognized saleType entity from IBM
       def sale_filter type 
-        return :all if type.nil?
-        :unpaid
+        type.nil? ? :all : :unpaid
       end 
 
       # Extract uniq best element for each arg entry
@@ -94,11 +105,13 @@ module Duke
       # Extract fec_format from user utterance
       # @param [String] format: Format if user clicked on btn-format-suggestion
       def fec_format(format=nil)
-        return format if format.present? && [:text, :xml].include?(format.to_sym) 
-        {text: /t(e)?xt/, xml: /xml/}.each do |key, reg|
-          return key if @user_input.match(reg)
+        if format.present? && [:text, :xml].include?(format.to_sym)
+          format
+        elsif @user_input.match(/t(e)?xt/)
+          :text
+        elsif @user_input.match(/xml/)
+          :xml
         end
-        nil
       end
       
     end

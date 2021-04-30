@@ -8,21 +8,29 @@ module Duke
           super(user_input: event.user_input)
           @cultivablezones = Duke::DukeMatchingArray.new
           @equipments = Duke::DukeMatchingArray.new
+          @event = event
         end 
 
         def handle
+          # modify params[:nature] in o
           extract_user_specifics(duke_json: duke_json(:cultivablezones, :equipments, :date))
-          return {found: :no, sentence: I18n.t("duke.issues.no_tool_found")} if dukeArt.equipments.empty? 
-          link = "/backend/issues/new?target_id=#{dukeArt.equipments.max.key}&description=#{params[:user_input].gsub(" ", "+")}&target_type=Equipment" # Creating redirection url
-          link += "&nature=#{params[:nature]}" unless params[:nature].nil? # Adding issue nature if exists
-          unless (max_cz = dukeArt.cultivablezones.max).nil?
-            coords = CultivableZone.find_by(id: max_cz.key).shape_centroid
-            link += "&lat=#{coords.first}&lon=#{coords.last}" # Adding cz coordinates if exists
+          if @equipments.empty?
+            Duke::DukeResponse.new(redirect: :no, sentence: I18n.t("duke.issues.no_tool_found"))
+          else
+            url = "/backend/issues/new?target_id=#{)equipments.max.key}"
+            # Adding description
+            url += "&description=#{params[:user_input].gsub(" ", "+")}&target_type=Equipment"
+            # Adding nature 
+            url += "&nature=#{@event.options.specific}" unless @event.options.specific.nil?
+            if (cz = @cultivablezones.max).present? 
+              coords = CultivableZone.find_by(id: cz.key).shape_centroid
+              # Adding coordonates
+              link += "&lat=#{coords.first}&lon=#{coords.last}"
+            end
           end
-          return {found: :yes, sentence: I18n.t("duke.issues.found_tool" , tool: dukeArt.equipments.max.name), link: link}
+          Duke::DukeResponse.new(redirect: yes, sentence: I18n.t("duke.issues.found_tool", tool: @equipments.max.name, url: url))
         end
 
-        private
         
       end
     end

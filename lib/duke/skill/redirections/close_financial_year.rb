@@ -8,6 +8,7 @@ module Duke
           super(user_input: event.user_input)
           @financial_year = Duke::DukeMatchingArray.new
           extract_best(:financial_year)
+          @event = event
         end 
 
         def handle
@@ -16,9 +17,15 @@ module Duke
           if @financial_year.nil?
             w_fy
           elsif FinancialYear.find_by_id(@financial_year[:key]).closed?
-            {redirect: :alreadyclosed, sentence: I18n.t("duke.exports.closed", code: @financial_year[:name], id: @financial_year[:key])}
+            Duke::DukeResponse.new(
+              redirect: :alreadyclosed,
+              sentence: I18n.t("duke.exports.closed", code: @financial_year[:name], id: @financial_year[:key])
+            )
           else
-            {redirect: :closed, sentence: I18n.t("duke.exports.to_close", code: @financial_year[:name], id: @financial_year[:key])}
+            Duke::DukeResponse.new(
+              redirect: :closed,
+              sentence: I18n.t("duke.exports.to_close", code: @financial_year[:name], id: @financial_year[:key])
+            )
           end
         end
         

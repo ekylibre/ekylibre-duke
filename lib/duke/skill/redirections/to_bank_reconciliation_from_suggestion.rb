@@ -11,9 +11,12 @@ module Duke
         def handle
           cash = Cash.find_by_id(@user_input)
           if cash.present?
-            {status: :over, sentence: I18n.t("duke.redirections.to_reconciliation_account", id: cash.id, name: cash.name)}
+            Duke::DukeResponse.new(
+              redirect: :over,
+              sentence: I18n.t("duke.redirections.to_reconciliation_account", id: cash.id, name: cash.name)
+            )
           else
-            {status: :over, sentence: I18n.t("duke.redirections.to_reconcialiation_accounts")}
+            Duke::DukeResponse.new(redirect: :over, sentence: I18n.t("duke.redirections.to_reconcialiation_accounts"))
           end
         end
         

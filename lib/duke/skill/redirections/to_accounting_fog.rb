@@ -13,9 +13,9 @@ module Duke
         def handle
           ## modify params journal word to options.sss
           if @journal.blank?
-            {sentence: I18n.t("duke.redirections.current_fog", key: FinancialYear.current.id)}
+            Duke::DukeResponse.new(sentence: I18n.t("duke.redirections.current_fog", key: FinancialYear.current.id))
           else 
-            {sentence: I18n.t("duke.redirections.fog", name: @journal.name, key: @journal.key)}
+            Duke::DukeResponse.new(sentence: I18n.t("duke.redirections.fog", name: @journal.name, key: @journal.key))
           end
         end
         

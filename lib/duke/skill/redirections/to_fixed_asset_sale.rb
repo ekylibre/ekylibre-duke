@@ -12,9 +12,11 @@ module Duke
 
         def handle
           if @fixed_asset.blank? 
-            {sentence: I18n.t("duke.redirections.to_immobilisations_sale")}
+            Duke::DukeResponse.new(sentence: I18n.t("duke.redirections.to_immobilisations_sale"))
           else  
-            {sentence: I18n.t("duke.redirections.to_immobilisation_sale", name: @fixed_asset[:name], id: @fixed_asset[:key])}
+            Duke::DukeResponse.new(
+              sentence: sentence: I18n.t("duke.redirections.to_immobilisation_sale", name: @fixed_asset[:name], id: @fixed_asset[:key])
+            )
           end
         end
         

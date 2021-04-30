@@ -11,9 +11,10 @@ module Duke
         def handle
           ## modify params journal word to options.sss
           if @sales.size < 2 
-            {}
+            Duke::DukeResponse.new
           else
-            {options: dynamic_options(I18n.t("duke.redirections.which_sale_type"), @sales.map{|type| optJsonify(type.name, type.id.to_s)})} 
+            options = @sales.map{|type| optJsonify(type.name, type.id.to_s)}
+            Duke::DukeResponse.new(options: dynamic_options(I18n.t("duke.redirections.which_sale_type"), options))
           end
         end
         

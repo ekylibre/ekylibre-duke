@@ -12,11 +12,15 @@ module Duke
 
         def handle
           if @activity_variety.blank?
-            return {found: :no, sentence: I18n.t("duke.redirections.no_activity")} # Return if no activity matched
+            Duke::DukeResponse.new(redirect: :no, sentence: I18n.t("duke.redirections.no_activity"))
           elsif (iterator = Activity.of_cultivation_variety(Activity.find_by_id(@activity_variety.key).cultivation_variety)).size > 1
             w_variety(iterator)
           else
-            {found: :yes, sentence: I18n.t("duke.redirections.activity", variety: @activity_variety.name), key: @activity_variety.key}
+            Duke::DukeResponse.new(
+              redirect: :yes,
+              sentence: I18n.t("duke.redirections.activity", variety: @activity_variety.name),
+              parsed: @activity_variety.key
+            )
           end
         end
 
@@ -25,7 +29,10 @@ module Duke
         # Ask user which variety he want's to select
         def w_variety vars
           opts = vars.map{|act| optJsonify(act.name, act.id.to_s)}
-          return {found: :multiple, optional: dynamic_options(I18n.t("duke.redirections.which_activity", variety: @activity_variety.name), opts)}
+          Duke::DukeResponse.new(
+            redirect: :multiple,
+            options: dynamic_options(I18n.t("duke.redirections.which_activity", variety: @activity_variety.name), opts)
+          )
         end 
         
       end

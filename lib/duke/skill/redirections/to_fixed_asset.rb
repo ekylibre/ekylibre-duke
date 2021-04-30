@@ -14,11 +14,13 @@ module Duke
         def handle
           ## modify asset_state to @option.specific
           if @fixed_asset.present?
-            {sentence: I18n.t("duke.redirections.to_fixed_asset_product", name: @fixed_asset.name, id: @fixed_asset.key)}
-          elsif @event.option.specific.present? 
-            {sentence: I18n.t("duke.redirections.to_fixed_asset_state", state: @event.option.specific)}
+            Duke::DukeResponse.new(
+              sentence: I18n.t("duke.redirections.to_fixed_asset_product", name: @fixed_asset.name, id: @fixed_asset.key)
+            )
+          elsif @event.option.specific.present?
+            Duke::DukeResponse.new(sentence: I18n.t("duke.redirections.to_fixed_asset_state", state: @event.option.specific))
           else
-            {sentence: I18n.t("duke.redirections.to_all_fixed_assets")}
+            Duke::DukeResponse.new(sentence: I18n.t("duke.redirections.to_all_fixed_assets"))
           end
         end
         

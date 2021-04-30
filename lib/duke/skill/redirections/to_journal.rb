@@ -12,14 +12,12 @@ module Duke
 
         def handle
           ## modify params journal word to options.sss
-          if @journal.blank? 
-            {sentence: I18n.t("duke.redirections.journals")} 
+          if @journal.blank?
+            Duke::DukeResponse.new(sentence: I18n.t("duke.redirections.journals"))
           else 
-            {sentence: I18n.t("duke.redirections.journal", name: @journal.name, key: @journal.key)}
+            Duke::DukeResponse.new(sentence: I18n.t("duke.redirections.journal", name: @journal.name, key: @journal.key))
           end
         end
-
-        private
         
       end
     end

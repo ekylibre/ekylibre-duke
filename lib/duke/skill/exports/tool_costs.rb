@@ -12,10 +12,15 @@ module Duke
 
         def handle
           if @tool.blank?
-            {status: :no_tool, sentence: I18n.t("duke.exports.no_tool_found")}
+            Duke::DukeResponse.new(redirect: :no_tool, sentence: I18n.t("duke.exports.no_tool_found"))
           else
-            ToolCostExportJob.perform_later(equipment_ids: [@tool.key], campaign_ids: Campaign.current.ids, user: User.find_by(email: @email, duke_id: @session_id))
-            {status: :started, sentence: I18n.t("duke.exports.tool_export_started" , tool: @tool.name)}
+            ToolCostExportJob.perform_later(
+              equipment_ids: [@tool.key],
+              campaign_ids: Campaign.current.ids,
+              user: User.find_by(email: @email,
+              duke_id: @session_id)
+            )
+            Duke::DukeResponse.new(redirect: :started, sentence: I18n.t("duke.exports.tool_export_started" , tool: @tool.name))
           end
         end
 

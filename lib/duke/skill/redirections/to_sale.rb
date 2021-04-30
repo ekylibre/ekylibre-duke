@@ -15,9 +15,9 @@ module Duke
           ## modify params qale_type : qq word to options.sss
           filter = sale_filter(@event.options.specific)
           if @entity.blank?
-            {sentence: I18n.t("duke.redirections.to_#{filter}_sales")}
+            Duke::DukeResponse.new(sentence: I18n.t("duke.redirections.to_#{filter}_sales"))
           else 
-            {sentence: I18n.t("duke.redirections.to_#{filter}_specific_sales" , entity: @entity.name)}
+            Duke::DukeResponse.new(sentence: I18n.t("duke.redirections.to_#{filter}_specific_sales" , entity: @entity.name))
           end
         end
 
