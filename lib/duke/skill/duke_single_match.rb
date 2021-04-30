@@ -4,7 +4,6 @@ module Duke
     def initialize(**args)
       super() 
       args.each{|k, v| instance_variable_set("@#{k}", v)}
-      extract_best(args.keys)
     end 
 
     # Redirect to (Unpaid|All) sales, to specific customer or all
@@ -106,7 +105,7 @@ module Duke
     end 
 
     # Extract uniq best element for each arg entry
-    def extract_best(args)
+    def extract_best(*args)
       extract_user_specifics(duke_json: self.duke_json(args), level: 71)
       args.each do |arg|
         instance_variable_set("@#{arg}", send("best_#{arg}")) if respond_to?("best_#{arg}", true)

@@ -23,9 +23,12 @@ module Duke
     end 
 
     # @returns DukeIntervention to_json with given parameters
-    def duke_json(*args) 
-      return ActiveSupport::HashWithIndifferentAccess.new(self.as_json) if args.empty?
-      return ActiveSupport::HashWithIndifferentAccess.new(Hash[args.flatten.map{|arg| [arg, self.send(arg)] if self.respond_to?(arg, true)}.compact])
+    def duke_json(*args)
+      if args.empty?
+        self.as_json.with_indifferent_access
+      else
+        Hash[args.flatten.map{|arg| [arg, self.send(arg)] if self.respond_to?(arg, true)}.compact].with_indifferent_access
+      end
     end 
 
     # @param [json] duke_json : DukeArticle.as_json
@@ -34,7 +37,15 @@ module Duke
     def extract_user_specifics(duke_json: self.duke_json, level: 80)
       @user_input = @user_input.duke_clear # Get clean string before parsing
       user_specifics = duke_json.select{ |key, value| parseable.include?(key.to_sym)}
-      attributes = user_specifics.to_h{|key, mArr|[key, {iterator: iterator(key.to_sym), list: mArr}]}
+      attributes = user_specifics.to_h do |key, mArr|
+        [
+          key,
+          {
+            iterator: iterator(key.to_sym),
+            list: mArr
+          }
+        ]
+      end
       create_words_combo.each do |combo| # Creating all combo_words from user_input
         parser = DukeParser.new(word_combo: combo, level: level, attributes: attributes) # create new DukeParser
         parser.parse # parse user_specifics
@@ -57,7 +68,7 @@ module Duke
           ambiguity_attr = ambiguities_attributes(key.to_sym)
           reco.each do |anItem|
             ambiguity = DukeAmbiguity.new(itm: anItem, ambiguity_attr: ambiguity_attr, itm_type: key).check_ambiguity
-            @ambiguities.push(ambiguity) unless ambiguity.empty?
+            @ambiguities.push(ambiguity) if ambiguity.present?
           end
         end
       end
@@ -95,11 +106,14 @@ module Duke
         d = Date.tomorrow
       else
         if full_date = @user_input.matchdel(Duke::Utils::Regex.full_date)
-          @date = Time.new(year_from_str(full_date[4]), month_int(full_date[3]), full_date[1].to_i, time.hour, time.min, time.sec); return 
+          @date = Time.new(year_from_str(full_date[4]), month_int(full_date[3]), full_date[1].to_i, time.hour, time.min, time.sec)
+          return 
         elsif slash_date = @user_input.matchdel(Duke::Utils::Regex.slash_date)
-          @date = Time.new(year_from_str(slash_date[4]), slash_date[2].to_i, slash_date[1].to_i, time.hour, time.min, time.sec); return
+          @date = Time.new(year_from_str(slash_date[4]), slash_date[2].to_i, slash_date[1].to_i, time.hour, time.min, time.sec)
+          return
         else # If nothing matched, we return todays date
-          @date = Time.new(now.year, now.month, now.day, time.hour, time.min, time.sec); return
+          @date = Time.new(now.year, now.month, now.day, time.hour, time.min, time.sec)
+          return
         end
       end
       @date = Time.new(d.year, d.month, d.day, time.hour, time.min, time.sec) # Set correct time to date if match
@@ -123,11 +137,14 @@ module Duke
     # @return nil but set @duration in minutes
     def extract_duration
         if @user_input.matchdel("trois quarts d'heure") # Look for non-numeric values
-          @duration = 45 ; return
+          @duration = 45
+          return
         elsif @user_input.matchdel("quart d'heure")
-          @duration = 15; return
+          @duration = 15
+          return
         elsif @user_input.matchdel("demi heure")
-          @duration = 30; return
+          @duration = 30
+          return
         end
         delta_in_mins = 0
         if min_time = @user_input.matchdel(Duke::Utils::Regex.minutes) # Extract MM regex
@@ -148,11 +165,21 @@ module Duke
     def extract_hour(content = @user_input)
       now = Time.now
       time = content.matchdel(Duke::Utils::Regex.time) # matching time regex
-      return Time.new(now.year, now.month, now.day, time[1].to_i, (0 if time[4].nil?)||time[4].to_i, 0) if time
-      {8 => "matin", 14 => "après-midi", 12 => "midi", 20 => "soir", 0 => "minuit"}.each do |hour, val|
-        return Time.new(now.year, now.month, now.day, hour, 0, 0) if content.matchdel(val) 
-      end 
-      return Time.now # If nothing matches, we return current hour
+      if time
+        mins = time[4].nil? ? 0 : time[4].to_i
+        Time.new(now.year, now.month, now.day, time[1].to_i, mins, 0)
+      else
+        {
+          8 => "matin",
+          14 => "après-midi",
+          12 => "midi",
+          20 => "soir",
+          0 => "minuit"
+        }.each do |hour, val|
+          return Time.new(now.year, now.month, now.day, hour, 0, 0) if content.matchdel(val) 
+        end
+        Time.now # If nothing matches, we return current hour
+      end
     end
 
     # @return [Datetime(start), Datetime(end)]
@@ -169,8 +196,8 @@ module Duke
         return Time.new(year_from_str(since_date[5]), month_int(since_date[4]), since_date[3].to_i, 0, 0, 0), now
       elsif since_slash_date
         return Time.new(year_from_str(since_slash_date[6]), since_slash_date[4].to_i, since_slash_date[3].to_i, 0, 0, 0), now
-      elsif since_month_date 
-        year = (now.year - 1 if month > now.month)||now.year
+      elsif since_month_date
+        year = month > now.month ? now.year -1 : now.year
         return Time.new(year, month_int(since_month_date[3]), 1, 0, 0, 0), now
       else 
         return Time.new(now.year, 1, 1, 0, 0, 0), now
@@ -181,24 +208,30 @@ module Duke
     # @return [Integer] parsed year
     def year_from_str year
       now = Time.now
-      return 2000 + year.to_i if year.to_i.between?(now.year - 2005, now.year - 1999)
-      return year.to_i if year.to_i.between?(now.year - 5, now.year + 1)
-      return now.year
+      if year.to_i.between?(now.year - 2005, now.year - 1999)
+        2000 + year.to_i
+      elsif year.to_i.between?(now.year - 5, now.year + 1)
+        year.to_i
+      else
+        now.year
+      end
     end 
 
     # @param [String] month
     # @return [Integer] month
     def month_int month
-      hash =  {"janvier" => 1, "jan" => 1, "février" => 2, "fev" => 2, "fevrier" => 2, "mars" => 3, "avril" => 4, "avr" => 4,
-                "mai" => 5, "juin" => 6, "juillet" => 7, "juil" => 7, "août" => 8, "aou" => 8, "aout" => 8, "septembre" => 9,
-                "sept" => 9, "octobre" => 10, "oct" => 10, "novembre" => 11, "nov" => 11, "décembre" => 12, "dec" => 12, "decembre" => 12}
+      hash = 
+      {
+        janvier: 1, jan: 1, février: 2, fev: 2, fevrier: 2, mars: 3, avril: 4, avr: 4, mai: 5, juin: 6, juillet: 7, juil: 7, août: 8,
+        aou: 8, aout: 8, septembre: 9, sept: 9, octobre: 10, oct: 10, novembre: 11, nov: 11, décembre: 12, dec: 12, decembre: 12
+      }
       hash[month] 
     end 
 
     # @param [Integer] value : Integer extracted by ibm
     # @return [Stringified float or integer] || [nilType]
     def extract_number_parameter(value)
-      match_to_float = @user_input.match(Duke::Utils::Regex.int_to_float) unless value.nil? # check for float when watson returns integer
+      match_to_float = @user_input.match(Duke::Utils::Regex.int_to_float(value)) unless value.nil? # check for float from watson int
       hasNumbers = @user_input.match(Duke::Utils::Regex.up_to_four_digits_float) #check for number inside user_input
       if value.nil?
         value = hasNumbers[0].gsub(',','.').gsub(' ','') if hasNumbers
@@ -206,7 +239,7 @@ module Duke
       elsif match_to_float
         value = match_to_float[0]
       end
-      return value.to_s.gsub(',','.') # returning value as a string
+      value.to_s.gsub(',','.') # returning value as a string
     end
 
     # Choose between new_date & @date
@@ -222,44 +255,47 @@ module Duke
     # @returns { [0]: "Je", [0,1]: "Je suis", [0,1,2]: "Je suis ton", [1]: "suis", [1,2]: "suis ton", [2]: "ton"} for @user_input = "Je suis ton"
     def create_words_combo
       idx_cb = (0..@user_input.duke_words.size).to_a.combination(2)
-      return Hash[idx_cb.map{|i1, i2| [(i1..i2-1).to_a, @user_input.duke_words[i1..i2-1].join(" ")] if 4>= i2 - i1}.compact]
+      Hash[idx_cb.map{|i1, i2| [(i1..i2-1).to_a, @user_input.duke_words[i1..i2-1].join(" ")] if 4>= i2 - i1}.compact]
     end
 
     # @return true if there's nothing to iterate over
-    def empty_iterator item_type 
-      return true if item_type == :input && Procedo::Procedure.find(@procedure).parameters_of_type(:input).empty? 
-      return true if item_type == :crop_groups && (defined? CropGroup).nil?
-      return false
+    def empty_iterator? item_type 
+      if item_type == :input && Procedo::Procedure.find(@procedure).parameters_of_type(:input).empty?
+        true
+      else
+        item_type == :crop_groups && (defined? CropGroup).nil?
+      end
     end 
 
     # @return target_type given procedure_family
     def tar_from_procedure
-      return Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name, :crop_groups
+      Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name, :crop_groups
     end 
 
     # @param [str] item_type 
     # @return item iname_attr for this item
     def name_attr(item_type)
-      if item_type == :activity_variety
-        attribute = :cultivation_variety_name
-      elsif item_type == :entity
-        attribute = :full_name
-      elsif item_type == :financial_year
-        attribute = :code 
-      else 
-        attribute = :name
+      attrs = {
+        activity_variety: :cultivation_variety_name,
+        entity: :full_name,
+        financial_year: :code
+      }
+      if attrs.key? item_type
+        attrs[item_type]
+      else
+        :name
       end
-      attribute
     end 
 
     # @param [str] item_type 
     # @return iterator for this item
     def iterator(item_type) 
       name_attr = name_attr(item_type)
-      if empty_iterator(item_type)
+      if empty_iterator?(item_type)
         iterator = []
       elsif item_type == :input
-        iterator = Matter.availables(at: @date.to_time).of_expression(Procedo::Procedure.find(@procedure).parameters_of_type(:input).collect(&:filter).join(" or "))
+        expression = Procedo::Procedure.find(@procedure).parameters_of_type(:input).collect(&:filter).join(" or ")
+        iterator = Matter.availables(at: @date.to_time).of_expression(expression)
       elsif item_type == :crop_groups
         iterator = CropGroup.all
       elsif item_type == :financial_year 
@@ -291,10 +327,8 @@ module Duke
     # @param [str] item_type 
     # @return Array of Arrays with each type, and it's iterator & name_attr
     def ambiguities_attributes(item_type)
-      type =  if ([:crop_groups, :plant, :land_parcel, :cultivation].include?(item_type) && @procedure.present?)
-                tar_from_procedure
-              elsif [:crop_groups, :plant, :land_parcel, :cultivation].include?(item_type)
-                [:plant, :crop_groups]
+      type =  if [:crop_groups, :plant, :land_parcel, :cultivation].include?(item_type) && @procedure.present?
+                @procedure.present? ? tar_from_procedure : [:plant, :crop_groups]
               else  
                 [item_type]
               end 

@@ -33,6 +33,11 @@ module Duke
 
       attr_accessor :id, :retry
 
+      # What user_specifics are to be extracted
+      def parseable
+        [*super(), :plant, :crop_groups, :destination, :press]
+      end
+
       # @params : [Integer] value : Integer parsed by ibm
       def extract_number_parameter(value)
         val = super(value) 
@@ -50,10 +55,6 @@ module Duke
           reset_retries
         end 
       end 
-          
-      def parseable
-        [*super(), :plant, :crop_groups, :destination, :press]
-      end
 
       # Extract values when conflicted between °C degrees & ° vol degrees
       def extract_conflicting_degrees
@@ -67,7 +68,7 @@ module Duke
       def extract_tav
         tav = @user_input.matchdel(Duke::Utils::Regex.tav)
         unless @parameters.key?('tav')
-          @parameters['tav'] = (tav[1].gsub(',','.') if tav)||nil
+          @parameters['tav'] = tav ? tav[1].gsub(',','.') : nil
         end
       end
 
@@ -75,7 +76,7 @@ module Duke
       def extract_temp
         temp = @user_input.matchdel(Duke::Utils::Regex.temp)
         unless @parameters.key?('temperature')
-          @parameters['temperature'] = (temp[1].gsub(',','.') if temp)||nil
+          @parameters['temperature'] =  temp ? temp[1].gsub(',','.') : nil
         end
       end
 
@@ -85,10 +86,8 @@ module Duke
         second_ph = @user_input.matchdel(Duke::Utils::Regex.second_ph)
         @parameters['ph'] = if ph
                               ph[1].gsub(',','.') # ph is the first capturing group
-                            elsif second_ph
-                              second_ph[6].gsub(',','.') # ph is the sixh capturing group
                             else
-                              nil
+                              second_ph ? second_ph[6].gsub(',','.') : nil # ph is the sixh capturing group
                             end
       end
 
@@ -99,9 +98,7 @@ module Duke
         @parameters['amino_nitrogen'] =  if nitrogen
                                             nitrogen[1].gsub(',','.') # nitrogen is the first capturing group
                                           elsif second_nitrogen
-                                            second_nitrogen[5].gsub(',','.') # nitrogen is the seventh capturing group
-                                          else
-                                            nil
+                                            second_nitrgoen ? second_nitrogen[5].gsub(',','.') : nil 
                                           end
       end
 
@@ -112,9 +109,7 @@ module Duke
         @parameters['ammoniacal_nitrogen'] =  if nitrogen
                                                 nitrogen[1].gsub(',','.') # nitrogen is the first capturing group
                                               elsif second_nitrogen
-                                                second_nitrogen[6].gsub(',','.') # nitrogen is the seventh capturing group
-                                              else
-                                                nil
+                                                second_nitrogen ? second_nitrogen[6].gsub(',','.') : nil
                                               end
       end
 
@@ -125,9 +120,7 @@ module Duke
         @parameters['assimilated_nitrogen'] = if nitrogen
                                                 nitrogen[1].gsub(',','.') # nitrogen is the first capturing group
                                               elsif second_nitrogen
-                                                second_nitrogen[7].gsub(',','.') # nitrogen is the seventh capturing group
-                                              else
-                                                nil
+                                                second_nitrogen ? second_nitrogen[7].gsub(',','.') : nil 
                                               end
       end
 
@@ -160,9 +153,7 @@ module Duke
         @parameters['h2so4'] =  if h2so4
                                   h2so4[1].gsub(',','.') # h2so4 is the first capturing group
                                 elsif second_h2so4
-                                  second_h2so4[5].gsub(',','.') # h2so4 is the third capturing group
-                                else
-                                  nil
+                                  second_h2so4 ? second_h2so4[5].gsub(',','.') : nil # h2so4 is the third capturing group
                                 end
       end
 
@@ -173,9 +164,7 @@ module Duke
         @parameters['malic'] =  if malic
                                   malic[1].gsub(',','.') # malic is the first capturing group
                                 elsif second_malic
-                                  second_malic[6].gsub(',','.') # malic is the sixth capturing group
-                                else
-                                  nil
+                                  second_malic ? second_malic[6].gsub(',','.') : nil # malic is the sixth capturing group
                                 end
       end
 
@@ -194,7 +183,6 @@ module Duke
         @parameters['complementary'] = nil
       end
 
-
       def extract_plant_area
         # Extracts a plant area from a sentence
         [@plant, @crop_groups].each do |crops|
@@ -203,9 +191,9 @@ module Duke
             second_area = @user_input.match(Duke::Utils::Regex.second_area(target.matched))
             if first_area  # If percentage -> Area value
               target[:area] = first_area[1].to_i
-            elsif second_area && !Plant.find_by(id: target[:key]).nil? # If area -> convert in percentage -> Area value
+            elsif second_area && Plant.find_by(id: target[:key]).present? # If area -> convert in percentage -> Area value
               target[:area] = 100
-              area = (second_area[1].gsub(',','.').to_f if second_area[3].match(/hect/))||second_area[1].gsub(',','.').to_f/100
+              area = second_area[3].match(/hect/) ? second_area[1].gsub(',','.').to_f : second_area[1].gsub(',','.').to_f/100
               whole_area = Plant.find_by(id: target[:key])&.net_surface_area&.to_f
               target[:area] = [(100*area/whole_area).to_i, 100].min unless whole_area.zero?
             else
@@ -230,31 +218,57 @@ module Duke
       # @return [String] sentence with current harvestReception recap
       def speak_harvest_reception
         sentence = I18n.t("duke.harvest_reception.ask.save_harvest_reception_#{rand(0...2)}")
-        sentence+= "<br>&#8226 #{I18n.t("duke.interventions.group")} : #{@crop_groups.map{|cg| "#{cg[:area].to_s}% #{cg.name}"}.join(", ")}" unless @crop_groups.blank?
-        sentence+= "<br>&#8226 #{I18n.t("duke.interventions.plant")} : #{@plant.map{|tar| "#{tar[:area].to_s}% #{tar.name}"}.join(", ")}" unless @plant.blank?
-        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.quantity")} : #{@parameters['quantity']['rate'].to_s} #{@parameters['quantity']['unit']}"
-        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.tavp")} : #{@parameters['tav']} % vol"
-        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.destination")} : #{@destination.map{|des| "#{des.name}#{" (#{des[:quantity].to_s} hl)" if des.key?('quantity')}"}.join(", ")}"
-        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.press")} : #{@press.map{|press| "#{press.name}#{" (#{press[:quantity].to_s} hl)" if press.key?('quantity')}"}.join(", ")}" unless @press.blank?
-        sentence+= "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{@date.to_time.strftime("%d/%m/%Y - %H:%M")}"
-        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.temp")} : #{@parameters['temperature']} °C" unless @parameters['temperature'].nil?
-        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.sanitary_specified")}" unless @parameters['sanitarystate'].nil?
-        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.ph")} : #{@parameters['ph']}" unless @parameters['ph'].nil?
-        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.total_acidity")} : #{@parameters['h2so4']} g H2SO4/L" unless @parameters['h2so4'].nil?
-        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.malic_acid")} : #{@parameters['malic']} g/L" unless @parameters['malic'].nil?
-        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.amino_n")} : #{@parameters['amino_nitrogen']} mg/L" unless @parameters['amino_nitrogen'].nil?
-        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.ammoniacal_n")} : #{@parameters['ammoniacal_nitrogen']} mg/L" unless @parameters['ammoniacal_nitrogen'].nil?
-        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.assimilated_n")} : #{@parameters['assimilated_nitrogen']} mg/L" unless @parameters['assimilated_nitrogen'].nil?
-        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.press_tavp")} : #{@parameters['pressing_tavp'].to_s} % vol " unless @parameters['pressing_tavp'].nil?
-        unless @parameters['complementary'].nil?
-          sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.decant_time")} : #{@parameters['complementary']['ComplementaryDecantation'].delete("^0-9")} mins" if @parameters['complementary'].key?('ComplementaryDecantation')
-          sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.transportor")} : #{@parameters['complementary']['ComplementaryTrailer']}" if @parameters['complementary'].key?('ComplementaryTrailer')
-          sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.transport_dur")} : #{@parameters['complementary']['ComplementaryTime'].delete("^0-9")} mins" if @parameters['complementary'].key?('ComplementaryTime')
-          sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.reception_dock")} : #{@parameters['complementary']['ComplementaryDock']}" if @parameters['complementary'].key?('ComplementaryDock')
-          sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.vendange_nature")} : #{I18n.t('duke.harvest_reception.'+@parameters['complementary']['ComplementaryNature'])}" if @parameters['complementary'].key?('ComplementaryNature')
-          sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.last_load")}" if @parameters['complementary'].key?('ComplementaryLastLoad')
+        # Crop Group
+        if @crop_groups.present?
+          sentence+= "<br>&#8226 #{I18n.t("duke.interventions.group")} : "
+          sentence += "#{@crop_groups.map{|cg| "#{cg[:area].to_s}% #{cg.name}"}.join(", ")}"
         end
-        return sentence.gsub(/, <br>&#8226/, "<br>&#8226")
+        # Plant
+        if @plant.present?
+          sentence+= "<br>&#8226 #{I18n.t("duke.interventions.plant")} : "
+          sentence += "#{@plant.map{|tar| "#{tar[:area].to_s}% #{tar.name}"}.join(", ")}"
+        end
+        # Quantity 
+        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.quantity")} : "
+        sentence += "#{@parameters['quantity']['rate'].to_s} #{@parameters['quantity']['unit']}"
+        # TAV
+        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.tavp")} : #{@parameters['tav']} % vol"
+        # Destinations
+        sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.destination")} : "
+        sentence += "#{@destination.map{|des| "#{des.name}#{" (#{des[:quantity].to_s} hl)" if des.key?('quantity')}"}.join(", ")}"
+        # Press
+        if @press.present?
+          sentence+= "<br>&#8226 #{I18n.t("duke.harvest_reception.press")} : "
+          sentence += "#{@press.map{|press| "#{press.name}#{" (#{press[:quantity].to_s} hl)" if press.key?('quantity')}"}.join(", ")}"
+        end
+        # Date
+        sentence+= "<br>&#8226 #{I18n.t("duke.interventions.date")} : #{@date.to_time.strftime("%d/%m/%Y - %H:%M")}"
+        # Optional parameters
+        %I[temperature sanitarystate ph h2so4 malic amino_nitrogen ammoniacal_nitrogen assimilated_nitrogen pressing_tavp].each do |param|
+          sentence += I18n.t("duke.harvest_reception.speak.#{param}", param => @parameters[param]) if @parameters[param].present?
+        end
+        # Complementary parameters
+        complement = @parameters['complementary']
+        if complement.present?
+          if complement.key?('ComplementaryDecantation')
+            sentence+= I18n.t("duke.harvest_reception.speak.decant_time", time: complement['ComplementaryDecantation'].delete("^0-9"))
+          end
+          if complement.key?('ComplementaryTrailer')
+            sentence += I18n.t("duke.harvest_reception.speak.transporter", transporter: complement['ComplementaryTrailer'])
+          end
+          if complement.key?('ComplementaryTime')
+            sentence +=  I18n.t("duke.harvest_reception.speak.transport_dur", transport_dur: complement['ComplementaryTime'].delete("^0-9"))
+          end
+          if complement.key?('ComplementaryDock')
+            sentence += I18n.t("duke.harvest_reception.speak.reception_dock", reception_dock: complement['ComplementaryDock'])
+          end
+          if complement.key?('ComplementaryNature')
+            h_nature = I18n.t("duke.harvest_reception.#{complement['ComplementaryNature']}")
+            sentence += I18n.t("duke.harvest_reception.speak.h_nature", h_nature: h_nature)
+          end
+          sentence+=  I18n.t("duke.harvest_reception.speak.last_load") if complement.key?('ComplementaryLastLoad')
+        end
+        sentence.gsub(/, <br>&#8226/, "<br>&#8226")
       end
 
       def redirect
