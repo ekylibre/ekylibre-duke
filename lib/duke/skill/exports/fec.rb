@@ -1,7 +1,7 @@
 module Duke
   module Skill
     module Exports
-      class ActivityTracability < Duke::Skill::DukeSingleMatch
+      class Fec < Duke::Skill::DukeSingleMatch
         using Duke::DukeRefinements
 
         def initialize(event)
@@ -13,8 +13,7 @@ module Duke
         def handle
           Duke::DukeSingleMatch.new(user_input: params[:user_input],
             email: params[:user_id],
-            session_id: params[:session_id],
-            activity_variety: Duke::DukeMatchingArray.new).activity_traca_redirect
+            session_id: params[:session_id]).fec_redirect(params[:financial_year], params[:fec_format])
         end
 
         private

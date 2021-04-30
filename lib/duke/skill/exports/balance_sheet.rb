@@ -13,8 +13,7 @@ module Duke
         def handle
           Duke::DukeSingleMatch.new(user_input: params[:user_input],
             email: params[:user_id],
-            session_id: params[:session_id],
-            tool: Duke::DukeMatchingArray.new).tool_costs_redirect
+            session_id: params[:session_id]).balance_sheet_redirect(params[:financial_year], params[:printer], params[:template_nature])
         end
 
         private
