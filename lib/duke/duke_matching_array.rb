@@ -9,7 +9,7 @@ module Duke
     # @param [DukeMatchingArray] mArr
     # @returns concatenated DukeMatchingArray
     def uniq_concat(mArr)
-      mArr.each{|mItem| self.push(mItem) unless self.duplicate?(mItem)}
+      mArr.each{|mItem| self.push(mItem) unless self.duplicate?(mItem)}
       self
     end
 
