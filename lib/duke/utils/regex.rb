@@ -3,7 +3,7 @@ module Duke
     class Regex
       # rubocop:disable Layout/LineLength
 
-      #  Dates & durations
+      # Dates & durations
 
       def self.minutes
         /\d+\s(\w*minute\w*|mins)/
@@ -61,7 +61,7 @@ module Duke
         /(depuis|à partir|a partir) *(du|de|le|la)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)/
       end
 
-      #  Harvest Reception parameters
+      # Harvest Reception parameters
 
       def self.percentage
         /(\d{1,2}) *(%|pour( )?cent(s)?)/
@@ -147,7 +147,7 @@ module Duke
         /(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) *((hect)?are(s)?) *(de *(la|l\')?|du|des|sur|à|a|au)? #{matched}/
       end
 
-      #  Utils
+      # Utils
 
       def self.up_to_four_digits_float
         /\d{1,4}((\.|,)\d{1,2})?/
@@ -167,7 +167,7 @@ module Duke
         %r{#{matched} *(à|a|avec)? *(\d{1,3}(\.|,)\d{1,2}|\d{1,3}) *((gramme|g|kg|kilo|kilogramme|tonne|t|hectolitre|hl|litre|l)(s)? *(par hectare|/ *hectare|/ *ha)?)}
       end
 
-      #  Intervention readings
+      # Intervention readings
 
       def self.bud_charge
         /(\d{1,2}) *(bourgeons|yeux|oeil)/
@@ -177,7 +177,7 @@ module Duke
         /charge *(de|à|avec|a)? *(\d{1,2})/
       end
 
-      #  Sentence cleaning
+      # Sentence cleaning
 
       def self.numeroes
         /(\bnum(e|é)ro\b|n ?°)/

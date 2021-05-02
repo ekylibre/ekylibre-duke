@@ -33,7 +33,7 @@
       this.bind_events();
     };
 
-    bind_events() {
+    bind_events() {
       this.$duke_input.focusin(() => {  // On focus, color borders
         this.$btn_mic.css('border-color', $('#top_bar').css('background-color'));
       });
@@ -103,7 +103,7 @@
     /**
      * Display Webchat (closed or open)
      */
-    display() {
+    display() {
       if (sessionStorage.duke_visible) {
         this.pusher.instanciate(this.persist_duke);
       } else {
@@ -112,7 +112,7 @@
     };
 
     is_active() {
-      if (Date.now() - parseInt(sessionStorage.duke_stamp) > D.DukeUtils.session_inactivity) {
+      if (Date.now() - parseInt(sessionStorage.duke_stamp) > D.DukeUtils.session_inactivity) {
         this.$msg_container.append(D.DukeUtils.templates.session_expired);
         this.new_active_session(this.msg_callback);
         return false 

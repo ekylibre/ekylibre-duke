@@ -14,17 +14,17 @@ module Duke
         args.each{|k, v| instance_variable_set("@#{k}", v)}
       end
 
-      #  Create intervention from json
-      #  @param [Json] duke_json - Json representation of dukeIntervention
-      #  @param [Boolean] all - Should we recover everything, or only user_specifics
-      #  @returns DukeIntervention
+      # Create intervention from json
+      # @param [Json] duke_json - Json representation of dukeIntervention
+      # @param [Boolean] all - Should we recover everything, or only user_specifics
+      # @returns DukeIntervention
       def recover_from_hash(duke_json, all = true)
         duke_json.slice(*parseable).each{|k, v| self.instance_variable_set("@#{k}", DukeMatchingArray.new(arr: v))}
         duke_json.except(*parseable).each{|k, v| self.instance_variable_set("@#{k}", v)} if all
         self
       end
 
-      #  @returns DukeIntervention to_json with given parameters
+      # @returns DukeIntervention to_json with given parameters
       def duke_json(*args)
         if args.empty?
           self.as_json.with_indifferent_access
@@ -33,11 +33,11 @@ module Duke
         end
       end
 
-      #  @param [json] duke_json : DukeArticle.as_json
-      #  @param [Float] level : min_match_level
-      #  Extract user specifics & recreates DukeArticle
+      # @param [json] duke_json : DukeArticle.as_json
+      # @param [Float] level : min_match_level
+      # Extract user specifics & recreates DukeArticle
       def extract_user_specifics(duke_json: self.duke_json, level: 80)
-        @user_input = @user_input.duke_clear #  Get clean string before parsing
+        @user_input = @user_input.duke_clear # Get clean string before parsing
         user_specifics = duke_json.select{ |key, _value| parseable.include?(key.to_sym)}
         attributes = user_specifics.to_h do |key, list|
           [
@@ -49,8 +49,8 @@ module Duke
           ]
         end
         create_words_combo.each do |combo| # Creating all combo_words from user_input
-          parser = DukeParser.new(word_combo: combo, level: level, attributes: attributes) #  create new DukeParser
-          parser.parse #  parse user_specifics
+          parser = DukeParser.new(word_combo: combo, level: level, attributes: attributes) # create new DukeParser
+          parser.parse # parse user_specifics
         end
         self.recover_from_hash(duke_json, false) # recreate DukeArticle
       end
@@ -63,7 +63,7 @@ module Duke
         @retry = 0
       end
 
-      #  Find ambiguities in what's been parsed
+      # Find ambiguities in what's been parsed
       def find_ambiguity
         self.as_json.each do |key, reco|
           if parseable.include?(key.to_sym)
@@ -76,8 +76,8 @@ module Duke
         end
       end
 
-      #  @params [String] type : type of ambiguity to be corrected
-      #  @params [Integer] key : key of ambiguous item
+      # @params [String] type : type of ambiguity to be corrected
+      # @params [Integer] key : key of ambiguous item
       def correct_ambiguity(type:, key:)
         current_hash = self.instance_variable_get("@#{type}").find_by_key(key)
         self.instance_variable_get("@#{type}").delete_one(current_hash)
@@ -95,12 +95,12 @@ module Duke
         end
       end
 
-      #  Extracts date with correct hour from @user_input
-      #  @return nil, but set @date
+      # Extracts date with correct hour from @user_input
+      # @return nil, but set @date
       def extract_date
         now = Time.now
         time = extract_hour(@user_input) # Extract hour from user_input
-        if @user_input.matchdel(Duke::Utils::Regex.before_yesterday) #  Look for specific keywords
+        if @user_input.matchdel(Duke::Utils::Regex.before_yesterday) # Look for specific keywords
           d = Date.yesterday.prev_day
         elsif @user_input.matchdel('hier')
           d = Date.yesterday
@@ -112,11 +112,11 @@ module Duke
         elsif slash_date = @user_input.matchdel(Duke::Utils::Regex.slash_date)
           @date = Time.new(year_from_str(slash_date[4]), slash_date[2].to_i, slash_date[1].to_i, time.hour, time.min, time.sec)
           return
-        else #  If nothing matched, we return todays date
+        else # If nothing matched, we return todays date
           @date = Time.new(now.year, now.month, now.day, time.hour, time.min, time.sec)
           return
         end
-        @date = Time.new(d.year, d.month, d.day, time.hour, time.min, time.sec) #  Set correct time to date if match
+        @date = Time.new(d.year, d.month, d.day, time.hour, time.min, time.sec) # Set correct time to date if match
         @offset = "+0#{Time.at(@date.to_time).utc_offset / 3600}:00"
       end
 
@@ -133,10 +133,10 @@ module Duke
           Duke::DukeResponse.new(parsed: self.duke_json, sentence: sentence, redirect: redirection, options: options, **opt)
         end
 
-        #  Extracts duration from user_input
-        #  @return nil but set @duration in minutes
+        # Extracts duration from user_input
+        # @return nil but set @duration in minutes
         def extract_duration
-          if @user_input.matchdel("trois quarts d'heure") #  Look for non-numeric values
+          if @user_input.matchdel("trois quarts d'heure") # Look for non-numeric values
             @duration = 45
             return
           elsif @user_input.matchdel("quart d'heure")
@@ -147,24 +147,24 @@ module Duke
             return
           end
           delta_in_mins = 0
-          if min_time = @user_input.matchdel(Duke::Utils::Regex.minutes) #  Extract MM regex
+          if min_time = @user_input.matchdel(Duke::Utils::Regex.minutes) # Extract MM regex
             delta_in_mins += min_time[0].to_i
-          elsif hour_min_time = @user_input.matchdel(Duke::Utils::Regex.hours_minutes) #  Extract HH:MM regex
+          elsif hour_min_time = @user_input.matchdel(Duke::Utils::Regex.hours_minutes) # Extract HH:MM regex
             delta_in_mins += hour_min_time[2].to_i*60 + hour_min_time[4].to_i
-          elsif hour_time = @user_input.matchdel(Duke::Utils::Regex.hours) #  Extract HH: regex
+          elsif hour_time = @user_input.matchdel(Duke::Utils::Regex.hours) # Extract HH: regex
             delta_in_mins += hour_time[2].to_i*60
-            delta_in_mins += 30 if @user_input.matchdel('et demi') #  Check for "et demi" in user_input
+            delta_in_mins += 30 if @user_input.matchdel('et demi') # Check for "et demi" in user_input
           else
-            delta_in_mins = nil #  Set duration to nil on default
+            delta_in_mins = nil # Set duration to nil on default
           end
           @duration = delta_in_mins
         end
 
-        #  @param [String] content
-        #  @return Datetime
+        # @param [String] content
+        # @return Datetime
         def extract_hour(content = @user_input)
           now = Time.now
-          time = content.matchdel(Duke::Utils::Regex.time) #  matching time regex
+          time = content.matchdel(Duke::Utils::Regex.time) # matching time regex
           if time
             mins = time[4].nil? ? 0 : time[4].to_i
             Time.new(now.year, now.month, now.day, time[1].to_i, mins, 0)
@@ -178,11 +178,11 @@ module Duke
             }.each do |hour, val|
               return Time.new(now.year, now.month, now.day, hour, 0, 0) if content.matchdel(val)
             end
-            Time.now #  If nothing matches, we return current hour
+            Time.now # If nothing matches, we return current hour
           end
         end
 
-        #  @return [Datetime(start), Datetime(end)]
+        # @return [Datetime(start), Datetime(end)]
         def extract_time_interval
           now = Time.now
           since_date = @user_input.matchdel(Duke::Utils::Regex.since_date)
@@ -204,8 +204,8 @@ module Duke
           end
         end
 
-        #  @param [Str|Integer|Float] year
-        #  @return [Integer] parsed year
+        # @param [Str|Integer|Float] year
+        # @return [Integer] parsed year
         def year_from_str(year)
           now = Time.now
           if year.to_i.between?(now.year - 2005, now.year - 1999)
@@ -217,8 +217,8 @@ module Duke
           end
         end
 
-        #  @param [String] month
-        #  @return [Integer] month
+        # @param [String] month
+        # @return [Integer] month
         def month_int(month)
           hash =
           {
@@ -228,8 +228,8 @@ module Duke
           hash[month]
         end
 
-        #  @param [Integer] value : Integer extracted by ibm
-        #  @return [Stringified float or integer] || [nilType]
+        # @param [Integer] value : Integer extracted by ibm
+        # @return [Stringified float or integer] || [nilType]
         def extract_number_parameter(value)
           match_to_float = @user_input.match(Duke::Utils::Regex.int_to_float(value)) unless value.nil? # check for float from watson int
           numbers = @user_input.match(Duke::Utils::Regex.up_to_four_digits_float) # check for number inside user_input
@@ -239,26 +239,26 @@ module Duke
           elsif match_to_float
             value = match_to_float[0]
           end
-          value.to_s.gsub(',', '.') #  returning value as a string
+          value.to_s.gsub(',', '.') # returning value as a string
         end
 
-        #  Choose between new_date & @date
+        # Choose between new_date & @date
         def choose_date(new_date)
           @date = new_date if (new_date.to_time - Time.now).abs > 300
         end
 
-        #  Choose between new_duration and @duration
+        # Choose between new_duration and @duration
         def choose_duration(new_duration)
           @duration = new_duration unless new_duration.is_a?(Array) && new_duration.size.eql?(2)
         end
 
-        #  @returns { [0]: "Je", [0,1]: "Je suis", [0,1,2]: "Je suis ton", [1]: "suis", [1,2]: "suis ton", [2]: "ton"} for "Je suis ton"
+        # @returns { [0]: "Je", [0,1]: "Je suis", [0,1,2]: "Je suis ton", [1]: "suis", [1,2]: "suis ton", [2]: "ton"} for "Je suis ton"
         def create_words_combo
           idx_cb = (0..@user_input.duke_words.size).to_a.combination(2)
           idx_cb.map{|i1, i2| [(i1..i2-1).to_a, @user_input.duke_words[i1..i2-1].join(' ')] if 4>= i2 - i1}.compact.to_h
         end
 
-        #  @return true if there's nothing to iterate over
+        # @return true if there's nothing to iterate over
         def empty_iterator?(item_type)
           if item_type == :input && Procedo::Procedure.find(@procedure).parameters_of_type(:input).empty?
             true
@@ -272,8 +272,8 @@ module Duke
           return Procedo::Procedure.find(@procedure).parameters.find {|param| param.type == :target}.name, :crop_groups
         end
 
-        #  @param [str] item_type
-        #  @return item iname_attr for this item
+        # @param [str] item_type
+        # @return item iname_attr for this item
         def name_attr(item_type)
           attrs = {
             activity_variety: :cultivation_variety_name,
@@ -287,8 +287,8 @@ module Duke
           end
         end
 
-        #  @param [str] item_type
-        #  @return iterator for this item
+        # @param [str] item_type
+        # @return iterator for this item
         def iterator(item_type)
           name_attr = name_attr(item_type)
           if empty_iterator?(item_type)
@@ -336,10 +336,10 @@ module Duke
           return iterator.map{|rec| { id: rec.id, partials: rec.send(name_attr).duke_clear.words_combinations, name: rec.send(name_attr) }}
         end
 
-        #  @param [str] item_type
-        #  @return Array of Arrays with each type, and it's iterator & name_attr
+        # @param [str] item_type
+        # @return Array of Arrays with each type, and it's iterator & name_attr
         def ambiguities_attributes(item_type)
-          type =  if %i[crop_groups plant land_parcel cultivation].include?(item_type) && @procedure.present?
+          type =  if %i[crop_groups plant land_parcel cultivation].include?(item_type)
                     @procedure.present? ? tar_from_procedure : %i[plant crop_groups]
                   else
                     [item_type]

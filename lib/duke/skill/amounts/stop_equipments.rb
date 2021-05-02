@@ -1,11 +1,11 @@
 module Duke
   module Skill
-    module Interventions
+    module Amounts
       class StopEquipments
 
         def initialize(event); end
 
-        def handle(event)
+        def handle
           amount = Equipment.all.map(&:status).count(:stop)
           sentence = I18n.t('duke.amounts.stopped_eq', amount: amount)
           DukeResponse.new(sentence: sentence)

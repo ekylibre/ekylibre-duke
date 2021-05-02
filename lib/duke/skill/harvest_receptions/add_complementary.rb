@@ -17,7 +17,7 @@ module Duke
 
         private
 
-          #  @param [String] ComplementaryType
+          # @param [String] ComplementaryType
           def update_complementary(type)
             @parameters[:complementary] = {} if @parameters[:complementary].nil?
             @parameters[:complementary][type] = @user_input

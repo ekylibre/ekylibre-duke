@@ -1,4 +1,4 @@
-#  External libs
+# External libs
 require 'similar_text'
 require 'ibm_watson'
 require 'httparty'

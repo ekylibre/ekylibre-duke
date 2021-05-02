@@ -1,7 +1,7 @@
 (function (D, $) {
   class DukePusherHandler {
 
-    constructor(key) {
+    constructor(key) {
       this.key = key;
       this.cluster = "eu";
     };

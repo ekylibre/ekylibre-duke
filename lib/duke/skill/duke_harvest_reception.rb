@@ -15,19 +15,26 @@ module Duke
         @description = @user_input.clone
       end
 
-      #  @param [SplatArray] args : Every instance variable we'll try to extract
+      # @param [SplatArray] args : Every instance variable we'll try to extract
       def parse_specifics(*args)
         extract_user_specifics(duke_json: self.duke_json(*args))
         extract_plant_area if args.include? :plant
       end
 
-      #  @params [Boolean] post_harvest : Are we extracting TAV, or pressingTAV
+      # @params [Boolean] post_harvest : Are we extracting TAV, or pressingTAV
       def extract_reception_parameters(post_harvest = false)
         %I[conflicting_degrees quantity tav temp ph amino_nitrogen ammoniacal_nitrogen assimilated_nitrogen sanitarystate malic h2so4
            pressing complementary pressing_tavp].each do |attr|
           send("extract_#{attr}")
         end
         @parameters['pressing_tavp'] = @parameters['tav'] if post_harvest
+      end
+
+      # Perform Quantity/Tavp regex extractions
+      def extract_quantity_tavp
+        extract_quantity
+        extract_conflicting_degrees
+        extract_tav
       end
 
       private
@@ -39,15 +46,15 @@ module Duke
           [*super(), :plant, :crop_groups, :destination, :press]
         end
 
-        #  @params : [Integer] value : Integer parsed by ibm
+        # @params : [Integer] value : Integer parsed by ibm
         def extract_number_parameter(value)
           val = super(value)
           @retry += 1 if val.nil?
           val
         end
 
-        #  @param [String] current_asking : what we're asking to the user
-        #  @param [*] optional
+        # @param [String] current_asking : what we're asking to the user
+        # @param [*] optional
         def adjust_retries(current_asking, optional = nil)
           what_next, sentence, new_optional = redirect
           if what_next == current_asking && (optional.nil?||optional.eql?(new_optional))
@@ -57,7 +64,25 @@ module Duke
           end
         end
 
-        #  Extract values when conflicted between °C degrees & ° vol degrees
+        #  Adds quantity if parsed to @parameters
+        def extract_quantity
+          # Extracting quantity data
+          quantity = @user_input.matchdel(Duke::Utils::Regex.quantity)
+          if quantity
+            unit = if quantity[3].match(/(kilo|kg)/)
+                     'kg'
+                   elsif quantity[3].match(/(hecto|hl|texto|expo)/)
+                     'hl'
+                   else
+                     't'
+                   end
+            @parameters['quantity'] = { 'rate' => quantity[1].gsub(',', '.').to_f, 'unit' => unit } # rate is the first capturing group
+          else
+            @parameters['quantity'] = nil
+          end
+        end
+
+        # Extract values when conflicted between °C degrees & ° vol degrees
         def extract_conflicting_degrees
           tav = @user_input.matchdel(Duke::Utils::Regex.conflicting_tav)
           @parameters['tav'] = tav[6].gsub(',', '.') if tav
@@ -90,7 +115,7 @@ module Duke
                               end
         end
 
-        #  Extract Nitrogen value in @user_input
+        # Extract Nitrogen value in @user_input
         def extract_amino_nitrogen
           nitrogen = @user_input.matchdel(Duke::Utils::Regex.nitrogen)
           second_nitrogen = @user_input.matchdel(Duke::Utils::Regex.second_nitrogen)
@@ -101,7 +126,7 @@ module Duke
                                            end
         end
 
-        #  Extract Nitrogen value in @user_input
+        # Extract Nitrogen value in @user_input
         def extract_ammoniacal_nitrogen
           nitrogen = @user_input.matchdel(Duke::Utils::Regex.ammo_nitrogen)
           second_nitrogen = @user_input.matchdel(Duke::Utils::Regex.second_ammo_nitrogen)
@@ -112,7 +137,7 @@ module Duke
                                                 end
         end
 
-        #  Extract Nitrogen value in @user_input
+        # Extract Nitrogen value in @user_input
         def extract_assimilated_nitrogen
           nitrogen = @user_input.matchdel(Duke::Utils::Regex.assi_nitrogen)
           second_nitrogen = @user_input.matchdel(Duke::Utils::Regex.second_assi_nitrogen)
@@ -123,7 +148,7 @@ module Duke
                                                 end
         end
 
-        #  Extract SanitaryState value in @user_input
+        # Extract SanitaryState value in @user_input
         def extract_sanitarystate
           sanitary_match = @user_input.match(Duke::Utils::Regex.sanitary_state)
           sanitarystate = ''
@@ -145,7 +170,7 @@ module Duke
           @parameters['sanitarystate'] = (sanitarystate if sanitarystate != '')||nil
         end
 
-        #  Extract SO Acid value in @user_input
+        # Extract SO Acid value in @user_input
         def extract_h2so4
           h2so4 = @user_input.matchdel(Duke::Utils::Regex.h2so4)
           second_h2so4 = @user_input.matchdel(Duke::Utils::Regex.second_h2so4)
@@ -156,7 +181,7 @@ module Duke
                                   end
         end
 
-        #  Extract Malic Acid value in @user_input
+        # Extract Malic Acid value in @user_input
         def extract_malic
           malic = @user_input.matchdel(Duke::Utils::Regex.malic)
           second_malic = @user_input.matchdel(Duke::Utils::Regex.second_malic)
@@ -217,7 +242,7 @@ module Duke
           end
         end
 
-        #  @return [String] sentence with current harvestReception recap
+        # @return [String] sentence with current harvestReception recap
         def speak_harvest_reception
           sentence = I18n.t("duke.harvest_reception.ask.save_harvest_reception_#{rand(0...2)}")
           # Crop Group
@@ -238,16 +263,16 @@ module Duke
           # Destinations
           sentence+= "<br>&#8226 #{I18n.t('duke.harvest_reception.destination')} : "
           sentence += @destination.map{|des| "#{des.name}#{" (#{des[:quantity].to_s} hl)" if des.key?('quantity')}"}.join(', ').to_s
-          #  Press
+          # Press
           if @press.present?
             sentence+= "<br>&#8226 #{I18n.t('duke.harvest_reception.press')} : "
             sentence += @press.map{|press| "#{press.name}#{" (#{press[:quantity].to_s} hl)" if press.key?('quantity')}"}.join(', ').to_s
           end
-          #  Date
+          # Date
           sentence+= "<br>&#8226 #{I18n.t('duke.interventions.date')} : #{@date.to_time.strftime('%d/%m/%Y - %H:%M')}"
-          #  Optional parameters
-          %I[temperature sanitarystate ph h2so4 malic amino_nitrogen ammoniacal_nitrogen assimilated_nitrogen pressing_tavp].each do |param|
-            sentence += I18n.t("duke.harvest_reception.speak.#{param}", param => @parameters[param]) if @parameters[param].present?
+          # Optional parameters
+          %w[temperature sanitarystate ph h2so4 malic amino_nitrogen ammoniacal_nitrogen assimilated_nitrogen pressing_tavp].each do |param|
+            sentence += I18n.t("duke.harvest_reception.speak.#{param}", "#{param}": @parameters[param]) if @parameters[param].present?
           end
           # Complementary parameters
           complement = @parameters['complementary']

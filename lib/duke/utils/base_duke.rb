@@ -2,15 +2,15 @@ module Duke
   module Utils
     module BaseDuke
 
-      #  @param [String] string
-      #  @return [Boolean] is_number?
+      # @param [String] string
+      # @return [Boolean] is_number?
       def number?(string)
         true if Float(string) rescue false
       end
 
       # Creates a Json for an option
-      #  @param [String] label - Displayed btn text
-      #  @param [String] text - Sent value on btn.click
+      # @param [String] label - Displayed btn text
+      # @param [String] text - Sent value on btn.click
       def optionify(label, text = label)
         {
           label: label,
@@ -22,10 +22,10 @@ module Duke
         }
       end
 
-      #  Creates a dynamic options array that can be displayed as options to ibm
-      #  @param [String] sentence - Options title
-      #  @param [Array] options - Array of optJsonified options
-      #  @param [String] description
+      # Creates a dynamic options array that can be displayed as options to ibm
+      # @param [String] sentence - Options title
+      # @param [Array] options - Array of optJsonified options
+      # @param [String] description
       def dynamic_options(sentence, options, description = '')
         json = {}
         json[:description] = description
@@ -35,8 +35,8 @@ module Duke
         return [json]
       end
 
-      #  Create a dynamic text array that can be display as text by ibm
-      #  @param [String] sentence - text to be displayed
+      # Create a dynamic text array that can be display as text by ibm
+      # @param [String] sentence - text to be displayed
       def dynamic_text(sentence)
         json = {}
         json[:response_type] = 'text'
@@ -44,7 +44,7 @@ module Duke
         return [json]
       end
 
-      #  @returns exclusive farming type :vine_farming || :plant_farming if exists
+      # @returns exclusive farming type :vine_farming ||:plant_farming if exists
       def exclusive_farming_type
         farming_types = Activity.availables.select('distinct family').map(&:family)
         if (type = farming_types & %w[plant_farming vine_farming]).size.eql?(1)
@@ -68,17 +68,17 @@ module Duke
         JSON.parse(File.read(Duke.proc_entities_path)).deep_symbolize_keys
       end
 
-      #  is Tenant ekyagri ?
+      # is Tenant ekyagri ?
       def ekyagri?
         Activity.availables.none? {|act| act.family == :vine_farming}
       end
 
-      #  does Tenant have any vegetal activity ?
+      # does Tenant have any vegetal activity ?
       def vegetal?
         Activity.availables.any? {|act| act.family == :plant_farming}
       end
 
-      #  does Tenant have any animal activity ?
+      # does Tenant have any animal activity ?
       def animal?
         Activity.availables.any? {|act| act.family == :animal_farming}
       end

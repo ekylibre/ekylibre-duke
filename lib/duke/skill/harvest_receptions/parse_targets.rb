@@ -13,13 +13,13 @@ module Duke
           new_reception = Duke::Skill::DukeHarvestReception.new(user_input: @event.user_input)
           new_reception.parse_specifics(:plant, :crop_groups, :date)
           update_targets(new_reception)
-          adjust_retries(@event.options.previous)  #  @current_asking to options.preious
+          adjust_retries(@event.options.previous)  # @current_asking to options.preious
           to_ibm
         end
 
         private
 
-          #  @param [DukeHarvestReception] harv
+          # @param [DukeHarvestReception] harv
           def update_targets(harv)
             if harv.plant.blank? && harv.crop_groups.blank?
               pct_regex = harv.user_input.match(Duke::Utils::Regex.percentage)

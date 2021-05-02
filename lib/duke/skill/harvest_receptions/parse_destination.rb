@@ -19,7 +19,7 @@ module Duke
 
         private
 
-          #  @param [DukeHarvestReception] harv
+          # @param [DukeHarvestReception] harv
           def update_destination(harv)
             harv.find_ambiguity
             %i[destination ambiguities].each{|type| self.instance_variable_set("@#{type}", harv.send(type))}

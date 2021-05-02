@@ -12,7 +12,7 @@ module Duke
 
         def handle
           # modify param fina et param fec format
-          #  AND IN CODE !!!!!
+          # AND IN CODE !!!!!
           year_from_id(@event.options.specific)
           format = fec_format(@event.parsed)
           if @financial_year.nil?
@@ -30,7 +30,7 @@ module Duke
 
         private
 
-          #  Correct FEC_format ambiguity
+          # Correct FEC_format ambiguity
           def w_fec_format
             options = dynamic_options(I18n.t('duke.exports.which_fec_format'), [optionify(:Texte, :text), optionify(:XML, :xml)])
             Duke::DukeResponse.new(redirect: :ask_fec_format, options: options, parsed: @financial_year[:key])

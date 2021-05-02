@@ -25,7 +25,7 @@ module Duke
 
         private
 
-          #  Return best match across multiple entries, with it's type as an hash entry
+          # Return best match across multiple entries, with it's type as an hash entry
           def best_of(*args)
             vals = args.map{|arg| send(arg).merge_h({ type: arg }) if send(arg).present?}.compact
             vals.max_by(&:distance)

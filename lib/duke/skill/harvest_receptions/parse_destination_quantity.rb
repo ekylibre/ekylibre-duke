@@ -22,14 +22,14 @@ module Duke
 
         private
 
-          #  @param [Integer] index : index of press inside @press
-          #  @param [Integer] value : Quantity in press(hl)
+          # @param [Integer] index : index of press inside @press
+          # @param [Integer] value : Quantity in press(hl)
           def update_press_quantity(index, value)
             @press[index][:quantity] = value
           end
 
-          #  @param [Integer] index : index of container inside @destination
-          #  @param [Integer] value : Quantity in container(hl)
+          # @param [Integer] index : index of container inside @destination
+          # @param [Integer] value : Quantity in container(hl)
           def update_destination_quantity(index, value)
             @destination[index][:quantity] = value
           end

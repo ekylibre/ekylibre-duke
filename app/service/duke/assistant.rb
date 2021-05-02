@@ -46,7 +46,7 @@ module Duke
 
     # @param [Auth] auth
     # @param [String] message
-    #  @param [String] user_id -> Current Account Email
+    # @param [String] user_id -> Current Account Email
     def send_message(auth:, message:, user_defined:)
       body = {
         input: { text: message },
@@ -69,7 +69,7 @@ module Duke
     # @param [Auth] auth
     # @param [String] intent
     # @param [String] message
-    #  @param [String] user_id -> Current Account Email
+    # @param [String] user_id -> Current Account Email
     def send_message_intent(auth:, intent:, message:, user_defined:)
       body = {
         input: { text: message,

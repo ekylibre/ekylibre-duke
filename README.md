@@ -3,7 +3,7 @@
 Gem to import Duke methods and webchat for an Ekylibre farm.
 Duke currently handles harvest receptions (viti) and vegetal/viti interventions
 
-## Installation
+## Installation
 
 Add this line to your application's Gemfile:
 

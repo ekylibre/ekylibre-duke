@@ -11,7 +11,7 @@ module Duke
         end
 
         def handle
-          # # modify @tax_state = options.specific
+          # modify @tax_state = options.specific
           url = '/backend/tax-declarations?utf8=✓&q='
           url +=  if @event.options.specific.present?
                     "&state%5B%5D=#{event.options.specific}"

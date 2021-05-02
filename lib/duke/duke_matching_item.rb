@@ -12,19 +12,19 @@ module Duke
       args.each{|k, v| self[k.to_sym] = v}
     end
 
-    #  @param [DukeMatchingElement] item
-    #  @returns true if self matches less than item
+    # @param [DukeMatchingElement] item
+    # @returns true if self matches less than item
     def lower_match?(item)
       # byebug
-      if item.key == @key #  only compare distance when same item
+      if item.key == @key # only compare distance when same item
         item.distance > @distance
-      else #  apply exp(diff/70) to have item-length correction
+      else # apply exp(diff/70) to have item-length correction
         dist = item.distance.to_f * Math.exp((item.matched.size - @matched.size)/120.0)
         dist > @distance
       end
     end
 
-    #  @param [Hash] hash : to_merge
+    # @param [Hash] hash : to_merge
     def merge_h(hash)
       hash.to_h.each do |key, val|
         instance_variable_set("@#{key}", val)
@@ -33,8 +33,8 @@ module Duke
       self
     end
 
-    #  @param [DukeMatchingItem] item
-    #  @returns true if item rate isn't permitted for him || false
+    # @param [DukeMatchingItem] item
+    # @returns true if item rate isn't permitted for him || false
     def conflicting_rate?(item)
       # byebug
       item.key?(:rate) && self.key?(:rate) &&
@@ -42,9 +42,9 @@ module Duke
        (%i[net_volume volume_area_density].include?(self.rate[:unit].to_sym) && (Matter.find_by_id(item.key)&.net_volume.fo_f == 0)))
     end
 
-    #  @param [String] procedure
-    #  @param [Measure] measure
-    #  @returns boolean
+    # @param [String] procedure
+    # @param [Measure] measure
+    # @returns boolean
     def measure_coherent?(measure, procedure)
       # byebug
       input_param = Procedo::Procedure.find(procedure).parameters_of_type(:input).find do |param|

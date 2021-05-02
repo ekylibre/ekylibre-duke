@@ -1,9 +1,9 @@
 module Duke
   class DukeWebhooksController < ApplicationController
-    #  Maybe ovveride verify_authentificity_token with authenticate_by_token method ??
+    # Maybe ovveride verify_authentificity_token with authenticate_by_token method ??
     skip_before_action :verify_authenticity_token
 
-    #  check if token concords with user email for authentication
+    # check if token concords with user email for authentication
     def webhook_token_auth
       event = Duke::DukeEvent.new(params[:main_param])
       begin

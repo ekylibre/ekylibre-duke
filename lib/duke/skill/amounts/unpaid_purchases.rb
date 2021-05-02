@@ -1,15 +1,16 @@
 module Duke
   module Skill
-    module Interventions
+    module Amounts
       class UnpaidPurchases
 
-        def initialize(event)
-          controller = Backend::Cells::TradeCountsCellsController.new
-          amount = controller.unpaid_purchases_amount.round_l(currency: Preference[:currency])
-          @sentence = I18n.t('duke.amounts.unpaid_purchases', amount: amount)
-        end
+        def initialize(event); end
 
-        def handle(event)
+        def handle
+          # controller = Backend::Cells::TradeCountsCellsController.new
+          # amount = controller.unpaid_purchases_amount.round_l(currency: Preference[:currency])
+          #  Private method, needs reword on ekyviti
+          amount = '2943 $'
+          @sentence = I18n.t('duke.amounts.unpaid_purchases', amount: amount)
           DukeResponse.new(sentence: @sentence)
         end
 

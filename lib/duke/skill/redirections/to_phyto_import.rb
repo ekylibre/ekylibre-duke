@@ -8,13 +8,13 @@ module Duke
         end
 
         def handle
-          #  modify paraams p_id, params aam change in CODE !!!
-          if (prod = RegisteredPhytosanitaryProduct.find_by_id(@event.parsed)).present? #  parsed if phyto id
+          # modify paraams p_id, params aam change in CODE !!!
+          if (prod = RegisteredPhytosanitaryProduct.find_by_id(@event.parsed)).present? # parsed if phyto id
             Duke::DukeResponse.new(
               redirect: :over,
               sentence: I18n.t('duke.import.phyto_id', id: prod.id, name: prod.name)
             )
-          elsif @event.options.specific.present? #  Specific is aam number
+          elsif @event.options.specific.present? # Specific is aam number
             prods = RegisteredPhytosanitaryProduct.select{|ph| ph.france_maaid == params[:aam]}
             response =  if prods.empty?
                           Duke::DukeResponse.new(
@@ -34,7 +34,7 @@ module Duke
                           )
                         end
             response
-          else #  Issue matching Thousands of Phyto Products names, just redirecting to phyto_main_page
+          else # Issue matching Thousands of Phyto Products names, just redirecting to phyto_main_page
             Duke::DukeResponse.new(redirect: :over, sentence: I18n.t('duke.import.all_phyto'))
           end
         end

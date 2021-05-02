@@ -19,7 +19,7 @@ module Duke
 
         private
 
-          #  @param [DukeHarvestReception] harv
+          # @param [DukeHarvestReception] harv
           def update_press(harv)
             harv.find_ambiguity
             %i[press ambiguities].each{|type| self.instance_variable_set("@#{type}", harv.send(type))}

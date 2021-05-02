@@ -1,13 +1,13 @@
 module Duke
   module Skill
-    module Interventions
+    module Amounts
       class Insurance < Duke::Skill::DukeArticle
 
         def initialize(event)
-          super(event)
+          super()
         end
 
-        def handle(event)
+        def handle
           started_at, stopped_at = extract_time_interval
           n = Onoma::Account.find(:insurance_expenses)
           amount = 0

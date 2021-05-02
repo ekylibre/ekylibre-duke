@@ -6,31 +6,31 @@ module Duke
       arr.each{|item| self.push(DukeMatchingItem.new(hash: item))} unless arr.nil?
     end
 
-    #  @param [DukeMatchingArray] arr
-    #  @returns concatenated DukeMatchingArray
+    # @param [DukeMatchingArray] arr
+    # @returns concatenated DukeMatchingArray
     def uniq_concat(arr)
       arr.each{|item| self.push(item) unless self.duplicate?(item)}
       self
     end
 
-    #  Ensures unicity by key for DukeMatchingItem
+    # Ensures unicity by key for DukeMatchingItem
     def uniq_by_key
       self.uniq{|it| it[:key]}
     end
 
-    #  Uniq by key or duplicate allowed if this item is ambiguous
-    #  @param [Array of DukeAmbiguity] ambiguities
+    # Uniq by key or duplicate allowed if this item is ambiguous
+    # @param [Array of DukeAmbiguity] ambiguities
     def uniq_allow_ambiguity(ambiguities)
       self.select{|itm| self.uniq_by_key.include?(itm) or ambiguities.any?{|amb| amb.first[:description][:key] == itm.key}}
     end
 
-    #  Remove first occurence of an item in the array
+    # Remove first occurence of an item in the array
     # @param [DukeMatchingItem] itm
     def delete_one(itm)
       self.delete_at(self.index(itm))
     end
 
-    #  Returns element with highest distance
+    # Returns element with highest distance
     def max
       self.max_by(&:distance)
     end
@@ -45,9 +45,9 @@ module Duke
       self.find{|hash| hash.key == key}
     end
 
-    #  @param [DukeMatchingItem] itm
-    #  @param [Array] all_lists, Array of all DukeMatchingArrays
-    #  @returns nil, (don't) push itm to self
+    # @param [DukeMatchingItem] itm
+    # @param [Array] all_lists, Array of all DukeMatchingArrays
+    # @returns nil, (don't) push itm to self
     def add_to_recognized(itm, all_lists)
       if all_lists.none? {|list| (list.duplicate?(itm) || list.overlap?(itm))} # If no overlap or duplicate, we append
         self.push(itm)
@@ -56,8 +56,8 @@ module Duke
       end
     end
 
-    #  Is there an element inside with same key, can mutate list if duplicate present with lower distance
-    #  @param [DukeMatchingItem] itm
+    # Is there an element inside with same key, can mutate list if duplicate present with lower distance
+    # @param [DukeMatchingItem] itm
     def duplicate?(itm)
       if self.none? {|present_item| present_item.key == itm.key}
         false
@@ -70,12 +70,12 @@ module Duke
     end
 
     # Is there an element inside with ovelaps with itm
-    #  @param [DukeMatchingItem] itm
+    # @param [DukeMatchingItem] itm
     def overlap?(itm)
       self.any?{|present_item| (present_item.indexes & itm.indexes).present?}
     end
 
-    #  @returns [Boolean], overlap with lower distance
+    # @returns [Boolean], overlap with lower distance
     def lower_overlap?(itm)
       overlap = self.find{|present_item| (present_item.indexes & itm.indexes).present?}
       if overlap.nil?

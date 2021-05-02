@@ -16,7 +16,7 @@ module Duke
     private
 
       def options_params
-        %I[ambiguity_key ambiguity_type procedure specific index quantity number]
+        %I[ambiguity_key ambiguity_type procedure specific index quantity number printer template]
       end
 
   end

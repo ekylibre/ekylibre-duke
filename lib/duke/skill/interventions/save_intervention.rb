@@ -127,8 +127,8 @@ module Duke
           # @param [Integer] key: input id
           # @return [String] input reference_name
           def input_reference_name(key)
-            Procedo::Procedure.find(@procedure).parameters_of_type(:input).find {|inp|
- Matter.find_by_id(key).of_expression(inp.filter)}.name
+            inputs = Procedo::Procedure.find(@procedure).parameters_of_type(:input)
+            inputs.find {|inp| Matter.find_by_id(key).of_expression(inp.filter)}.name
           end
 
       end

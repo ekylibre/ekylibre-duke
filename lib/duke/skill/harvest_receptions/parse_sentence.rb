@@ -15,7 +15,7 @@ module Duke
 
         private
 
-          #  Extracts everything it can from a sentence
+          # Extracts everything it can from a sentence
           def parse_sentence
             extract_date
             extract_reception_parameters

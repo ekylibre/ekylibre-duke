@@ -1,9 +1,11 @@
 module Duke
   module Skill
-    module Interventions
+    module Amounts
       class ActiveEquipments
 
-        def handle(event)
+        def initialize(event); end
+
+        def handle
           amount = Equipment.all.map(&:status).count(:go)
           sentence = I18n.t('duke.amounts.active_eq', amount: amount)
           DukeResponse.new(sentence: sentence)

@@ -3,7 +3,7 @@ module Duke
     include Duke::Utils::BaseDuke
     using Duke::Utils::DukeRefinements
 
-    #  Creates ambiguity item
+    # Creates ambiguity item
     def initialize(itm:, ambiguity_attr:, itm_type:)
       super()
       @ambig_level = 10
@@ -13,8 +13,8 @@ module Duke
       @itm_type = itm_type
     end
 
-    #  checks every @attribute.type for ambiguous items
-    #  @return self as an array
+    # checks every @attribute.type for ambiguous items
+    # @return self as an array
     def check_ambiguity
       @attributes.each do |type, iterator|
         iterator.each do |product|
@@ -28,22 +28,22 @@ module Duke
 
       attr_reader :options, :itm, :ambig_level, :itm_type
 
-      #  @param [ActiveRecord] product
-      #  @return bln, check if product is ambiguous with self
+      # @param [ActiveRecord] product
+      # @return bln, check if product is ambiguous with self
       def ambiguous?(product)
         @itm.key != product[:id] && (@itm.distance - @itm.matched.partial_similar(product[:partials])).between?(0, @ambig_level)
       end
 
-      #  @param [ActiveRecord] product
-      #  @return product/self as a json option
+      # @param [ActiveRecord] product
+      # @return product/self as a json option
       def option(product: nil, type: nil)
         return optionify(@itm.name, "{:type => \"#{@itm_type}\", :key => #{@itm.key}, :name => \"#{@itm.name}\"}") if product.nil?
 
         return optionify(product[:name], "{:type => \"#{type}\", :key => #{product[:id]}, :name => \"#{product[:name]}\"}")
       end
 
-      #  Creates ambiguity item if any ambiguity options are present
-      #  @return self as an array
+      # Creates ambiguity item if any ambiguity options are present
+      # @return self as an array
       def create_ambiguity
         if @options.present?
           @options.push(option)
@@ -55,7 +55,7 @@ module Duke
         self.to_a
       end
 
-      #  Sorts @option by target types, and add a "global_label" before each target types
+      # Sorts @option by target types, and add a "global_label" before each target types
       def add_target_labels
         @options = @options.sort_by{|opt| option_target_type(opt)}
         @options.map.with_index{|opt, ix| { label: option_target_type(opt), idx: ix }}
@@ -65,7 +65,7 @@ module Duke
         end
       end
 
-      #  @return [String] Target type for an option
+      # @return [String] Target type for an option
       def option_target_type(opt)
         return eval(opt[:value][:input][:text])[:type] if eval(opt[:value][:input][:text])[:type] != 'cultivation'
 

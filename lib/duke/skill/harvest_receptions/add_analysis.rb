@@ -19,7 +19,7 @@ module Duke
 
         private
 
-          #  @param [DukeHarvestReception] harv
+          # @param [DukeHarvestReception] harv
           def concatenate_analysis(harv)
             final_parameters = harv.parameters.dup.map(&:dup).to_h
             harv.parameters.each do |key, value|

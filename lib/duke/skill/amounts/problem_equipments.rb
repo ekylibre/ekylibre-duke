@@ -1,9 +1,11 @@
 module Duke
   module Skill
-    module Interventions
+    module Amounts
       class ProblemEquipments
 
-        def handle(event)
+        def initialize(event); end
+
+        def handle
           amount = Equipment.all.map(&:status).count(:caution)
           cautions = Equipment.all.select{|eq| eq.status == :caution}
           list = '&#8226 ' + cautions.map(&:name).join('<br>&#8226 ')

@@ -19,11 +19,11 @@ module Duke
             url = "/backend/issues/new?target_id=#{equipments.max.key}"
             # Adding description
             url += "&description=#{params[:user_input].gsub(' ', '+')}&target_type=Equipment"
-            #  Adding nature
+            # Adding nature
             url += "&nature=#{@event.options.specific}" unless @event.options.specific.nil?
             if (cz = @cultivablezones.max).present?
               coords = CultivableZone.find_by(id: cz.key).shape_centroid
-              #  Adding coordonates
+              # Adding coordonates
               link += "&lat=#{coords.first}&lon=#{coords.last}"
             end
           end

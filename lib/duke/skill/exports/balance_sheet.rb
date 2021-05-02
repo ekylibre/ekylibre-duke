@@ -5,8 +5,8 @@ module Duke
 
         def initialize(event)
           super(user_input: event.user_input, email: event.user_id, session_id: event.session_id)
-          @activity_variety = DukeMatchingArray.new
-          extract_best(:activity_variety)
+          @financial_year = DukeMatchingArray.new
+          extract_best(:financial_year)
           @event = event
         end
 
@@ -20,7 +20,7 @@ module Duke
                                      financial_year: FinancialYear.find_by_id(@financial_year[:key]),
                                      perform_as: User.find_by(email: @email),
                                      duke_id: @session_id)
-            sentence = I18n.t("duke.exports.#{template_nature}_started", year: @financial_year[:name])
+            sentence = I18n.t("duke.exports.#{@event.options.template}_started", year: @financial_year[:name])
             Duke::DukeResponse.new(redirect: :started, sentence: sentence)
           end
         end
