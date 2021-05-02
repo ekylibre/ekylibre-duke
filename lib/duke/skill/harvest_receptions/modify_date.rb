@@ -2,7 +2,6 @@ module Duke
   module Skill
     module HarvestReceptions
       class ModifyDate < Duke::Skill::DukeHarvestReception
-        using Duke::DukeRefinements
 
         def initialize(event)
           super()

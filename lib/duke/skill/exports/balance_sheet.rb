@@ -2,12 +2,12 @@ module Duke
   module Skill
     module Exports
       class BalanceSheet < Duke::Skill::DukeSingleMatch
-        using Duke::DukeRefinements
 
         def initialize(event)
           super(user_input: event.user_input, email: event.user_id, session_id: event.session_id)
           @activity_variety = DukeMatchingArray.new
           extract_best(:activity_variety)
+          @event = event
         end
 
         def handle

@@ -2,7 +2,6 @@ module Duke
   module Skill
     module HarvestReceptions
       class ParseParameter < Duke::Skill::DukeHarvestReception
-        using Duke::DukeRefinements
 
         def initialize(event)
           super()

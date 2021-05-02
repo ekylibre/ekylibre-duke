@@ -2,7 +2,6 @@ module Duke
   module Skill
     module Interventions
       class ParseInputQuantity < Duke::Skill::DukeIntervention
-        using Duke::DukeRefinements
 
         def initialize(event)
           super()

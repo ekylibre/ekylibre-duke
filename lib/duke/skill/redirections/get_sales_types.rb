@@ -2,7 +2,6 @@ module Duke
   module Skill
     module Redirections
       class GetSalesTypes
-        using Duke::DukeRefinements
 
         def initialize(event)
           @sales = SaleNature.all

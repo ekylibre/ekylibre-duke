@@ -2,7 +2,6 @@ module Duke
   module Skill
     module Redirections
       class ToTaxDeclaraton < Duke::Skill::DukeSingleMatch
-        using Duke::DukeRefinements
 
         def initialize(event)
           super(user_input: event.user_input)
@@ -14,7 +13,7 @@ module Duke
         def handle
           # # modify @tax_state = options.specific
           url = '/backend/tax-declarations?utf8=✓&q='
-          url +=  if event.options.specific.present?
+          url +=  if @event.options.specific.present?
                     "&state%5B%5D=#{event.options.specific}"
                   else
                     'state%5B%5D=draft&state%5B%5D=validated&state%5B%5D=sent'

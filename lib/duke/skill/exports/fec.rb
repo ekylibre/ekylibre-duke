@@ -2,7 +2,6 @@ module Duke
   module Skill
     module Exports
       class Fec < Duke::Skill::DukeSingleMatch
-        using Duke::DukeRefinements
 
         def initialize(event)
           super(user_input: event.user_input, email: event.user_id, session_id: event.session_id)
@@ -15,7 +14,7 @@ module Duke
           # modify param fina et param fec format
           #  AND IN CODE !!!!!
           year_from_id(@event.options.specific)
-          format = fec_format(@event.options.format)
+          format = fec_format(@event.parsed)
           if @financial_year.nil?
             w_fy(fec_format: format)
           elsif format.nil?

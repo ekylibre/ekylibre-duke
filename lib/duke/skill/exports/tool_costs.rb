@@ -2,7 +2,6 @@ module Duke
   module Skill
     module Exports
       class ToolCosts < Duke::Skill::DukeSingleMatch
-        using Duke::DukeRefinements
 
         def initialize(event)
           super(user_input: event.user_input, email: event.user_id, session_id: event.session_id)

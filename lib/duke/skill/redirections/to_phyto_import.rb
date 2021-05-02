@@ -2,7 +2,6 @@ module Duke
   module Skill
     module Redirections
       class ToPhytoImport
-        using Duke::DukeRefinements
 
         def initialize(event)
           @event = event

@@ -2,7 +2,7 @@ module Duke
   module Skill
     module Interventions
       class ParseSentence < Duke::Skill::DukeIntervention
-        using Duke::DukeRefinements
+        using Duke::Utils::DukeRefinements
 
         def initialize(event)
           super(user_input: event.user_input, procedure: event.options.procedure)

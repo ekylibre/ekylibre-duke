@@ -14,7 +14,7 @@ module Duke
                       else
                         I18n.t('duke.amounts.multiple_problem_eq', amount: amount)
                       end
-          return { amount: amount, sentence: sentence, equipments: list }
+          Duke::DukeResponse.new(parsed: amount, sentence: sentence, options: list)
         end
 
       end

@@ -1,7 +1,7 @@
 module Duke
   class DukeMatchingItem < HashWithIndifferentAccess
-    include BaseDuke
-    using Duke::DukeRefinements
+    include Utils::BaseDuke
+    using Duke::Utils::DukeRefinements
 
     attr_accessor :name, :distance, :indexes, :key, :matched, :rate, :area
 

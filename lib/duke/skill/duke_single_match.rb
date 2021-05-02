@@ -78,7 +78,7 @@ module Duke
             Duke::DukeResponse.new(
               redirect: :ask_financialyear,
               options: dynamic_options(I18n.t('duke.exports.which_financial_year'), fys),
-              format: fec_format
+              parsed: fec_format
             )
           end
         end

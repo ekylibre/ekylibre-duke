@@ -2,10 +2,10 @@ module Duke
   module Skill
     module Redirections
       class ToJournal < Duke::Skill::DukeSingleMatch
-        using Duke::DukeRefinements
+        using Duke::Utils::DukeRefinements
 
         def initialize(event)
-          super(user_input: event.user_input)
+          super(user_input: event.user_input.duke_del(event.options.specific))
           @journal = Duke::DukeMatchingArray.new
           extract_best(:journal)
         end

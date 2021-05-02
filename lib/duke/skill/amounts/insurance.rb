@@ -2,7 +2,6 @@ module Duke
   module Skill
     module Interventions
       class Insurance < Duke::Skill::DukeArticle
-        using Duke::DukeRefinements
 
         def initialize(event)
           super(event)

@@ -2,7 +2,6 @@ module Duke
   module Skill
     module Issues
       class EquipmentIssues < Duke::Skill::DukeArticle
-        using Duke::DukeRefinements
 
         def initialize(event)
           super(user_input: event.user_input)

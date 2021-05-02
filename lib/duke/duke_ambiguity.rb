@@ -1,7 +1,7 @@
 module Duke
   class DukeAmbiguity < Array
-    include Duke::BaseDuke
-    using Duke::DukeRefinements
+    include Duke::Utils::BaseDuke
+    using Duke::Utils::DukeRefinements
 
     #  Creates ambiguity item
     def initialize(itm:, ambiguity_attr:, itm_type:)

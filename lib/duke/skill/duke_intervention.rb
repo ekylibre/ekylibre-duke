@@ -1,7 +1,7 @@
 module Duke
   module Skill
     class DukeIntervention < DukeArticle
-      using Duke::DukeRefinements
+      using Duke::Utils::DukeRefinements
 
       attr_accessor :procedure, :input, :ambiguities, :working_periods, :doer, :tool, :plant, :cultivation, :crop_groups, :land_parcel
       attr_reader :specific

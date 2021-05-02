@@ -1,8 +1,8 @@
 module Duke
   module Skill
     class DukeArticle
-      using Duke::DukeRefinements
-      include Duke::BaseDuke
+      using Duke::Utils::DukeRefinements
+      include Duke::Utils::BaseDuke
 
       attr_accessor :date, :duration, :user_input, :description
 

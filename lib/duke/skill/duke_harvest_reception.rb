@@ -1,7 +1,7 @@
 module Duke
   module Skill
     class DukeHarvestReception < DukeArticle
-      using Duke::DukeRefinements
+      using Duke::Utils::DukeRefinements
 
       attr_accessor :plant, :crop_groups, :destination, :press, :ambiguities, :parameters
 

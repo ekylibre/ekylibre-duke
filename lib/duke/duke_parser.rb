@@ -1,6 +1,6 @@
 module Duke
   class DukeParser < Skill::DukeArticle
-    using Duke::DukeRefinements
+    using Duke::Utils::DukeRefinements
 
     def initialize(word_combo:, level:, **args)
       @matching_item = nil
