@@ -1,8 +1,9 @@
 module Duke
   module Utils
     class Regex
+      # rubocop:disable Layout/LineLength
 
-      # Dates & durations
+      #  Dates & durations
 
       def self.minutes
         /\d+\s(\w*minute\w*|mins)/
@@ -29,7 +30,7 @@ module Duke
       end
 
       def self.slash_date
-        /(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?/
+        %r{(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[/](0[1-9]|1[0-2]|[1-9])([/](\d{4}|\d{2}))?}
       end
 
       def self.afternoon_hour
@@ -53,14 +54,14 @@ module Duke
       end
 
       def self.since_slash_date
-        /(depuis|à partir|a partir) * (du|de|le|la)? *(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[\/](0[1-9]|1[0-2]|[1-9])([\/](\d{4}|\d{2}))?/
+        %r{(depuis|à partir|a partir) * (du|de|le|la)? *(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[0-1])[/](0[1-9]|1[0-2]|[1-9])([/](\d{4}|\d{2}))?}
       end
 
       def self.since_month_date
         /(depuis|à partir|a partir) *(du|de|le|la)? *(janvier|jan|février|fev|fevrier|mars|avril|avr|mai|juin|juillet|jui|aout|aou|août|septembre|sept|octobre|oct|novembre|nov|décembre|dec|decembre)/
       end
 
-      # Harvest Reception parameters
+      #  Harvest Reception parameters
 
       def self.percentage
         /(\d{1,2}) *(%|pour( )?cent(s)?)/
@@ -99,7 +100,7 @@ module Duke
       end
 
       def self.second_nitrogen
-        /(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(mg|milligramme)?.?(par l|\/l|par litre)? ?+(d\'|de|en)? *azote aminé/
+        %r{(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(mg|milligramme)?.?(par l|/l|par litre)? ?+(d\'|de|en)? *azote aminé}
       end
 
       def self.ammo_nitrogen
@@ -107,11 +108,11 @@ module Duke
       end
 
       def self.second_ammo_nitrogen
-        /(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(mg|milligramme)?.?(par l|\/l|par litre)? ?+(d\'|de|en)? *azote ammonia/
+        %r{(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(mg|milligramme)?.?(par l|/l|par litre)? ?+(d\'|de|en)? *azote ammonia}
       end
 
       def self.assi_nitrogen
-        /(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(mg|milligramme)?.?(par l|\/l|par litre)? ?+(d\'|de|en)? ?+(azote *(assimilable)?|sel d\'ammonium|substance(s)? azotée)/
+        %r{(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(mg|milligramme)?.?(par l|/l|par litre)? ?+(d\'|de|en)? ?+(azote *(assimilable)?|sel d\'ammonium|substance(s)? azotée)}
       end
 
       def self.second_assi_nitrogen
@@ -123,7 +124,7 @@ module Duke
       end
 
       def self.h2so4
-        /(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(g|gramme)?.? *(par l|\/l|par litre)? ?+(d\'|de|en)? ?+(acidité|acide|h2so4)/
+        %r{(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) +(g|gramme)?.? *(par l|/l|par litre)? ?+(d\'|de|en)? ?+(acidité|acide|h2so4)}
       end
 
       def self.second_h2so4
@@ -131,7 +132,7 @@ module Duke
       end
 
       def self.malic
-        /(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) *(g|gramme)?.?(par l|\/l|par litre)? *(d\'|de|en)? *(acide?) *(malique|malic)/
+        %r{(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) *(g|gramme)?.?(par l|/l|par litre)? *(d\'|de|en)? *(acide?) *(malique|malic)}
       end
 
       def self.second_malic
@@ -146,7 +147,7 @@ module Duke
         /(\d{1,3}|\d{1,3}(\.|,)\d{1,2}) *((hect)?are(s)?) *(de *(la|l\')?|du|des|sur|à|a|au)? #{matched}/
       end
 
-      # Utils
+      #  Utils
 
       def self.up_to_four_digits_float
         /\d{1,4}((\.|,)\d{1,2})?/
@@ -159,14 +160,14 @@ module Duke
       # Inputs quantity
 
       def self.input_quantity(matched)
-        /(\d{1,3}(\.|,)\d{1,2}|\d{1,3}) *((g|gramme|kg|kilo|kilogramme|tonne|t|l|litre|hectolitre|hl)(s)? *(par hectare|\/ *hectare|\/ *ha)?) *(de|d\'|du)? *(la|le)? *#{matched}/
+        %r{(\d{1,3}(\.|,)\d{1,2}|\d{1,3}) *((g|gramme|kg|kilo|kilogramme|tonne|t|l|litre|hectolitre|hl)(s)? *(par hectare|/ *hectare|/ *ha)?) *(de|d\'|du)? *(la|le)? *#{matched}}
       end
 
       def self.second_input_quantity(matched)
-        /#{matched} *(à|a|avec)? *(\d{1,3}(\.|,)\d{1,2}|\d{1,3}) *((gramme|g|kg|kilo|kilogramme|tonne|t|hectolitre|hl|litre|l)(s)? *(par hectare|\/ *hectare|\/ *ha)?)/
+        %r{#{matched} *(à|a|avec)? *(\d{1,3}(\.|,)\d{1,2}|\d{1,3}) *((gramme|g|kg|kilo|kilogramme|tonne|t|hectolitre|hl|litre|l)(s)? *(par hectare|/ *hectare|/ *ha)?)}
       end
 
-      # Intervention readings
+      #  Intervention readings
 
       def self.bud_charge
         /(\d{1,2}) *(bourgeons|yeux|oeil)/
@@ -176,15 +177,15 @@ module Duke
         /charge *(de|à|avec|a)? *(\d{1,2})/
       end
 
-      # Sentence cleaning 
-      
+      #  Sentence cleaning
+
       def self.numeroes
         /(\bnum(e|é)ro\b|n ?°)/
-      end 
+      end
 
       def self.useless_words
         /\b(le|la|les)\b/
-      end 
+      end
 
       def self.useless_characters
         /(#|-|_|\\)/
@@ -194,6 +195,7 @@ module Duke
         /(?<=\s)\s/
       end
 
+      # rubocop:enable Layout/LineLength
     end
   end
 end

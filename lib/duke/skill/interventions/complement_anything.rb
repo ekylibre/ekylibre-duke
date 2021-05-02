@@ -8,15 +8,15 @@ module Duke
           super()
           recover_from_hash(event.parsed)
           @event = event
-        end 
+        end
 
         def handle
-          tmpInt = Duke::Skill::DukeIntervention.new(procedure: @procedure,  date: @date, user_input: @event.user_input)
-          tmpInt.parse_sentence
-          concat_specific(int: tmpInt)
+          tmp_int = Duke::Skill::DukeIntervention.new(procedure: @procedure,  date: @date, user_input: @event.user_input)
+          tmp_int.parse_sentence
+          concat_specific(int: tmp_int)
           to_ibm(modifiable: modification_candidates)
         end
-        
+
       end
     end
   end

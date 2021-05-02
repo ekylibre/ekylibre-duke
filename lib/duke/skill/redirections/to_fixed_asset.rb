@@ -9,21 +9,21 @@ module Duke
           @fixed_asset = Duke::DukeMatchingArray.new
           extract_best(:fixed_asset)
           @event = event
-        end 
+        end
 
         def handle
-          ## modify asset_state to @option.specific
+          # # modify asset_state to @option.specific
           if @fixed_asset.present?
             Duke::DukeResponse.new(
-              sentence: I18n.t("duke.redirections.to_fixed_asset_product", name: @fixed_asset.name, id: @fixed_asset.key)
+              sentence: I18n.t('duke.redirections.to_fixed_asset_product', name: @fixed_asset.name, id: @fixed_asset.key)
             )
           elsif @event.option.specific.present?
-            Duke::DukeResponse.new(sentence: I18n.t("duke.redirections.to_fixed_asset_state", state: @event.option.specific))
+            Duke::DukeResponse.new(sentence: I18n.t('duke.redirections.to_fixed_asset_state', state: @event.option.specific))
           else
-            Duke::DukeResponse.new(sentence: I18n.t("duke.redirections.to_all_fixed_assets"))
+            Duke::DukeResponse.new(sentence: I18n.t('duke.redirections.to_all_fixed_assets'))
           end
         end
-        
+
       end
     end
   end

@@ -8,17 +8,17 @@ module Duke
           super(user_input: event.user_input)
           @account = Duke::DukeMatchingArray.new
           extract_best(:account)
-        end 
+        end
 
         def handle
-          ## modify params journal word to options.sss
+          # # modify params journal word to options.sss
           if @account.blank?
-            Duke::DukeResponse.new(sentence: I18n.t("duke.redirections.letterings"))
-          else 
-            Duke::DukeResponse.new(sentence: I18n.t("duke.redirections.lettering", name: @account.name, key: @account.key))
+            Duke::DukeResponse.new(sentence: I18n.t('duke.redirections.letterings'))
+          else
+            Duke::DukeResponse.new(sentence: I18n.t('duke.redirections.lettering', name: @account.name, key: @account.key))
           end
         end
-        
+
       end
     end
   end

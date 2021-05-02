@@ -9,15 +9,15 @@ module Duke
           @entity = Duke::DukeMatchingArray.new
           extract_best(:entity)
           @event = event
-        end 
+        end
 
         def handle
-          ## modify params qale_type : qq word to options.sss
+          # # modify params qale_type : qq word to options.sss
           filter = sale_filter(@event.options.specific)
           if @entity.blank?
             Duke::DukeResponse.new(sentence: I18n.t("duke.redirections.to_#{filter}_sales"))
-          else 
-            Duke::DukeResponse.new(sentence: I18n.t("duke.redirections.to_#{filter}_specific_sales" , entity: @entity.name))
+          else
+            Duke::DukeResponse.new(sentence: I18n.t("duke.redirections.to_#{filter}_specific_sales", entity: @entity.name))
           end
         end
 

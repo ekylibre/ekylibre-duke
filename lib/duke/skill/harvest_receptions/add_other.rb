@@ -8,12 +8,12 @@ module Duke
           super()
           recover_from_hash(event.parsed)
           @event = event
-        end 
+        end
 
         def handle
           to_ibm
         end
-        
+
       end
     end
   end

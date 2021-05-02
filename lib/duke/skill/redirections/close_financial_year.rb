@@ -9,26 +9,26 @@ module Duke
           @financial_year = Duke::DukeMatchingArray.new
           extract_best(:financial_year)
           @event = event
-        end 
+        end
 
         def handle
-          ## modify financial_year : options.specific
+          # # modify financial_year : options.specific
           year_from_id(@event.options.specific)
           if @financial_year.nil?
             w_fy
           elsif FinancialYear.find_by_id(@financial_year[:key]).closed?
             Duke::DukeResponse.new(
               redirect: :alreadyclosed,
-              sentence: I18n.t("duke.exports.closed", code: @financial_year[:name], id: @financial_year[:key])
+              sentence: I18n.t('duke.exports.closed', code: @financial_year[:name], id: @financial_year[:key])
             )
           else
             Duke::DukeResponse.new(
               redirect: :closed,
-              sentence: I18n.t("duke.exports.to_close", code: @financial_year[:name], id: @financial_year[:key])
+              sentence: I18n.t('duke.exports.to_close', code: @financial_year[:name], id: @financial_year[:key])
             )
           end
         end
-        
+
       end
     end
   end

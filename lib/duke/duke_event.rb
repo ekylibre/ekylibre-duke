@@ -1,5 +1,5 @@
-module Duke 
-  class DukeEvent 
+module Duke
+  class DukeEvent
 
     attr_reader :tenant, :handler, :user_id, :session_id, :user_input, :options, :parsed
 
@@ -11,13 +11,13 @@ module Duke
       @user_input = params[:user_input]
       @parsed = params[:parsed]
       @options = params.fetch(:options, {}).permit(*options_params).to_h.to_struct
-    end 
+    end
 
-    private 
+    private
 
-    def options_params 
-      %I[ambiguity_key ambiguity_type procedure specific index quantity number]
-    end 
+      def options_params
+        %I[ambiguity_key ambiguity_type procedure specific index quantity number]
+      end
 
-  end 
+  end
 end

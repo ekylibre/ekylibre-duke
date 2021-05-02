@@ -8,7 +8,7 @@ module Duke
           super()
           recover_from_hash(event.parsed)
           @event = event
-        end 
+        end
 
         def handle
           @user_input = @event.user_input
@@ -16,7 +16,7 @@ module Duke
           update_description(@event.user_input)
           to_ibm
         end
-        
+
       end
     end
   end

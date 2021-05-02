@@ -8,21 +8,21 @@ module Duke
           super(user_input: event.user_input)
           @activity_variety = Duke::DukeMatchingArray.new
           extract_best(:activity_variety)
-        end 
+        end
 
         def handle
           act = Activity.find_by_id(@user_input.to_i)
           if act.present?
             Duke::DukeResponse.new(
               redirect: :yes,
-              sentence: I18n.t("duke.redirections.activity", variety: act.cultivation_variety_name),
+              sentence: I18n.t('duke.redirections.activity', variety: act.cultivation_variety_name),
               parsed: act.id
             )
           else
-            Duke::DukeResponse.new(redirect: :no, sentence: I18n.t("duke.redirections.no_activity"))
+            Duke::DukeResponse.new(redirect: :no, sentence: I18n.t('duke.redirections.no_activity'))
           end
         end
-        
+
       end
     end
   end

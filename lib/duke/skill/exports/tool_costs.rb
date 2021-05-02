@@ -8,11 +8,11 @@ module Duke
           super(user_input: event.user_input, email: event.user_id, session_id: event.session_id)
           @tool = DukeMatchingArray.new
           extract_best(:tool)
-        end 
+        end
 
         def handle
           if @tool.blank?
-            Duke::DukeResponse.new(redirect: :no_tool, sentence: I18n.t("duke.exports.no_tool_found"))
+            Duke::DukeResponse.new(redirect: :no_tool, sentence: I18n.t('duke.exports.no_tool_found'))
           else
             ToolCostExportJob.perform_later(
               equipment_ids: [@tool.key],
@@ -20,12 +20,10 @@ module Duke
               user: User.find_by(email: @email,
               duke_id: @session_id)
             )
-            Duke::DukeResponse.new(redirect: :started, sentence: I18n.t("duke.exports.tool_export_started" , tool: @tool.name))
+            Duke::DukeResponse.new(redirect: :started, sentence: I18n.t('duke.exports.tool_export_started', tool: @tool.name))
           end
         end
 
-        private
-        
       end
     end
   end

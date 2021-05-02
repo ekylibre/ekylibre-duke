@@ -1,5 +1,5 @@
-module Duke 
-  class DukeResponse 
+module Duke
+  class DukeResponse
 
     def initialize(redirect: nil, parsed: nil, sentence: nil, options: nil, moreable: nil, modifiable: nil, user_input: nil)
       @redirect = redirect
@@ -10,5 +10,5 @@ module Duke
       @modifiable = modifiable
     end
 
-  end 
+  end
 end

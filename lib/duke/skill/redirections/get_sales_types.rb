@@ -6,18 +6,18 @@ module Duke
 
         def initialize(event)
           @sales = SaleNature.all
-        end 
+        end
 
         def handle
-          ## modify params journal word to options.sss
-          if @sales.size < 2 
+          # # modify params journal word to options.sss
+          if @sales.size < 2
             Duke::DukeResponse.new
           else
-            options = @sales.map{|type| optJsonify(type.name, type.id.to_s)}
-            Duke::DukeResponse.new(options: dynamic_options(I18n.t("duke.redirections.which_sale_type"), options))
+            options = @sales.map{|type| optionify(type.name, type.id.to_s)}
+            Duke::DukeResponse.new(options: dynamic_options(I18n.t('duke.redirections.which_sale_type'), options))
           end
         end
-        
+
       end
     end
   end
