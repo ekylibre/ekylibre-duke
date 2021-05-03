@@ -26,7 +26,7 @@ module Duke
               doers_attributes: doer_attributes.to_a,
               targets_attributes: target_attributes.to_a,
               inputs_attributes: input_attributes.to_a,
-              working_periods_attributes: @working_periods
+              working_periods_attributes: @working_periods.map{|wp| wp.permit!.to_h}
             }
             add_readings_attributes(intervention_params)
             it = Intervention.create!(intervention_params)
@@ -114,14 +114,14 @@ module Duke
           # @param [Integer] key: tool id
           # @return [String] tool reference_name
           def tool_reference_name(key)
-            reference_name = Procedo::Procedure.find(@procedure).parameters_of_type(:tool).first.name
-            Procedo::Procedure.find(@procedure).find_all{|param| param.type == :tool}.each do |tool_type|
+            reference_name = Procedo::Procedure.find(@procedure).parameters_of_type(:tool).first
+            Procedo::Procedure.find(@procedure).parameters.find_all{|param| param.type == :tool}.each do |tool_type|
               if Equipment.of_expression(tool_type.filter).include? Equipment.find_by_id(key)
                 reference_name = tool_type
                 break
               end
             end
-            reference_name
+            reference_name.name
           end
 
           # @param [Integer] key: input id

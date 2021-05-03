@@ -44,7 +44,7 @@ module Duke
         return [json]
       end
 
-      # @returns exclusive farming type :vine_farming ||:plant_farming if exists
+      # @returns exclusive farming type :vine_farming :plant_farming if exists
       def exclusive_farming_type
         farming_types = Activity.availables.select('distinct family').map(&:family)
         if (type = farming_types & %w[plant_farming vine_farming]).size.eql?(1)

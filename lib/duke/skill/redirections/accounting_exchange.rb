@@ -1,7 +1,7 @@
 module Duke
   module Skill
     module Redirections
-      class AccoutingExchange < Duke::Skill::DukeSingleMatch
+      class AccountingExchange < Duke::Skill::DukeSingleMatch
 
         def initialize(event)
           super(user_input: event.user_input)

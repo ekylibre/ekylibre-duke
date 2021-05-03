@@ -2,6 +2,7 @@ module Duke
   module Skill
     module Redirections
       class ToPhytoImport
+        include Duke::Utils::BaseDuke
 
         def initialize(event)
           @event = event
@@ -15,7 +16,7 @@ module Duke
               sentence: I18n.t('duke.import.phyto_id', id: prod.id, name: prod.name)
             )
           elsif @event.options.specific.present? # Specific is aam number
-            prods = RegisteredPhytosanitaryProduct.select{|ph| ph.france_maaid == params[:aam]}
+            prods = RegisteredPhytosanitaryProduct.select{|ph| ph.france_maaid == @event.options.specific}
             response =  if prods.empty?
                           Duke::DukeResponse.new(
                             redirect: :over,

@@ -16,8 +16,8 @@ module Duke
             Duke::DukeResponse.new(
               sentence: I18n.t('duke.redirections.to_fixed_asset_product', name: @fixed_asset.name, id: @fixed_asset.key)
             )
-          elsif @event.option.specific.present?
-            Duke::DukeResponse.new(sentence: I18n.t('duke.redirections.to_fixed_asset_state', state: @event.option.specific))
+          elsif @event.options.specific.present?
+            Duke::DukeResponse.new(sentence: I18n.t('duke.redirections.to_fixed_asset_state', state: @event.options.specific))
           else
             Duke::DukeResponse.new(sentence: I18n.t('duke.redirections.to_all_fixed_assets'))
           end

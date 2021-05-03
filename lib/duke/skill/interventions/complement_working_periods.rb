@@ -2,6 +2,7 @@ module Duke
   module Skill
     module Interventions
       class ComplementWorkingPeriods < Duke::Skill::DukeIntervention
+        using Duke::Utils::DukeRefinements
 
         def initialize(event)
           super()

@@ -9,10 +9,10 @@ module Duke
 
       private
 
-        attr_accessor :financial_year, :journal, :account, :bank_account, :fixed_asset, :depreciable, :entity
+        attr_accessor :financial_year, :journal, :account, :bank_account, :fixed_asset, :depreciable, :entity, :activity_variety
 
         def parseable
-          [*super, :financial_year, :journal, :account, :bank_account, :fixed_asset, :depreciable, :entity]
+          [*super, :financial_year, :journal, :account, :bank_account, :fixed_asset, :depreciable, :entity, :activity_variety]
         end
 
         # Returns best account

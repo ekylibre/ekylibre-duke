@@ -23,7 +23,7 @@ module Duke
           def concatenate_analysis(harv)
             final_parameters = harv.parameters.dup.map(&:dup).to_h
             harv.parameters.each do |key, value|
-              if (%w[key tav].include?(key)||value.nil?)
+              if (%w[key tav].include?(key) || value.nil?)
                 final_parameters[key] = @parameters[key]
               end
             end

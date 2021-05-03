@@ -21,7 +21,7 @@ module Duke
             w_account
           else
             Duke::DukeResponse.new(
-              status: :over,
+              redirect: :over,
               sentence: I18n.t('duke.redirections.to_reconciliation_account', id: @bank_account.key, name: @bank_account.name)
             )
           end

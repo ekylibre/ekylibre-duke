@@ -5,8 +5,8 @@ module Duke
 
         def initialize(event)
           super(user_input: event.user_input)
-          @journal = Duke::DukeMatchingArray.new
-          extract_best(:journal)
+          @financial_year = Duke::DukeMatchingArray.new
+          extract_best(:financial_year)
           @event = event
         end
 

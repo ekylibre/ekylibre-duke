@@ -57,7 +57,7 @@ module Duke
         # @param [*] optional
         def adjust_retries(current_asking, optional = nil)
           what_next, sentence, new_optional = redirect
-          if what_next == current_asking && (optional.nil?||optional.eql?(new_optional))
+          if what_next == current_asking && (optional.nil? || optional.eql?(new_optional))
             @retry += 1
           else
             reset_retries
@@ -167,7 +167,7 @@ module Duke
           }.each do |val, regex|
             sanitarystate += val.to_s if @user_input.matchdel regex
           end
-          @parameters['sanitarystate'] = (sanitarystate if sanitarystate != '')||nil
+          @parameters['sanitarystate'] = sanitarystate == '' ? nil : sanitarystate
         end
 
         # Extract SO Acid value in @user_input
