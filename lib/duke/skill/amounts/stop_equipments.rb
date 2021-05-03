@@ -5,6 +5,7 @@ module Duke
 
         def initialize(event); end
 
+        # Obtain number of stopped equipments
         def handle
           amount = Equipment.all.map(&:status).count(:stop)
           sentence = I18n.t('duke.amounts.stopped_eq', amount: amount)

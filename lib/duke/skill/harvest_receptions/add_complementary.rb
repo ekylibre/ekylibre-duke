@@ -9,6 +9,7 @@ module Duke
           @event = event
         end
 
+        # Add complementary_parameter to incoming harvest
         def handle
           @user_input = @event.user_input
           update_complementary(@event.options.specific) # modify parameter to options.specific

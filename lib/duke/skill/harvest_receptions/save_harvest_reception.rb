@@ -8,6 +8,7 @@ module Duke
           recover_from_hash(event.parsed)
         end
 
+        # Saves harvest reception and handles redirecting
         def handle
           Duke::DukeResponse.new(sentence: I18n.t('duke.harvest_reception.saved', id: save_harvest_reception))
         end

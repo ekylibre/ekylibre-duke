@@ -9,6 +9,7 @@ module Duke
           extract_best(:activity_variety)
         end
 
+        # Disambiguate ambiguity in activity_redirect, if user click btn-suggestion
         def handle
           act = Activity.find_by_id(@user_input.to_i)
           if act.present?

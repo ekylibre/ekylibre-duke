@@ -9,6 +9,7 @@ module Duke
           extract_best(:activity_variety)
         end
 
+        # Export acitivity tracability sheet
         def handle
           if @activity_variety.blank?
             Duke::DukeResponse.new(redirect: :no_cultivation, sentence: I18n.t('duke.exports.no_var_found'))

@@ -9,6 +9,7 @@ module Duke
           extract_procedure unless permitted_procedure_or_categorie?
         end
 
+        # First entry inside intervention. Parse procedure and * else if procedure, else guides user to correct proc
         def handle
           if ok_procedure?
             parse_sentence

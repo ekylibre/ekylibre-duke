@@ -9,6 +9,7 @@ module Duke
           @event = event
         end
 
+        # Handles disambiguation
         def handle
           @user_input = @event.user_input
           correct_ambiguity(type: @event.options.ambiguity_type, key: @event.options.ambiguity_key)

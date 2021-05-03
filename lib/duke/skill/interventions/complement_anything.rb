@@ -9,6 +9,7 @@ module Duke
           @event = event
         end
 
+        # Looks for anything that can be added to intervention
         def handle
           tmp_int = Duke::Skill::DukeIntervention.new(procedure: @procedure,  date: @date, user_input: @event.user_input)
           tmp_int.parse_sentence

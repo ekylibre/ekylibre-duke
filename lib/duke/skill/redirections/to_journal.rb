@@ -10,8 +10,8 @@ module Duke
           extract_best(:journal)
         end
 
+        # Redirects to journals, or a specific one
         def handle
-          # modify params journal word to options.sss
           if @journal.blank?
             Duke::DukeResponse.new(sentence: I18n.t('duke.redirections.journals'))
           else

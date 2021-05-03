@@ -9,8 +9,8 @@ module Duke
           extract_best(:financial_year)
         end
 
+        # Redirects to financial years, with doc or a specific financial year if specified
         def handle
-          # # modify params journal word to options.sss
           if @financial_year.blank?
             Duke::DukeResponse.new(sentence: I18n.t('duke.redirections.financial_years'))
           else

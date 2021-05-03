@@ -7,6 +7,7 @@ module Duke
           super(user_input: event.user_input)
         end
 
+        # Redirects to bank reconciliation with doc if user click on an account
         def handle
           cash = Cash.find_by_id(@user_input)
           if cash.present?

@@ -9,6 +9,7 @@ module Duke
           extract_best(:fixed_asset)
         end
 
+        # Redirects to fixed_assets, or a specific, with the sale documentation
         def handle
           if @fixed_asset.blank?
             Duke::DukeResponse.new(sentence: I18n.t('duke.redirections.to_immobilisations_sale'))

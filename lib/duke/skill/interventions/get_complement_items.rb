@@ -9,6 +9,8 @@ module Duke
           @event = event
         end
 
+        # Returns optionified items of specific type to be displayed to the user
+        # options specific: what we'll display (input || doer || tool)
         def handle
           to_ibm(options: all_options(@event.options.specific))
         end

@@ -5,6 +5,7 @@ module Duke
 
         def initialize(event); end
 
+        # Obtain tools average oldness
         def handle
           lifetimes = Equipment.all.map(&:current_life)
           amount = lifetimes.inject(0) {|sum, x| sum + x.to_f/365} / lifetimes.count

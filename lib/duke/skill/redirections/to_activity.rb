@@ -9,6 +9,7 @@ module Duke
           extract_best(:activity_variety)
         end
 
+        # Redirects to activity given if a cultivation_variety can be parsed
         def handle
           if @activity_variety.blank?
             Duke::DukeResponse.new(redirect: :no, sentence: I18n.t('duke.redirections.no_activity'))

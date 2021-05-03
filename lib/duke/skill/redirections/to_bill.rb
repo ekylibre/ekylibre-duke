@@ -10,8 +10,8 @@ module Duke
           @event = event
         end
 
+        # Redirects to bills, with doc (unpaid or not), entity can be parsed
         def handle
-          # # modify params purchase_type word to options.sss
           filter = sale_filter(@event.options.specific)
           if @entity.blank?
             Duke::DukeResponse.new(sentence: I18n.t("duke.redirections.to_#{filter}_bills"))

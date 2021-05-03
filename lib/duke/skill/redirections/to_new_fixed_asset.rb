@@ -9,6 +9,7 @@ module Duke
           extract_best(:depreciable)
         end
 
+        # Redirects to fixed asset creation form, can pre-fill form with depreciable item
         def handle
           if @depreciable.blank?
             Duke::DukeResponse.new(redirect: :speak, sentence: I18n.t('duke.redirections.to_undefined_fixed_asset'))

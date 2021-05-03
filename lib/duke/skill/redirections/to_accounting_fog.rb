@@ -9,8 +9,8 @@ module Duke
           extract_best(:journal)
         end
 
+        # Redirects to accounting fog with doc on current financialYear or on specified journal
         def handle
-          # # modify params journal word to options.sss
           if @journal.blank?
             Duke::DukeResponse.new(sentence: I18n.t('duke.redirections.current_fog', key: FinancialYear.current.id))
           else

@@ -10,8 +10,8 @@ module Duke
           @event = event
         end
 
+        # Redirects to fixed_assets, or a specific by product name
         def handle
-          # modify asset_state to @option.specific
           if @fixed_asset.present?
             Duke::DukeResponse.new(
               sentence: I18n.t('duke.redirections.to_fixed_asset_product', name: @fixed_asset.name, id: @fixed_asset.key)

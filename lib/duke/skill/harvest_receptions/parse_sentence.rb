@@ -8,6 +8,7 @@ module Duke
           @event = event
         end
 
+        # First entry point, parses * from sentence
         def handle
           parse_sentence
           to_ibm

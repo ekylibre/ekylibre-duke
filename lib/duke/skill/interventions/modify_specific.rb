@@ -9,6 +9,8 @@ module Duke
           @event = event
         end
 
+        # Modify a specific type of items
+        # options specific: what we'll modify (doer || tool || input || target)
         def handle
           tmp_int = Duke::Skill::DukeIntervention.new(procedure: @procedure,  date: @date, user_input: @event.user_input)
           tmp_int.parse_specific(@event.options.specific)

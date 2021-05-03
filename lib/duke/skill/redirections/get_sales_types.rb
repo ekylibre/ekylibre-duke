@@ -2,13 +2,14 @@ module Duke
   module Skill
     module Redirections
       class GetSalesTypes
+        include Duke::Utils::BaseDuke
 
         def initialize(event)
           @sales = SaleNature.all
         end
 
+        # Returns sales types as ibm-readable options if multiple sale types exists
         def handle
-          # # modify params journal word to options.sss
           if @sales.size < 2
             Duke::DukeResponse.new
           else

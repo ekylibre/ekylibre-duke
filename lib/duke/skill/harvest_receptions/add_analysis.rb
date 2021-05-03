@@ -9,6 +9,7 @@ module Duke
           @event = event
         end
 
+        # Add parameter element to incoming harvest
         def handle
           new_reception = Duke::Skill::DukeHarvestReception.new(user_input: @event.user_input)
           new_reception.extract_reception_parameters(post_harvest=true)

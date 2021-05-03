@@ -9,6 +9,9 @@ module Duke
           @event = event
         end
 
+        # Modify date and duration
+        # Keeps duration if only date is changed and opposite
+        # Keeps hour if only day is changed
         def handle
           tmp_int = Duke::Skill::DukeIntervention.new(procedure: @procedure,  date: @date, user_input: @event.user_input)
           tmp_int.extract_date_and_duration

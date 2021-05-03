@@ -8,6 +8,7 @@ module Duke
           recover_from_hash(event.parsed)
         end
 
+        # Saves intervention and handles redirecting
         def handle
           Duke::DukeResponse.new(sentence: I18n.t('duke.interventions.saved', id: save_intervention.id))
         end

@@ -5,6 +5,7 @@ module Duke
 
         def initialize(event); end
 
+        # Obtain amount of equipments with a notified issue
         def handle
           amount = Equipment.all.map(&:status).count(:caution)
           cautions = Equipment.all.select{|eq| eq.status == :caution}

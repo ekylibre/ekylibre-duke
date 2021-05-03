@@ -9,6 +9,8 @@ module Duke
           @event = event
         end
 
+        # Add destination quantity to press or container
+        # options  previous: last redirect
         def handle
           new_reception = Duke::Skill::DukeHarvestReception.new(user_input: @event.user_input)
           new_reception.parse_specifics(:destination, :date)

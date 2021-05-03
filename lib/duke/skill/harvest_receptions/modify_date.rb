@@ -9,6 +9,7 @@ module Duke
           @event = event
         end
 
+        # Modify date and hour of incoming harvest
         def handle
           @user_input = @event.user_input
           extract_date

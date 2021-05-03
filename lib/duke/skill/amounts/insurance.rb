@@ -7,6 +7,7 @@ module Duke
           super()
         end
 
+        # Obtain paid insurance since date
         def handle
           started_at, stopped_at = extract_time_interval
           n = Onoma::Account.find(:insurance_expenses)

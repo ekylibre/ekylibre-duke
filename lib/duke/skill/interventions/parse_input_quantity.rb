@@ -9,6 +9,9 @@ module Duke
           @event = event
         end
 
+        # Parse input quantity from user input
+        # options {quantity: number parsed by ibm,
+        #          index: index of item on list}
         def handle
           @user_input = @event.user_input
           value = extract_number_parameter(@event.options.quantity)

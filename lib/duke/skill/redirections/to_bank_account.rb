@@ -9,6 +9,7 @@ module Duke
           extract_best(:bank_account)
         end
 
+        # Redirects to a bank accounts, or all bank accounts
         def handle
           if @bank_account.blank?
             Duke::DukeResponse.new(sentence: I18n.t('duke.redirections.to_bank_accounts'))

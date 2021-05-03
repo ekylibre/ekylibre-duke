@@ -9,6 +9,7 @@ module Duke
           extract_best(:tool)
         end
 
+        # Export tool costs sheet
         def handle
           if @tool.blank?
             Duke::DukeResponse.new(redirect: :no_tool, sentence: I18n.t('duke.exports.no_tool_found'))

@@ -10,8 +10,8 @@ module Duke
           @event = event
         end
 
+        # Redirects to a financial year closure with doc, or to correct steps if everything isn't set correctly
         def handle
-          # # modify financial_year : options.specific
           year_from_id(@event.options.specific)
           if @financial_year.nil?
             w_fy

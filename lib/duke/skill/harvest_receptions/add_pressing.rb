@@ -9,6 +9,7 @@ module Duke
           @event = event
         end
 
+        # Add press to incoming harvest
         def handle
           new_reception = Duke::Skill::DukeHarvestReception.new(user_input: @event.user_input)
           new_reception.parse_specifics(:press, :date)

@@ -9,6 +9,10 @@ module Duke
           @event = event
         end
 
+        # Add destination quantity to press or container
+        # options : {quantity: number parsed by ibm,
+        #            specific: 'destination'||'press'
+        #            index: index of element in list}
         def handle
           @user_input = @event.user_input
           value = extract_number_parameter(@event.options.quantity)

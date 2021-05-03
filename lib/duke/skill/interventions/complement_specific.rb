@@ -9,6 +9,8 @@ module Duke
           @event = event
         end
 
+        # Look for specific item to be added to intervention
+        # options specific: what we're looking for (tool || target || input || doer)
         def handle
           tmp_int = Duke::Skill::DukeIntervention.new.recover_from_hash(@event.parsed)
           tmp_int.user_input = @event.user_input

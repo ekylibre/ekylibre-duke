@@ -10,8 +10,8 @@ module Duke
           @event = event
         end
 
+        # Redirects to sale, unpaid or all, with entity that can be specified
         def handle
-          # modify params qale_type : qq word to options.sss
           filter = sale_filter(@event.options.specific)
           if @entity.blank?
             Duke::DukeResponse.new(sentence: I18n.t("duke.redirections.to_#{filter}_sales"))

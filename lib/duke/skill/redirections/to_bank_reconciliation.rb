@@ -10,8 +10,8 @@ module Duke
           @event = event
         end
 
+        # Redirects bank reconciliation with doc if an account can be found, or asks for the correct account
         def handle
-          # # modify importtype opt.specific
           if @event.options.specific.present?
             Duke::DukeResponse.new(
               redirect: :over,

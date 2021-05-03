@@ -10,9 +10,8 @@ module Duke
           @event = event
         end
 
+        #  Export acitivity tracability sheet
         def handle
-          # modify param fina et param fec format
-          # AND IN CODE !!!!!
           year_from_id(@event.options.specific)
           format = fec_format(@event.parsed)
           if @financial_year.nil?

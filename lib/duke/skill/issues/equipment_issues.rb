@@ -10,8 +10,9 @@ module Duke
           @event = event
         end
 
+        # Redirecting to on_tool_issue form with parameters filled
+        # Can parsed working_zone, tool, issue_nature
         def handle
-          # modify params[:nature] in o
           extract_user_specifics(duke_json: duke_json(:cultivablezones, :equipments, :date))
           if @equipments.empty?
             Duke::DukeResponse.new(redirect: :no, sentence: I18n.t('duke.issues.no_tool_found'))

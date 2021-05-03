@@ -10,6 +10,7 @@ module Duke
           @event = event
         end
 
+        # Export balance sheet & income statement
         def handle
           year_from_id(@event.options.specific)
           if @financial_year.nil?

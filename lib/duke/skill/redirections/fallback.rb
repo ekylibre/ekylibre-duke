@@ -11,6 +11,8 @@ module Duke
           extract_best(:journal)
         end
 
+        # Fallback that looks for activity_variety, tool & entity.
+        # If anything is found, it redirects to it's show views
         def handle
           best = best_of(:tool, :entity, :activity_variety)
           if best.blank?

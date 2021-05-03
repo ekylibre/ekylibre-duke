@@ -10,6 +10,7 @@ module Duke
           @event = event
         end
 
+        # Looks for working periods & adds them in concording with previous ones
         def handle
           tmp_int = Duke::Skill::DukeIntervention.new(procedure: @procedure,  date: @date, user_input: @event.user_input.duke_clear)
           tmp_int.extract_wp_from_interval

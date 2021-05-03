@@ -9,6 +9,7 @@ module Duke
           @event = event
         end
 
+        # Can modify parameters (quantity and tavp) of incoming harvest
         def handle
           new_reception = Duke::Skill::DukeHarvestReception.new(user_input: @event.user_input)
           new_reception.extract_quantity_tavp

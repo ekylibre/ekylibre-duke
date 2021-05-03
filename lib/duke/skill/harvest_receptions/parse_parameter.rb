@@ -9,6 +9,9 @@ module Duke
           @event = event
         end
 
+        # Adds parameter
+        # options: {quantity: number parsed by ibm
+        #           specific: name of the parameter}
         def handle
           @user_input = @event.user_input
           value = extract_number_parameter(@event.options.quantity) # modify @value in options.quantity
@@ -29,12 +32,15 @@ module Duke
             @parameters[type] = value
           end
 
-          # returns an unit from user_input
+          #  @return [String] unit parsed from user_input
           def find_quantity_unit
-            return 'kg' if @user_input.match('(?i)(kg|kilo)')
-            return 't' if @user_input.match('(?i)\d *t\b|tonne')
-
-            return 'hl'
+            if @user_input.match('(?i)(kg|kilo)')
+              'kg'
+            elsif @user_input.match('(?i)\d *t\b|tonne')
+              't'
+            else
+              'hl'
+            end
           end
 
       end

@@ -9,6 +9,7 @@ module Duke
           @event = event
         end
 
+        # Does nothing redirects to save panel with current intervention
         def handle
           to_ibm
         end

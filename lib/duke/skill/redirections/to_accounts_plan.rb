@@ -8,8 +8,8 @@ module Duke
           @event = event
         end
 
+        # Redirects to accounting plans with doc, with optional states
         def handle
-          # # modify params account_id
           if @event.options.specific.present?
             Duke::DukeResponse.new(sentence: I18n.t('duke.redirections.to_account_plan', id: @event.options.specific.delete('^0-9')))
           else

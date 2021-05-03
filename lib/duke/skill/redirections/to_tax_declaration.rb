@@ -10,8 +10,8 @@ module Duke
           @event = event
         end
 
+        # Redirects to tax declarations, state & financial year can be specified
         def handle
-          # modify @tax_state = options.specific
           url = '/backend/tax-declarations?utf8=✓&q='
           url +=  if @event.options.specific.present?
                     "&state%5B%5D=#{@event.options.specific}"

@@ -10,8 +10,8 @@ module Duke
           @event = event
         end
 
+        # Redirects to a new tax declaration creation with doc, or to correct steps if everything isn't set correctly
         def handle
-          # # modify financial_year: options.specific
           year_from_id(@event.options.specific)
           if FinancialYear.all.none?{|fy| !fy.tax_declaration_mode_none?}
             Duke::DukeResponse.new(sentence: I18n.t('duke.exports.no_tax_declaration'))

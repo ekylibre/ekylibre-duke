@@ -10,8 +10,8 @@ module Duke
           extract_best(:account)
         end
 
+        # Redirects to accounting lettering with doc, on specific account, or on list view
         def handle
-          # # modify params journal word to options.sss
           if @account.blank?
             Duke::DukeResponse.new(sentence: I18n.t('duke.redirections.letterings'))
           else

@@ -8,9 +8,11 @@ module Duke
           @event = event
         end
 
+        # Redirects phyto import. An amm can be specified
+        # options: specific: aam number
+        # parsed: user_input that can be a btn-click on aam ambiguity (then it's product-id)
         def handle
-          # modify paraams p_id, params aam change in CODE !!!
-          if (prod = RegisteredPhytosanitaryProduct.find_by_id(@event.parsed)).present? # parsed if phyto id
+          if (prod = RegisteredPhytosanitaryProduct.find_by_id(@event.parsed)).present?
             Duke::DukeResponse.new(
               redirect: :over,
               sentence: I18n.t('duke.import.phyto_id', id: prod.id, name: prod.name)
