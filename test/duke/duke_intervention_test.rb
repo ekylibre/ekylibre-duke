@@ -31,22 +31,20 @@ class DukeInterventionTest < Minitest::Test
   def test_can_add_working_interval
     @interval_intervention.extract_date_and_duration
     @interval_intervention.send(:add_working_interval,
-      [
-        {
-          started_at: Time.now.change(hour: 15),
-          stopped_at: Time.now.change(hour: 19)
-        }
-      ]
-    )
+                                [
+                                  {
+                                    started_at: Time.now.change(hour: 15),
+                                    stopped_at: Time.now.change(hour: 19)
+                                  }
+                                ])
     assert_equal 2, @interval_intervention.working_periods.size, "Adds workings periods when it shouldn't"
     @interval_intervention.send(:add_working_interval,
-      [
-        {
-          started_at: Time.now.change(hour: 3),
-          stopped_at: Time.now.change(hour: 5)
-        }
-      ]
-    )
+                                [
+                                  {
+                                    started_at: Time.now.change(hour: 3),
+                                    stopped_at: Time.now.change(hour: 5)
+                                  }
+                                ])
     assert_equal 3, @interval_intervention.working_periods.size, "Can't add a working_periods interval"
   end
 

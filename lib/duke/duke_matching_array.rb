@@ -6,10 +6,10 @@ module Duke
       arr.each{|item| self.push(DukeMatchingItem.new(hash: item))} unless arr.nil?
     end
 
-    # @param [DukeMatchingArray] mArr
-    # @returns concatenated DukeMatchingArray
-    def uniq_concat(mArr)
-      mArr.each{|mItem| self.push(mItem) unless self.duplicate?(mItem)}
+    #  @param [DukeMatchingArray] array
+    #  @returns concatenated DukeMatchingArray
+    def uniq_concat(array)
+      array.each{|item| self.push(item) unless self.duplicate?(item)}
       self
     end
 
