@@ -1,6 +1,5 @@
 module Duke
   class DukeWebhooksController < ApplicationController
-    # Maybe ovveride verify_authentificity_token with authenticate_by_token method ??
     skip_before_action :verify_authenticity_token
 
     # check if token concords with user email for authentication
@@ -15,7 +14,6 @@ module Duke
       rescue StandardError => e
         puts e.class
         puts e.message
-        puts e.trace
       end
     end
 
