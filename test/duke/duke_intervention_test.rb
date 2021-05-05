@@ -3,9 +3,12 @@
 require 'test_helper'
 class DukeInterventionTest < Minitest::Test
   def setup
-    @intervention = Duke::DukeIntervention.new(user_input: 'Enregistre un labour ce matin pendant 3h30',
+    mock_event = Minitest::Mock.new
+    @intervention = Duke::Skill::DukeIntervention.new(user_input: 'Enregistre un labour ce matin pendant 3h30',
                                                procedure: 'plowing')
-    @day_intervention = Duke::DukeIntervention.new(user_input: 'Taille de formation', procedure: 'vine_pruning')
+    @day_intervention = Duke::Skill::DukeIntervention.new(user_input: 'Taille de formation', procedure: 'vine_pruning')
+    mock_event.expect :parsed, @day_intervention.duke_json
+    @interval_intervention = Duke::Skill::Interventions::ComplementWorkingPeriods.new(mock_event)
   end
 
   def test_can_extract_date_and_duration
@@ -26,8 +29,8 @@ class DukeInterventionTest < Minitest::Test
   end
 
   def test_can_add_working_interval
-    @day_intervention.extract_date_and_duration
-    @day_intervention.add_working_interval(
+    @interval_intervention.extract_date_and_duration
+    @interval_intervention.send(:add_working_interval,
       [
         {
           started_at: Time.now.change(hour: 15),
@@ -35,8 +38,8 @@ class DukeInterventionTest < Minitest::Test
         }
       ]
     )
-    assert_equal 2, @day_intervention.working_periods.size, "Adds workings periods when it shouldn't"
-    @day_intervention.add_working_interval(
+    assert_equal 2, @interval_intervention.working_periods.size, "Adds workings periods when it shouldn't"
+    @interval_intervention.send(:add_working_interval,
       [
         {
           started_at: Time.now.change(hour: 3),
@@ -44,7 +47,7 @@ class DukeInterventionTest < Minitest::Test
         }
       ]
     )
-    assert_equal 3, @day_intervention.working_periods.size, "Can't add a working_periods interval"
+    assert_equal 3, @interval_intervention.working_periods.size, "Can't add a working_periods interval"
   end
 
   def test_can_update_retries

@@ -1,10 +1,10 @@
 require 'test_helper'
 class DukeArticleTest < Minitest::Test
   def setup
-    @article = Duke::DukeArticle.new(user_input: 'Enregistre un labour ce matin')
-    @time_article = Duke::DukeArticle.new(user_input: 'Labour à 8h30 pendant 3h30')
-    @time_article_bis = Duke::DukeArticle.new(user_input: 'Labour hier à 14h30')
-    @num_article = Duke::DukeArticle.new(user_input: "4,5 degrés d'alcool")
+    @article = Duke::Skill::DukeArticle.new(user_input: 'Enregistre un labour ce matin')
+    @time_article = Duke::Skill::DukeArticle.new(user_input: 'Labour à 8h30 pendant 3h30')
+    @time_article_bis = Duke::Skill::DukeArticle.new(user_input: 'Labour hier à 14h30')
+    @num_article = Duke::Skill::DukeArticle.new(user_input: "4,5 degrés d'alcool")
   end
 
   def test_can_create_combos
@@ -15,12 +15,12 @@ class DukeArticleTest < Minitest::Test
   end
 
   def test_can_be_converted_to_json
-    assert_includes @article.to_jsonD.keys, :date.to_s, 'Duke json should have "date" key'
-    refute_includes @article.to_jsonD(:user_input).keys, :date.to_s, 'Duke json should have "date" key'
+    assert_includes @article.duke_json.keys, :date.to_s, 'Duke json should have "date" key'
+    refute_includes @article.duke_json(:user_input).keys, :date.to_s, 'Duke json should have "date" key'
   end
 
   def test_can_be_recovered_from_json
-    assert_equal @article, @article.recover_from_hash(@article.to_jsonD), 'Article not create properly from json'
+    assert_equal @article, @article.recover_from_hash(@article.duke_json), 'Article not create properly from json'
   end
 
   def test_can_update_description
