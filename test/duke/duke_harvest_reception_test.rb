@@ -1,7 +1,9 @@
 require 'test_helper'
 class DukeHarvestReceptionTest < Minitest::Test
   def setup
-    @reception = Duke::DukeHarvestReception.new(user_input: "Réception de vendanges avec une acidité de 10, 11g d'acide malique température de 12 degrés 13 hectos, tavp de 14.1 degrés ph à 5,6, azote aminé à 15, azote ammoniacal égal à 16 mg, 17 mg/l d'azote assimilable sain avec de la pourriture")
+    @reception = Duke::Skill::DukeHarvestReception.new(user_input: "Réception de vendanges avec une acidité de 10, 11g d'acide malique
+       température de 12 degrés 13 hectos, tavp de 14.1 degrés ph à 5,6, azote aminé à 15, azote ammoniacal égal à 16 mg, 17 mg/l d'azote
+        assimilable sain avec de la pourriture")
   end
 
   def test_can_extract_reception_parameters

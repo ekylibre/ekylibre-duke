@@ -2,10 +2,10 @@
 
 require 'test_helper'
 class BaseDukeTest < Minitest::Test
-  include Duke::BaseDuke
+  include Duke::Utils::BaseDuke
   def setup
-    @json = optJsonify(:tractor, '3')
-    @label_json = optJsonify(:tractor)
+    @json = optionify(:tractor, '3')
+    @label_json = optionify(:tractor)
     @option = dynamic_options(:title, [], :description).first
     @text = dynamic_text(:sentence).first
   end

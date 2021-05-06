@@ -1,7 +1,7 @@
 (function (D, $) {
   class DukeMessage{
         
-    constructor(text, options) {
+    constructor(text, options) {
       this.text = text; 
       this.options = options;
     }

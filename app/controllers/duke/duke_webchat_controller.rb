@@ -3,7 +3,7 @@ module Duke
 
     def create_assistant
       Assistant.new(api_key: WATSON_APIKEY, version: WATSON_VERSION, url: WATSON_URL)
-    end 
+    end
 
     def create_session
       assistant_id = if Activity.availables.any? {|act| act[:family] == :vine_farming}
@@ -26,17 +26,24 @@ module Duke
     end
 
     def api_details
-      render json: {pusher_key: ENV['PUSHER_KEY'], azure_key: AZURE_API_KEY, azure_region: AZURE_REGION}
-    end 
+      render json: { pusher_key: ENV['PUSHER_KEY'], azure_key: AZURE_API_KEY, azure_region: AZURE_REGION }
+    end
 
-    private 
+    private
 
-    def user_defined
-      {
-        tenant: Ekylibre::Tenant.current,
-        user_token: current_user.authentication_token, 
-        user_email: current_user.email
-      }
-    end 
+      def user_defined
+        if current_user
+          {
+            tenant: Ekylibre::Tenant.current,
+            user_token: current_user.authentication_token,
+            user_email: current_user.email
+          }
+        else
+          {
+            tenant: Ekylibre::Tenant.current
+          }
+        end
+      end
+
   end
 end

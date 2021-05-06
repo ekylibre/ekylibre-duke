@@ -3,7 +3,7 @@ class DukeRefinementsTest < Minitest::Test
   def setup
     @string = 'Frédéric ce matin cuve n°3'
   end
-  using Duke::DukeRefinements
+  using Duke::Utils::DukeRefinements
 
   def test_can_refine_string_deletion
     refute_includes @string.duke_del('cuve'), 'cuve', "Couldn't delete a word from sentence"

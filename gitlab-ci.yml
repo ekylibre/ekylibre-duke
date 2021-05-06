@@ -1,0 +1,10 @@
+stages:
+  - lint
+
+lint:
+  stage: lint
+  image: registry.gitlab.com/ekylibre/tools/rubocop/rubocop:0.2.0
+  variables:
+    GIT_DEPTH: 1
+  script:
+    - rubocop --parallel
