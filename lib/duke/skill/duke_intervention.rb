@@ -147,7 +147,7 @@ module Duke
         # Intervention symbols of user_specifics parseable attributes
         # @returns Array of symbols
         def parseable
-          [*super(), :input, :doer, :tool, :crop_groups, :plant, :cultivation, :land_parcel]
+          [*super(), :input, :doer, :tool, :crop_groups, :plant, :cultivation, :land_parcel].uniq
         end
 
         # @param [DukeIntervention] int : intervention to concatenate with it's specific attributes

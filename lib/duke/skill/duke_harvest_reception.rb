@@ -43,7 +43,7 @@ module Duke
 
         # What user_specifics are to be extracted
         def parseable
-          [*super(), :plant, :crop_groups, :destination, :press]
+          [*super(), :plant, :crop_groups, :destination, :press].uniq
         end
 
         # @params : [Integer] value : Integer parsed by ibm
