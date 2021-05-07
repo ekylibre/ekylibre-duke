@@ -114,7 +114,7 @@
     is_active() {
       if (Date.now() - parseInt(sessionStorage.duke_stamp) > D.DukeUtils.session_inactivity) {
         this.$msg_container.append(D.DukeUtils.templates.session_expired);
-        this.new_active_session(this.msg_callback);
+        this.new_active_session();
         return false 
       } else {
         return true
@@ -125,22 +125,22 @@
      * AJAX call to create IBM-WA session
      * Stores Assistant ID, SessionId & creates Pusher connection
      */
-    create_session(callback) {
+    create_session(callback, intent = undefined) {
       $.ajax('/duke_create_session', {
         type: 'post',
         dataType: 'json',
       success: ((data) => { this.empty_container();
                             sessionStorage.setItem('duke_id', data.session_id);
                             sessionStorage.setItem('assistant_id', data.assistant_id);
-                            this.pusher.instanciate(callback);})
+                            this.pusher.instanciate(callback, intent);})
       });
     };
 
     /**
      * Get Welcoming Message by sending empty string on Pusher instanciation
      */
-    msg_callback() {
-      setTimeout(( () => this.send_msg("")), 1000);
+    msg_callback(intent = undefined) {
+      setTimeout(( () => this.send_msg("", intent=intent)), 1000);
     };
 
     /**
@@ -284,9 +284,9 @@
       this.$btn_chat.show();
     }
 
-    new_active_session(callback) {
+    new_active_session(intent = undefined) {
       this.scrollDown();
-      this.create_session(callback);
+      this.create_session(this.msg_callback, intent);
       sessionStorage.setItem("duke_stamp", Date.now());
     };
   }
