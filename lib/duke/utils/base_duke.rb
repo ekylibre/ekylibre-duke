@@ -68,11 +68,6 @@ module Duke
         JSON.parse(File.read(Duke.proc_entities_path)).deep_symbolize_keys
       end
 
-      # is Tenant ekyagri ?
-      def ekyagri?
-        Activity.availables.none? {|act| act.family == :vine_farming}
-      end
-
       # does Tenant have any vegetal activity ?
       def vegetal?
         Activity.availables.any? {|act| act.family == :plant_farming}
