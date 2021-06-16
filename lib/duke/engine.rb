@@ -12,7 +12,7 @@ module Duke
       tmp_file = Rails.root.join('tmp', 'plugins', 'theme-addons', 'themes', 'tekyla', 'plugins.scss')
       tmp_file.open('a') do |f|
         import = '@import "duke.scss";'
-        f.write(import) unless tmp_file.open('r').read.include?(import)
+        f.puts(import) unless tmp_file.open('r').read.include?(import)
       end
     end
 
@@ -20,7 +20,7 @@ module Duke
       tmp_file = Rails.root.join('tmp', 'plugins', 'javascript-addons', 'plugins.js.coffee')
       tmp_file.open('a') do |f|
         import = '#= require duke'
-        f.write(import) unless tmp_file.open('r').read.include?(import)
+        f.puts(import) unless tmp_file.open('r').read.include?(import)
       end
     end    
 
