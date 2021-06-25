@@ -69,7 +69,7 @@ module Duke
             procedure_scope =
             [
               :common,
-              if ekyagri?
+              if Saassy.ekyagri?
                 :vegetal
               else
                 vegetal? ? :viti_vegetal : :viti
