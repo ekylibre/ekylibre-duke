@@ -31,7 +31,7 @@
      */
     start() { 
       this.inUse = true;
-      D.webchat.$btn_mic.toggleClass("send-enabled", true)
+      D.webchat_interface.$btn_mic.toggleClass("send-enabled", true)
       this.timeout = setTimeout(( () => { if (this.inUse){ this.stop()}}), D.DukeUtils.stt_timeout);
       this.recognizer.startContinuousRecognitionAsync();
       this.recognizer.recognizing = ((s, e) => this.display(e));
@@ -44,11 +44,11 @@
     stop() { 
       clearTimeout(this.timeout);
       this.recognizer.stopContinuousRecognitionAsync();
-      D.webchat.$btn_mic.toggleClass("send-enabled", false);
+      D.webchat_interface.$btn_mic.toggleClass("send-enabled", false);
       this.inUse = false;
       this.transcript = "";
-      if (D.webchat.$duke_input.val() != "") {
-        D.webchat.output_sent();
+      if (D.webchat_interface.$duke_input.val() != "") {
+        D.webchat_interface.output_sent();
         D.webchat.send_msg();
       }
     };
@@ -59,8 +59,8 @@
      */
     display(e) { 
       if (this.inUse) {
-        D.webchat.$duke_input.val(this.transcript + " " + e.result.text);
-        D.webchat.$duke_input.trigger("input").trigger("keyup");
+        D.webchat_interface.$duke_input.val(this.transcript + " " + e.result.text);
+        D.webchat_interface.$duke_input.trigger("input").trigger("keyup");
       }
     };
 

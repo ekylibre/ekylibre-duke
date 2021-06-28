@@ -26,7 +26,7 @@ module Duke
     end
 
     def api_details
-      render json: { pusher_key: ENV['PUSHER_KEY'], azure_key: AZURE_API_KEY, azure_region: AZURE_REGION }
+      render json: { azure_key: AZURE_API_KEY, azure_region: AZURE_REGION }
     end
 
     private

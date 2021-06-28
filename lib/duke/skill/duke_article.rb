@@ -88,7 +88,7 @@ module Duke
             self.instance_variable_get("@#{chosen_one[:type]}").push(DukeMatchingItem.new(hash: current_hash.merge_h(chosen_one)))
           end
         rescue SyntaxError, StandardError
-          puts "User didn't click Buttons grrr"
+          puts 'User did nott click Buttons grrr'
         ensure
           self.instance_variable_set("@#{type}", self.instance_variable_get("@#{type}").uniq_by_key)
           @ambiguities.shift

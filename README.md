@@ -33,10 +33,6 @@ ekylibre-duke/skills/(ekylibre || ekyviti)/skill.json
 
 Create a new cognitive resource & enable Speech services & store keys
 
-## Pusher
-
-Create a new pusher app (Ruby backend / JS frontend) & store keys
-
 ## Ensure your environments variables are defined
 
 Ekylibre uses dotenv locally. 
@@ -50,10 +46,6 @@ WATSON_URL=YOUR_WATSON_URL
 WATSON_VERSION=YOUR_WATSON_VERSION
 WATSON_EKYVITI_ID=YOUR_ASSISTANT_ID
 WATSON_EKY_ID=YOUR_ASSISTANT_ID
-PUSHER_APP_ID=YOUR_PUSHER_ID
-PUSHER_KEY=YOUR_PUSHER_KEY
-PUSHER_SECRET=YOUR_PUSHER_SECRET
-PUSHER_CLUSTER=YOUR_PUSHER_CLUSTER
 AZURE_API_KEY=YOUR_AZURE_API_KEY
 AZURE_REGION=YOUR_AZURE_REGION
 ```
