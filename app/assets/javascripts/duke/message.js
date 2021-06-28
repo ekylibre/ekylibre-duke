@@ -31,8 +31,8 @@
                               .replace(D.DukeUtils.multChoicesReg, "")
                               .replaceAll(D.DukeUtils.base_urlReg, "")
       $('.duke-received:last p:first').css("border-style", "unset");
-      D.webchat.$msg_container.append(D.DukeUtils.templates.msg_received(outputed));
-      D.webchat.scrollDown();
+      D.webchat_interface.$msg_container.append(D.DukeUtils.templates.msg_received(outputed));
+      D.webchat_interface.scrollDown();
     };
 
     /**
@@ -40,7 +40,7 @@
      */
     output_received_options() {
       if (this.options && this.options.length > 0) {
-        D.webchat.$msg_container.append(D.DukeUtils.templates.opt_container);
+        D.webchat_interface.$msg_container.append(D.DukeUtils.templates.opt_container);
         if (D.DukeUtils.multChoicesReg.test(this.text)) {
           this.multiple_options();
         } else {
@@ -50,7 +50,7 @@
             this.single_options();
           }
         }
-        D.webchat.scrollDown();
+        D.webchat_interface.scrollDown();
       }
     };
 
@@ -97,11 +97,10 @@
      * Checks if history needs to be reset
      */
     redirect() {
-      var duke_chat = Array.from(D.webchat.$msg_container.children()).map(msg => msg.outerHTML).join("")
+      var duke_chat = Array.from(D.webchat_interface.$msg_container.children()).map(msg => msg.outerHTML).join("")
       var redirection = this.text.match(D.DukeUtils.redirectionReg)
       if (redirection) {
         location.href = redirection[2];
-        D.webchat.pusher.reset();
         var duke_chat = redirection[1] ? duke_chat : D.DukeUtils.templates.welcome
         if (redirection[1]) {
           sessionStorage.setItem('duke_visible', true);
@@ -115,8 +114,8 @@
      * Loads animated icon
      */
     loading_message() {
-      D.webchat.$msg_container.append(D.DukeUtils.templates.loadingIcon);
-      D.webchat.scrollDown();
+      D.webchat_interface.$msg_container.append(D.DukeUtils.templates.loadingIcon);
+      D.webchat_interface.scrollDown();
     };
   }
   D.DukeMessage = DukeMessage;
