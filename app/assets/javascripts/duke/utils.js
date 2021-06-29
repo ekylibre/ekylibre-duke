@@ -56,7 +56,7 @@
      * @param {String} string - String to escape
      * @return {String} str - Escaped string
      */
-    escapeHtml = function(string) {
+    escapeHtml(string) {
       const toEscape = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', '\'': '&#39;', '/': '&#x2F;', '`': '&#x60;','=': '&#x3D;'};
       return String(string).replace(/[&<>"'`=\/]/g, function(s) {
         return toEscape[s];
