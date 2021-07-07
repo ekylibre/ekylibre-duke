@@ -46,7 +46,7 @@ module Duke
 
       # @returns exclusive farming type :vine_farming :plant_farming if exists
       def exclusive_farming_type
-        farming_types = Activity.availables.pluck("DISTINCT family")
+        farming_types = Activity.availables.pluck('DISTINCT family')
         if (type = farming_types & %w[plant_farming vine_farming]).size.eql?(1)
           return type.first.to_sym
         end

@@ -39,7 +39,7 @@ module Duke
       # byebug
       item.key?(:rate) && self.key?(:rate) &&
       ((%i[net_mass mass_area_density].include?(self.rate[:unit].to_sym) && (Matter.find_by_id(item.key)&.net_mass.to_f == 0)) ||
-       (%i[net_volume volume_area_density].include?(self.rate[:unit].to_sym) && (Matter.find_by_id(item.key)&.net_volume.fo_f == 0)))
+      (%i[net_volume volume_area_density].include?(self.rate[:unit].to_sym) && (Matter.find_by_id(item.key)&.net_volume&.to_f == 0)))
     end
 
     # @param [String] procedure
@@ -52,7 +52,7 @@ module Duke
       end
       dim = measure.base_dimension.to_sym
       # True If measure in mass or volume , and procedure can handle this type of indicators for its inputs and net dimension exists
-      %i[mass volume].include?(dim) && input_param.handler("net_#{dim}").present? && !Matter.find_by_id(key)&.send("net_#{dim}").zero?
+      %i[mass volume].include?(dim) && input_param.handler("net_#{dim}").present? && !Matter.find_by_id(key)&.send("net_#{dim}")&.zero?
     end
 
   end

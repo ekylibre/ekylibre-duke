@@ -22,7 +22,7 @@ module Duke
         import = '#= require duke'
         f.puts(import) unless tmp_file.open('r').read.include?(import)
       end
-    end    
+    end
 
     initializer :duke_helpers do
       ActionView::Base.send :include, Backend::DukeHelper
