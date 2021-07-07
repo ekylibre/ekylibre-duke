@@ -67,9 +67,15 @@ module Duke
 
       # @return [String] Target type for an option
       def option_target_type(opt)
-        return eval(opt[:value][:input][:text])[:type] if eval(opt[:value][:input][:text])[:type] != 'cultivation'
+        # rubocop:disable Security/Eval
+        option_text = eval(opt[:value][:input][:text])
+        # rubocop:enable Security/Eval
+        if option_text[:type] != 'cultivation'
+          option_text[:type]
+        else
+          Product.find_by_id(option_text[:key]).type
+        end
 
-        Product.find_by_id(eval(opt[:value][:input][:text])[:key]).type
       end
 
   end

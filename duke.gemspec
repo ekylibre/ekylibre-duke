@@ -7,10 +7,11 @@ require 'duke/version'
 Gem::Specification.new do |spec|
   spec.name          = 'duke'
   spec.version       = Duke::VERSION
-  spec.authors       = ['MSJarre']
-  spec.email         = ['mlabous@ekylibre.com']
+  spec.authors       = ['Ekylibre']
+  spec.email         = ['dev@ekylibre.com']
   spec.summary       = 'Duke assistant for Ekylibre'
   spec.homepage      = 'https://ekylibre.com'
+  spec.required_ruby_version = '>= 2.6.0'
 
   #  Testing
   spec.add_development_dependency 'bundler', '~> 2.2.15'

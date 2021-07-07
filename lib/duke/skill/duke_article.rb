@@ -82,11 +82,16 @@ module Duke
         current_hash = self.instance_variable_get("@#{type}").find_by_key(key)
         self.instance_variable_get("@#{type}").delete_one(current_hash)
         begin
-          @user_input.split(/[|]{3}/).map{|chosen| eval(chosen)}.each do |chosen_one|
-            chosen_one[:rate] = { unit: :population, value: nil } if current_hash.conflicting_rate?(chosen_one)
-            self.update_description(chosen_one[:name])
-            self.instance_variable_get("@#{chosen_one[:type]}").push(DukeMatchingItem.new(hash: current_hash.merge_h(chosen_one)))
+          # rubocop:disable Security/Eval
+          # Checking for correct ambiguity format before evaluating it, for security purposes
+          if @user_input.match(Duke::Utils::Regex.ambiguity_format)
+            @user_input.split(/[|]{3}/).map{|chosen| eval(chosen)}.each do |chosen_one|
+              chosen_one[:rate] = { unit: :population, value: nil } if current_hash.conflicting_rate?(chosen_one)
+              self.update_description(chosen_one[:name])
+              self.instance_variable_get("@#{chosen_one[:type]}").push(DukeMatchingItem.new(hash: current_hash.merge_h(chosen_one)))
+            end
           end
+          # rubocop:enable Security/Eval
         rescue SyntaxError, StandardError
           puts 'User did nott click Buttons grrr'
         ensure
