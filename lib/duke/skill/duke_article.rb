@@ -225,12 +225,10 @@ module Duke
         # @param [String] month
         # @return [Integer] month
         def month_int(month)
-          hash =
           {
             janvier: 1, jan: 1, février: 2, fev: 2, fevrier: 2, mars: 3, avril: 4, avr: 4, mai: 5, juin: 6, juillet: 7, juil: 7, août: 8,
             aou: 8, aout: 8, septembre: 9, sept: 9, octobre: 10, oct: 10, novembre: 11, nov: 11, décembre: 12, dec: 12, decembre: 12
-          }
-          hash[month]
+          }[month.to_sym]
         end
 
         # @param [Integer] value : Integer extracted by ibm
