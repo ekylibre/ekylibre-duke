@@ -847,6 +847,10 @@
             "name": "vine_spraying_without_fertilizing"
           },
           {
+            "family": "viti",
+            "name": "vine_spraying_with_fertilizing"
+          },
+          {
             "family": "vegetal",
             "name": "spraying"
           }
@@ -973,6 +977,26 @@
         "categories": [
           {
             "family": "viti",
+            "name": "vine_irrigating"
+          },
+          {
+            "family": "vegetal",
+            "name": "irrigating"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "irriguation",
+        "irriguer",
+        "irrigue"
+      ]
+    },
+    {
+      "id": {
+        "categories": [
+          {
+            "family": "viti",
             "name": "vine_protection"
           },
           {
@@ -995,6 +1019,55 @@
         "pose de capsule",
         "pose de capsule de bio controle",
         "pose des capsules"
+      ]
+    },
+    {
+      "id": "vine_watering_with_fertilizing",
+      "name": "",
+      "partials": [
+        "fertirrigation",
+        "irrigation et fertilisation",
+        "irrigation avec fertilisation",
+        "irrigue et fertilise"
+      ]
+    },
+    {
+      "id": {
+        "procedures": [
+          {
+            "family": "viti",
+            "name": "vine_watering_installation"
+          },
+          {
+            "family": "vegetal",
+            "name": "plant_watering_installation"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "installation de l'irrigation",
+        "installe l'irrigation"
+      ]
+    },
+    {
+      "id": {
+        "procedures": [
+          {
+            "family": "viti",
+            "name": "vine_watering"
+          },
+          {
+            "family": "vegetal",
+            "name": "plant_watering"
+          }
+        ]
+      },
+      "name": "",
+      "partials": [
+        "arrosage des vignes",
+        "arrosage",
+        "arrose"
       ]
     },
     {
@@ -1140,12 +1213,22 @@
       ]
     },
     {
-      "id": "vine_leaves_fertilizing_with_spraying",
+      "id": "vine_leaves_fertilizing",
       "name": "",
       "partials": [
         "fertilisation foliaire",
-        "fertilise les feuilles",
-        "fertiliser des feuilles"
+        "fertilisation des feuilles",
+        "ferti foliaire"
+      ]
+    },
+    {
+      "id": "vine_spraying_with_fertilizing",
+      "name": "",
+      "partials": [
+        "pulverisation (avec fertilisation)",
+        "pulve avec ferti",
+        "pulve avec fertilisation",
+        "pulvérisation avec ferti"
       ]
     },
     {
@@ -1918,6 +2001,52 @@
   "viti": [
     {
       "id": {
+        "category": "vine_irrigating"
+      },
+      "name": "",
+      "partials": [
+        "irriguation",
+        "irriguer",
+        "irrigue"
+      ]
+    },
+    {
+      "id": "vine_watering_with_fertilizing",
+      "name": "",
+      "partials": [
+        "fertirrigation",
+        "irrigation et fertilisation",
+        "irrigation avec fertilisation",
+        "irrigue et fertilise"
+      ]
+    },
+    {
+      "id": "vine_watering_installation",
+      "name": "",
+      "partials": [
+        "installation de l'irrigation",
+        "installe l'irrigation"
+      ]
+    },
+    {
+      "id": "vine_watering",
+      "name": "",
+      "partials": [
+        "arrosage des vignes",
+        "arrosage",
+        "arrose"
+      ]
+    },
+    {
+      "id": "vine_spraying_with_fertilizing",
+      "name": "",
+      "partials": [
+        "pulverisation avec fertilisation",
+        "pulve avec ferti"
+      ]
+    },
+    {
+      "id": {
         "category": "trellising"
       },
       "name": "",
@@ -1934,7 +2063,16 @@
       ]
     },
     {
-      "id": "vine_spraying_without_fertilizing",
+      "id": {
+        "procedures": [
+          {
+            "name": "vine_spraying_without_fertilizing"
+          },
+          {
+            "name": "vine_spraying_with_fertilizing"
+          }
+        ]
+      },
       "name": "",
       "partials": [
         "pulve",
@@ -2223,7 +2361,7 @@
       ]
     },
     {
-      "id": "vine_leaves_fertilizing_with_spraying",
+      "id": "vine_leaves_fertilizing",
       "name": "",
       "partials": [
         "fertilisation foliaire",
