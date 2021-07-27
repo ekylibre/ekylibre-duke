@@ -199,6 +199,9 @@ module Duke
         /^({:type =>.{1,50}, :key =>.{1,9}, :name =>.{1,100}}(\|\|\|)?){1,20}$/
       end
 
+      def self.multiple_answers
+        /\|\|\|/
+      end
       # rubocop:enable Layout/LineLength
     end
   end
