@@ -10,7 +10,7 @@
      * Creates ActionCable connection & bind to user-Duke-channel
      * @param {Method} connBack - onConnected callBack
      */
-    instanciate(connBack, intent) {
+    instanciate(connBack, intent, msg) {
       this.cable = ActionCable.createConsumer(this.cable_url);
       this.duke_subscription = this.cable.subscriptions.create({
         channel: 'DukeChannel',
@@ -20,7 +20,7 @@
           D.webchat_interface.onMsg(data);
         },
         connected: function() {
-          connBack.bind(D.webchat)(intent);
+          connBack.bind(D.webchat)(intent, msg);
         }
       });
     }

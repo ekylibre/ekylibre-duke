@@ -53,22 +53,22 @@
      * AJAX call to create IBM-WA session
      * Stores Assistant ID, SessionId & creates Cable connection
      */
-    create_session(callback, intent) {
+    create_session(callback, intent, msg) {
       $.ajax('/duke_create_session', {
         type: 'post',
         dataType: 'json',
       success: ((data) => { D.webchat_interface.empty_container();
                             sessionStorage.setItem('duke_id', data.session_id);
                             sessionStorage.setItem('assistant_id', data.assistant_id);
-                            this.actionCable.instanciate(callback, intent);})
+                            this.actionCable.instanciate(callback, intent, msg);})
       });
     };
 
     /**
      * Get Welcoming Message by sending empty string on Cable instanciation
      */
-    msg_callback(intent) {
-      this.send_msg("", intent=intent)
+    msg_callback(intent, msg) {
+      this.send_msg(msg, intent=intent)
     };
 
     /**
@@ -105,9 +105,9 @@
       sessionStorage.removeItem('duke_visible');
     };
 
-    new_active_session(intent) {
+    new_active_session(intent, msg) {
       D.webchat_interface.scrollDown();
-      this.create_session(this.msg_callback, intent);
+      this.create_session(this.msg_callback, intent, msg);
       sessionStorage.setItem("duke_stamp", Date.now());
     };
   }
