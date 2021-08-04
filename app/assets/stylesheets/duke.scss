@@ -215,7 +215,7 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
   min-height: 34px;
   display: flex;
   flex-direction: row;
-  .sender {
+  .sender {
       justify-content: flex-end;
   }
 }
