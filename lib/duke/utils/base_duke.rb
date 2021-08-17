@@ -44,6 +44,14 @@ module Duke
         return [json]
       end
 
+      # @param [String] msg - sentence to be displayed as information
+      # @return [String] - Html information div with sentence
+      def duke_information_tag(msg)
+        "<div class='duke-information'>
+          <i style='color: #3340A4;'class='icon icon-help-outline'></i> #{msg}
+        </div>"
+      end
+
       # @returns exclusive farming type :vine_farming :plant_farming if exists
       def exclusive_farming_type
         farming_types = Activity.availables.pluck('DISTINCT family')
