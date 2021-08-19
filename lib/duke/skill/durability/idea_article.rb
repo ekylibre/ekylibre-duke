@@ -13,8 +13,13 @@ module Duke
 
         private
 
-          def item(idea_item_value_id)
-            @idea_diagnostic_item.idea_diagnostic_item_values.find_by(name: idea_item_value_id)
+          def item(idea_item_value_id, idea_id = nil)
+            if idea_id.nil?
+              @idea_diagnostic_item.idea_diagnostic_item_values.find_by(name: idea_item_value_id)
+            else
+              item = @idea_diagnostic.idea_diagnostic_items.find_by(idea_id: idea_id)
+              item.idea_diagnostic_item_values.find_by(name: idea_item_value_id)
+            end
           end
 
       end

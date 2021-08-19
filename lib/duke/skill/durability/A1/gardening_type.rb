@@ -11,8 +11,14 @@ module Duke
           end
 
           def handle
-            if (val = shelter_gardening_value).present?
-              item('A1_1').set!(val, val.class.to_s.downcase)
+            if (val = shelter_gardening_value).nil?
+              if val.is_a?(String)
+                item('A1_1').set!(val, :string)
+                item('A2_4', 'A2').set!(val, :string)
+              else
+                item('A1_1').set!(val, :boolean)
+                item('A2_4', 'A2').set!(val, :boolean)
+              end
               @component.update_global_score
               if @event.user_input.match(Duke::Utils::Regex.multiple_answers)
                 varieties = Onoma::CropSet.find('sheltered_gardening_idea').varieties
