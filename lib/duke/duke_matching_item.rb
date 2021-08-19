@@ -15,7 +15,6 @@ module Duke
     # @param [DukeMatchingElement] item
     # @returns true if self matches less than item
     def lower_match?(item)
-      # byebug
       if item.key == @key # only compare distance when same item
         item.distance > @distance
       else # apply exp(diff/70) to have item-length correction
@@ -36,7 +35,6 @@ module Duke
     # @param [DukeMatchingItem] item
     # @returns true if item rate isn't permitted for him || false
     def conflicting_rate?(item)
-      # byebug
       item.key?(:rate) && self.key?(:rate) &&
       ((%i[net_mass mass_area_density].include?(self.rate[:unit].to_sym) && (Matter.find_by_id(item.key)&.net_mass.to_f == 0)) ||
       (%i[net_volume volume_area_density].include?(self.rate[:unit].to_sym) && (Matter.find_by_id(item.key)&.net_volume&.to_f == 0)))
@@ -46,7 +44,6 @@ module Duke
     # @param [Measure] measure
     # @returns boolean
     def measure_coherent?(measure, procedure)
-      # byebug
       input_param = Procedo::Procedure.find(procedure).parameters_of_type(:input).find do |param|
         Matter.find_by_id(@key).of_expression(param.filter)
       end
