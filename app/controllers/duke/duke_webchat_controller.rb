@@ -36,7 +36,8 @@ module Duke
           {
             tenant: Ekylibre::Tenant.current,
             user_token: current_user.authentication_token,
-            user_email: current_user.email
+            user_email: current_user.email,
+            user_url: "#{request.protocol}#{request.host}/dukewatson"
           }
         else
           {
