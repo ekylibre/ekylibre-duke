@@ -9,7 +9,7 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
 @media only screen and (min-width: $small-screen + 1px) {
   #bottom_left {
     position: fixed;
-    bottom: 5%;
+    bottom: 3%;
     left: 3%;
     height: 640px;
     width: 360px;
@@ -24,7 +24,7 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
 }
 .btn-chat{
   position: fixed;
-  bottom: 3%;
+  bottom: 5%;
   left: 3%;
   background-color: transparent;
   z-index: 100000000;
@@ -36,9 +36,11 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
     filter: contrast(1.10);
   }
 }
-.icon-chat{
-  font-size: 45px;
-  color: white;
+.duke-get-started{
+  white-space: nowrap;
+  color: white !important;
+  position: relative;
+  right: 10%;
 }
 .icon-mic{
   background-color: transparent;
@@ -59,11 +61,9 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
 .icon-chat{
   filter: contrast(1); 
   background-color:$duke-color;
-  fill : white;
+  font-size: 45px !important;
+  color: white;
   padding: 10px;
-  margin: 0px;
-  height: 35px;
-  width: 35px;
   box-sizing: content-box;
 }
 .icon-minus{
@@ -178,7 +178,7 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
 .top-bar-icon{
   color: white;
   font-size: 20px;
-  padding-left: 5px;
+  padding-left: 8px;
 }
 .msg_container_base{
   background: #F3F3F3  ;
