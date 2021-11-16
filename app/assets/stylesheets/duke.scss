@@ -9,7 +9,7 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
 @media only screen and (min-width: $small-screen + 1px) {
   #bottom_left {
     position: fixed;
-    bottom: 3%;
+    bottom: 5%;
     left: 3%;
     height: 640px;
     width: 360px;
@@ -35,6 +35,10 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
   .icon-chat{
     filter: contrast(1.10);
   }
+}
+.icon-chat{
+  font-size: 45px;
+  color: white;
 }
 .icon-mic{
   background-color: transparent;
@@ -161,6 +165,7 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
 }
 #top_bar {
     display: flex;
+    align-items: center;
     flex-direction: row;
     background-color: $duke-color;
     max-height: 45px;
@@ -169,6 +174,11 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
     border-style: solid;
     border-width: 1px 0px;
     border-color: #F3F3F3;
+}
+.top-bar-icon{
+  color: white;
+  font-size: 20px;
+  padding-left: 5px;
 }
 .msg_container_base{
   background: #F3F3F3  ;
