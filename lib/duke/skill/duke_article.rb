@@ -330,11 +330,12 @@ module Duke
           elsif item_type == :tool
             iterator = Equipment.availables(at: @date.to_time)
           elsif item_type == :plant
-            iterator = Plant.availables(at: @date.to_time)
+            iterator = Plant.availables(at: @date.to_time).reject{|p| !p.usable_by_activity_date?(@date.to_time)}
           elsif item_type == :land_parcel
-            iterator = LandParcel.availables(at: @date.to_time)
+            iterator = LandParcel.availables(at: @date.to_time).reject{|p| !p.usable_by_activity_date?(@date.to_time)}
           elsif item_type == :cultivation
-            iterator = Product.availables(at: @date.to_time).of_expression('is land_parcel or is plant')
+            iterator = Product.availables(at: @date.to_time).of_expression('is land_parcel or is plant').reject{|p|
+ !p.usable_by_activity_date?(@date.to_time)}
           end
           return iterator.map{|rec| { id: rec.id, partials: rec.send(name_attr).duke_clear.words_combinations, name: rec.send(name_attr) }}
         end
