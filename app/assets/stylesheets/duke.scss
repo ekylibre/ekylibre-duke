@@ -24,7 +24,7 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
 }
 .btn-chat{
   position: fixed;
-  bottom: 3%;
+  bottom: 5%;
   left: 3%;
   background-color: transparent;
   z-index: 100000000;
@@ -35,6 +35,15 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
   .icon-chat{
     filter: contrast(1.10);
   }
+}
+.duke-get-started{
+  & u{
+    white-space: nowrap;
+    color: white !important;
+    text-decoration: underline white; 
+  }
+  position: relative;
+  right: 10%;
 }
 .icon-mic{
   background-color: transparent;
@@ -55,12 +64,11 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
 .icon-chat{
   filter: contrast(1); 
   background-color:$duke-color;
-  fill : white;
+  font-size: 45px !important;
+  color: white;
   padding: 10px;
-  margin: 0px;
-  height: 35px;
-  width: 35px;
   box-sizing: content-box;
+  border-radius: 7px;
 }
 .icon-minus{
   background-color:transparent;
@@ -161,6 +169,7 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
 }
 #top_bar {
     display: flex;
+    align-items: center;
     flex-direction: row;
     background-color: $duke-color;
     max-height: 45px;
@@ -169,6 +178,11 @@ $duke-color: scale-color($base-color, $saturation: 20%, $lightness: -20%);
     border-style: solid;
     border-width: 1px 0px;
     border-color: #F3F3F3;
+}
+.top-bar-icon{
+  color: white;
+  font-size: 20px;
+  padding-left: 8px;
 }
 .msg_container_base{
   background: #F3F3F3  ;
