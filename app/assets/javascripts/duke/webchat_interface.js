@@ -46,7 +46,7 @@
   
       this.$btn_chat.on("click", () => { // Display the chat 
         this.$btn_chat.hide().css("z-index", "-10");
-        this.$container.css("z-index", "9998").show();
+        this.$container.css("z-index", "999999").show();
         if (!this.isMobile) {
           this.$duke_input.focus();
         }
@@ -55,7 +55,7 @@
   
       this.$minimize.on("click", () => { // Minimize the chat
         this.$container.hide().css("z-index", "-10");
-        this.$btn_chat.css("z-index", "9997").show();
+        this.$btn_chat.css("z-index", "999999").show();
       });
   
       this.$duke_input.each(function() { // Auto-Resize textArea
@@ -90,10 +90,10 @@
     onMsg(data) {
       if (this.$btn_chat.is(":visible")){
         this.$btn_chat.css("z-index", "-10").hide()
-        this.$container.css("z-index", "9998").show();
+        this.$container.css("z-index", "999999").show();
       }
       else if (this.$container.is(":hidden")){
-        this.$btn_chat.css("z-index", "9997").show()
+        this.$btn_chat.css("z-index", "999999").show()
       }
       this.integrate_received(data.message);
     };
@@ -163,7 +163,7 @@
      * Cable Instanciation to persist Duke on page change
      */
     persist_duke() {
-      this.$container.css("z-index", "9998").show();
+      this.$container.css("z-index", "999999").show();
       this.add_content()
       sessionStorage.removeItem('duke_visible');
     };
