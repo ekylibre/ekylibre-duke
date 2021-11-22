@@ -66,16 +66,22 @@ module Duke
 
           # Procedures iterator depending on user activity scope
           def procedure_iterator
-            procedure_scope =
-            [
-              :common,
-              if Saassy.ekyagri?
-                :vegetal
-              else
-                vegetal? ? :viti_vegetal : :viti
-              end,
-              animal? ? :animal : nil
-            ]
+            procedure_scope = if !defined?(Saassy)
+                                %i[
+                                  common
+                                  viti_vegetal
+                                ]
+                              else
+                                [
+                                  :common,
+                                  if Saassy.ekyagri?
+                                    :vegetal
+                                  else
+                                    vegetal? ? :viti_vegetal : :viti
+                                  end,
+                                  animal? ? :animal : nil
+                                ]
+                              end
             procedure_entities.slice(*procedure_scope).values.flatten
           end
 
