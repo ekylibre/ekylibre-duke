@@ -35,7 +35,7 @@ module Duke
               prod.respond_to?(:id) && send(type).any?{|reco| reco.key == prod.id}
             end
             options = items.map do |itm| # Turn it to Jsonified options
-              itm.is_a?(Hash) ? itm : optionify(itm.name, itm.id)
+              itm.is_a?(Hash) ? itm : optionify(itm.send(display_name(type)), itm.id)
             end
             if options.empty?
               dynamic_text(I18n.t('duke.interventions.ask.no_complement'))
@@ -44,6 +44,10 @@ module Duke
             else
               dynamic_options(I18n.t("duke.interventions.ask.what_complement_#{type}"), options)
             end
+          end
+
+          def display_name(type)
+            type == 'input' ? :unambiguous_name : :name
           end
 
       end
