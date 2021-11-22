@@ -281,7 +281,8 @@ module Duke
           attrs = {
             activity_variety: :cultivation_variety_name,
             entity: :full_name,
-            financial_year: :code
+            financial_year: :code,
+            input: :unambiguous_name
           }
           if attrs.key? item_type
             attrs[item_type]
