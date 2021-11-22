@@ -6,7 +6,7 @@ module Duke
     end
 
     def create_session
-      assistant_id = if Saassy.ekyviti?
+      assistant_id = if (!defined?(Saassy) || Saassy.ekyviti?)
                        WATSON_EKYVITI_ID
                      else
                        WATSON_EKY_ID
