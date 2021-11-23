@@ -12,6 +12,7 @@ module Duke
 
           def handle
             item('A1_1').set!(@event.user_input, :string)
+            item('A2_4', 'A2').set!(@event.user_input, :string)
             @component.update_global_score
             DukeResponse.new
           end
