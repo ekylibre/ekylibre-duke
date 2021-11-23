@@ -9,7 +9,9 @@ module Duke
           end
 
           def handle
-            item('A1_10').set!(sth_ratio(@event.options.number.to_f), :integer)
+            sth_val = sth_ratio(@event.options.number.to_f)
+            item('A1_10').set!(sth_val, :float)
+            item('A2_27', 'A2').set!(sth_val, :float)
             @component.update_global_score
             DukeResponse.new
           end
