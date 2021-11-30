@@ -40,7 +40,7 @@ module Duke
               doers_attributes: doer_attributes.to_a,
               targets_attributes: target_attributes.to_a,
               inputs_attributes: input_attributes.to_a,
-              working_periods_attributes: @working_periods.map.with_index{|wp, index| [index.to_s, wp.permit!.to_h]}.to_h
+              working_periods_attributes: @working_periods.map.with_index{|wp, index| [index.to_s, wp]}.to_h
             }
           end
 
