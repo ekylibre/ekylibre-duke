@@ -4,10 +4,11 @@ module Duke
 
     # check if token concords with user email for authentication
     def webhook_token_auth
-      event = Duke::DukeEvent.new(params[:main_param])
+      main_params = JSON.parse(request.env['rack.input'].read)['main_param'].with_indifferent_access
+      event = Duke::DukeEvent.new(main_params)
       begin
         Ekylibre::Tenant.switch event.tenant do
-          if User.find_by(authentication_token: request.env['HTTP_EKYLIBRE_TOKEN']).email == request.env['HTTP_EKYLIBRE_EMAIL']
+          if User.find_by(authentication_token: request.env['HTTP_X_EKYLIBRE_TOKEN']).email == request.env['HTTP_X_EKYLIBRE_EMAIL']
             handle_webhook(event)
           end
         end

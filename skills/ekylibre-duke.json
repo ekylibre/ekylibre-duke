@@ -1,27 +1,129 @@
 {
   "intents": [
     {
+      "intent": "AccountingFog",
+      "examples": [
+        {
+          "text": "accéder au brouillard comptable"
+        },
+        {
+          "text": "Accéder au brouillard comptable de 2020"
+        },
+        {
+          "text": "Accéder au brouillard comptable de l'exercice actuel"
+        },
+        {
+          "text": "Affiche le brouillard comptable"
+        },
+        {
+          "text": "brouillard comptable"
+        },
+        {
+          "text": "brouillard comptable du journal AX13"
+        },
+        {
+          "text": "Brouillard comptable du journal des opérations"
+        },
+        {
+          "text": "Consulte le brouillard"
+        },
+        {
+          "text": "consulter le brouillard comptable"
+        },
+        {
+          "text": "montre moi le brouillard"
+        },
+        {
+          "text": "Montre moi le brouillard comptable"
+        },
+        {
+          "text": "Présente mon brouillard"
+        },
+        {
+          "text": "Valide moi le brouillard comptable"
+        },
+        {
+          "text": "Valider le brouillard comptable"
+        },
+        {
+          "text": "Valider le brouillard comptable du journal banque ABC"
+        },
+        {
+          "text": "valider les écritures du brouillard comptable"
+        },
+        {
+          "text": "voir le brouillard comptable"
+        }
+      ],
+      "description": "Access AccountingFog"
+    },
+    {
+      "intent": "AccountLettering",
+      "examples": [
+        {
+          "text": "Afficher la liste du lettrage de comptes"
+        },
+        {
+          "text": "Faire le lettrage"
+        },
+        {
+          "text": "Faire le lettrage de compte d'arthur ubieto 19"
+        },
+        {
+          "text": "Faire les lettrage"
+        },
+        {
+          "text": "Faire un nouveau lettrage de compte"
+        },
+        {
+          "text": "lait rage à faire"
+        },
+        {
+          "text": "Lettrage à réaliser"
+        },
+        {
+          "text": "Lettrage de compte"
+        },
+        {
+          "text": "Lettrage des comptes"
+        },
+        {
+          "text": "Lettrage du compte 2021"
+        },
+        {
+          "text": "Lettrage du compte banque ABC"
+        },
+        {
+          "text": "Lettrage du compte milligan 14"
+        },
+        {
+          "text": "montre les lettrages"
+        },
+        {
+          "text": "Montre moi le lettrage"
+        },
+        {
+          "text": "Montre moi le lettrage du compte 1A4"
+        },
+        {
+          "text": "Réaliser le lettrage de Carreau 18"
+        },
+        {
+          "text": "Réaliser le lettrage du compte XX"
+        },
+        {
+          "text": "Réaliser mon lettrage de comptes"
+        }
+      ],
+      "description": ""
+    },
+    {
       "intent": "Exit",
       "examples": []
     },
     {
       "intent": "Export",
       "examples": [
-        {
-          "text": "Affiche pour 2016 le cahier de tracabilité du mais"
-        },
-        {
-          "text": "boucheuse bertolaso à télécharger"
-        },
-        {
-          "text": "Cahier de culture télécharge le"
-        },
-        {
-          "text": "Charge la fiche des couts du matériel girobroyeur"
-        },
-        {
-          "text": "charge le cahier de suivi de la culture de blé 2015"
-        },
         {
           "text": "Créer l'export de mon document"
         },
@@ -47,43 +149,19 @@
           "text": "Exporte la fiche comptable pour l'année en cours"
         },
         {
-          "text": "Exporte la fiche de couts du tracteur case ih 745"
-        },
-        {
-          "text": "Exporte la fiche équipement de la presse balle ronde"
-        },
-        {
           "text": "Exporte le bilan comptable pour l'année 2020"
         },
         {
           "text": "exporte le bilan de 2018"
         },
         {
-          "text": "Exporte le cahier de culture"
-        },
-        {
-          "text": "Exporte le cahier de culture de la vigne 2018"
-        },
-        {
-          "text": "Exporte le cahier de traçabilité des cultures"
-        },
-        {
-          "text": "Exporte le cahier de traça du blé tendre de 2020"
-        },
-        {
           "text": "Exporte le compte de résultats"
-        },
-        {
-          "text": "Exporte le fichier d'écritures comptables"
         },
         {
           "text": "Exporte les compte de résultats pour l'année 2018"
         },
         {
           "text": "Exporte les compte de résultats pour l'année 2019"
-        },
-        {
-          "text": "Exporte les écritures comptables"
         },
         {
           "text": "Exporte mes résultats financiers"
@@ -95,12 +173,6 @@
           "text": "Exporte moi ça"
         },
         {
-          "text": "Exporte moi la fiche de côuts pour la cuve 3"
-        },
-        {
-          "text": "exporte moi le fec de 2020"
-        },
-        {
           "text": "Exporte mon bail"
         },
         {
@@ -110,37 +182,10 @@
           "text": "Exporter"
         },
         {
-          "text": "Exporter la fiche de couts du claas jaguar"
-        },
-        {
-          "text": "Exporter la fiche des cout de la machine à planter"
-        },
-        {
-          "text": "exporter le cahier de suivi du blé 2014"
-        },
-        {
-          "text": "Exporter le cahier de traçabilité de l'orge année 2015"
-        },
-        {
           "text": "Exporter un document"
         },
         {
           "text": "Faire l'export"
-        },
-        {
-          "text": "FEC de 2021 au format xml"
-        },
-        {
-          "text": "Fiche de couts de l'enrouleur perrot à télécharger"
-        },
-        {
-          "text": "Imprime la fiche de couts du tracteur 533"
-        },
-        {
-          "text": "Imprime la fiche des charges de la remorque épandeur"
-        },
-        {
-          "text": "imprime la fiche équipement du pulvérisateur"
         },
         {
           "text": "imprime le bilan 2029"
@@ -161,46 +206,10 @@
           "text": "Imprime moi le bilan comptable"
         },
         {
-          "text": "Imprime moi le cahier de culture des tomates en 2016"
-        },
-        {
-          "text": "Imprime moi le cahier de traca du tournesol"
-        },
-        {
           "text": "Imprime mon bilan comptable"
         },
         {
-          "text": "imprimer la fiche des dépenses du rabot 250"
-        },
-        {
-          "text": "imprimer mes fec en fichier texte"
-        },
-        {
-          "text": "j'aimerai exporter le cahier de culture popur 2017"
-        },
-        {
-          "text": "Je veux exporte le fec au format txt"
-        },
-        {
-          "text": "je veux exporter la fiche de couts de la remorque monocoque"
-        },
-        {
-          "text": "je veux exporter le cahier de culture de la vigne pour 2019"
-        },
-        {
-          "text": "je veux exporter les écritures comptables"
-        },
-        {
-          "text": "je veux télécharger les fichier d'écritures comptables"
-        },
-        {
-          "text": "je voudrais télécharger mes écritures comptables"
-        },
-        {
           "text": "Lance l'export"
-        },
-        {
-          "text": "Lance l'export du truc"
         },
         {
           "text": "Lancement d'un export"
@@ -212,25 +221,7 @@
           "text": "Lancer le téléchargement de la chose"
         },
         {
-          "text": "Obtenir le FEC de l'exercice 2019 au format texte"
-        },
-        {
-          "text": "Obtenir les écritures comptables"
-        },
-        {
-          "text": "obtenir mes fec de 2020"
-        },
-        {
-          "text": "Sors moi d'ekylibre la fiche de cout du plantoir"
-        },
-        {
-          "text": "sors moi la fiche de couts du tracteur renault"
-        },
-        {
           "text": "Sors moi le bilan comptable"
-        },
-        {
-          "text": "Sors moi le cahier de traçabilité pour 2017 du tournesol"
         },
         {
           "text": "Télécharge la compta de 2018"
@@ -239,34 +230,13 @@
           "text": "Télécharge la fiche de couts de la tireuse perrier"
         },
         {
-          "text": "Télécharge la fiche équipements du tracteur 533"
-        },
-        {
-          "text": "Télécharge le cahier de culture"
-        },
-        {
-          "text": "Télécharge le cahier de traçabilité"
-        },
-        {
-          "text": "Télécharge le fec 2021"
-        },
-        {
           "text": "Télécharge les résultats de 2019"
         },
         {
           "text": "Télécharge ma comptabilité"
         },
         {
-          "text": "telecharge mes fec en xml"
-        },
-        {
           "text": "Télécharge mes résultats sur l'année 2020"
-        },
-        {
-          "text": "télécharge moi la fiche de couts du tracteur case ih 745"
-        },
-        {
-          "text": "Telecharge moi le cahier de traca des cultures"
         },
         {
           "text": "Télécharge mon bilan"
@@ -278,19 +248,58 @@
           "text": "Télécharger"
         },
         {
-          "text": "Télécharger le cahier de cultures"
-        },
-        {
-          "text": "Télécharger le FEC au format xml"
-        },
-        {
-          "text": "Télécharger toutes les ecritures sous txt"
-        },
-        {
           "text": "Tu peux exporter mon bail ?"
         }
       ],
       "description": "Exporting documents from Ekylibre"
+    },
+    {
+      "intent": "FixedAssetSale",
+      "examples": [
+        {
+          "text": "Ajouter une cession d’immobilisation"
+        },
+        {
+          "text": "Cession de l’immobilisation du tracteur 533"
+        },
+        {
+          "text": "Cession de l'immobilisation pour le pulvérisateur"
+        },
+        {
+          "text": "Cession d'immobilisation"
+        },
+        {
+          "text": "Cession d'immobilisation pour la charrue 41 N"
+        },
+        {
+          "text": "Cession d'immobilisation pour le cass"
+        },
+        {
+          "text": "Cession d'immobilisation pour l'outil tracté 21"
+        },
+        {
+          "text": "Enregistre une cession d'immobilisation"
+        },
+        {
+          "text": "Immobilisation vendue du renault"
+        },
+        {
+          "text": "Indiquer que j'ai vendu mon immobilisation du bail"
+        },
+        {
+          "text": "Vendre mon immobilisation"
+        },
+        {
+          "text": "Vendre une immobilisation"
+        },
+        {
+          "text": "Vente de l'immobilisation"
+        },
+        {
+          "text": "Vente de l'immobilisation du tracteur 343"
+        }
+      ],
+      "description": ""
     },
     {
       "intent": "Harvest_Reception",
@@ -521,6 +530,15 @@
         }
       ],
       "description": "Duke can flex about everything he can do"
+    },
+    {
+      "intent": "IDEA_A1",
+      "examples": [],
+      "description": ""
+    },
+    {
+      "intent": "IDEA_A2",
+      "examples": []
     },
     {
       "intent": "Intervention",
@@ -1279,34 +1297,13 @@
           "text": "Affice moi ma tva"
         },
         {
-          "text": "Affiche la liste des tiers"
-        },
-        {
-          "text": "Affiche l'assolement"
-        },
-        {
-          "text": "Affiche les compte de tresoreries"
-        },
-        {
-          "text": "Affiche les comptes courants associés"
-        },
-        {
           "text": "Affiche les factures"
         },
         {
           "text": "Affiche les immobilisations vendues"
         },
         {
-          "text": "Affiche les personnes"
-        },
-        {
           "text": "Affiche les productions sur l'année 2020"
-        },
-        {
-          "text": "Affiche l'exercice"
-        },
-        {
-          "text": "Affiche l'exercice comptable 2014"
         },
         {
           "text": "Affiche l'immobilisation de la machine AX"
@@ -1330,13 +1327,7 @@
           "text": "Affiche ma tva envoyée"
         },
         {
-          "text": "Affiche mes clients"
-        },
-        {
           "text": "Affiche mes déclarations de tva"
-        },
-        {
-          "text": "Affiche mes entités"
         },
         {
           "text": "Affiche mes factures impayées"
@@ -1348,34 +1339,10 @@
           "text": "Affiche mes les immobilisations"
         },
         {
-          "text": "Affiche mes parcelles"
-        },
-        {
-          "text": "Affiche mes tiers"
-        },
-        {
-          "text": "Affiche moi l'activité de luzerne"
-        },
-        {
-          "text": "Affiche moi l'assolement"
-        },
-        {
-          "text": "Affiche moi le compte courant Mirdale"
-        },
-        {
-          "text": "Affiche moi le compte de trésorerie"
-        },
-        {
-          "text": "Affiche moi le parcellaire"
-        },
-        {
           "text": "Affiche moi les achats"
         },
         {
           "text": "Affiche moi les achats impayés"
-        },
-        {
-          "text": "Affiche moi les comptes courants de la ferme"
         },
         {
           "text": "Affiche moi les contacts"
@@ -1387,13 +1354,7 @@
           "text": "Affiche moi les immobilisation du SPR 31"
         },
         {
-          "text": "Affiche moi les productions pour 2017"
-        },
-        {
           "text": "Affiche moi les ventes"
-        },
-        {
-          "text": "Affiche moi le tracteur case ih 533"
         },
         {
           "text": "Affiche moi ma dernière immobilisation"
@@ -1408,25 +1369,10 @@
           "text": "Affiche moi mes factures d'achat impayées"
         },
         {
-          "text": "Affiche moi mes productions"
-        },
-        {
-          "text": "Affiche moi mon parcellaire"
-        },
-        {
-          "text": "Affiche mon compte bancaire"
-        },
-        {
-          "text": "Afficher l'épandeur chaux"
-        },
-        {
           "text": "afficher les déclarations de tva de 2020"
         },
         {
           "text": "Afficher les déclarations de tva validées"
-        },
-        {
-          "text": "Afficher les tiers"
         },
         {
           "text": "Afficher l'historique des ventes"
@@ -1435,43 +1381,13 @@
           "text": "Afficher ma tva"
         },
         {
-          "text": "Afficher mes exercices comptables"
+          "text": "Afficher mes taux de tva"
         },
         {
           "text": "afficher mes tvas"
         },
         {
-          "text": "Afficher moi l'historique de mes ventes"
-        },
-        {
-          "text": "Afficher mon compte bancaire"
-        },
-        {
           "text": "Affiche tous mes produits immobilisés"
-        },
-        {
-          "text": "Amène moi à la benne à vendange"
-        },
-        {
-          "text": "Amène moi à l'andaineur"
-        },
-        {
-          "text": "Amène moi à mon compte bancaire"
-        },
-        {
-          "text": "Amène moi a mon parcellaire"
-        },
-        {
-          "text": "Amène moi au parcellaire"
-        },
-        {
-          "text": "Amène moi au parcellaires"
-        },
-        {
-          "text": "Amène moi au silo plassay coop"
-        },
-        {
-          "text": "Amène moi aux activités de sorgho"
         },
         {
           "text": "Amène moi aux factures"
@@ -1484,15 +1400,6 @@
         },
         {
           "text": "Amène moi aux factures de ventes impayées"
-        },
-        {
-          "text": "Amener à la désileuse"
-        },
-        {
-          "text": "A quoi ressemble le parcellaire"
-        },
-        {
-          "text": "A quoi ressemble le parcellaire ?"
         },
         {
           "text": "consulte les produits immobilisé"
@@ -1516,37 +1423,7 @@
           "text": "délcarations de tva validées"
         },
         {
-          "text": "Dirige moi à la boucheuse"
-        },
-        {
-          "text": "Dirige moi vers l'activité de ray-grass"
-        },
-        {
           "text": "Dirige moi vers les factures de ventes"
-        },
-        {
-          "text": "duke affiche moi la désileuse stp"
-        },
-        {
-          "text": "Explore le compte bancaire de la coop de test"
-        },
-        {
-          "text": "Fais voir la cellule à grains"
-        },
-        {
-          "text": "Fais voir la presse balle carrée"
-        },
-        {
-          "text": "Fais voir les activités de tournesol"
-        },
-        {
-          "text": "Fais voir le semoir à grains"
-        },
-        {
-          "text": "Fais voir une activité"
-        },
-        {
-          "text": "Fiche du girobroyeur"
         },
         {
           "text": "immobilisation en service"
@@ -1558,18 +1435,6 @@
           "text": "Je veux consulter l'immobilisation en attente"
         },
         {
-          "text": "Je veux la fiche de la remorque monocoque"
-        },
-        {
-          "text": "Je veux voir l'andaineur"
-        },
-        {
-          "text": "Je veux voir la tireuse perrier"
-        },
-        {
-          "text": "Je veux voir les activités de mais ensilage"
-        },
-        {
           "text": "Je veux voir toutes mes déclarations de tva"
         },
         {
@@ -1579,25 +1444,10 @@
           "text": "L'immobilisation en attente"
         },
         {
-          "text": "Liste mes exercices comptables"
-        },
-        {
           "text": "Me montrer les déclarations de tva validées de 2020"
         },
         {
-          "text": "Me montrer les travailleurs"
-        },
-        {
-          "text": "Me montrer mes exercice"
-        },
-        {
-          "text": "Me montrer mes fournisseurs"
-        },
-        {
           "text": "Montre ce que j'ai immobilisé"
-        },
-        {
-          "text": "Montre les activités"
         },
         {
           "text": "Montre les factures d'achat"
@@ -1606,55 +1456,10 @@
           "text": "Montre les immobilisations"
         },
         {
-          "text": "Montre les parcelles"
-        },
-        {
           "text": "Montre les ventes"
         },
         {
-          "text": "Montre l'exercice en cours"
-        },
-        {
-          "text": "Montre mes contacts"
-        },
-        {
-          "text": "Montre moi l'activité de tournesol"
-        },
-        {
-          "text": "Montre moi la fiche de la bineuse"
-        },
-        {
-          "text": "Montre moi la fiche du renault 110"
-        },
-        {
-          "text": "Montre moi la liste des exs comptables"
-        },
-        {
-          "text": "Montre moi l'assolement"
-        },
-        {
-          "text": "Montre moi la tva de 2020"
-        },
-        {
-          "text": "Montre moi le compte courant d'associé coopérateur"
-        },
-        {
-          "text": "Montre moi le compte d'Ocealio"
-        },
-        {
-          "text": "Montre moi le parcellaire"
-        },
-        {
-          "text": "Montre moi le pulvérisateur"
-        },
-        {
-          "text": "montre moi les activités de légumineuses"
-        },
-        {
-          "text": "Montre moi les activités d'orge d'hiver"
-        },
-        {
-          "text": "Montre moi les comptes en banques"
+          "text": "Montre mes taux de tva"
         },
         {
           "text": "Montre moi les factures d'achat impayées"
@@ -1663,28 +1468,13 @@
           "text": "Montre moi les lettrages"
         },
         {
-          "text": "Montre moi les tiers"
-        },
-        {
           "text": "Montre moi les ventes impayées"
-        },
-        {
-          "text": "Montre moi le tank lait 300"
-        },
-        {
-          "text": "Montre moi le vibroculteur"
         },
         {
           "text": "Montre moi l'exercice comptable de 2020"
         },
         {
-          "text": "montre moi l'immobilisation crée la semaine d'acant"
-        },
-        {
           "text": "montre moi ma tva"
-        },
-        {
-          "text": "montre moi mes banques"
         },
         {
           "text": "Montre moi mes contacts"
@@ -1699,25 +1489,10 @@
           "text": "MOntre moimes immobilisations"
         },
         {
-          "text": "Montre moi mes productions"
-        },
-        {
           "text": "Montre moi mes ventes"
         },
         {
-          "text": "Montre moi mon activité de blé tendre"
-        },
-        {
-          "text": "Montre moi mon parcellaire"
-        },
-        {
-          "text": "Montre moi une activité"
-        },
-        {
           "text": "montrer les immobilisations sur la période de 2021"
-        },
-        {
-          "text": "Montrer les tiers"
         },
         {
           "text": "montrer mes déclarations de tva"
@@ -1736,6 +1511,12 @@
         },
         {
           "text": "Ou j'en suis de mon parcellaire"
+        },
+        {
+          "text": "Paramètre mes taux de tva"
+        },
+        {
+          "text": "paramétrer mes taux de tva"
         },
         {
           "text": "Réaliser mon lettrage de comptes"
@@ -1787,9 +1568,147 @@
         }
       ],
       "description": "Non User-specific-element's redirection"
+    },
+    {
+      "intent": "TaxDeclaration",
+      "examples": [
+        {
+          "text": "déclarer la tva de mon exercice en cours"
+        },
+        {
+          "text": "déclarer ma TVA pour l'exercice 2020"
+        },
+        {
+          "text": "extraire la tva de l'ex en cours"
+        },
+        {
+          "text": "faire la tva"
+        },
+        {
+          "text": "Faire ma déclaration de TVA"
+        },
+        {
+          "text": "Faire ma TVA"
+        },
+        {
+          "text": "faire ma tva de 2021"
+        },
+        {
+          "text": "gérer ma tva pour 2021"
+        },
+        {
+          "text": "Je veux déclarer ma TVA"
+        },
+        {
+          "text": "régler la tva de 2021"
+        },
+        {
+          "text": "tout faire avec la tva"
+        },
+        {
+          "text": "tva pour 2020"
+        }
+      ],
+      "description": "Tva Declaration"
     }
   ],
   "entities": [
+    {
+      "entity": "AccountingAccount",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "***1",
+          "synonyms": [
+            "compte capital",
+            "compte de capital",
+            "Compte de capitaux",
+            "comptes de capitaux "
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "***2",
+          "synonyms": [
+            "compte des immobilisations",
+            "compte d'immobilisation",
+            "compte dimmobilisation",
+            "compte immo",
+            "compte immobilisable",
+            "compte immobilisation",
+            "compte immobilisations",
+            "Comptes d'immobilisations"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "***3",
+          "synonyms": [
+            "compte actuel",
+            "compte d'en cours",
+            "compte des stock",
+            "compte des stocks",
+            "compte de stock",
+            "Compte de stocks",
+            "compte en cours",
+            "compte stock",
+            "compte stocks"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "***4",
+          "synonyms": [
+            "compte des teirs",
+            "compte des tiers",
+            "compte de tiers",
+            "compte tier",
+            "compte tiers"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "***5",
+          "synonyms": [
+            "compte de finance",
+            "compte de finances",
+            "compte des finances",
+            "compte des financies",
+            "compte financier",
+            "compte financiers",
+            "comptes financier",
+            "comptes financiers"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "***6",
+          "synonyms": [
+            "compte charges",
+            "compte de charge",
+            "compte de charges",
+            "compte des charge",
+            "compte des charges"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "***7",
+          "synonyms": [
+            "compte de produit",
+            "compte de produits",
+            "compte des produit",
+            "compte des produits",
+            "compte produit",
+            "comptes de produits",
+            "comptes des produit",
+            "comptes des produits",
+            "comptes produits"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    },
     {
       "entity": "Complementary",
       "values": [
@@ -2197,1284 +2116,6 @@
             "Travailler",
             "Travailleurs",
             "workers"
-          ]
-        }
-      ]
-    },
-    {
-      "entity": "Procedure",
-      "values": [
-        {
-          "type": "synonyms",
-          "value": "administrative_tasks",
-          "synonyms": [
-            "taches administratives",
-            "tâches administratives"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "animal_artificial_insemination",
-          "synonyms": [
-            "insémination",
-            "insémination artificielle"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "animal_group_changing",
-          "synonyms": [
-            "déplacé des animaux",
-            "déplacé les animaux",
-            "déplacé les poules",
-            "déplacé les vaches",
-            "déplacement d'animaux"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "animal_housing_cleaning",
-          "synonyms": [
-            "nettoyage de l'habitat",
-            "nettoyé l'enclos",
-            "nettoyé l'habitat",
-            "nettoyer l'enclos"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "animal_housing_disinfection",
-          "synonyms": [
-            "desinfection de l'enclos",
-            "désinfection de l'habitat",
-            "desinfection du poullailler"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "animal_veterinary_treatment",
-          "synonyms": [
-            "traitement vétérinaire",
-            "traitement véto",
-            "vétérinaire",
-            "voir le vétérinaire"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "chemical_mechanical_weeding",
-          "synonyms": [
-            "desherbinage",
-            "desherbiné",
-            "desherbiner"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "crop_maintenance&",
-          "synonyms": []
-        },
-        {
-          "type": "synonyms",
-          "value": "crop_protection&",
-          "synonyms": []
-        },
-        {
-          "type": "synonyms",
-          "value": "crop_residues_grinding",
-          "synonyms": [
-            "broyage de residus",
-            "broyage de résidus",
-            "broyage des résidus"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "detasseling",
-          "synonyms": [
-            "écimage",
-            "écimé",
-            "écimer"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "direct_silage",
-          "synonyms": [
-            "ensilage",
-            "ensilé",
-            "ensiler"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "earth_work",
-          "synonyms": [
-            "terrassé",
-            "terrassement",
-            "terrasser"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "egg_collecting",
-          "synonyms": [
-            "ramassage d'oeufs",
-            "ramassage d'œufs",
-            "ramassé des œufs",
-            "ramassé les oeufs",
-            "rammasser les oeufs"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "equipment_item_replacement",
-          "synonyms": [
-            "changement de pièce",
-            "changer une pièce",
-            "changé une pièce"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "equipment_maintenance",
-          "synonyms": [
-            "maintenance",
-            "réparation",
-            "réparation et maintenance",
-            "réparé",
-            "réparer"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "fertilizing&",
-          "synonyms": []
-        },
-        {
-          "type": "synonyms",
-          "value": "food preparation",
-          "synonyms": [
-            "préparation alimentaire",
-            "préparation d'alimentation",
-            "préparation d'aliments",
-            "préparation des aliments",
-            "préparé des aliments",
-            "préparé l'alimentation",
-            "préparer des aliments",
-            "préparer les aliments"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "fuel_up",
-          "synonyms": [
-            "faire le plein",
-            "fait le plein",
-            "plein de carburant"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "gas_weeding",
-          "synonyms": [
-            "desherbage au gaz",
-            "désherbage au gaz",
-            "desherbage avec du gaz",
-            "désherbage avec du gaz",
-            "desherbage thermique",
-            "désherbage thermique"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "gas_weeding~steam_weeding~hand_weeding",
-          "synonyms": [
-            "deshebré",
-            "desherbage",
-            "désherbage",
-            "désherbé",
-            "desherber",
-            "désherber"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "grazing",
-          "synonyms": [
-            "paturage sur parcours",
-            "Pâturage sur parcours"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "greenhouse_assembling",
-          "synonyms": [
-            "montage de serre",
-            "monté la serre",
-            "monter une serre",
-            "monté une serre"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "ground_destratification",
-          "synonyms": [
-            "déstratification",
-            "déstratifié",
-            "déstratifier"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "handling",
-          "synonyms": [
-            "Manutention"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "hand_weeding",
-          "synonyms": [
-            "desherbage manuel",
-            "desherbage manuellement",
-            "desherbé à la main",
-            "desherbé manuellement",
-            "desherber manuellement"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "harvesting",
-          "synonyms": [
-            "cueillette",
-            "fenaison",
-            "moisson",
-            "moissonné",
-            "moissonner",
-            "récolte",
-            "récolté",
-            "récolter",
-            "vendange",
-            "vendangé",
-            "vendanger",
-            "vendanges"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "harvesting&",
-          "synonyms": []
-        },
-        {
-          "type": "synonyms",
-          "value": "herd_feeding",
-          "synonyms": [
-            "alimentation d'un troupeau",
-            "alimentation du troupeau",
-            "alimenté le troupeau",
-            "alimenter le troupeau",
-            "alimenté un troupeau"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "hilling",
-          "synonyms": [
-            "Buttage",
-            "butté",
-            "butter"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "hilling_for_sifting",
-          "synonyms": [
-            "buttage pour tamisage"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "hoeing",
-          "synonyms": [
-            "binage",
-            "biner"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "identification",
-          "synonyms": [
-            "Identification"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "indirect_silage",
-          "synonyms": [
-            "ensilage indirect"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "individual_feeding",
-          "synonyms": [
-            "alimentation individuelle"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "installation_maintenance",
-          "synonyms": [
-            "entretenu les batiments",
-            "entretenu les installations",
-            "entretien des batiments",
-            "entretien des installations"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "installations_modification&",
-          "synonyms": [
-            "batiments",
-            "foncier",
-            "travaux fonciers"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "inter_row_hoeing",
-          "synonyms": [
-            "binage entre les rangs",
-            "binage inter rang",
-            "binage inter rangs",
-            "binage inter-rangs",
-            "biné entre les rangs"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "irrigating&",
-          "synonyms": [
-            "iriguer",
-            "irrigation",
-            "irrigé",
-            "irriger",
-            "irrigué",
-            "irriguer"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "land_parcel_grinding",
-          "synonyms": [
-            "broyage de sol",
-            "broyage du sol",
-            "broyées le sol",
-            "broyées les sol",
-            "broyé le sol",
-            "broyer le sol"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "land_parcel_grinding~crop_residues_grinding",
-          "synonyms": [
-            "broyage",
-            "broyé",
-            "broyer"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "land_parcel_grinding~vine_inter_row_grinding~vine_shoot_grinding",
-          "synonyms": [
-            "broyage"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "lifting",
-          "synonyms": [
-            "soulevage",
-            "soulevé",
-            "soulever"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "manual_feeding",
-          "synonyms": [
-            "donné à manger",
-            "donner à manger",
-            "nourri"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "milking",
-          "synonyms": [
-            "traire",
-            "traite",
-            "trâite"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "net_installation",
-          "synonyms": [
-            "pose de filet",
-            "poser un filet",
-            "posé un filet"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "net_removing",
-          "synonyms": [
-            "enlevé le filet",
-            "enlever le filet",
-            "enlever un filet",
-            "enlevé un filet",
-            "retiré le filet",
-            "retirer le filet",
-            "retirer un filet",
-            "retiré un filet"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "oil_replacement",
-          "synonyms": [
-            "vidange",
-            "vidangé",
-            "vidangé de l'huile",
-            "Vidange d’huile",
-            "vidangé l'huile"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "packaging",
-          "synonyms": [
-            "conditionnement"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "parturition",
-          "synonyms": [
-            "agnelage",
-            "mettre bas",
-            "mis bas",
-            "mise à bas",
-            "mise à bâs",
-            "poulinage",
-            "vélage"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "pasturing",
-          "synonyms": [
-            "paturage",
-            "pâturage",
-            "paturé",
-            "pâturé"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "plantation_unfixing",
-          "synonyms": [
-            "dechaussage",
-            "déchaussage",
-            "dechausse",
-            "dechaussé",
-            "déchausse",
-            "déchaussé",
-            "dechausser",
-            "déchausser"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "plant_covering",
-          "synonyms": [
-            "bachage",
-            "bâchage",
-            "baché",
-            "bacher"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "plant_cover_sowing",
-          "synonyms": [
-            "semis de couvert"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "plant_farming",
-          "synonyms": []
-        },
-        {
-          "type": "synonyms",
-          "value": "planting&",
-          "synonyms": []
-        },
-        {
-          "type": "synonyms",
-          "value": "plant_mowing",
-          "synonyms": [
-            "fauchage",
-            "fauche",
-            "fauché",
-            "faucher"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "plant_mulching",
-          "synonyms": [
-            "paillage",
-            "paillé",
-            "pailler"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "plants_sorting",
-          "synonyms": [
-            "triage de culture",
-            "triage de cultures",
-            "triage des cultures"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "plant_uncovering",
-          "synonyms": [
-            "debachage",
-            "débachage",
-            "debache",
-            "débache",
-            "debacher",
-            "débacher",
-            "enlever la bache",
-            "enlever une bache"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "plant_watering",
-          "synonyms": [
-            "arrosage",
-            "arrosé",
-            "arroser"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "plant_watering_installation",
-          "synonyms": [
-            "installation de l'irrigation",
-            "installe l'arrosage",
-            "installé l'arrosage",
-            "installé l'irrigation",
-            "installé une irrigation",
-            "mise en place de l'irrigation",
-            "mise en place l'arrosage",
-            "mis en place l'irrigation"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "pollination",
-          "synonyms": [
-            "polénisation",
-            "polenise",
-            "polenisé",
-            "polénise",
-            "pollenisation",
-            "pollénisation",
-            "pollenisé",
-            "pollénisé"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "seedbed_preparing",
-          "synonyms": [
-            "preparation de semences",
-            "préparation de semences",
-            "preparation des semences",
-            "préparation des semences",
-            "preparation du lit de semence",
-            "préparation du lit de semences"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "seedling_sorting",
-          "synonyms": [
-            "triage de graines",
-            "triage de plants",
-            "trié des graines",
-            "trié des plants"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "sifting",
-          "synonyms": [
-            "tamisage",
-            "tamisé",
-            "tamiser"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "soil_working&",
-          "synonyms": []
-        },
-        {
-          "type": "synonyms",
-          "value": "sowing_with_spraying",
-          "synonyms": [
-            "semé et pulvérisé",
-            "semer et pulvériser",
-            "semis avec pluvérisation"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "standard_enclosing",
-          "synonyms": [
-            "mettre une cloture",
-            "mis une cloture",
-            "pose de cloture",
-            "pose de clôture",
-            "posé une cloture"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "steam_weeding",
-          "synonyms": [
-            "desherbage à la vapeur",
-            "désherbage à la vapeur",
-            "désherbage à vapeur",
-            "desherbage vapeur",
-            "désherbage vapeur"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "straw_bunching",
-          "synonyms": [
-            "pressage",
-            "pressé",
-            "presser"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "superficial_plowing",
-          "synonyms": [
-            "dechaumage",
-            "déchaumage",
-            "dechaume",
-            "déchaumé",
-            "déchaumer"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "swathing",
-          "synonyms": [
-            "andainage",
-            "andainé",
-            "andainer"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "topkilling",
-          "synonyms": [
-            "défanage",
-            "défané",
-            "défaner",
-            "destruction des fanes",
-            "enlevé les fanes"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "trellising&",
-          "synonyms": [
-            "palissage",
-            "palissé",
-            "palisser",
-            "pallissage",
-            "pallissé",
-            "pallisser",
-            "police et",
-            "pollissage",
-            "pollisser"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "uncompacting",
-          "synonyms": [
-            "décompactage",
-            "décompacté",
-            "décompacter"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_capsuls_dispersing",
-          "synonyms": [
-            "pose de capsule",
-            "pose de capsule de bio contrôle",
-            "posé des capsules"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_complanting",
-          "synonyms": [
-            "complantation",
-            "complanté",
-            "complanter",
-            "co-plantation",
-            "coplantation",
-            "entre-plantation",
-            "entreplantation"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_farming",
-          "synonyms": []
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_fertilizing&",
-          "synonyms": []
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_fertilizing&fertilizing",
-          "synonyms": [
-            "ferti",
-            "fertilisation",
-            "fertilisé",
-            "fertiliser"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_folding",
-          "synonyms": [
-            "pliage",
-            "plié",
-            "plier"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_frost_protecting",
-          "synonyms": [
-            "protection anti-gel",
-            "protection au gel",
-            "protégé du gel"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_grapes_removing",
-          "synonyms": [
-            "éclaircir",
-            "éclaircissage",
-            "éclaircit"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_grubbing",
-          "synonyms": [
-            "arrachage",
-            "arraché",
-            "arrachée",
-            "arrachées",
-            "arracher"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_inter_row_grinding",
-          "synonyms": [
-            "broyage entre les rangs",
-            "broyage inter rang",
-            "broyage inter-rang",
-            "broyé entre les rangs",
-            "broyé inter rang"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_inter_row_hilling",
-          "synonyms": [
-            "chaussage",
-            "chaussé",
-            "chausser",
-            "rechaussage",
-            "rechaussé",
-            "rechausser"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_inter_row_hill_removing",
-          "synonyms": [
-            "déchaussage",
-            "déchaussé",
-            "déchausser"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_inter_row_sowing",
-          "synonyms": [
-            "semé entre les rangs",
-            "semer inter rang",
-            "semi inter rang",
-            "semis entre les rangs"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_inter_row_sowing|sowing",
-          "synonyms": [
-            "semé",
-            "semis"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_layering",
-          "synonyms": [
-            "marcottage",
-            "marcotté",
-            "marcotter",
-            "superposé",
-            "superposer",
-            "superposition"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_leaves_fertilizing_with_spraying",
-          "synonyms": [
-            "fertilisation foliaire",
-            "fertilisé les feuilles",
-            "fertiliser des feuilles"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_leaves_removing",
-          "synonyms": [
-            "efeuillage",
-            "efeuillé",
-            "efeuiller",
-            "retiré des feuilles"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_lifting",
-          "synonyms": [
-            "relevage",
-            "relevé",
-            "relever"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_planting",
-          "synonyms": []
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_planting&",
-          "synonyms": [
-            "implantation de la vigne",
-            "implantation des vignes",
-            "implantation de vigne",
-            "implantation de vignoble",
-            "implantation du vignoble",
-            "implanté de la vigne",
-            "implanté des pieds",
-            "implanté les vignes",
-            "implanter de le vigne",
-            "implanter des pieds",
-            "implanter des vignes",
-            "implanter du vignoble",
-            "implanter la vigne",
-            "implanter le vignoble"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_planting|mechanical_planting",
-          "synonyms": [
-            "plantation",
-            "planté",
-            "planter"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_planting&planting",
-          "synonyms": [
-            "implantation",
-            "implanté",
-            "implanter"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_plowing|plowing",
-          "synonyms": [
-            "labour",
-            "labouré",
-            "labourer"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_pre_pruning",
-          "synonyms": [
-            "pré taillage",
-            "pré-taillage",
-            "prétaillage",
-            "pretaille",
-            "pré taille",
-            "pré-taille",
-            "prétaille",
-            "taille préliminaire"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_protection&",
-          "synonyms": []
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_protection&crop_protection",
-          "synonyms": [
-            "protection",
-            "protege",
-            "protégé",
-            "protéger"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_pruning|cutting",
-          "synonyms": [
-            "effeuillage",
-            "effeuillé",
-            "taillage",
-            "taille",
-            "taillé",
-            "tailler"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_pulling",
-          "synonyms": [
-            "enlevé des pieds",
-            "enlevé un pied",
-            "retiré des pieds",
-            "retiré un pied",
-            "retrait de pieds"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_raking|raking",
-          "synonyms": [
-            "hersage",
-            "hersé",
-            "herser"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_shearing",
-          "synonyms": [
-            "tondre",
-            "tondu",
-            "tonte"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_shoot_extracting",
-          "synonyms": [
-            "tirage",
-            "tirage des bois",
-            "tiré du bois",
-            "tirer de bois"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_shoot_grinding",
-          "synonyms": [
-            "broyage de serments",
-            "broyage des sarments",
-            "broyage des serment",
-            "broyé des sarments",
-            "broyé des serments",
-            "broyer des sarments",
-            "broyer des serments"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_sleeves_net_protecting",
-          "synonyms": [
-            "pose de filet",
-            "pose de filet de protection",
-            "pose de manchons",
-            "posé des manchons",
-            "posé un filet de protection",
-            "posé un manchon"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_soil_fertilizing|fertilizing",
-          "synonyms": [
-            "amendé",
-            "amendement",
-            "amender",
-            "épandage",
-            "épandre",
-            "épandu",
-            "ferti"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_soil_working_and_maintenance&",
-          "synonyms": []
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_soil_working_and_maintenance&soil_working",
-          "synonyms": [
-            "entretenir le sol",
-            "entretenu le sol",
-            "entretien du sol",
-            "travail du sol",
-            "travaillé le sol",
-            "travailler le sol"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_spraying_without_fertilizing|spraying",
-          "synonyms": [
-            "pulvé",
-            "pulvérisation",
-            "Pulverisations",
-            "pulvérisations",
-            "pulvérisé",
-            "pulvériser"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_stakes_replacing",
-          "synonyms": [
-            "changé des piquets",
-            "changé les piquets",
-            "changement de pics",
-            "changement de piquet",
-            "changement de piquets",
-            "changement des pics",
-            "changement des piquets",
-            "changement l'épique",
-            "changement piquet",
-            "changement piquets",
-            "changements des piquets",
-            "changé piquets",
-            "changer les pics",
-            "changer les piquet",
-            "changer les piquets"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_trellising_construction",
-          "synonyms": [
-            "construction d'un pallissage",
-            "construction du pallisage",
-            "construction pallissage",
-            "construction polissage",
-            "constructoin d'un pollissage",
-            "construit un pollissage",
-            "création d'un pas lissage",
-            "création du pallissage",
-            "création du pas lissage",
-            "création pallissage",
-            "création pollissage",
-            "créé pallissage",
-            "créé pas lissage",
-            "créé pollissage",
-            "dréé un pas lissage"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_trellising_destruction",
-          "synonyms": [
-            "cassé le pallissage",
-            "cassé le pas lissage",
-            "cassé le pollissage",
-            "destruction de pallissage",
-            "déstruction de pas lissage",
-            "déstruction d'un pollissage",
-            "destruction du pallissage",
-            "déstruction pallissage",
-            "déstruiction pollissage",
-            "détruit le pallissage",
-            "détruit le pas lissage",
-            "détruit le pollissage",
-            "détruit pallissage",
-            "détruit un pollissage",
-            "enlevé le pallissage",
-            "enlevé le pas lissage",
-            "enlevé le pollissage",
-            "enlever le pallissage",
-            "enlever le pollissage",
-            "enlevé un pollissage",
-            "pallissage détruit",
-            "pollissage détruit"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_trellising_maintenance",
-          "synonyms": [
-            "car à son âge",
-            "carassonage",
-            "carassoné",
-            "carassoner",
-            "cartonnage",
-            "écaillage",
-            "écaillé",
-            "écailler",
-            "gare à son age",
-            "secaillage",
-            "sécaillage",
-            "sécaillé",
-            "sécailler"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_trimming",
-          "synonyms": [
-            "écimage",
-            "écimé",
-            "écimer",
-            "rognage",
-            "rogné",
-            "rogner"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_trunk_cleaning_debudding",
-          "synonyms": [
-            "ébourgeonnage",
-            "ébourgeonné",
-            "ébourgeonner",
-            "épamprage",
-            "épampré",
-            "épamprer"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_weeding",
-          "synonyms": [
-            "desherbage",
-            "desherbé",
-            "desherber"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_wire_lifting_dropping",
-          "synonyms": [
-            "enlevé les fils de levage",
-            "enlever fils de levage",
-            "fil de levage",
-            "fils de levage",
-            "fils de pallissage",
-            "tombée de fils",
-            "tombée des fils",
-            "tombée des fils de levage",
-            "tombée deux fils",
-            "tomber les fils"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vine_wire_tension",
-          "synonyms": [
-            "attention des fils",
-            "tendu des fils",
-            "tendu les fils",
-            "tension",
-            "tension des fils"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vineyard_maintenance&",
-          "synonyms": [
-            "entretenir la vigne",
-            "entretenir les vignes",
-            "entretenir le vignoble",
-            "entretenu la vigne",
-            "entretenu les vignes",
-            "entretenu le vignoble",
-            "entretien de la vigne",
-            "entretien des vignes",
-            "entretien du vignoble",
-            "entretient de la vigne"
-          ]
-        },
-        {
-          "type": "synonyms",
-          "value": "vineyard_maintenance&vine_soil_working_and_maintenance",
-          "synonyms": [
-            "entretenir",
-            "entretenu",
-            "entretien"
           ]
         }
       ]
@@ -3923,6 +2564,27 @@
       "values": [
         {
           "type": "synonyms",
+          "value": "AccountingAccount",
+          "synonyms": [
+            "compte comptable",
+            "compte de comptabilité",
+            "comptes comptables"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "AccountPlan",
+          "synonyms": [
+            "plan de compta",
+            "plan de compte",
+            "plan de comptes",
+            "plan des comptes",
+            "plans de compte",
+            "plans des compte"
+          ]
+        },
+        {
+          "type": "synonyms",
           "value": "ActiveEquipment",
           "synonyms": [
             "equipement",
@@ -4111,6 +2773,22 @@
         },
         {
           "type": "synonyms",
+          "value": "Lock",
+          "synonyms": [
+            "vérouillage",
+            "verouille",
+            "vérouille",
+            "vérouillé",
+            "vérouiller",
+            "verrouillage",
+            "vérrouille",
+            "verrouiller",
+            "vérrouiller ",
+            "vérrouye"
+          ]
+        },
+        {
+          "type": "synonyms",
           "value": "Matter",
           "synonyms": [
             "matière",
@@ -4238,6 +2916,16 @@
           "synonyms": [
             "déclaration de tva",
             "tva"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "TaxRate",
+          "synonyms": [
+            "taux de taxe",
+            "taux de tva",
+            "taux tva",
+            "taxe"
           ]
         },
         {
@@ -4404,9 +3092,22 @@
   },
   "webhooks": [
     {
-      "url": "https://demo.f18a4880.ekylibre-dev.farm/dukewatson",
+      "url": "https://stripe-stag.ekylibre-dev.farm/dukewatson",
       "name": "main_webhook",
-      "headers": []
+      "headers": [
+        {
+          "name": "X-Ekylibre-email",
+          "value": "$user_email"
+        },
+        {
+          "name": "X-Ekylibre-Token",
+          "value": "$user_token"
+        },
+        {
+          "name": "X-Ekylibre-Redirect",
+          "value": "$user_url"
+        }
+      ]
     }
   ],
   "dialog_nodes": [
@@ -4448,6 +3149,17 @@
     {
       "type": "event_handler",
       "output": {},
+      "parent": "slot_2_1625237994114",
+      "context": {
+        "number": "@sys-number"
+      },
+      "conditions": "@sys-number",
+      "event_name": "input",
+      "dialog_node": "handler_10_1625237994132"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
       "parent": "slot_6_1615801169688",
       "event_name": "focus",
       "dialog_node": "handler_1_1615801169705",
@@ -4464,21 +3176,21 @@
     {
       "type": "event_handler",
       "output": {},
-      "parent": "slot_4_1592573805575",
-      "context": {
-        "Procedure": "@Procedure"
-      },
-      "conditions": "@Procedure",
-      "event_name": "input",
-      "dialog_node": "handler_2_1592573805584"
-    },
-    {
-      "type": "event_handler",
-      "output": {},
       "parent": "slot_1_1611939982368",
       "event_name": "focus",
       "dialog_node": "handler_2_1611939982403",
       "previous_sibling": "handler_10_1611939982403"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_4_1615219201073",
+      "context": {
+        "FixedAssetState": "@FixedAssetState"
+      },
+      "conditions": "@FixedAssetState",
+      "event_name": "input",
+      "dialog_node": "handler_2_1615219201095"
     },
     {
       "type": "event_handler",
@@ -4510,6 +3222,17 @@
     {
       "type": "event_handler",
       "output": {},
+      "parent": "slot_6_1625237036434",
+      "context": {
+        "number": "@sys-number"
+      },
+      "conditions": "@sys-number",
+      "event_name": "input",
+      "dialog_node": "handler_2_1625237036450"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
       "parent": "slot_2_1601576465505",
       "context": {
         "quantity": "@sys-number"
@@ -4528,6 +3251,34 @@
       "conditions": "@sys-number",
       "event_name": "input",
       "dialog_node": "handler_3_1615800282804"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_3_1625218029092",
+      "event_name": "focus",
+      "dialog_node": "handler_3_1625218029112",
+      "previous_sibling": "handler_6_1625218029112"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Je n'ai pas compris le nombre, merci de me le réindiquer"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "slot_2_1625237994114",
+      "event_name": "focus",
+      "dialog_node": "handler_3_1625237994132",
+      "previous_sibling": "handler_10_1625237994132"
     },
     {
       "type": "event_handler",
@@ -4569,16 +3320,11 @@
     },
     {
       "type": "event_handler",
-      "output": {
-        "generic": []
-      },
-      "parent": "slot_4_1592573805575",
-      "next_step": {
-        "behavior": "skip_all_slots"
-      },
-      "event_name": "nomatch",
-      "dialog_node": "handler_5_1594383078298",
-      "previous_sibling": "handler_6_1592573805584"
+      "output": {},
+      "parent": "slot_6_1625237036434",
+      "event_name": "focus",
+      "dialog_node": "handler_4_1625237036450",
+      "previous_sibling": "handler_2_1625237036450"
     },
     {
       "type": "event_handler",
@@ -4609,27 +3355,6 @@
       "conditions": "@Modify",
       "event_name": "input",
       "dialog_node": "handler_5_1615801169705"
-    },
-    {
-      "type": "event_handler",
-      "output": {
-        "generic": []
-      },
-      "parent": "slot_4_1592573805575",
-      "context": {
-        "initial_input": "<? input.text ?>"
-      },
-      "event_name": "focus",
-      "dialog_node": "handler_6_1592573805584",
-      "previous_sibling": "handler_2_1592573805584"
-    },
-    {
-      "type": "event_handler",
-      "output": {},
-      "parent": "slot_3_1605276096087",
-      "event_name": "focus",
-      "dialog_node": "handler_6_1605276096165",
-      "previous_sibling": "handler_8_1605276096165"
     },
     {
       "type": "event_handler",
@@ -4664,13 +3389,21 @@
     {
       "type": "event_handler",
       "output": {},
-      "parent": "slot_7_1615401825030",
+      "parent": "slot_3_1625218029092",
       "context": {
-        "new_procedure": "@Procedure"
+        "campaign_id": "<? input.text  ?>"
       },
-      "conditions": "@Procedure",
+      "conditions": "<? input.text  ?>",
       "event_name": "input",
-      "dialog_node": "handler_7_1615401825046"
+      "dialog_node": "handler_6_1625218029112"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_3_1614761724977",
+      "event_name": "focus",
+      "dialog_node": "handler_7_1614761725001",
+      "previous_sibling": "handler_9_1614761725001"
     },
     {
       "type": "event_handler",
@@ -4694,17 +3427,6 @@
     {
       "type": "event_handler",
       "output": {},
-      "parent": "slot_3_1605276096087",
-      "context": {
-        "number": "@sys-number"
-      },
-      "conditions": "@sys-number",
-      "event_name": "input",
-      "dialog_node": "handler_8_1605276096165"
-    },
-    {
-      "type": "event_handler",
-      "output": {},
       "parent": "slot_6_1605539022902",
       "event_name": "focus",
       "dialog_node": "handler_9_1605539022904",
@@ -4713,10 +3435,21 @@
     {
       "type": "event_handler",
       "output": {},
-      "parent": "slot_7_1615401825030",
+      "parent": "slot_3_1614761724977",
+      "context": {
+        "tax_state": "@TaxDeclarationState"
+      },
+      "conditions": "@TaxDeclarationState",
+      "event_name": "input",
+      "dialog_node": "handler_9_1614761725001"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_4_1615219201073",
       "event_name": "focus",
-      "dialog_node": "handler_9_1615401825046",
-      "previous_sibling": "handler_7_1615401825046"
+      "dialog_node": "handler_9_1615219201095",
+      "previous_sibling": "handler_2_1615219201095"
     },
     {
       "type": "event_handler",
@@ -4728,6 +3461,26 @@
       "conditions": "@sys-number",
       "event_name": "input",
       "dialog_node": "handler_9_1615800239814"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Je n'ai toujours pas compris le nombre"
+              }
+            ],
+            "response_type": "text"
+          }
+        ]
+      },
+      "parent": "slot_2_1625237994114",
+      "conditions": "true",
+      "event_name": "nomatch",
+      "dialog_node": "handler_9_1625238223164",
+      "previous_sibling": "handler_3_1625237994132"
     },
     {
       "type": "standard",
@@ -4753,12 +3506,11 @@
           "parameters": {
             "main_param": {
               "tenant": "$tenant",
-              "user_id": "<? context.metadata.user_id ?>",
-              "procedure": "$NEW_PROCEDURE",
-              "hook_skill": "Interventions",
-              "user_input": "$webhook_result_3.parsed.user_input",
-              "hook_request": "parse_sentence",
-              "procedure_word": "~NoProcedureWord~"
+              "handler": "Interventions::ParseSentence",
+              "options": {
+                "procedure": "$NEW_PROCEDURE"
+              },
+              "user_input": "$webhook_result_3.parsed"
             }
           },
           "result_variable": "webhook_result_3"
@@ -4805,14 +3557,15 @@
           "parameters": {
             "main_param": {
               "tenant": "$tenant",
-              "printer": "$printer",
+              "handler": "Exports::BalanceSheet",
+              "options": {
+                "printer": "$printer",
+                "specific": "<? input.text  ?>",
+                "template": "$template_nature"
+              },
               "user_id": "<? context.metadata.user_id ?>",
-              "hook_skill": "Exports",
               "session_id": "<? $system.session_id ?>",
-              "user_input": " <? input.text  ?>",
-              "hook_request": "export_balance_sheet",
-              "financial_year": "<? input.text ?>",
-              "template_nature": "$template_nature"
+              "user_input": " <? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_8"
@@ -4828,11 +3581,42 @@
       "disambiguation_opt_out": true
     },
     {
+      "type": "frame",
+      "title": "Tax Declarations",
+      "parent": "node_10_1605181561792",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "tenant": "$tenant",
+              "handler": "Redirections::ToTaxDeclaration",
+              "options": {
+                "specific": "$tax_state"
+              },
+              "user_input": "<? input.text  ?>"
+            }
+          },
+          "result_variable": "webhook_result_12"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "@Unspecific:TaxDeclaration",
+      "user_label": "Consulter mes déclarations de tva",
+      "dialog_node": "node_10_1614761600209",
+      "previous_sibling": "node_3_1615218997511"
+    },
+    {
       "type": "folder",
       "title": "Information",
       "conditions": "#Help",
       "dialog_node": "node_10_1615389929653",
-      "previous_sibling": "Bienvenue"
+      "previous_sibling": "node_4_1625162317230"
     },
     {
       "type": "standard",
@@ -4891,6 +3675,20 @@
     },
     {
       "type": "standard",
+      "title": "Ask sheltered gardening activities",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_3_1625223120538",
+      "context": {
+        "tmp": "<? output.generic.addAll($webhook_result_idea.options) ?>"
+      },
+      "conditions": "true",
+      "dialog_node": "node_10_1625224582133",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
       "title": "Modify Temporality",
       "output": {},
       "parent": "node_4_1599664519103",
@@ -4902,9 +3700,8 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "hook_skill": "Interventions",
-              "user_input": "<? input.text ?>",
-              "hook_request": "modify_temporality"
+              "handler": "Interventions::ModifyTemporality",
+              "user_input": "<? input.text ?>"
             }
           },
           "result_variable": "webhook_result_3"
@@ -4959,12 +3756,12 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "amb_key": "$ambiguity_key",
-              "amb_type": "$ambiguity_type",
-              "hook_skill": "Interventions",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "parse_disambiguation",
-              "current_asking": "$redirect"
+              "handler": "Interventions::ParseDisambiguation",
+              "options": {
+                "ambiguity_key": "$ambiguity_key",
+                "ambiguity_type": "$ambiguity_type"
+              },
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_3"
@@ -4993,11 +3790,12 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "optional": "$optional",
-              "quantity": "$quantity",
-              "hook_skill": "Interventions",
+              "handler": "Interventions::ParseInputQuantity",
+              "options": {
+                "index": "$options",
+                "quantity": "$quantity"
+              },
               "user_input": "<? input.text  ?>",
-              "hook_request": "parse_input_quantity",
               "current_asking": "$redirect"
             }
           },
@@ -5052,11 +3850,11 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "user_id": "<? context.metadata.user_id ?>",
-              "specific": "input",
-              "hook_skill": "Interventions",
-              "user_input": "<? input.text ?>",
-              "hook_request": "modify_specific"
+              "handler": "Interventions::ModifySpecific",
+              "options": {
+                "specific": "input"
+              },
+              "user_input": "<? input.text ?>"
             }
           },
           "result_variable": "webhook_result_3"
@@ -5085,7 +3883,7 @@
       },
       "parent": "node_6_1615462063886",
       "context": {
-        "tmp": "<? output.generic.addAll($webhook_result_3.optional) ?>"
+        "tmp": "<? output.generic.addAll($webhook_result_3.options) ?>"
       },
       "metadata": {
         "_customization": {
@@ -5114,36 +3912,6 @@
     },
     {
       "type": "standard",
-      "title": "Which Targets Webhook callout",
-      "parent": "node_8_1610101823291",
-      "actions": [
-        {
-          "name": "main_webhook",
-          "type": "webhook",
-          "parameters": {
-            "main_param": {
-              "parsed": "$parsed",
-              "tenant": "$tenant",
-              "optional": "$optional",
-              "hook_skill": "Interventions",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "parse_which_target",
-              "current_asking": "$redirect"
-            }
-          },
-          "result_variable": "webhook_result_3"
-        }
-      ],
-      "metadata": {
-        "_customization": {
-          "mcr": true
-        }
-      },
-      "conditions": "true",
-      "dialog_node": "node_1_1610101867472"
-    },
-    {
-      "type": "standard",
       "title": "Get all Inputs",
       "output": {},
       "parent": "node_7_1612459314615",
@@ -5153,11 +3921,12 @@
           "type": "webhook",
           "parameters": {
             "main_param": {
-              "type": "input",
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "hook_skill": "Interventions",
-              "hook_request": "get_complement_items"
+              "handler": "Interventions::GetComplementItems",
+              "options": {
+                "specific": "input"
+              }
             }
           },
           "result_variable": "webhook_result_3"
@@ -5212,13 +3981,14 @@
           "parameters": {
             "main_param": {
               "tenant": "$tenant",
-              "printer": "$printer",
+              "handler": "Exports::BalanceSheet",
+              "options": {
+                "printer": "$printer",
+                "template": "$template_nature"
+              },
               "user_id": "<? context.metadata.user_id ?>",
-              "hook_skill": "Exports",
               "session_id": "<? $system.session_id ?>",
-              "user_input": " <? input.text  ?>",
-              "hook_request": "export_balance_sheet",
-              "template_nature": "$template_nature"
+              "user_input": " <? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_8"
@@ -5244,15 +4014,16 @@
           "type": "webhook",
           "parameters": {
             "main_param": {
-              "value": "$press_quantity",
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "optional": "$optional",
-              "parameter": "press",
-              "hook_skill": "HarvestReceptions",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "parse_destination_quantity",
-              "current_asking": "$redirect"
+              "handler": "HarvestReceptions::ParseDestinationQuantity",
+              "options": {
+                "index": "$options",
+                "previous": "$redirect",
+                "quantity": "$destination_quantity",
+                "specific": "press"
+              },
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_4"
@@ -5279,13 +4050,12 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "amb_key": "$ambiguity_key",
-              "amb_type": "$ambiguity_type",
-              "optional": "$optional",
-              "hook_skill": "HarvestReceptions",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "parse_disambiguation",
-              "current_asking": "$redirect"
+              "handler": "HarvestReceptions::ParseDisambiguation",
+              "options": {
+                "ambiguity_key": "$ambiguity_key",
+                "ambiguity_type": "$ambiguity_type"
+              },
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_4"
@@ -5311,8 +4081,7 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "hook_skill": "HarvestReceptions",
-              "hook_request": "save_harvest_reception"
+              "handler": "HarvestReceptions::SaveHarvestReception"
             }
           },
           "result_variable": "webhook_result_5"
@@ -5339,9 +4108,11 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "hook_skill": "HarvestReceptions",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "add_pressing"
+              "handler": "HarvestReceptions::AddPressing",
+              "options": {
+                "previous": "$redirect"
+              },
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_4"
@@ -5358,6 +4129,76 @@
     },
     {
       "type": "standard",
+      "title": "A1_08",
+      "output": {
+        "generic": [
+          {
+            "title": "Les questions qui suivent concernent vos activités de maraîchage<br>Est-ce que la diversification des familles botaniques est présente toute l’année ?<div class='duke-information'> <i style='color: #3340A4;' class='icon icon-help-outline'></i>  Par exemple, la carotte appartient à la famille botanique des Apiacées et le chou appartient à celle des Brassicacées</div>",
+            "options": [
+              {
+                "label": "Oui",
+                "value": {
+                  "input": {
+                    "text": "SaveYes"
+                  }
+                }
+              },
+              {
+                "label": "Non",
+                "value": {
+                  "input": {
+                    "text": "SaveNo"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_6_1625162310689",
+      "dialog_node": "node_1_1625222174712",
+      "previous_sibling": "node_3_1625222177916"
+    },
+    {
+      "type": "standard",
+      "title": "A2_02",
+      "output": {
+        "generic": [
+          {
+            "title": "Prenez-vous en compte des critères de tolérance/résistance/rusticité à des stress biotiques ou abiotiques dans vos choix variétaux ou de porte-greffes ?<div class='duke-information'> <i style='color: #3340A4;' class='icon icon-help-outline'></i>  Les stress biotiques correspondent aux maladies, ravageurs, etc, et les stress abiotiques correspondent à la sécheresse, carence en minéraux, vent, etc.</div>",
+            "options": [
+              {
+                "label": "Oui",
+                "value": {
+                  "input": {
+                    "text": "SaveYes"
+                  }
+                }
+              },
+              {
+                "label": "Non",
+                "value": {
+                  "input": {
+                    "text": "SaveNo"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_7_1628262879087",
+      "context": {
+        "boolean": false
+      },
+      "conditions": "true",
+      "dialog_node": "node_1_1628265147208",
+      "previous_sibling": "node_9_1628263151550"
+    },
+    {
+      "type": "standard",
       "title": "Add Analysis",
       "output": {},
       "parent": "node_8_1615800693158",
@@ -5369,9 +4210,8 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "hook_skill": "HarvestReceptions",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "add_analysis"
+              "handler": "HarvestReceptions::AddAnalysis",
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_4"
@@ -5389,6 +4229,24 @@
     },
     {
       "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_7_1628265491747",
+      "context": {
+        "boolean": false
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_9_1628265491749"
+      },
+      "conditions": "true",
+      "dialog_node": "node_12_1628265491749",
+      "previous_sibling": "node_8_1628265491749"
+    },
+    {
+      "type": "standard",
       "title": "Get all Workers",
       "output": {},
       "parent": "node_7_1612459314615",
@@ -5398,11 +4256,12 @@
           "type": "webhook",
           "parameters": {
             "main_param": {
-              "type": "doer",
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "hook_skill": "Interventions",
-              "hook_request": "get_complement_items"
+              "handler": "Interventions::GetComplementItems",
+              "options": {
+                "specific": "doer"
+              }
             }
           },
           "result_variable": "webhook_result_3"
@@ -5420,6 +4279,43 @@
     },
     {
       "type": "standard",
+      "title": "A2_07",
+      "output": {
+        "generic": [
+          {
+            "title": "Pour cette espèce principale, cultivez-vous une variété population ?     <div class='duke-information'> <i style='color: #3340A4;' class='icon icon-help-outline'></i>  Les variétés population sont synonyme de variétés paysannes, locales ou anciennes. Elles existent depuis le début de l’agriculture. Le re-semis de semences de fermes n’est pas comptabilisé comme une variété population.</div>",
+            "options": [
+              {
+                "label": "Oui",
+                "value": {
+                  "input": {
+                    "text": "SaveYes"
+                  }
+                }
+              },
+              {
+                "label": "Non",
+                "value": {
+                  "input": {
+                    "text": "SaveNo"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_7_1628262879087",
+      "context": {
+        "boolean": false
+      },
+      "conditions": "true",
+      "dialog_node": "node_13_1628265543667",
+      "previous_sibling": "node_7_1628265491747"
+    },
+    {
+      "type": "standard",
       "title": "Add worker",
       "output": {},
       "parent": "node_13_1612459497880",
@@ -5431,11 +4327,11 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "user_id": "<? context.metadata.user_id ?>",
-              "specific": "doer",
-              "hook_skill": "Interventions",
-              "user_input": "<? input.text ?>",
-              "hook_request": "complement_specific"
+              "handler": "Interventions::ComplementSpecific",
+              "options": {
+                "specific": "doer"
+              },
+              "user_input": "<? input.text ?>"
             }
           },
           "result_variable": "webhook_result_3"
@@ -5457,6 +4353,21 @@
     },
     {
       "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_13_1628265543667",
+      "context": {
+        "boolean": true
+      },
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "@Save:SaveYes",
+      "dialog_node": "node_14_1628265543669"
+    },
+    {
+      "type": "standard",
       "title": "Add other",
       "output": {},
       "parent": "node_8_1615800693158",
@@ -5468,9 +4379,8 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "hook_skill": "HarvestReceptions",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "add_other"
+              "handler": "HarvestReceptions::AddOther",
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_4"
@@ -5488,6 +4398,42 @@
     },
     {
       "type": "standard",
+      "title": "Send response",
+      "output": {},
+      "parent": "node_14_1628265543669",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A2::PopulationVariety",
+              "options": {
+                "specific": "A2"
+              },
+              "user_input": "$boolean"
+            }
+          },
+          "result_variable": "webhook_result_26"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1628262879087"
+      },
+      "conditions": "true",
+      "dialog_node": "node_15_1628265543669"
+    },
+    {
+      "type": "standard",
       "title": "Modify Destination",
       "output": {},
       "parent": "node_4_1615801149112",
@@ -5499,10 +4445,8 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "parameter": "temperature",
-              "hook_skill": "HarvestReceptions",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "parse_destination"
+              "handler": "HarvestReceptions::ParseDestination",
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_4"
@@ -5520,6 +4464,61 @@
     },
     {
       "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_13_1628265543667",
+      "context": {
+        "boolean": false
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_15_1628265543669"
+      },
+      "conditions": "true",
+      "dialog_node": "node_18_1628265543669",
+      "previous_sibling": "node_14_1628265543669"
+    },
+    {
+      "type": "standard",
+      "title": "A2_08",
+      "output": {
+        "generic": [
+          {
+            "title": "$webhook_result_idea.sentence",
+            "options": [
+              {
+                "label": "Oui",
+                "value": {
+                  "input": {
+                    "text": "SaveYes"
+                  }
+                }
+              },
+              {
+                "label": "Non",
+                "value": {
+                  "input": {
+                    "text": "SaveNo"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_7_1628262879087",
+      "context": {
+        "boolean": false
+      },
+      "conditions": "true",
+      "dialog_node": "node_19_1628265601630",
+      "previous_sibling": "node_13_1628265543667"
+    },
+    {
+      "type": "standard",
       "title": "Add anything",
       "output": {},
       "parent": "node_7_1612459314615",
@@ -5531,11 +4530,9 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "user_id": "<? context.metadata.user_id ?>",
+              "handler": "Interventions::ComplementAnything",
               "specific": "all",
-              "hook_skill": "Interventions",
-              "user_input": "<? input.text ?>",
-              "hook_request": "complement_anything"
+              "user_input": "<? input.text ?>"
             }
           },
           "result_variable": "webhook_result_3"
@@ -5558,6 +4555,21 @@
     },
     {
       "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_19_1628265601630",
+      "context": {
+        "boolean": true
+      },
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "@Save:SaveYes",
+      "dialog_node": "node_20_1628265601635"
+    },
+    {
+      "type": "standard",
       "title": "Modify Date",
       "output": {},
       "parent": "node_4_1615801149112",
@@ -5569,9 +4581,8 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "hook_skill": "HarvestReceptions",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "modify_date"
+              "handler": "HarvestReceptions::ModifyDate",
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_4"
@@ -5589,6 +4600,42 @@
     },
     {
       "type": "standard",
+      "title": "Send response",
+      "output": {},
+      "parent": "node_20_1628265601635",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A2::IntraParcelArboriculturalMix",
+              "options": {
+                "specific": "A2"
+              },
+              "user_input": "$boolean"
+            }
+          },
+          "result_variable": "webhook_result_26"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1628262879087"
+      },
+      "conditions": "true",
+      "dialog_node": "node_21_1628265601635"
+    },
+    {
+      "type": "standard",
       "title": "Modify Culture",
       "output": {},
       "parent": "node_4_1599664519103",
@@ -5600,10 +4647,11 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "specific": "targets",
-              "hook_skill": "Interventions",
-              "user_input": "<? input.text ?>",
-              "hook_request": "modify_specific"
+              "handler": "Interventions::ModifySpecific",
+              "options": {
+                "specific": "targets"
+              },
+              "user_input": "<? input.text ?>"
             }
           },
           "result_variable": "webhook_result_3"
@@ -5658,11 +4706,11 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "user_id": "<? context.metadata.user_id ?>",
-              "specific": "input",
-              "hook_skill": "Interventions",
-              "user_input": "<? input.text ?>",
-              "hook_request": "complement_specific"
+              "handler": "Interventions::ComplementSpecific",
+              "options": {
+                "specific": "input"
+              },
+              "user_input": "<? input.text ?>"
             }
           },
           "result_variable": "webhook_result_3"
@@ -5695,10 +4743,8 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "user_id": "<? context.metadata.user_id ?>",
-              "hook_skill": "Interventions",
-              "user_input": "<? input.text ?>",
-              "hook_request": "complement_working_periods"
+              "handler": "Interventions::ComplementWorkingPeriods",
+              "user_input": "<? input.text ?>"
             }
           },
           "result_variable": "webhook_result_3"
@@ -5743,11 +4789,8 @@
           "parameters": {
             "main_param": {
               "tenant": "$tenant",
-              "user_id": "<? context.metadata.user_id ?>",
-              "hook_skill": "HarvestReceptions",
-              "session_id": "<? $system.session_id ?>",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "parse_sentence"
+              "handler": "HarvestReceptions::ParseSentence",
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_4"
@@ -5763,7 +4806,7 @@
         "selector": "condition",
         "dialog_node": "node_8_1615798314246"
       },
-      "conditions": "#Harvest_Reception",
+      "conditions": "#Harvest_Reception && $user_plan == 'ekyviti'",
       "user_label": "Réception de vendanges",
       "dialog_node": "node_2_1615798232509",
       "previous_sibling": "node_9_1592573781560"
@@ -5780,12 +4823,11 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "optional": "$optional",
-              "parameter": "quantity",
-              "hook_skill": "HarvestReceptions",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "parse_destination",
-              "current_asking": "$redirect"
+              "handler": "HarvestReceptions::ParseDestination",
+              "options": {
+                "previous": "$redirect"
+              },
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_4"
@@ -5811,15 +4853,16 @@
           "type": "webhook",
           "parameters": {
             "main_param": {
-              "value": "$destination_quantity",
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "optional": "$optional",
-              "parameter": "destination",
-              "hook_skill": "HarvestReceptions",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "parse_destination_quantity",
-              "current_asking": "$redirect"
+              "handler": "HarvestReceptions::ParseDestinationQuantity",
+              "options": {
+                "index": "$options",
+                "previous": "$redirect",
+                "quantity": "$destination_quantity",
+                "specific": "destination"
+              },
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_4"
@@ -5851,6 +4894,177 @@
     },
     {
       "type": "standard",
+      "title": "Recover Idea campaign",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_4_1625162317230",
+      "context": {
+        "diagnostic_id": "<? input.text  ?>"
+      },
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "true",
+      "dialog_node": "node_2_1625219388792",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "A1_01",
+      "output": {
+        "generic": [
+          {
+            "title": "La question qui suit concerne vos activités de maraîchage.  Quel type de maraîchage faites-vous?=multiple_choices",
+            "options": [
+              {
+                "label": "Du maraîchage sous serre, tunnel de plein champ ou sous abri",
+                "value": {
+                  "input": {
+                    "text": "sheltered"
+                  }
+                }
+              },
+              {
+                "label": "Des productions industrielles de légumes de plein champ",
+                "value": {
+                  "input": {
+                    "text": "industrial"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_6_1625162310689",
+      "conditions": "true",
+      "dialog_node": "node_2_1625222090155",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "A1_03",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "La question qui suit concerne vos activités de cultures productives annuelles, pluriannuelles, industrielles et pérennes (hors prairies permanentes).<br><br>\n\nCombien d’espèces productives cultivez-vous dans chaque association culturale (y compris prairies temporaires et agroforesterie) ?\n<div class='duke-information'> <i style='color: #3340A4;' class='icon icon-help-outline'></i>  Par exemple, si vous avez une première association mélangeant la féverole et la luzerne ainsi qu’une seconde association mélangeant la féverole et le maïs, vous cultivez au total 4 espèces en association. Si vous n'avez que des cultures en pur, saisissez 0.</div>"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_6_1625162310689",
+      "dialog_node": "node_2_1625222176339",
+      "previous_sibling": "node_1_1625222174712"
+    },
+    {
+      "type": "standard",
+      "title": "Idea Exit",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Toutes les informations sont enregistrées pour cet indicateur  redirect=/backend/idea_diagnostics/$diagnostic_id"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_4_1625162317230",
+      "conditions": "true",
+      "dialog_node": "node_2_1625224532915",
+      "previous_sibling": "node_2_1625219388792",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "Send Diversity",
+      "parent": "node_3_1625237611824",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A1::FamilyDiversity",
+              "options": {
+                "specific": "$value"
+              }
+            }
+          },
+          "result_variable": "webhook_result_24"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "true",
+      "dialog_node": "node_2_1625237648931"
+    },
+    {
+      "type": "frame",
+      "title": "Send response",
+      "parent": "node_2_1625222176339",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A1::PlantAssociations",
+              "options": {
+                "number": "$number"
+              }
+            }
+          },
+          "result_variable": "webhook_result_25"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_6_1625162310689"
+      },
+      "conditions": "true",
+      "dialog_node": "node_2_1625237974169"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_1_1628265147208",
+      "context": {
+        "boolean": true
+      },
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "@Save:SaveYes",
+      "dialog_node": "node_2_1628265147210"
+    },
+    {
+      "type": "standard",
       "title": "Modify Quantity/TAV",
       "output": {},
       "parent": "node_4_1615801149112",
@@ -5862,9 +5076,8 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "hook_skill": "HarvestReceptions",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "modify_quantity_tav"
+              "handler": "HarvestReceptions::ModifyQuantityTav",
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_4"
@@ -5881,6 +5094,629 @@
       "disambiguation_opt_out": true
     },
     {
+      "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_19_1628265601630",
+      "context": {
+        "boolean": false
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_21_1628265601635"
+      },
+      "conditions": "true",
+      "dialog_node": "node_24_1628265601635",
+      "previous_sibling": "node_20_1628265601635"
+    },
+    {
+      "type": "standard",
+      "title": "A2_13",
+      "output": {
+        "generic": [
+          {
+            "title": "Les questions qui suivent concernent vos activités viticoles  Pratiquez-vous l’encépagement polyclonal ?",
+            "options": [
+              {
+                "label": "Oui",
+                "value": {
+                  "input": {
+                    "text": "SaveYes"
+                  }
+                }
+              },
+              {
+                "label": "Non",
+                "value": {
+                  "input": {
+                    "text": "SaveNo"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_7_1628262879087",
+      "context": {
+        "boolean": false
+      },
+      "conditions": "true",
+      "dialog_node": "node_25_1628265691462",
+      "previous_sibling": "node_19_1628265601630"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_25_1628265691462",
+      "context": {
+        "boolean": true
+      },
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "@Save:SaveYes",
+      "dialog_node": "node_26_1628265691465"
+    },
+    {
+      "type": "standard",
+      "title": "Send response",
+      "output": {},
+      "parent": "node_26_1628265691465",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A2::PolyclonalVineyard",
+              "options": {
+                "specific": "A2"
+              },
+              "user_input": "$boolean"
+            }
+          },
+          "result_variable": "webhook_result_26"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1628262879087"
+      },
+      "conditions": "true",
+      "dialog_node": "node_27_1628265691465"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_25_1628265691462",
+      "context": {
+        "boolean": false
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_27_1628265691465"
+      },
+      "conditions": "true",
+      "dialog_node": "node_30_1628265691465",
+      "previous_sibling": "node_26_1628265691465"
+    },
+    {
+      "type": "standard",
+      "title": "A2_14",
+      "output": {
+        "generic": [
+          {
+            "title": "Cultivez-vous un cépage très peu représenté (< 5 %) dans votre zone d'appellation ?",
+            "options": [
+              {
+                "label": "Oui",
+                "value": {
+                  "input": {
+                    "text": "SaveYes"
+                  }
+                }
+              },
+              {
+                "label": "Non",
+                "value": {
+                  "input": {
+                    "text": "SaveNo"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_7_1628262879087",
+      "context": {
+        "boolean": false
+      },
+      "conditions": "true",
+      "dialog_node": "node_31_1628265769396",
+      "previous_sibling": "node_25_1628265691462"
+    },
+    {
+      "type": "frame",
+      "title": "To Fixed Assets",
+      "parent": "node_10_1605181561792",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "tenant": "$tenant",
+              "handler": "Redirections::ToFixedAsset",
+              "options": {
+                "specific": "$FixedAssetState"
+              },
+              "user_input": " <? input.text  ?>"
+            }
+          },
+          "result_variable": "webhook_result_14"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "@Unspecific:FixedAsset",
+      "user_label": "Consulter mes immobilisations",
+      "dialog_node": "node_3_1615218997511",
+      "previous_sibling": "node_7_1614352618025"
+    },
+    {
+      "type": "standard",
+      "title": "Accounting Fog",
+      "parent": "node_9_1615385623867",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "tenant": "$tenant",
+              "handler": "Redirections::ToAccountingFog",
+              "user_input": "<? input.text  ?>"
+            }
+          },
+          "result_variable": "webhook_result_19"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#AccountingFog",
+      "dialog_node": "node_3_1616166282095",
+      "previous_sibling": "node_5_1614707065969"
+    },
+    {
+      "type": "standard",
+      "title": "A1_10",
+      "output": {
+        "generic": [
+          {
+            "title": "$webhook_result_idea.sentence",
+            "options": [
+              {
+                "label": "Oui",
+                "value": {
+                  "input": {
+                    "text": "SaveYes"
+                  }
+                }
+              },
+              {
+                "label": "Non",
+                "value": {
+                  "input": {
+                    "text": "SaveNo"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_6_1625162310689",
+      "conditions": "true",
+      "dialog_node": "node_3_1625222177916",
+      "previous_sibling": "node_2_1625222090155"
+    },
+    {
+      "type": "standard",
+      "title": "Idea Error",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Malheureusement cela n'a pas abouti"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_4_1625162317230",
+      "conditions": "true",
+      "dialog_node": "node_3_1625222249997",
+      "previous_sibling": "node_2_1625224532915",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "Send Gardening Type",
+      "parent": "node_2_1625222090155",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A1::GardeningType",
+              "options": {
+                "specific": "A1"
+              },
+              "user_input": "<? input.text  ?>"
+            }
+          },
+          "result_variable": "webhook_result_idea"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "true",
+      "dialog_node": "node_3_1625223120538",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "Send Gardening Types",
+      "parent": "node_10_1625224582133",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A1::ShelteredGardening",
+              "options": {
+                "specific": "A1"
+              },
+              "user_input": "<? input.text  ?>"
+            }
+          },
+          "result_variable": "webhook_result_idea"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "true",
+      "dialog_node": "node_3_1625226030425",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "STH Agree",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_3_1625222177916",
+      "context": {
+        "number": "$webhook_result_idea.options"
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1625236954458"
+      },
+      "conditions": "true",
+      "dialog_node": "node_3_1625236702456",
+      "previous_sibling": "node_8_1625236720399",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "Said no",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_1_1625222174712",
+      "context": {
+        "value": false
+      },
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "@Save:SaveNo",
+      "dialog_node": "node_3_1625237611824",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "Send response",
+      "output": {},
+      "parent": "node_2_1628265147210",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A2::BioticStress",
+              "options": {
+                "specific": "A2"
+              },
+              "user_input": "$boolean"
+            }
+          },
+          "result_variable": "webhook_result_26"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1628262879087"
+      },
+      "conditions": "true",
+      "dialog_node": "node_3_1628265147210"
+    },
+    {
+      "type": "standard",
+      "title": "A2_17",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Parmi votre surface toujours en herbe, combien d’hectares sont gérés extensivement ?<div class='duke-information'> <i style='color: #3340A4;' class='icon icon-help-outline'></i>  Sont considérées comme gérée de manière extensive les surfaces avec moins de 40 unités d’azote/ha/an, sans fauche avant juin, sans fauche des refus, sans pâturage permanent ou tournant, etc...</div>"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_7_1628262879087",
+      "conditions": "true",
+      "dialog_node": "node_3_1628265350377",
+      "previous_sibling": "node_43_1628265878767"
+    },
+    {
+      "type": "standard",
+      "title": "Send Intensive Sth",
+      "parent": "node_3_1628265350377",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A2::IntensiveSth",
+              "options": {
+                "specific": "A2"
+              },
+              "user_input": "<? input.text  ?>"
+            }
+          },
+          "result_variable": "webhook_result_27"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1628262879087"
+      },
+      "conditions": "true",
+      "dialog_node": "node_3_1628265367891"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_31_1628265769396",
+      "context": {
+        "boolean": true
+      },
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "@Save:SaveYes",
+      "dialog_node": "node_32_1628265769400"
+    },
+    {
+      "type": "standard",
+      "title": "Send response",
+      "output": {},
+      "parent": "node_32_1628265769400",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A2::RareVineyard",
+              "options": {
+                "specific": "A2"
+              },
+              "user_input": "$boolean"
+            }
+          },
+          "result_variable": "webhook_result_26"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1628262879087"
+      },
+      "conditions": "true",
+      "dialog_node": "node_33_1628265769400"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_31_1628265769396",
+      "context": {
+        "boolean": false
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_33_1628265769400"
+      },
+      "conditions": "true",
+      "dialog_node": "node_36_1628265769400",
+      "previous_sibling": "node_32_1628265769400"
+    },
+    {
+      "type": "standard",
+      "title": "A2_15",
+      "output": {
+        "generic": [
+          {
+            "title": "Les questions qui suivent concernent vos activités de maraîchage  Cultivez-vous une variété population ?<div class='duke-information'> <i style='color: #3340A4;' class='icon icon-help-outline'></i>  Les variétés population sont synonyme de variétés paysannes, locales ou anciennes. Elles existent depuis le début de l’agriculture. Le re-semis de semences de fermes n’est pas comptabilisé comme une variété population.</div>",
+            "options": [
+              {
+                "label": "Oui",
+                "value": {
+                  "input": {
+                    "text": "SaveYes"
+                  }
+                }
+              },
+              {
+                "label": "Non",
+                "value": {
+                  "input": {
+                    "text": "SaveNo"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_7_1628262879087",
+      "context": {
+        "boolean": false
+      },
+      "conditions": "true",
+      "dialog_node": "node_37_1628265821761",
+      "previous_sibling": "node_31_1628265769396"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_37_1628265821761",
+      "context": {
+        "boolean": true
+      },
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "@Save:SaveYes",
+      "dialog_node": "node_38_1628265821763"
+    },
+    {
+      "type": "standard",
+      "title": "Send response",
+      "output": {},
+      "parent": "node_38_1628265821763",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A2::GardeningPopulationVariety",
+              "options": {
+                "specific": "A2"
+              },
+              "user_input": "$boolean"
+            }
+          },
+          "result_variable": "webhook_result_26"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1628262879087"
+      },
+      "conditions": "true",
+      "dialog_node": "node_39_1628265821763"
+    },
+    {
       "type": "frame",
       "title": "Modification Intermediate",
       "parent": "node_9_1603971907287",
@@ -5893,20 +5729,6 @@
       "dialog_node": "node_4_1599664519103",
       "previous_sibling": "response_5_1606500926342",
       "disambiguation_opt_out": true
-    },
-    {
-      "type": "frame",
-      "title": "Poduction",
-      "parent": "node_10_1605181561792",
-      "metadata": {
-        "_customization": {
-          "mcr": true
-        }
-      },
-      "conditions": "@Unspecific:Production",
-      "user_label": "Consulter mes productions",
-      "dialog_node": "node_4_1605265631985",
-      "previous_sibling": "node_5_1605413665715"
     },
     {
       "type": "standard",
@@ -5926,14 +5748,26 @@
       "disambiguation_opt_out": true
     },
     {
-      "type": "folder",
-      "title": "Redirection",
-      "conditions": "#Create or #Show",
-      "dialog_node": "node_4_1615390045421",
-      "previous_sibling": "node_7_1615387232400"
+      "type": "standard",
+      "title": "Fallback redirection",
+      "parent": "node_9_1605393779454",
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "true",
+      "dialog_node": "node_4_1615386847599"
     },
     {
-      "type": "frame",
+      "type": "folder",
+      "title": "Redirection",
+      "conditions": "#Show",
+      "dialog_node": "node_4_1615390045421",
+      "previous_sibling": "node_9_1615385623867"
+    },
+    {
+      "type": "standard",
       "title": "Guide to Procedure intermediate",
       "parent": "node_1_1604316267973",
       "metadata": {
@@ -5965,6 +5799,225 @@
     },
     {
       "type": "standard",
+      "title": "Account Lettering",
+      "parent": "node_9_1615385623867",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "tenant": "$tenant",
+              "handler": "Redirections::ToAccountingLettering",
+              "options": {
+                "specific": "<? @Unspecific.literal ?>"
+              },
+              "user_input": "<? input.text  ?>"
+            }
+          },
+          "result_variable": "webhook_result_20"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#AccountLettering",
+      "user_label": "Lettrage de compte",
+      "dialog_node": "node_4_1616170640047",
+      "previous_sibling": "node_3_1616166282095"
+    },
+    {
+      "type": "folder",
+      "title": "IDEA",
+      "conditions": "#IDEA_A1 || #IDEA_A2 && $user_plan == 'ekyviti",
+      "dialog_node": "node_4_1625162317230",
+      "previous_sibling": "Bienvenue"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_37_1628265821761",
+      "context": {
+        "boolean": false
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_39_1628265821763"
+      },
+      "conditions": "true",
+      "dialog_node": "node_42_1628265821763",
+      "previous_sibling": "node_38_1628265821763"
+    },
+    {
+      "type": "standard",
+      "title": "A2_22",
+      "output": {
+        "generic": [
+          {
+            "title": "Pour cette espèce, participez-vous à des programmes de sélection réalisés sur des critères associés à la rusticité ?",
+            "options": [
+              {
+                "label": "Oui",
+                "value": {
+                  "input": {
+                    "text": "SaveYes"
+                  }
+                }
+              },
+              {
+                "label": "Non",
+                "value": {
+                  "input": {
+                    "text": "SaveNo"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_7_1628262879087",
+      "context": {
+        "boolean": false
+      },
+      "conditions": "true",
+      "dialog_node": "node_43_1628265878767",
+      "previous_sibling": "node_37_1628265821761"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_43_1628265878767",
+      "context": {
+        "boolean": true
+      },
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "@Save:SaveYes",
+      "dialog_node": "node_44_1628265878771"
+    },
+    {
+      "type": "standard",
+      "title": "Send response",
+      "output": {},
+      "parent": "node_44_1628265878771",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A2::RusticitySelection",
+              "options": {
+                "specific": "A2"
+              },
+              "user_input": "$boolean"
+            }
+          },
+          "result_variable": "webhook_result_26"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1628262879087"
+      },
+      "conditions": "true",
+      "dialog_node": "node_45_1628265878771"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_43_1628265878767",
+      "context": {
+        "boolean": false
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_45_1628265878771"
+      },
+      "conditions": "true",
+      "dialog_node": "node_46_1628265878771",
+      "previous_sibling": "node_44_1628265878771"
+    },
+    {
+      "type": "standard",
+      "title": "A2_18",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "$webhook_result_idea.sentence"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_7_1628262879087",
+      "conditions": "true",
+      "dialog_node": "node_47_1628265926167",
+      "previous_sibling": "node_3_1628265350377"
+    },
+    {
+      "type": "standard",
+      "title": "Send Mother crossing",
+      "output": {},
+      "parent": "node_47_1628265926167",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A2::MotherCrossing",
+              "options": {
+                "specific": "A2"
+              },
+              "user_input": "<? input.text  ?>"
+            }
+          },
+          "result_variable": "webhook_result_27"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1628262879087"
+      },
+      "conditions": "true",
+      "dialog_node": "node_48_1628265926169"
+    },
+    {
+      "type": "standard",
       "parent": "node_9_1594375485889",
       "actions": [
         {
@@ -5974,9 +6027,7 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "user_id": "<? context.metadata.user_id ?>",
-              "hook_skill": "Interventions",
-              "hook_request": "save_intervention"
+              "handler": "Interventions::SaveIntervention"
             }
           },
           "result_variable": "webhook_result_2"
@@ -6005,10 +6056,11 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "specific": "tool",
-              "hook_skill": "Interventions",
-              "user_input": "<? input.text ?>",
-              "hook_request": "modify_specific"
+              "handler": "Interventions::ModifySpecific",
+              "options": {
+                "specific": "tool"
+              },
+              "user_input": "<? input.text ?>"
             }
           },
           "result_variable": "webhook_result_3"
@@ -6040,12 +6092,11 @@
           "parameters": {
             "main_param": {
               "tenant": "$tenant",
-              "user_id": "<? context.metadata.user_id ?>",
-              "sale_type": "$sale_type",
-              "hook_skill": "Redirections",
-              "session_id": "<? $system.session_id ?>",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "to_sale"
+              "handler": "Redirections::ToSale",
+              "options": {
+                "specific": "$sale_type"
+              },
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_6"
@@ -6060,6 +6111,33 @@
       "user_label": "Consulter mes ventes",
       "dialog_node": "node_5_1605413665715",
       "previous_sibling": "node_6_1605413669170"
+    },
+    {
+      "type": "standard",
+      "title": "Tax déclaration",
+      "parent": "node_9_1615385623867",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "tenant": "$tenant",
+              "handler": "Redirections::TaxDeclaration",
+              "user_input": "<? input.text  ?>"
+            }
+          },
+          "result_variable": "webhook_result_11"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#TaxDeclaration",
+      "user_label": "Déclarer ma TVA",
+      "dialog_node": "node_5_1614707065969"
     },
     {
       "type": "standard",
@@ -6122,28 +6200,6 @@
     },
     {
       "type": "standard",
-      "title": "To Tiers",
-      "output": {
-        "generic": [
-          {
-            "values": [
-              {
-                "text": "Je vous redirige vers la liste des tiers.<br><br>Besoin d'aide pour la gestion de vos tiers ?\n<br>&#8226 Gestion des tiers <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre8/#tiers' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a>\n<br>&#8226 Création d’un contact <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre8/#contact' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a>\n<br>&#8226 Création d’une organisation <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre8/#organisation' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a>\n<br>&#8226 Rattacher contact et organisation <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre8/#lien' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a> redirectkeep=/backend/entities"
-              }
-            ],
-            "response_type": "text",
-            "selection_policy": "sequential"
-          }
-        ]
-      },
-      "parent": "node_10_1605181561792",
-      "conditions": "@Tiers",
-      "user_label": "Consulter mes tiers",
-      "dialog_node": "node_5_1616161440518",
-      "previous_sibling": "node_4_1605265631985"
-    },
-    {
-      "type": "standard",
       "title": "Did not understand",
       "output": {
         "generic": [
@@ -6161,7 +6217,7 @@
       "parent": "node_10_1605181561792",
       "conditions": "true",
       "dialog_node": "node_6_1605265591565",
-      "previous_sibling": "node_8_1616516085613",
+      "previous_sibling": "node_8_1605311446133",
       "disambiguation_opt_out": true
     },
     {
@@ -6175,12 +6231,11 @@
           "parameters": {
             "main_param": {
               "tenant": "$tenant",
-              "user_id": "<? context.metadata.user_id ?>",
-              "hook_skill": "Redirections",
-              "session_id": "<? $system.session_id ?>",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "to_bill",
-              "purchase_type": "$purchase_type"
+              "handler": "Redirections::ToBill",
+              "options": {
+                "specific": "$purchase_type"
+              },
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_5"
@@ -6193,8 +6248,7 @@
       },
       "conditions": "@Unspecific:PurchasesBill",
       "user_label": "Consulter mes achats",
-      "dialog_node": "node_6_1605413669170",
-      "previous_sibling": "node_7_1614352618025"
+      "dialog_node": "node_6_1605413669170"
     },
     {
       "type": "standard",
@@ -6206,11 +6260,12 @@
           "type": "webhook",
           "parameters": {
             "main_param": {
-              "type": "tool",
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "hook_skill": "Interventions",
-              "hook_request": "get_complement_items"
+              "handler": "Interventions::GetComplementItems",
+              "options": {
+                "specific": "tool"
+              }
             }
           },
           "result_variable": "webhook_result_3"
@@ -6370,10 +6425,8 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "parameter": "temperature",
-              "hook_skill": "HarvestReceptions",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "parse_targets"
+              "handler": "HarvestReceptions::ParseTargets",
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_4"
@@ -6390,24 +6443,70 @@
     },
     {
       "type": "standard",
-      "title": "Current Fallback",
-      "output": {
-        "generic": [
-          {
-            "values": [
-              {
-                "text": "Je n'ai pas compris ce que vous souhaitez exporter. J'annule"
+      "title": "IDEA_A1 Redirect",
+      "parent": "node_2_1625219388792",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::Redirect",
+              "options": {
+                "number": "$diagnostic_id",
+                "specific": "A1"
               }
-            ],
-            "response_type": "text",
-            "selection_policy": "sequential"
-          }
-        ]
+            }
+          },
+          "result_variable": "webhook_result_idea"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
       },
-      "parent": "node_1_1605382106592",
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "#IDEA_A1",
+      "dialog_node": "node_6_1625162310689",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_9_1628263151550",
+      "context": {
+        "boolean": true
+      },
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "@Save:SaveYes",
+      "dialog_node": "node_6_1628263950998"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_1_1628265147208",
+      "context": {
+        "boolean": false
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_3_1628265147210"
+      },
       "conditions": "true",
-      "dialog_node": "node_6_1616517995697",
-      "previous_sibling": "node_1_1614613239082"
+      "dialog_node": "node_6_1628265147210",
+      "previous_sibling": "node_2_1628265147210"
     },
     {
       "type": "standard",
@@ -6513,7 +6612,8 @@
       "parent": "node_10_1605181561792",
       "conditions": "@Unspecific:UndefinedBill",
       "user_label": "Consulter mes factures",
-      "dialog_node": "node_7_1614352618025"
+      "dialog_node": "node_7_1614352618025",
+      "previous_sibling": "node_5_1605413665715"
     },
     {
       "type": "standard",
@@ -6561,15 +6661,14 @@
           "type": "webhook",
           "parameters": {
             "main_param": {
-              "value": "$quantity",
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "optional": "$optional",
-              "parameter": "quantity",
-              "hook_skill": "HarvestReceptions",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "parse_parameter",
-              "current_asking": "$redirect"
+              "handler": "HarvestReceptions::ParseParameter",
+              "options": {
+                "quantity": "$tav",
+                "specific": "quantity"
+              },
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_4"
@@ -6593,9 +6692,9 @@
       },
       "parent": "node_5_1615799856802",
       "context": {
-        "tmp": "<? output.generic.addAll($webhook_result_4.optional) ?>",
-        "ambiguity_key": "<? $webhook_result_4.optional.get(0).description.key ?>",
-        "ambiguity_type": "<? $webhook_result_4.optional.get(0).description.itm_type ?>"
+        "tmp": "<? output.generic.addAll($webhook_result_4.options) ?>",
+        "ambiguity_key": "<? $webhook_result_4.options.get(0).description.key ?>",
+        "ambiguity_type": "<? $webhook_result_4.options.get(0).description.itm_type ?>"
       },
       "conditions": "true",
       "dialog_node": "node_7_1615800359592",
@@ -6614,10 +6713,11 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "parameter": "$Complementary",
-              "hook_skill": "HarvestReceptions",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "add_complementary"
+              "handler": "HarvestReceptions::AddComplementary",
+              "options": {
+                "specific": "$Complementary"
+              },
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_4"
@@ -6642,15 +6742,14 @@
           "type": "webhook",
           "parameters": {
             "main_param": {
-              "value": "$tav",
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "optional": "$optional",
-              "parameter": "tav",
-              "hook_skill": "HarvestReceptions",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "parse_parameter",
-              "current_asking": "$redirect"
+              "handler": "HarvestReceptions::ParseParameter",
+              "options": {
+                "quantity": "$tav",
+                "specific": "tav"
+              },
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_4"
@@ -6665,6 +6764,104 @@
       "dialog_node": "node_7_1615801964385",
       "previous_sibling": "node_9_1615800496205",
       "disambiguation_opt_out": true
+    },
+    {
+      "type": "frame",
+      "title": "Send sth",
+      "parent": "node_8_1625236720399",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A1::SthValue",
+              "options": {
+                "number": "$number"
+              }
+            }
+          },
+          "result_variable": "webhook_result_23"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "true",
+      "dialog_node": "node_7_1625236954458",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "IDEA_A2_Redirect",
+      "parent": "node_2_1625219388792",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::Redirect",
+              "options": {
+                "number": "$diagnostic_id",
+                "specific": "A2"
+              }
+            }
+          },
+          "result_variable": "webhook_result_idea"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#IDEA_A2",
+      "dialog_node": "node_7_1628262879087",
+      "previous_sibling": "node_6_1625162310689"
+    },
+    {
+      "type": "standard",
+      "title": "A2_06",
+      "output": {
+        "generic": [
+          {
+            "title": "$webhook_result_idea.sentence",
+            "options": [
+              {
+                "label": "Oui",
+                "value": {
+                  "input": {
+                    "text": "SaveYes"
+                  }
+                }
+              },
+              {
+                "label": "Non",
+                "value": {
+                  "input": {
+                    "text": "SaveNo"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_7_1628262879087",
+      "context": {
+        "boolean": false
+      },
+      "conditions": "true",
+      "dialog_node": "node_7_1628265491747",
+      "previous_sibling": "node_1_1628265147208"
     },
     {
       "type": "standard",
@@ -6700,11 +6897,11 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "user_id": "<? context.metadata.user_id ?>",
-              "specific": "doer",
-              "hook_skill": "Interventions",
-              "user_input": "<? input.text ?>",
-              "hook_request": "modify_specific"
+              "handler": "Interventions::ModifySpecific",
+              "options": {
+                "specific": "doer"
+              },
+              "user_input": "<? input.text ?>"
             }
           },
           "result_variable": "webhook_result_3"
@@ -6748,19 +6945,30 @@
     },
     {
       "type": "standard",
-      "title": "Which Targets",
-      "output": {
-        "generic": []
-      },
-      "parent": "node_6_1615462063886",
-      "context": {
-        "tmp": {
-          "": "<? output.generic.addAll($webhook_result_3.optional) ?>"
+      "title": "Global Fallback",
+      "parent": "node_10_1605181561792",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "tenant": "$tenant",
+              "handler": "Redirections::Fallback",
+              "user_input": " <? input.text  ?>"
+            }
+          },
+          "result_variable": "webhook_result_4"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
         }
       },
       "conditions": "true",
-      "dialog_node": "node_8_1610101823291",
-      "previous_sibling": "node_1_1604316267973",
+      "dialog_node": "node_8_1605311446133",
+      "previous_sibling": "node_10_1614761600209",
       "disambiguation_opt_out": true
     },
     {
@@ -6776,11 +6984,11 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "user_id": "<? context.metadata.user_id ?>",
-              "specific": "targets",
-              "hook_skill": "Interventions",
-              "user_input": "<? input.text ?>",
-              "hook_request": "complement_specific"
+              "handler": "Interventions::ComplementSpecific",
+              "options": {
+                "specific": "targets"
+              },
+              "user_input": "<? input.text ?>"
             }
           },
           "result_variable": "webhook_result_3"
@@ -6826,11 +7034,11 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "optional": "$optional",
-              "hook_skill": "HarvestReceptions",
-              "user_input": "<? input.text  ?>",
-              "hook_request": "parse_targets",
-              "current_asking": "$redirect"
+              "handler": "HarvestReceptions::ParseTargets",
+              "options": {
+                "previous": "$redirect"
+              },
+              "user_input": "<? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_4"
@@ -6883,13 +7091,13 @@
     },
     {
       "type": "standard",
-      "title": "Current fallback",
+      "title": "STH Disagree",
       "output": {
         "generic": [
           {
             "values": [
               {
-                "text": "Je n'ai pas compris ce à quoi vous souhaitez accéder. J'annule"
+                "text": "Quelle est votre surface toujours en herbe (en hectares) ?"
               }
             ],
             "response_type": "text",
@@ -6897,13 +7105,101 @@
           }
         ]
       },
-      "parent": "node_10_1605181561792",
-      "conditions": "true",
-      "dialog_node": "node_8_1616516085613",
-      "previous_sibling": "node_5_1616161440518"
+      "parent": "node_3_1625222177916",
+      "context": {},
+      "conditions": "@Save:SaveNo",
+      "dialog_node": "node_8_1625236720399",
+      "disambiguation_opt_out": true
     },
     {
-      "type": "frame",
+      "type": "standard",
+      "title": "Said yes",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_1_1625222174712",
+      "context": {
+        "value": true
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_2_1625237648931"
+      },
+      "conditions": "true",
+      "dialog_node": "node_8_1625237622975",
+      "previous_sibling": "node_3_1625237611824"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_9_1628263151550",
+      "context": {
+        "boolean": false
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_8_1628263986497"
+      },
+      "conditions": "true",
+      "dialog_node": "node_8_1628263971055",
+      "previous_sibling": "node_6_1628263950998"
+    },
+    {
+      "type": "standard",
+      "title": "Send response",
+      "parent": "node_6_1628263950998",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A2::GeneticProgram",
+              "options": {
+                "specific": "A2"
+              },
+              "user_input": "$boolean"
+            }
+          },
+          "result_variable": "webhook_result_26"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1628262879087"
+      },
+      "conditions": "true",
+      "dialog_node": "node_8_1628263986497"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_7_1628265491747",
+      "context": {
+        "boolean": true
+      },
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "@Save:SaveYes",
+      "dialog_node": "node_8_1628265491749"
+    },
+    {
+      "type": "standard",
       "title": "Intervention",
       "parent": "node_7_1615390107712",
       "actions": [
@@ -6913,12 +7209,9 @@
           "parameters": {
             "main_param": {
               "tenant": "$tenant",
+              "handler": "Interventions::ParseSentence",
               "user_id": "<? context.metadata.user_id ?>",
-              "procedure": "$Procedure",
-              "hook_skill": "Interventions",
-              "user_input": "$initial_input  <? input.text  ?>",
-              "hook_request": "parse_sentence",
-              "procedure_word": "<? @Procedure.literal ?>"
+              "user_input": "$initial_input  <? input.text  ?>"
             }
           },
           "result_variable": "webhook_result_3"
@@ -6958,7 +7251,6 @@
       },
       "parent": "node_9_1594375485889",
       "context": {
-        "Procedure": null,
         "webhook_result_3": null
       },
       "metadata": {
@@ -7000,9 +7292,9 @@
       },
       "parent": "node_6_1615462063886",
       "context": {
-        "tmp": "<? output.generic.addAll($webhook_result_3.optional) ?>",
-        "ambiguity_key": "<? $webhook_result_3.optional.get(0).description.key ?>",
-        "ambiguity_type": "<? $webhook_result_3.optional.get(0).description.itm_type ?>"
+        "tmp": "<? output.generic.addAll($webhook_result_3.options) ?>",
+        "ambiguity_key": "<? $webhook_result_3.options.get(0).description.key ?>",
+        "ambiguity_type": "<? $webhook_result_3.options.get(0).description.itm_type ?>"
       },
       "metadata": {
         "_customization": {
@@ -7011,7 +7303,7 @@
       },
       "conditions": "true",
       "dialog_node": "node_9_1599731966879",
-      "previous_sibling": "node_8_1610101823291",
+      "previous_sibling": "node_1_1604316267973",
       "disambiguation_opt_out": true
     },
     {
@@ -7035,6 +7327,50 @@
     },
     {
       "type": "standard",
+      "title": "Fallback",
+      "output": {
+        "generic": [
+          {
+            "title": "Que souhaitez-vous exporter ? ",
+            "options": [
+              {
+                "label": "Blian comptable",
+                "value": {
+                  "input": {
+                    "text": "bilan comptable"
+                  }
+                }
+              },
+              {
+                "label": "Compte de résultats",
+                "value": {
+                  "input": {
+                    "text": "compte de résultats"
+                  }
+                }
+              },
+              {
+                "label": "Aucun",
+                "value": {
+                  "input": {
+                    "text": "Aucun"
+                  }
+                }
+              }
+            ],
+            "description": "",
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_1_1605382106592",
+      "conditions": "true",
+      "dialog_node": "node_9_1605393779454",
+      "previous_sibling": "node_1_1614613239082",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
       "title": "Add equipment",
       "parent": "node_6_1612459336600",
       "actions": [
@@ -7045,11 +7381,11 @@
             "main_param": {
               "parsed": "$parsed",
               "tenant": "$tenant",
-              "user_id": "<? context.metadata.user_id ?>",
-              "specific": "tool",
-              "hook_skill": "Interventions",
-              "user_input": "<? input.text ?>",
-              "hook_request": "complement_specific"
+              "handler": "Interventions::ComplementSpecific",
+              "options": {
+                "specific": "tool"
+              },
+              "user_input": "<? input.text ?>"
             }
           },
           "result_variable": "webhook_result_3"
@@ -7068,6 +7404,14 @@
       "conditions": "true",
       "dialog_node": "node_9_1612459406666",
       "disambiguation_opt_out": true
+    },
+    {
+      "type": "folder",
+      "title": "Accounting",
+      "conditions": "#TaxDeclaration || #AccountingFog || #AccountLettering || #FixedAssetSale",
+      "digress_in": "does_not_return",
+      "dialog_node": "node_9_1615385623867",
+      "previous_sibling": "node_7_1615387232400"
     },
     {
       "type": "standard",
@@ -7142,6 +7486,106 @@
       "disambiguation_opt_out": true
     },
     {
+      "type": "standard",
+      "title": "Fixed Asset Sale",
+      "parent": "node_9_1615385623867",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "tenant": "$tenant",
+              "handler": "Redirections::ToFixedAssetSale",
+              "user_input": "<? input.text  ?>"
+            }
+          },
+          "result_variable": "webhook_result_22"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#FixedAssetSale",
+      "user_label": "Cession d'une immobilisation",
+      "dialog_node": "node_9_1617031080927",
+      "previous_sibling": "node_4_1616170640047"
+    },
+    {
+      "type": "standard",
+      "title": "A2_01",
+      "output": {
+        "generic": [
+          {
+            "title": "Participez-vous à des programmes d'entretien de ressources génétiques ?<div class='duke-information'> <i style='color: #3340A4;' class='icon icon-help-outline'></i>    Ces programmes peuvent concerner la sélection génétique sur des races à petit effectif, sur des espèces, variétés, cépages oubliés ou la sélection participative avec possibilité d’en bénéficier, sélection massale viticole, etc.</div>",
+            "options": [
+              {
+                "label": "Oui",
+                "value": {
+                  "input": {
+                    "text": "SaveYes"
+                  }
+                }
+              },
+              {
+                "label": "Non",
+                "value": {
+                  "input": {
+                    "text": "SaveNo"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_7_1628262879087",
+      "context": {
+        "boolean": false
+      },
+      "conditions": "true",
+      "dialog_node": "node_9_1628263151550"
+    },
+    {
+      "type": "standard",
+      "title": "Send response",
+      "output": {},
+      "parent": "node_8_1628265491749",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A2::IntraParcelMix",
+              "options": {
+                "specific": "A2"
+              },
+              "user_input": "$boolean"
+            }
+          },
+          "result_variable": "webhook_result_26"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_13_1628265543667"
+      },
+      "conditions": "true",
+      "dialog_node": "node_9_1628265491749"
+    },
+    {
       "type": "response_condition",
       "output": {
         "generic": []
@@ -7159,7 +7603,7 @@
       "parent": "node_9_1594375485889",
       "context": {
         "parsed": "$webhook_result_3.parsed",
-        "optional": "$webhook_result_3.optional",
+        "options": "$webhook_result_3.options",
         "redirect": "$webhook_result_3.redirect",
         "sentence": "$webhook_result_3.sentence"
       },
@@ -7190,7 +7634,7 @@
       "parent": "node_9_1594375485889",
       "context": {
         "parsed": "$webhook_result_3.parsed",
-        "optional": "$webhook_result_3.optional",
+        "options": "$webhook_result_3.options",
         "redirect": "$webhook_result_3.redirect",
         "sentence": "$webhook_result_3.sentence"
       },
@@ -7337,20 +7781,6 @@
     {
       "type": "response_condition",
       "output": {
-        "generic": []
-      },
-      "parent": "node_1_1610101867472",
-      "next_step": {
-        "behavior": "jump_to",
-        "selector": "body",
-        "dialog_node": "node_9_1615399076669"
-      },
-      "conditions": "#Exit",
-      "dialog_node": "response_10_1615401727009"
-    },
-    {
-      "type": "response_condition",
-      "output": {
         "text": {
           "values": [
             "Malheureusement cela n'a pas abouti. J'annule"
@@ -7413,6 +7843,51 @@
       "output": {
         "generic": []
       },
+      "parent": "node_7_1625236954458",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_6_1625162310689"
+      },
+      "conditions": "true",
+      "dialog_node": "response_10_1625237072186",
+      "previous_sibling": "response_2_1628585469781"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_7_1628262879087",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_3_1628265350377"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A2_17'",
+      "dialog_node": "response_10_1628262957473",
+      "previous_sibling": "response_2_1628262954293"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_7_1628262879087",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_31_1628265769396"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A2_14'",
+      "dialog_node": "response_10_1628262966386",
+      "previous_sibling": "response_5_1628262964920"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
       "parent": "node_7_1612459495450",
       "context": {
         "tmp": "<? output.generic.addAll($webhook_result_3.optionAll) ?>"
@@ -7462,24 +7937,6 @@
       "output": {
         "generic": []
       },
-      "parent": "node_9_1594375485889",
-      "context": {
-        "parsed": "$webhook_result_3.parsed"
-      },
-      "next_step": {
-        "behavior": "jump_to",
-        "selector": "condition",
-        "dialog_node": "node_8_1610101823291"
-      },
-      "conditions": "$webhook_result_3.redirect == \"get_help\"",
-      "dialog_node": "response_1_1610101811061",
-      "previous_sibling": "response_6_1603446371373"
-    },
-    {
-      "type": "response_condition",
-      "output": {
-        "generic": []
-      },
       "parent": "node_1_1605382106592",
       "context": {
         "printer": "Printers::BalanceSheetPrinter",
@@ -7492,7 +7949,27 @@
       },
       "conditions": "@Export:BalanceSheet",
       "dialog_node": "response_1_1614613971721",
-      "previous_sibling": "node_6_1616517995697"
+      "previous_sibling": "node_9_1605393779454"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "J'annule. Vous pouvez réessayer."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_4_1615386847599",
+      "conditions": "anything_else",
+      "dialog_node": "response_1_1615386958340",
+      "previous_sibling": "response_6_1615386944293"
     },
     {
       "type": "response_condition",
@@ -7512,7 +7989,7 @@
       "parent": "node_8_1615798314246",
       "context": {
         "parsed": "$webhook_result_4.parsed",
-        "optional": "$webhook_result_4.optional",
+        "options": "$webhook_result_4.options",
         "redirect": "$webhook_result_4.redirect",
         "sentence": "$webhook_result_4.sentence"
       },
@@ -7604,6 +8081,51 @@
       "conditions": "anything_else",
       "dialog_node": "response_1_1615801055243",
       "previous_sibling": "response_6_1615801053922"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_7_1628262879087",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1628265491747"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A2_06'",
+      "dialog_node": "response_1_1628262961087",
+      "previous_sibling": "response_4_1628262959360"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_7_1628262879087",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_47_1628265926167"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A2_18'",
+      "dialog_node": "response_1_1628263083266",
+      "previous_sibling": "response_5_1628262967530"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_7_1628262879087",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_43_1628265878767"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A2_22'",
+      "dialog_node": "response_1_1628263124670",
+      "previous_sibling": "response_1_1628263083266"
     },
     {
       "type": "response_condition",
@@ -7722,7 +8244,7 @@
       },
       "parent": "node_13_1612459497880",
       "context": {
-        "tmp": "<? output.generic.addAll($webhook_result_3.optionAll) ?>"
+        "tmp": "<? output.generic.addAll($webhook_result_3.options) ?>"
       },
       "conditions": "$webhook_result_3",
       "dialog_node": "response_17_1612459497883",
@@ -7807,7 +8329,7 @@
           {
             "values": [
               {
-                "text": "C'est enregistré  redirect=$link_to_intervention"
+                "text": "$webhook_result_2.sentence"
               }
             ],
             "response_type": "text",
@@ -7848,7 +8370,7 @@
       "next_step": {
         "behavior": "jump_to",
         "selector": "body",
-        "dialog_node": "node_7_1601640416521"
+        "dialog_node": "node_9_1615399076669"
       },
       "conditions": "$webhook_result_3.redirect == \"cancel\"",
       "dialog_node": "response_2_1601640385747",
@@ -7896,29 +8418,6 @@
       "conditions": "@Modify:ModifyInput",
       "dialog_node": "response_2_1603974087867",
       "previous_sibling": "response_3_1599664978502"
-    },
-    {
-      "type": "response_condition",
-      "output": {
-        "generic": [
-          {
-            "values": [
-              {
-                "text": "Je vous y emmène redirect=/backend/dashboards/production?current_period=<? $number ?>-01-01&current_campaign=$number"
-              }
-            ],
-            "response_type": "text",
-            "selection_policy": "sequential"
-          }
-        ]
-      },
-      "parent": "node_4_1605265631985",
-      "context": {
-        "number1": "$number"
-      },
-      "conditions": "$number > 2000",
-      "dialog_node": "response_2_1605265647331",
-      "previous_sibling": "slot_3_1605276096087"
     },
     {
       "type": "response_condition",
@@ -8114,6 +8613,97 @@
     {
       "type": "response_condition",
       "output": {
+        "text": {
+          "values": [
+            "Je vous redirige vers vos journaux.<br><br>Besoin d'aide pour valider les écriture du brouillard? Cliquez <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#brouillard' target='_blank' rel='noopener noreferrer'>ici <i class='icon icon-help'></i></a> redirectkeep=/backend/journals"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_3_1616166282095",
+      "conditions": "anything_else",
+      "dialog_node": "response_2_1616166307582",
+      "previous_sibling": "response_8_1616166306336"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_3_1625226030425",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_6_1625162310689"
+      },
+      "conditions": "true",
+      "dialog_node": "response_2_1625226078927",
+      "previous_sibling": "response_4_1628585435601"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_2_1625237648931",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_6_1625162310689"
+      },
+      "conditions": "true",
+      "dialog_node": "response_2_1625237729902"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_7_1628262879087",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_9_1628263151550"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A2_01'",
+      "dialog_node": "response_2_1628262904717",
+      "previous_sibling": "node_47_1628265926167"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_7_1628262879087",
+      "context": {
+        "previous_indicator": "A2"
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_3_1625222177916"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A1_10'",
+      "dialog_node": "response_2_1628262954293",
+      "previous_sibling": "response_5_1628262905983"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_7_1625236954458",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1628262879087"
+      },
+      "conditions": "$previous_indicator == 'A2'",
+      "dialog_node": "response_2_1628585469781"
+    },
+    {
+      "type": "response_condition",
+      "output": {
         "generic": []
       },
       "parent": "node_20_1612459506306",
@@ -8253,9 +8843,7 @@
         ]
       },
       "parent": "node_10_1602063735631",
-      "context": {
-        "Procedure": null
-      },
+      "context": {},
       "next_step": {
         "behavior": "jump_to",
         "selector": "body",
@@ -8274,6 +8862,28 @@
       "conditions": "anything_else",
       "dialog_node": "response_3_1603973369710",
       "previous_sibling": "response_2_1603973369710"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "$sentence"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_8_1605311446133",
+      "context": {
+        "sentence": "$webhook_result_4.sentence"
+      },
+      "conditions": "$webhook_result_4",
+      "dialog_node": "response_3_1605311472644"
     },
     {
       "type": "response_condition",
@@ -8323,25 +8933,30 @@
       "output": {
         "generic": []
       },
-      "parent": "node_10_1602667897861",
+      "parent": "node_4_1615386847599",
       "context": {
-        "new_procedure": null
+        "printer": "Printers::BalanceSheetPrinter",
+        "template_nature": "balance_sheet"
       },
-      "conditions": "true",
-      "dialog_node": "response_3_1615402004121"
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_1_1614613239082"
+      },
+      "conditions": "@Export:BalanceSheet",
+      "dialog_node": "response_3_1615386864439"
     },
     {
       "type": "response_condition",
       "output": {
         "generic": []
       },
-      "parent": "node_4_1615401809630",
+      "parent": "node_10_1602667897861",
       "context": {
-        "NEW_PROCEDURE": "$new_procedure"
+        "new_procedure": null
       },
-      "conditions": "$new_procedure",
-      "dialog_node": "response_3_1615461657245",
-      "previous_sibling": "response_7_1615401824625"
+      "conditions": "true",
+      "dialog_node": "response_3_1615402004121"
     },
     {
       "type": "response_condition",
@@ -8415,6 +9030,21 @@
     {
       "type": "response_condition",
       "output": {
+        "generic": []
+      },
+      "parent": "node_3_1625223120538",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1628262879087"
+      },
+      "conditions": "$previous_indicator == 'A2'",
+      "dialog_node": "response_3_1628585395009",
+      "previous_sibling": "response_9_1625224147411"
+    },
+    {
+      "type": "response_condition",
+      "output": {
         "generic": [
           {
             "values": [
@@ -8456,7 +9086,7 @@
       },
       "conditions": "anything_else",
       "dialog_node": "response_4_1594375671376",
-      "previous_sibling": "response_1_1610101811061"
+      "previous_sibling": "response_6_1602664628162"
     },
     {
       "type": "response_condition",
@@ -8511,6 +9141,64 @@
       },
       "conditions": "@Unspecific:Sales",
       "dialog_node": "response_4_1614352795219"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "\"Malheureusement cela n'a pas abouti\""
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_5_1614707065969",
+      "context": {},
+      "conditions": "anything_else",
+      "dialog_node": "response_4_1614707082887",
+      "previous_sibling": "response_9_1614707081721"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "$webhook_result_12.sentence"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_10_1614761600209",
+      "context": {
+        "tax_state": null
+      },
+      "conditions": "$webhook_result_12",
+      "dialog_node": "response_4_1614761879393"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "Il y a une erreur"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_3_1615218997511",
+      "conditions": "anything_else",
+      "dialog_node": "response_4_1615219220547",
+      "previous_sibling": "response_6_1615219219281"
     },
     {
       "type": "response_condition",
@@ -8740,6 +9428,83 @@
     {
       "type": "response_condition",
       "output": {
+        "generic": []
+      },
+      "parent": "node_6_1625162310689",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_1_1625222174712"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A1_08'",
+      "dialog_node": "response_4_1625233068956",
+      "previous_sibling": "response_5_1625233063232"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_6_1625162310689",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_2_1625224532915"
+      },
+      "conditions": "anything_else",
+      "dialog_node": "response_4_1625233076132",
+      "previous_sibling": "response_4_1625233068956"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_7_1628262879087",
+      "context": {
+        "previous_indicator": "A2"
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_2_1625222090155"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A1_01'",
+      "dialog_node": "response_4_1628262959360",
+      "previous_sibling": "response_10_1628262957473"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_7_1628262879087",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_19_1628265601630"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A2_08'",
+      "dialog_node": "response_4_1628262963683",
+      "previous_sibling": "response_7_1628262962433"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_3_1625226030425",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1628262879087"
+      },
+      "conditions": "$previous_indicator == 'A2'",
+      "dialog_node": "response_4_1628585435601"
+    },
+    {
+      "type": "response_condition",
+      "output": {
         "generic": [
           {
             "title": "$sentence",
@@ -8784,7 +9549,7 @@
       "parent": "node_9_1594375485889",
       "context": {
         "parsed": "$webhook_result_3.parsed",
-        "optional": "$webhook_result_3.optional",
+        "options": "$webhook_result_3.optional",
         "redirect": "$webhook_result_3.redirect",
         "sentence": "$webhook_result_3.sentence"
       },
@@ -8876,26 +9641,6 @@
     {
       "type": "response_condition",
       "output": {
-        "generic": [
-          {
-            "values": [
-              {
-                "text": "Je vous y emmène redirect=/backend/dashboards/production"
-              }
-            ],
-            "response_type": "text",
-            "selection_policy": "sequential"
-          }
-        ]
-      },
-      "parent": "node_4_1605265631985",
-      "conditions": "anything_else",
-      "dialog_node": "response_5_1605265679923",
-      "previous_sibling": "response_2_1605265647331"
-    },
-    {
-      "type": "response_condition",
-      "output": {
         "generic": []
       },
       "parent": "node_9_1603971907287",
@@ -8905,21 +9650,6 @@
       "disabled": true,
       "conditions": "true",
       "dialog_node": "response_5_1606500926342"
-    },
-    {
-      "type": "response_condition",
-      "output": {
-        "text": {
-          "values": [
-            "Malheureusement, cela n'a pas abouti"
-          ],
-          "selection_policy": "sequential"
-        }
-      },
-      "parent": "node_1_1610101867472",
-      "conditions": "anything_else",
-      "dialog_node": "response_5_1610101882259",
-      "previous_sibling": "response_6_1610101881445"
     },
     {
       "type": "response_condition",
@@ -8961,7 +9691,7 @@
       },
       "parent": "node_6_1612459336600",
       "context": {
-        "tmp": "<? output.generic.addAll($webhook_result_3.optionAll) ?>"
+        "tmp": "<? output.generic.addAll($webhook_result_3.options) ?>"
       },
       "conditions": "$webhook_result_3",
       "dialog_node": "response_5_1612459355918",
@@ -8974,7 +9704,7 @@
       },
       "parent": "node_1_1612459493267",
       "context": {
-        "tmp": "<? output.generic.addAll($webhook_result_3.optionAll) ?>"
+        "tmp": "<? output.generic.addAll($webhook_result_3.options) ?>"
       },
       "conditions": "$webhook_result_3",
       "dialog_node": "response_5_1612459493271",
@@ -9017,7 +9747,7 @@
       "parent": "node_9_1594375485889",
       "context": {
         "parsed": "$webhook_result_3.parsed",
-        "optional": "$webhook_result_3.optional",
+        "options": "$webhook_result_3.options",
         "redirect": "$webhook_result_3.redirect",
         "sentence": "$webhook_result_3.sentence"
       },
@@ -9055,7 +9785,7 @@
       },
       "conditions": "anything_else",
       "dialog_node": "response_5_1615401858647",
-      "previous_sibling": "response_3_1615461657245"
+      "previous_sibling": "response_7_1615401824625"
     },
     {
       "type": "response_condition",
@@ -9153,6 +9883,115 @@
     {
       "type": "response_condition",
       "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "$webhook_result_20.sentence"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_4_1616170640047",
+      "conditions": "$webhook_result_20",
+      "dialog_node": "response_5_1616170731349"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "Je vous redirige vers la liste des immobilisations.<br><br>Besoin d'aide pour la cession d'une immobilisation? Cliquez <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#cession' target='_blank' rel='noopener noreferrer'>ici <i class='icon icon-help'></i></a><br> redirectkeep=/backend/fixed-assets"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_9_1617031080927",
+      "conditions": "anything_else",
+      "dialog_node": "response_5_1617031100146",
+      "previous_sibling": "response_9_1617031098599"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_3_1625223120538",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_6_1625162310689"
+      },
+      "conditions": "anything_else",
+      "dialog_node": "response_5_1625224148744",
+      "previous_sibling": "response_3_1628585395009"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_6_1625162310689",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_2_1625222176339"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A1_03'",
+      "dialog_node": "response_5_1625233063232",
+      "previous_sibling": "response_9_1625233057362"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_7_1628262879087",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_1_1628265147208"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A2_02'",
+      "dialog_node": "response_5_1628262905983",
+      "previous_sibling": "response_2_1628262904717"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_7_1628262879087",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_25_1628265691462"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A2_13'",
+      "dialog_node": "response_5_1628262964920",
+      "previous_sibling": "response_4_1628262963683"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_7_1628262879087",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_37_1628265821761"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A2_15'",
+      "dialog_node": "response_5_1628262967530",
+      "previous_sibling": "response_10_1628262966386"
+    },
+    {
+      "type": "response_condition",
+      "output": {
         "text": {
           "values": [
             "Malheureusement cela n'a pas abouti"
@@ -9233,12 +10072,7 @@
         "generic": []
       },
       "parent": "node_9_1594375485889",
-      "context": {
-        "parsed": "$webhook_result_3.parsed",
-        "optional": "$webhook_result_3.optional",
-        "redirect": "$webhook_result_3.redirect",
-        "sentence": "$webhook_result_3.sentence"
-      },
+      "context": {},
       "next_step": {
         "behavior": "jump_to",
         "selector": "body",
@@ -9247,24 +10081,6 @@
       "conditions": "$webhook_result_3.redirect == \"non_supported_proc\"",
       "dialog_node": "response_6_1602664628162",
       "previous_sibling": "response_5_1615399705018"
-    },
-    {
-      "type": "response_condition",
-      "output": {
-        "generic": []
-      },
-      "parent": "node_9_1594375485889",
-      "context": {
-        "parsed": "$webhook_result_3.parsed"
-      },
-      "next_step": {
-        "behavior": "jump_to",
-        "selector": "condition",
-        "dialog_node": "node_8_1610101823291"
-      },
-      "conditions": "$webhook_result_3.redirect == \"ask_which_targets\"",
-      "dialog_node": "response_6_1603446371373",
-      "previous_sibling": "response_6_1602664628162"
     },
     {
       "type": "response_condition",
@@ -9313,6 +10129,27 @@
       "output": {
         "generic": [
           {
+            "values": [
+              {
+                "text": "Je ne comprends ce à quoi vous souhaitez accéder. J'annule"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_8_1605311446133",
+      "context": {},
+      "conditions": "anything_else",
+      "dialog_node": "response_6_1605314857412",
+      "previous_sibling": "response_3_1605311472644"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
             "values": [],
             "response_type": "text",
             "selection_policy": "sequential"
@@ -9322,21 +10159,6 @@
       "parent": "node_9_1599731966879",
       "disabled": true,
       "dialog_node": "response_6_1606477033889"
-    },
-    {
-      "type": "response_condition",
-      "output": {
-        "generic": []
-      },
-      "parent": "node_1_1610101867472",
-      "next_step": {
-        "behavior": "jump_to",
-        "selector": "condition",
-        "dialog_node": "node_10_1602063735631"
-      },
-      "conditions": "$webhook_result_3",
-      "dialog_node": "response_6_1610101881445",
-      "previous_sibling": "response_10_1615401727009"
     },
     {
       "type": "response_condition",
@@ -9383,6 +10205,59 @@
       "conditions": "anything_else",
       "dialog_node": "response_6_1613499193002",
       "previous_sibling": "response_5_1613499193002"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "Malheureusement cela n'a pas abouti"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_10_1614761600209",
+      "conditions": "anything_else",
+      "dialog_node": "response_6_1614761880683",
+      "previous_sibling": "response_4_1614761879393"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "$webhook_result_14.sentence"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_3_1615218997511",
+      "conditions": "$webhook_result_14",
+      "dialog_node": "response_6_1615219219281"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_4_1615386847599",
+      "context": {
+        "printer": "Printers::IncomeStatementPrinter",
+        "template_nature": "income_statement"
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_1_1614613239082"
+      },
+      "conditions": "@Export:IncomeStatement",
+      "dialog_node": "response_6_1615386944293",
+      "previous_sibling": "response_3_1615386864439"
     },
     {
       "type": "response_condition",
@@ -9479,9 +10354,7 @@
         "generic": []
       },
       "parent": "node_10_1602063735631",
-      "context": {
-        "Procedure": null
-      },
+      "context": {},
       "next_step": {
         "behavior": "jump_to",
         "selector": "body",
@@ -9588,7 +10461,7 @@
       },
       "conditions": "#Exit",
       "dialog_node": "response_7_1615401824625",
-      "previous_sibling": "slot_7_1615401825030"
+      "previous_sibling": "node_10_1602667897861"
     },
     {
       "type": "response_condition",
@@ -9713,6 +10586,21 @@
     {
       "type": "response_condition",
       "output": {
+        "generic": []
+      },
+      "parent": "node_7_1628262879087",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_13_1628265543667"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A2_07'",
+      "dialog_node": "response_7_1628262962433",
+      "previous_sibling": "response_1_1628262961087"
+    },
+    {
+      "type": "response_condition",
+      "output": {
         "generic": [
           {
             "values": [
@@ -9737,7 +10625,6 @@
       },
       "parent": "node_10_1602063735631",
       "context": {
-        "Procedure": null,
         "modifiable": "$webhook_result_3.modifiable"
       },
       "next_step": {
@@ -9775,7 +10662,7 @@
       "parent": "node_8_1615798314246",
       "context": {
         "parsed": "$webhook_result_4.parsed",
-        "optional": "$webhook_result_4.optional",
+        "options": "$webhook_result_4.options",
         "redirect": "$webhook_result_4.redirect",
         "sentence": "$webhook_result_4.sentence"
       },
@@ -9919,6 +10806,25 @@
           {
             "values": [
               {
+                "text": "$webhook_result_19.sentence"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_3_1616166282095",
+      "conditions": "$webhook_result_19",
+      "dialog_node": "response_8_1616166306336"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
                 "text": "Quels sont le(s) nouveau(x) groupement(s) ou cultures(s) ?"
               }
             ],
@@ -9961,9 +10867,7 @@
         "generic": []
       },
       "parent": "node_10_1602063735631",
-      "context": {
-        "Procedure": null
-      },
+      "context": {},
       "next_step": {
         "behavior": "jump_to",
         "selector": "body",
@@ -10020,6 +10924,26 @@
     {
       "type": "response_condition",
       "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "$webhook_result_11.sentence"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_5_1614707065969",
+      "context": {},
+      "conditions": "$webhook_result_11",
+      "dialog_node": "response_9_1614707081721"
+    },
+    {
+      "type": "response_condition",
+      "output": {
         "generic": []
       },
       "parent": "node_5_1615799856802",
@@ -10053,7 +10977,7 @@
           {
             "values": [
               {
-                "text": "C'est enregistré redirect=$link_to_reception"
+                "text": "$webhook_result_5.sentence"
               }
             ],
             "response_type": "text",
@@ -10148,6 +11072,106 @@
       "previous_sibling": "response_3_1615802443601"
     },
     {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "Je vous redirige vers le lettrage de comptes.<br><br>Besoin d'aide ? Cliquez <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#lettrage' target='_blank' rel='noopener noreferrer'>ici <i class='icon icon-help'></i></a> redirectkeep=/backend/accounts/reconciliation"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_4_1616170640047",
+      "conditions": "anything_else",
+      "dialog_node": "response_9_1616170732546",
+      "previous_sibling": "response_5_1616170731349"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "$webhook_result_22.sentence"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_9_1617031080927",
+      "conditions": "$webhook_result_22.sentence",
+      "dialog_node": "response_9_1617031098599"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_3_1625223120538",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_10_1625224582133"
+      },
+      "conditions": "$webhook_result_idea.redirect == \"more\"",
+      "dialog_node": "response_9_1625224147411",
+      "previous_sibling": "node_10_1625224582133"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_6_1625162310689",
+      "context": {
+        "previous_indicator": "A1"
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_2_1625222090155"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A1_01'",
+      "dialog_node": "response_9_1625233047847",
+      "previous_sibling": "node_2_1625222176339"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_6_1625162310689",
+      "context": {
+        "previous_indicator": "A1"
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_3_1625222177916"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A1_10'",
+      "dialog_node": "response_9_1625233057362",
+      "previous_sibling": "response_9_1625233047847"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_7_1628262879087",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_2_1625224532915"
+      },
+      "conditions": "anything_else",
+      "dialog_node": "response_9_1628263130468",
+      "previous_sibling": "response_1_1628263124670"
+    },
+    {
       "type": "slot",
       "output": {},
       "parent": "node_5_1605413665715",
@@ -10191,9 +11215,17 @@
     {
       "type": "slot",
       "output": {},
-      "parent": "node_4_1605265631985",
+      "parent": "node_2_1625237974169",
       "variable": "$number",
-      "dialog_node": "slot_3_1605276096087"
+      "dialog_node": "slot_2_1625237994114"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_10_1614761600209",
+      "variable": "$tax_state",
+      "dialog_node": "slot_3_1614761724977",
+      "previous_sibling": "response_6_1614761880683"
     },
     {
       "type": "slot",
@@ -10203,12 +11235,17 @@
     },
     {
       "type": "slot",
-      "output": {},
-      "parent": "node_9_1592573781560",
-      "variable": "$Procedure",
-      "conditions": "",
-      "dialog_node": "slot_4_1592573805575",
-      "previous_sibling": "node_10_1602063735631"
+      "parent": "node_6_1625162310689",
+      "variable": "$campaign_id",
+      "dialog_node": "slot_3_1625218029092",
+      "previous_sibling": "response_4_1625233076132"
+    },
+    {
+      "type": "slot",
+      "parent": "node_3_1615218997511",
+      "variable": "$FixedAssetState",
+      "dialog_node": "slot_4_1615219201073",
+      "previous_sibling": "response_4_1615219220547"
     },
     {
       "type": "slot",
@@ -10232,10 +11269,10 @@
     },
     {
       "type": "slot",
-      "parent": "node_4_1615401809630",
-      "variable": "$new_procedure",
-      "dialog_node": "slot_7_1615401825030",
-      "previous_sibling": "node_10_1602667897861"
+      "parent": "node_7_1625236954458",
+      "variable": "$number",
+      "dialog_node": "slot_6_1625237036434",
+      "previous_sibling": "response_10_1625237072186"
     },
     {
       "type": "slot",

@@ -10,7 +10,7 @@ module Duke
       @session_id = params[:session_id]
       @user_input = params[:user_input]
       @parsed = params[:parsed]
-      @options = params.fetch(:options, {}).permit(*options_params).to_h.to_struct
+      @options = params.fetch(:options, {}).symbolize_keys.slice(*options_params).to_struct
     end
 
     private
