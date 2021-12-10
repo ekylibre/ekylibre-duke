@@ -193,7 +193,7 @@ module Duke
             @input.each do |input|
               sentence += "#{input.name} (#{input[:rate][:value].to_f} "
               if input[:rate][:unit].to_sym == :population
-                sentence += "#{Matter.find_by_id(input.key)&.unit_name}), "
+                sentence += "#{Matter.find_by_id(input.key)&.conditioning_unit&.name}), "
               else
                 input_param = procedo.parameters_of_type(:input).find {|inp| Matter.find_by_id(input.key).of_expression(inp.filter)}
                 sentence += "#{I18n.t("duke.interventions.units.#{input_param.handler(input[:rate][:unit]).unit.name}")}), "
@@ -225,7 +225,7 @@ module Duke
           @input.each_with_index do |input, index|
             if input[:rate][:value].nil?
               sentence = I18n.t("duke.interventions.ask.how_much_inputs_#{rand(0...2)}", input: input.name,
-                                                                                        unit: Matter.find_by_id(input.key)&.unit_name)
+                                                                                unit: Matter.find_by_id(input.key)&.conditioning_unit&.name)
               return sentence, index
             end
           end
