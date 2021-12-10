@@ -3508,6 +3508,7 @@
               "tenant": "$tenant",
               "handler": "Interventions::ParseSentence",
               "options": {
+                "specific": "$webhook_result_3.sentence",
                 "procedure": "$NEW_PROCEDURE"
               },
               "user_input": "$webhook_result_3.parsed"
@@ -3728,7 +3729,7 @@
       "output": {
         "text": {
           "values": [
-            "Bienvenue je vous écoute"
+            "Bienvenue je vous écoute, vous êtes sur innovation"
           ],
           "selection_policy": "sequential"
         }
