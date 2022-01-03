@@ -90,11 +90,20 @@ module Duke
                   reference_name: input_reference_name(input.key),
                   product_id: input.key,
                   quantity_value: input.rate[:value].to_f,
-                  quantity_handler: input.rate[:unit]
+                  quantity_handler: input_quantity_handler(input)
                 }
                 @updaters << "inputs[#{index}]quantity_value"
               end
               computed_attributes
+            end
+          end
+
+          def input_quantity_handler(input)
+            if input[:rate][:unit] == 'population'
+              matter = Matter.find(input[:key])
+              return "net_#{matter.default_unit.dimension}"
+            else
+              return input[:rate][:unit]
             end
           end
 
