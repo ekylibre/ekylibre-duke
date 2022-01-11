@@ -6,7 +6,10 @@ module Duke
 
         def initialize(event)
           super(user_input: event.user_input, procedure: event.options.procedure)
-          @user_input = @user_input.duke_clear.slice!(event.options.specific) if event.options.specific
+          if event.options.specific
+            @user_input = @user_input.duke_clear
+            @user_input.slice!(event.options.specific)
+          end
           extract_procedure unless permitted_procedure_or_categorie?
         end
 
