@@ -6,6 +6,7 @@ module Duke
         def initialize(event)
           super()
           recover_from_hash(event.parsed)
+          @updaters = []
         end
 
         # Saves intervention and handles redirecting
@@ -17,9 +18,21 @@ module Duke
 
           # @returns [Integer] newly created intervention id
           def save_intervention
-            intervention_params = {
+            attributes = intervention_attributes
+            add_readings_attributes(attributes)
+
+            intervention = Procedo::Engine.new_intervention(attributes)
+            @updaters.each do |updater|
+              intervention.impact_with!(updater)
+            end
+            attributes = intervention.to_attributes
+            attributes[:description] = "Duke : #{@description}"
+            ::Intervention.create!(attributes)
+          end
+
+          def intervention_attributes
+            attributes = {
               procedure_name: @procedure,
-              description: "Duke : #{@description}",
               state: 'done',
               number: '50',
               nature: 'record',
@@ -27,10 +40,8 @@ module Duke
               doers_attributes: doer_attributes.to_a,
               targets_attributes: target_attributes.to_a,
               inputs_attributes: input_attributes.to_a,
-              working_periods_attributes: @working_periods.map{|wp| wp.permit!.to_h}
+              working_periods_attributes: @working_periods.map.with_index{|wp, index| [index.to_s, wp]}.to_h
             }
-            add_readings_attributes(intervention_params)
-            it = Intervention.create!(intervention_params)
           end
 
           # @params [hash] params : Intervention_parameters
@@ -63,7 +74,8 @@ module Duke
                   working_zone: Product.find_by_id(crop.id).shape
                 }
               end
-              (targets + groups).uniq{|t| t[:product_id]}
+              targets = (targets + groups).uniq{|t| t[:product_id]}
+              targets.map.with_index { |target, i| [i, target] }.to_h
             end
           end
 
@@ -72,15 +84,26 @@ module Duke
             if @input.blank? || Procedo::Procedure.find(@procedure).parameters_of_type(:input).blank?
               []
             else
-              @input.map do |input|
-                {
+              computed_attributes = {}
+              @input.to_a.each_with_index do |input, index|
+                computed_attributes[index.to_s] = {
                   reference_name: input_reference_name(input.key),
                   product_id: input.key,
                   quantity_value: input.rate[:value].to_f,
-                  quantity_population: input.rate[:value].to_f,
-                  quantity_handler: input.rate[:unit]
+                  quantity_handler: input_quantity_handler(input)
                 }
+                @updaters << "inputs[#{index}]quantity_value"
               end
+              computed_attributes
+            end
+          end
+
+          def input_quantity_handler(input)
+            if input[:rate][:unit] == 'population'
+              matter = Matter.find(input[:key])
+              return "net_#{matter.default_unit.dimension}"
+            else
+              return input[:rate][:unit]
             end
           end
 
@@ -89,12 +112,12 @@ module Duke
             if @doer.blank? || Procedo::Procedure.find(@procedure).parameters_of_type(:doer).blank?
               []
             else
-              @doer.to_a.map do |worker|
-                {
+              @doer.map.with_index do |doer, index|
+                [index, {
                   reference_name: Procedo::Procedure.find(@procedure).parameters_of_type(:doer).first.name,
-                  product_id: worker.key
-                }
-              end
+                  product_id: doer.key
+                }]
+              end.to_h
             end
           end
 
@@ -103,12 +126,12 @@ module Duke
             if @tool.blank? || Procedo::Procedure.find(@procedure).parameters_of_type(:tool).blank?
               []
             else
-              @tool.to_a.map do |tool|
-                {
+              @tool.map.with_index do |tool, index|
+                [index, {
                   reference_name: tool_reference_name(tool.key),
                   product_id: tool.key
-                }
-              end
+                }]
+              end.to_h
             end
           end
 

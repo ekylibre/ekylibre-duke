@@ -6,6 +6,10 @@ module Duke
 
         def initialize(event)
           super(user_input: event.user_input, procedure: event.options.procedure)
+          if event.options.specific
+            @user_input = @user_input.duke_clear
+            @user_input.slice!(event.options.specific)
+          end
           extract_procedure unless permitted_procedure_or_categorie?
         end
 
@@ -61,21 +65,31 @@ module Duke
               parser = DukeParser.new(word_combo: combo, level: 80, attributes: attributes) # create new DukeParser
               parser.parse # parse procedure
             end
-            @procedure = procs.max.key if procs.present?
+            if procs.present?
+              @procedure = procs.max.key
+              @user_input.slice!(procs.max.matched)
+              @procedure_word = procs.max.matched
+            end
           end
 
           # Procedures iterator depending on user activity scope
           def procedure_iterator
-            procedure_scope =
-            [
-              :common,
-              if Saassy.ekyagri?
-                :vegetal
-              else
-                vegetal? ? :viti_vegetal : :viti
-              end,
-              animal? ? :animal : nil
-            ]
+            procedure_scope = if !defined?(Saassy)
+                                %i[
+                                  common
+                                  viti_vegetal
+                                ]
+                              else
+                                [
+                                  :common,
+                                  if Saassy.ekyagri?
+                                    :vegetal
+                                  else
+                                    vegetal? ? :viti_vegetal : :viti
+                                  end,
+                                  animal? ? :animal : nil
+                                ]
+                              end
             procedure_entities.slice(*procedure_scope).values.flatten
           end
 
@@ -125,7 +139,7 @@ module Duke
               optionify(label, proc[:name])
             end
             options = dynamic_options(I18n.t('duke.interventions.ask.which_procedure'), procs)
-            Duke::DukeResponse.new(parsed: @description, redirect: :what_procedure, options: options)
+            Duke::DukeResponse.new(parsed: @description, redirect: :what_procedure, options: options, sentence: @procedure_word)
           end
 
           # Suggest disambiguation to the user for his selected category
