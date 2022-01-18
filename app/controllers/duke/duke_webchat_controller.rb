@@ -6,12 +6,7 @@ module Duke
     end
 
     def create_session
-      assistant_id = if Saassy.ekyviti?
-                       WATSON_EKYVITI_ID
-                     else
-                       WATSON_EKY_ID
-                     end
-      render(json: create_assistant.session_creation(assistant_id).to_json)
+      render(json: create_assistant.session_creation(WATSON_EKYVITI_ID).to_json)
     end
 
     def send_msg
@@ -32,12 +27,14 @@ module Duke
     private
 
       def user_defined
+        user_plan = defined?(Saassy) ? Saassy.product_name : 'ekyagri'
         if current_user
           {
             tenant: Ekylibre::Tenant.current,
             user_token: current_user.authentication_token,
             user_email: current_user.email,
-            user_url: "#{request.protocol}#{request.host}/dukewatson"
+            user_url: "#{request.protocol}#{request.host}/dukewatson",
+            user_plan: user_plan
           }
         else
           {

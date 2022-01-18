@@ -281,7 +281,8 @@ module Duke
           attrs = {
             activity_variety: :cultivation_variety_name,
             entity: :full_name,
-            financial_year: :code
+            financial_year: :code,
+            input: :unambiguous_name
           }
           if attrs.key? item_type
             attrs[item_type]
@@ -330,11 +331,11 @@ module Duke
           elsif item_type == :tool
             iterator = Equipment.availables(at: @date.to_time)
           elsif item_type == :plant
-            iterator = Plant.availables(at: @date.to_time)
+            iterator = Plant.interventionables(at: @date.to_time)
           elsif item_type == :land_parcel
-            iterator = LandParcel.availables(at: @date.to_time)
+            iterator = LandParcel.interventionables(at: @date.to_time)
           elsif item_type == :cultivation
-            iterator = Product.availables(at: @date.to_time).of_expression('is land_parcel or is plant')
+            iterator = Product.of_expression('is plant or is land_parcel').interventionables(at: @date.to_time)
           end
           return iterator.map{|rec| { id: rec.id, partials: rec.send(name_attr).duke_clear.words_combinations, name: rec.send(name_attr) }}
         end
