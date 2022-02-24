@@ -19,24 +19,6 @@ module Duke
           to_ibm
         end
 
-        private
-
-          # @param [DukeIntervention] int : previous DukeIntervention
-          def join_temporality(int)
-            self.update_description(int.description)
-            if int.working_periods.size > 1 && int.duration.present?
-              @working_periods = int.working_periods
-              return
-            elsif (int.date.to_date == @date.to_date || int.date.to_date != @date.to_date && int.date.to_date == Time.now.to_date)
-              @date = @date.to_time.change(hour: int.date.hour, min: int.date.min) if int.not_current_time?
-            elsif int.date.to_date != Time.now.to_date
-              @date = @date.to_time.change(year: int.date.year, month: int.date.month, day: int.date.day)
-              @date = @date.to_time.change(hour: int.date.hour, min: int.date.min) if int.not_current_time?
-            end
-            @duration = int.duration if int.duration.present? && (@duration.nil? || @duration.eql?(60) || !int.duration.eql?(60))
-            working_periods_attributes
-          end
-
       end
     end
   end
