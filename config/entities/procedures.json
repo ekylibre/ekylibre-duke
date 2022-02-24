@@ -489,7 +489,8 @@
       "partials": [
         "hersage",
         "herse",
-        "herser"
+        "herser",
+        "percage"
       ]
     },
     {
@@ -883,7 +884,10 @@
       "partials": [
         "hersage",
         "herse",
-        "herser"
+        "herser",
+        "percage",
+        "percer",
+        "perce"
       ]
     },
     {
@@ -1292,7 +1296,8 @@
       "partials": [
         "tondre",
         "tondu",
-        "tonte"
+        "tonte",
+        "tontes"
       ]
     },
     {
@@ -2089,7 +2094,10 @@
       "partials": [
         "hersage",
         "herse",
-        "herser"
+        "herser",
+        "percage",
+        "percer",
+        "perce"
       ]
     },
     {
@@ -2419,7 +2427,8 @@
       "partials": [
         "tondre",
         "tondu",
-        "tonte"
+        "tonte",
+        "tontes"
       ]
     },
     {

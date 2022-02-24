@@ -62,7 +62,12 @@
         if (op.hasOwnProperty('global_label')) {
           $('.msg_container.options').last().append(D.DukeUtils.templates.global_label(op.global_label));
         } else {
-          $('.msg_container.options').last().append(D.DukeUtils.templates.mult_option(op.value.input.text, op.label));
+          if (D.DukeUtils.isCheckedReg.test(op.label)) {
+            $('.msg_container.options').last().append(D.DukeUtils.templates.checked_mult_option(op.value.input.text, op.label.replace(D.DukeUtils.isCheckedReg, "")));
+          }
+          else {
+            $('.msg_container.options').last().append(D.DukeUtils.templates.mult_option(op.value.input.text, op.label));
+          }
         }
       });
       $('.msg_container.options').last().append(D.DukeUtils.templates.mult_validate);
