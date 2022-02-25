@@ -63,6 +63,46 @@ module Duke
         @retry = 0
       end
 
+      # Parse a specific item type, if user can answer via buttons
+      # @param [String] sp : specific item type
+      def parse_specific_buttons(specific)
+        if btn_click_response? @user_input # If response type matches a multiple click response
+          products = btn_click_responses(@user_input).map do |id| # Creating a list with all chosen products
+            if specific == :working_entity
+              Product.find_by_id(id).is_a?(Worker) ? Product.find(id) : WorkerGroup.find(id)
+            else
+              Product.find(id)
+            end
+          end
+          products.each{|product| unless product.nil?
+                                    send(specific).push DukeMatchingItem.new(name: product.name,
+                                                                            key: product.id,
+                                                                            distance: 1,
+                                                                            matched: product.name)
+                                  end}
+          add_input_rate if specific.to_sym == :input
+          @specific = specific.to_sym
+          @description = products.map(&:name).join(', ')
+        elsif !btn_click_cancelled? @user_input
+          parse_specific(specific)
+        end
+      end
+
+      # Parse a specific item type, if user input isn't a button click
+      # @param [String] sp : specific item type
+      def parse_specific(specific)
+        @description = @user_input.clone
+        @user_input = @user_input.duke_clear
+        @specific = if specific.to_sym.eql? :targets
+                      tag_specific_targets
+                    else
+                      specific
+                    end
+        extract_user_specifics(duke_json: self.duke_json(@specific, :procedure, :date, :user_input))
+        add_input_rate if specific.to_sym == :input
+        find_ambiguity
+      end
+
       # Find ambiguities in what's been parsed
       def find_ambiguity
         self.as_json.each do |key, reco|
@@ -123,6 +163,28 @@ module Duke
         end
         @date = Time.new(d.year, d.month, d.day, time.hour, time.min, time.sec) # Set correct time to date if match
         @offset = "+0#{Time.at(@date.to_time).utc_offset / 3600}:00"
+      end
+
+      # @param [String] istr
+      def extract_wp_from_interval(istr = @user_input)
+        istr.scan(Duke::Utils::Regex.hour_interval).to_a.each do |interval|
+          start, ending = [extract_hour(interval.first), extract_hour(interval.first)].sort # Extract two hours from interval & sort it
+          @date = @date.to_time.change(offset: @offset, hour: start.hour, min: start.min)
+          @duration = ((ending - start)/60).to_i
+          @working_periods.push(
+            {
+              started_at: @date,
+              stopped_at: @date + @duration.minutes
+              }
+          )
+        end
+      end
+
+      # Checks if HH:MM corresponds to Time.now.HH:MM
+      def not_current_time?
+        now = Time.now
+        hour_diff = @date.change(year: now.year, month: now.month, day: now.day) - now
+        hour_diff.abs > 300
       end
 
       private
@@ -231,6 +293,23 @@ module Duke
           }[month.to_sym]
         end
 
+        # @param [DukeIntervention] int : previous DukeIntervention or Article
+        def join_temporality(int)
+          self.update_description(int.description)
+          if int.working_periods.size > 1 && int.duration.present?
+            @working_periods = int.working_periods
+            return
+          elsif (int.date.to_date == @date.to_date || int.date.to_date != @date.to_date && int.date.to_date == Time.now.to_date)
+            @date = @date.to_time.change(hour: int.date.hour, min: int.date.min) if int.not_current_time?
+          elsif int.date.to_date != Time.now.to_date
+            @date = @date.to_time.change(year: int.date.year, month: int.date.month, day: int.date.day)
+            @date = @date.to_time.change(hour: int.date.hour, min: int.date.min) if int.not_current_time?
+          end
+          @duration = int.duration if int.duration.present? && (@duration.nil? || @duration.eql?(60) || !int.duration.eql?(60))
+          @date += @duration.minutes if self.class.to_s.match(/TimeLogs/) && int.working_periods.size == 1 && int.not_current_time?
+          working_periods_attributes
+        end
+
         # @param [Integer] value : Integer extracted by ibm
         # @return [Stringified float or integer] || [nilType]
         def extract_number_parameter(value)
@@ -253,6 +332,12 @@ module Duke
         # Choose between new_duration and @duration
         def choose_duration(new_duration)
           @duration = new_duration unless new_duration.is_a?(Array) && new_duration.size.eql?(2)
+        end
+
+        # @params [DateTime.to_s] hour
+        # @returns [String] Readable hour
+        def speak_hour(hour)
+          hour.to_time.min.positive? ? hour.to_time.strftime('%-Hh%M') : hour.to_time.strftime('%-Hh')
         end
 
         # @returns { [0]: "Je", [0,1]: "Je suis", [0,1,2]: "Je suis ton", [1]: "suis", [1,2]: "suis ton", [2]: "ton"} for "Je suis ton"
@@ -297,6 +382,10 @@ module Duke
           name_attr = name_attr(item_type)
           if empty_iterator?(item_type)
             iterator = []
+          elsif item_type == :working_entity
+            iterator = (WorkerGroup.at(@date.to_time) + Worker.availables(at: @date.to_time))
+          elsif item_type == :worker_group
+            iterator = WorkerGroup.at(@date.to_time)
           elsif item_type == :product_nature_variant
             iterator = ProductNatureVariant.all
           elsif item_type == :lexicon_article
@@ -329,7 +418,7 @@ module Duke
           elsif item_type == :press
             iterator = Matter.availables(at: @date.to_time).can('press(grape)', 'press(juice)', 'press(fermented_juice)', 'press(wine)')
           elsif item_type == :doer
-            iterator = Worker.availables(at: @date.to_time).each
+            iterator = Worker.availables(at: @date.to_time)
           elsif item_type == :entity
             iterator = Entity.all
           elsif item_type == :destination

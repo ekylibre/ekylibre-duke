@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    duke (1.1.0)
+    duke (2.2.0)
       httparty (~> 0.17.3)
       ibm_watson (~> 1.6.0)
       sidekiq (~> 4.2.10)

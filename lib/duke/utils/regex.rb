@@ -17,6 +17,10 @@ module Duke
         /(de|pendant|durée) *(\d{1,2})\s?(h\b|h\s|heure)/
       end
 
+      def self.basic_duration
+        /(\d{1,2})\s?(h|h|heure)(\d{1,2})?/
+      end
+
       def self.time
         /\b(00|[0-9]|1[0-9]|2[0-3]) *(h|heure(s)?|:) *([0-5]?[0-9])?\b/
       end
