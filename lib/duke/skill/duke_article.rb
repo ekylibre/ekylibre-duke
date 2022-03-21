@@ -298,6 +298,7 @@ module Duke
           self.update_description(int.description)
           if int.working_periods.size > 1 && int.duration.present?
             @working_periods = int.working_periods
+            @date = int.date
             return
           elsif (int.date.to_date == @date.to_date || int.date.to_date != @date.to_date && int.date.to_date == Time.now.to_date)
             @date = @date.to_time.change(hour: int.date.hour, min: int.date.min) if int.not_current_time?
