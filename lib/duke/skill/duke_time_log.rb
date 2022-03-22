@@ -110,11 +110,11 @@ module Duke
           sentence += "<br>&#8226 #{I18n.t('duke.interventions.doer')} : #{@working_entity.map(&:name).join(', ')}"
           sentence += "<br>&#8226 #{I18n.t('duke.interventions.date')} : #{@date.to_time.strftime('%d/%m/%Y')}"
           wp = @working_periods.sort_by{|wp| wp[:started_at]}
-          sentence += "<br>&#8226 #{I18n.t('duke.interventions.working_period')} : #{wp.map do |wp|
-                                                                                       I18n.t('duke.interventions.working_periods',
-                                                                                              start: speak_hour(wp[:started_at]),
-                                                                                              ending: speak_hour(wp[:stopped_at]))
-                                                                                     end.join(', ')}"
+          sentence += "<br>&#8226 #{I18n.t('duke.time_logs.working_periods')} : #{wp.map do |wp|
+                                                                                    I18n.t('duke.interventions.working_periods',
+                                                                                           start: speak_hour(wp[:started_at]),
+                                                                                           ending: speak_hour(wp[:stopped_at]))
+                                                                                  end.join(', ')}"
         end
 
         # @param [String] type : Type of item for which we want to display all suggestions
@@ -124,13 +124,13 @@ module Duke
             [
               [
                 {
-                  global_label: 'Equipiers'
+                  global_label: 'Équipier(s)'
                 },
                 Worker.availables(at: @date.to_time)
               ],
               [
                 {
-                  global_label: "Groupe d'équipiers"
+                  global_label: "Groupe(s) d'équipiers"
                 },
                 WorkerGroup.at(@date.to_time)
               ]

@@ -96,6 +96,7 @@ fra:
         save_time_log: "Voulez-vous enregistrer les temps de travaux suivants ?"
       saved: "Les temps de travaux sont enregistrés.<br>Je vous y redirige.redirect=/backend/worker-time-logs"
       impossible: "C'est impossible &#129303"
+      working_periods: "Horaires de travail"
     interventions:
       ask:
         save_intervention_0: "Voulez-vous enregistrer cette intervention"
