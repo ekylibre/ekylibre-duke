@@ -17,10 +17,16 @@
         roomId: sessionStorage.getItem('duke_id')
       }, {
         received: function(data) {
+          console.log("we received a Duke Message")
           D.webchat_interface.onMsg(data);
         },
         connected: function() {
+          console.log("correctly connected to DukeChannel")
           connBack.bind(D.webchat)(intent, msg);
+          console.log("callBack message has been sent")
+        },
+        disconnected: function() {
+          console.log("we are disconnected from DukeChannel")
         }
       });
     }
