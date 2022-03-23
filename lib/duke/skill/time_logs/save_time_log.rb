@@ -16,7 +16,9 @@ module Duke
           if error.nil?
             find_workers.each do |worker|
               @working_periods.each do |wp|
-                worker.time_logs.create!(started_at: wp[:started_at].to_time, stopped_at: wp[:stopped_at].to_time)
+                if Worker.at(wp[:started_at].to_time).include? worker
+                  worker.time_logs.create!(started_at: wp[:started_at].to_time, stopped_at: wp[:stopped_at].to_time)
+                end
               end
             end
             Duke::DukeResponse.new(sentence: I18n.t('duke.time_logs.saved'))
