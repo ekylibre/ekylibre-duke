@@ -132,7 +132,7 @@ module Duke
                 {
                   global_label: "Groupe(s) d'équipiers"
                 },
-                WorkerGroup.at(@date.to_time)
+                WorkerGroup.all
               ]
             ]
           options = items.flatten.map do |itm| # Turn it to Jsonified options

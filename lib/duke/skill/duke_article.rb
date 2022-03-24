@@ -384,9 +384,9 @@ module Duke
           if empty_iterator?(item_type)
             iterator = []
           elsif item_type == :working_entity
-            iterator = (WorkerGroup.at(@date.to_time) + Worker.availables(at: @date.to_time))
+            iterator = (WorkerGroup.all + Worker.availables(at: @date.to_time))
           elsif item_type == :worker_group
-            iterator = WorkerGroup.at(@date.to_time)
+            iterator = WorkerGroup.all
           elsif item_type == :account
             iterator = Account.all
           elsif item_type == :journal
