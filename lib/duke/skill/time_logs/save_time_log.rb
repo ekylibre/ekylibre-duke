@@ -13,15 +13,22 @@ module Duke
         # options specific: what we're looking for (tool || target || input || doer)
         def handle
           error = validate_working_periods
+          warnings = []
           if error.nil?
             find_workers.each do |worker|
               @working_periods.each do |wp|
                 if Worker.at(wp[:started_at].to_time).include? worker
                   worker.time_logs.create!(started_at: wp[:started_at].to_time, stopped_at: wp[:stopped_at].to_time)
+                else
+                  warnings.push(:worker_not_created)
                 end
               end
             end
-            Duke::DukeResponse.new(sentence: I18n.t('duke.time_logs.saved'))
+            if warnings.empty?
+              Duke::DukeResponse.new(sentence: I18n.t('duke.time_logs.saved'))
+            else
+              Duke::DukeResponse.new(sentence: I18n.t('duke.time_logs.saved_with_warnings'))
+            end
           else
             Duke::DukeResponse.new(sentence: error)
           end
