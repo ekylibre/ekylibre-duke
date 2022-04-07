@@ -37,7 +37,7 @@ class DukeArticleTest < Minitest::Test
   def test_can_parse_date_and_duration
     @time_article.extract_date
     @time_article.send(:extract_duration)
-    assert_equal Time.now.change(hour: 8, min: 30, offset: @time_article.send(:offset)), @time_article.date,
+    assert_equal Time.now.change(hour: 8, min: 30), @time_article.date,
                  'Wrong date parsed'
     assert_equal 210, @time_article.duration, 'Wrong duration parsed'
   end
@@ -45,7 +45,7 @@ class DukeArticleTest < Minitest::Test
   def test_can_parse_date_and_set_base_duration
     @time_article_bis.extract_date
     @time_article_bis.send(:extract_duration)
-    assert_equal 1.day.ago.change(hour: 14, min: 30, offset: @time_article_bis.send(:offset)), @time_article_bis.date,
+    assert_equal 1.day.ago.change(hour: 14, min: 30), @time_article_bis.date,
                  'Wrong date parsed'
     assert_nil @time_article_bis.duration, "Duration isn't nil when specific hour is parsed"
   end
