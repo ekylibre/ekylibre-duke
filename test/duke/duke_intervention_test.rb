@@ -13,7 +13,7 @@ class DukeInterventionTest < Minitest::Test
 
   def test_can_extract_date_and_duration
     @intervention.extract_date_and_duration
-    assert_equal Time.now.change(hour: 8, min: 0o0, offset: @intervention.send(:offset)), @intervention.date,
+    assert_equal Time.now.change(hour: 8, min: 0), @intervention.date,
                  'Incorrect date parsing'
     assert_equal 210, @intervention.duration, 'Incorrect duration parsing'
   end
@@ -22,8 +22,8 @@ class DukeInterventionTest < Minitest::Test
     @intervention.send(:extract_wp_from_interval, 'entre 15h et 19h')
     assert_includes @intervention.working_periods,
                     {
-                      started_at: Time.now.change(hour: 15, min: 0, offset: @intervention.send(:offset)),
-                      stopped_at: Time.now.change(hour: 19, min: 0, offset: @intervention.send(:offset))
+                      started_at: Time.now.change(hour: 15, min: 0),
+                      stopped_at: Time.now.change(hour: 19, min: 0)
                     },
                     'Should extract a working period from this interval'
   end

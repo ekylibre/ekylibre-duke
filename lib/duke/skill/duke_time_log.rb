@@ -22,7 +22,7 @@ module Duke
           if input_clone.match(Duke::Utils::Regex.morning_hour)
             @duration = 60 if @duration.nil?
           elsif input_clone.match(Duke::Utils::Regex.afternoon_hour)
-            @date = @date.change(hour: @date.hour+12)
+            @date = @date.to_time.change(hour: @date.hour+12)
             @duration = 60 if @duration.nil?
           elsif input_clone.match('matin')
             if duration.present?
@@ -32,8 +32,8 @@ module Duke
               @working_periods =
               [
                 {
-                  started_at: @date.to_time.change(offset: @offset, hour: 8, min: 0),
-                  stopped_at: @date.to_time.change(offset: @offset, hour: 12, min: 0)
+                  started_at: @date.to_time.change(hour: 8, min: 0),
+                  stopped_at: @date.to_time.change(hour: 12, min: 0)
                   }
                 ]
             end
@@ -45,8 +45,8 @@ module Duke
               @working_periods =
               [
                 {
-                  started_at: @date.to_time.change(offset: @offset, hour: 14, min: 0),
-                  stopped_at: @date.to_time.change(offset: @offset, hour: 17, min: 0)
+                  started_at: @date.to_time.change(hour: 14, min: 0),
+                  stopped_at: @date.to_time.change(hour: 17, min: 0)
                   }
                 ]
             end
@@ -62,18 +62,26 @@ module Duke
           @working_periods =
           [
             {
-              started_at: @date.to_time.change(offset: @offset) - 1.hour,
-              stopped_at: @date.to_time.change(offset: @offset)
+              started_at: @date.to_time - 1.hour,
+              stopped_at: @date.to_time
             }
           ]
         elsif @duration.is_a?(Integer) # Specific working_periods if a duration was found
-          @working_periods =
-          [
-            {
-              started_at: @date.to_time.change(offset: @offset) - @duration.to_i.minutes,
-              stopped_at: @date.to_time.change(offset: @offset)
-            }
-          ]
+          @working_periods =  if not_current_time?
+                                [
+                                  {
+                                    started_at: @date.to_time,
+                                    stopped_at: @date.to_time + @duration.to_i.minutes
+                                  }
+                                ]
+                              else
+                                [
+                                  {
+                                   started_at: @date.to_time - @duration.to_i.minutes,
+                                   stopped_at: @date.to_time
+                                  }
+                                ]
+                              end
         end
       end
 

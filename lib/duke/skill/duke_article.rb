@@ -162,14 +162,13 @@ module Duke
           return
         end
         @date = Time.new(d.year, d.month, d.day, time.hour, time.min, time.sec) # Set correct time to date if match
-        @offset = "+0#{Time.at(@date.to_time).utc_offset / 3600}:00"
       end
 
       # @param [String] istr
       def extract_wp_from_interval(istr = @user_input)
         istr.scan(Duke::Utils::Regex.hour_interval).to_a.each do |interval|
           start, ending = [extract_hour(interval.first), extract_hour(interval.first)].sort # Extract two hours from interval & sort it
-          @date = @date.to_time.change(offset: @offset, hour: start.hour, min: start.min)
+          @date = @date.to_time.change(hour: start.hour, min: start.min)
           @duration = ((ending - start)/60).to_i
           @working_periods.push(
             {
@@ -183,13 +182,13 @@ module Duke
       # Checks if HH:MM corresponds to Time.now.HH:MM
       def not_current_time?
         now = Time.now
-        hour_diff = @date.change(year: now.year, month: now.month, day: now.day) - now
+        hour_diff = @date.to_time.change(year: now.year, month: now.month, day: now.day) - now
         hour_diff.abs > 300
       end
 
       private
 
-        attr_accessor :retry, :tool, :cultivablezones, :offset
+        attr_accessor :retry, :tool, :cultivablezones
 
         def parseable
           %i[tool cultivablezones]
