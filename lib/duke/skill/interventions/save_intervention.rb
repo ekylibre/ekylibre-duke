@@ -16,6 +16,15 @@ module Duke
 
         private
 
+          def zoned_working_periods
+            @working_periods.each do |wp|
+              %w[started_at stopped_at].each do |indicator|
+                wp[indicator] = Time.zone.at(wp[indicator].to_time).to_s
+              end
+            end
+            @working_periods.map.with_index{|wp, index| [index.to_s, wp]}.to_h
+          end
+
           # @returns [Integer] newly created intervention id
           def save_intervention
             attributes = intervention_attributes
@@ -40,7 +49,7 @@ module Duke
               doers_attributes: doer_attributes.to_a,
               targets_attributes: target_attributes.to_a,
               inputs_attributes: input_attributes.to_a,
-              working_periods_attributes: @working_periods.map.with_index{|wp, index| [index.to_s, wp]}.to_h
+              working_periods_attributes: zoned_working_periods
             }
           end
 
