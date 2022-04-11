@@ -18,7 +18,8 @@ module Duke
             find_workers.each do |worker|
               @working_periods.each do |wp|
                 if Worker.at(wp[:started_at].to_time).include? worker
-                  worker.time_logs.create!(started_at: wp[:started_at].to_time, stopped_at: wp[:stopped_at].to_time)
+                  worker.time_logs.create!(started_at: Time.zone.at(wp[:started_at].to_time),
+stopped_at: Time.zone.at(wp[:stopped_at].to_time))
                 else
                   @warnings.push(:worker_not_created)
                 end
