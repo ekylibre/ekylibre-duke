@@ -125,6 +125,15 @@
       "intent": "Export",
       "examples": [
         {
+          "text": "bilan 2022"
+        },
+        {
+          "text": "compte de résultats 2022"
+        },
+        {
+          "text": "compte résultat 2022"
+        },
+        {
           "text": "Créer l'export de mon document"
         },
         {
@@ -1291,6 +1300,84 @@
       "description": "Intent to return when Intent suggestion were not selected by the user on ambiguity"
     },
     {
+      "intent": "ProductionCost",
+      "examples": [
+        {
+          "text": "Affiche mes couts de productions pour le blé de 2022"
+        },
+        {
+          "text": "Calcule mes couts de productions"
+        },
+        {
+          "text": "Combien m'a couté l'activité sur l'année dernières"
+        },
+        {
+          "text": "Combien m'a couté mon activité blé en 2022"
+        },
+        {
+          "text": "Combien m'a couté mon blé en 2022"
+        },
+        {
+          "text": "Combien m'a couté mon blé en 2023"
+        },
+        {
+          "text": "Combien me coute ma luzerne sur l'année en cours"
+        },
+        {
+          "text": "coup de production 2020 sur mes vignes"
+        },
+        {
+          "text": "Coût de production"
+        },
+        {
+          "text": "Coût de production du blé pour l'année 2022"
+        },
+        {
+          "text": "Coût de production du maïs pour l'année 2022"
+        },
+        {
+          "text": "Coût de production pour l'année 2021"
+        },
+        {
+          "text": "Coût de production pour l'année 2022"
+        },
+        {
+          "text": "Coût de production pour l'année 2023"
+        },
+        {
+          "text": "Couts pour la luzerne de 2022"
+        },
+        {
+          "text": "Quel est le cout de production de la campagne 2021"
+        },
+        {
+          "text": "Quel est mon coût de production"
+        },
+        {
+          "text": "Quel est mon coût de production pour le blé en 2021"
+        },
+        {
+          "text": "Quel est mon coût de production pour le blé en 2022"
+        },
+        {
+          "text": "Quel est mon coût de production pour le blé en 2023"
+        },
+        {
+          "text": "Quel est mon coût de production pour le maïs en 2021"
+        },
+        {
+          "text": "Quel est mon coût de production pour le maïs en 2022"
+        },
+        {
+          "text": "Quel est mon coût de production pour le maïs en 2023"
+        },
+        {
+          "text": "Quels sont les couts de production de la luzerne"
+        }
+      ],
+      "description": "Allow to detect emphasis for production cost"
+    },
+    {
       "intent": "Show",
       "examples": [
         {
@@ -1820,6 +1907,7 @@
           "value": "IncomeStatement",
           "synonyms": [
             "compte de résultats",
+            "resultat",
             "résultat",
             "résultats"
           ]
@@ -3690,6 +3778,33 @@
     },
     {
       "type": "standard",
+      "title": "Production Cost",
+      "parent": "node_4_1615390045421",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "tenant": "$tenant",
+              "handler": "Redirections::ToProductionCost",
+              "user_input": " <? input.text  ?>"
+            }
+          },
+          "result_variable": "webhook_result_28"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#ProductionCost",
+      "dialog_node": "node_10_1650362279100",
+      "previous_sibling": "node_10_1605181561792"
+    },
+    {
+      "type": "standard",
       "title": "Modify Temporality",
       "output": {},
       "parent": "node_4_1599664519103",
@@ -3729,7 +3844,7 @@
       "output": {
         "text": {
           "values": [
-            "Bienvenue je vous écoute, vous êtes sur innovation"
+            "Bienvenue je vous écoute"
           ],
           "selection_policy": "sequential"
         }
@@ -5763,7 +5878,7 @@
     {
       "type": "folder",
       "title": "Redirection",
-      "conditions": "#Show",
+      "conditions": "#Show || #ProductionCost",
       "dialog_node": "node_4_1615390045421",
       "previous_sibling": "node_9_1615385623867"
     },
@@ -5832,7 +5947,7 @@
     {
       "type": "folder",
       "title": "IDEA",
-      "conditions": "#IDEA_A1 || #IDEA_A2 && $user_plan == 'ekyviti",
+      "conditions": "#IDEA_A1 || #IDEA_A2 && $user_plan == 'ekyviti'",
       "dialog_node": "node_4_1625162317230",
       "previous_sibling": "Bienvenue"
     },
@@ -8701,6 +8816,40 @@
       },
       "conditions": "$previous_indicator == 'A2'",
       "dialog_node": "response_2_1628585469781"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "$webhook_result_28.sentence"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_10_1650362279100",
+      "conditions": "$webhook_result_28",
+      "dialog_node": "response_2_1650363568928"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "Raté"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_10_1650362279100",
+      "conditions": "anything_else",
+      "dialog_node": "response_2_1650363570771",
+      "previous_sibling": "response_2_1650363568928"
     },
     {
       "type": "response_condition",
