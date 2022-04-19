@@ -405,6 +405,8 @@ module Duke
             iterator = CropGroup.all
           elsif item_type == :financial_year
             iterator = FinancialYear.all
+          elsif item_type == :campaign
+            iterator = Campaign.all
           elsif item_type == :activity_variety
             iterator = Activity.select('distinct on (cultivation_variety) *')
           elsif item_type == :press

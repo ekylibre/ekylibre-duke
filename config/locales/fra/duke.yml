@@ -1,6 +1,6 @@
 fra:
   duke:
-    amounts: 
+    amounts:
       active_eq: "Il y a actuellement %{amount} équipements diponibles sur la ferme"
       stopped_eq: "Il y a %{amount} outils à l'arrêt sur la ferme"
       multiple_problem_eq: "Vous avez actuellement %{amount} outils avec un incident reporté<br>Voulez vous afficher la liste ?"
@@ -9,7 +9,7 @@ fra:
       average_oldness: "L'âge moyen de votre parc équipement est de %{amount} ans"
       insurance: "Le montant total de vos assurances depuis le %{date} est de %{amount} €"
       unpaid_purchases: "Le montant total de vos achats impayés est de %{amount}"
-    exports: 
+    exports:
       no_tool_found: "Je n'ai pas compris l'équipement pour lequel vous souhaitez avoir la fiche de côuts."
       no_var_found: "Je n'ai pas compris la variété du cahier de culture à exporter. Veuillez réessayer."
       tool_export_started: "J'ai lancé l'export pour l'outil %{tool}, vous serez notifié lorsque celui-ci sera terminé."
@@ -41,12 +41,14 @@ fra:
       invalid_maaid: "Le code AMM %{id} est invalide. J'annule l'import.<br><br>Besoin d'aide pour l'import de produits phytos ? Cliquez <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre8/#phyto' target='_blank' rel='noopener noreferrer'>ici <i class='icon icon-help'></i>"
       w_maaid: "Quel produit phytosanitaire souhaitez-vous importer ?"
       all_phyto: "Je vous redirige vers l’import des variantes de produits phytosanitaires.<br><br>Besoin d'aide pour l'import de produits phytos? Cliquez <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre8/#phyto' target='_blank' rel='noopener noreferrer'>ici <i class='icon icon-help'></i></a>redirectkeep=/backend/variants/articles/plant_medicine_articles/pick"
-    redirections: 
+    redirections:
       no_activity: "Je n'ai pas compris le type d'activité à laquelle vous souhaitez accéder. Réessayez"
       activity: "Je vous redirige vers votre activité de %{variety}"
       which_activity: "A quelle activité de %{variety} souhaitez-vous accéder ?"
       no_current_activity: "Vous n'avez pas d'activité de %{variety}, souhaitez-vous en créer une ?"
       not_finding: "Je ne comprends pas ce à quoi vous souhaitez accéder"
+      to_production_cost_campaign: "Je vous redirige vers vos coûts de production de l'année %{harvest_year}.<br><br>Besoin d'aide pour l'utilisation des coûts de production ? Cliquez <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/performance/#couts-prod' target='_blank' rel='noopener noreferrer'>ici <i class='icon icon-help'></i></a> redirectkeep=/economic/costs?current_campaign=%{harvest_year}"
+      to_production_cost_default: "Je vous redirige vers vos coûts de production de l'année en cours.<br><br>Besoin d'aide pour l'utilisation des coûts de production ? Cliquez <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/performance/#couts-prod' target='_blank' rel='noopener noreferrer'>ici <i class='icon icon-help'></i></a> redirectkeep=/economic/costs"
       found_tool: "Je vous redirige vers la page de l'outil %{tool}"
       to_all_bills: "Je vous redirige vers vos factures d'achat.<br><br>Besoin d'aide pour la gestion des achats ? Cliquez <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre6/#facturation' target='_blank' rel='noopener noreferrer'>ici <i class='icon icon-help'></i></a> redirectkeep=/backend/purchase_invoices"
       to_unpaid_bills: "Je vous redirige vers vos factures d'achat impayées.<br><br>Besoin d'aide pour la gestion des achats ? Cliquez <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre6/#facturation' target='_blank' rel='noopener noreferrer'>ici <i class='icon icon-help'></i></a> redirectkeep=/backend/purchase_invoices?utf8=✓&q=&nature=unpaid"
@@ -83,11 +85,11 @@ fra:
       journal: "Je vous redirige vers le journal %{name}.<br><br>Besoin d'aide ?<br>&#8226 Gestion des journaux <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#journaux' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Créer un journal <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#nouv-journal' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Réaliser le lettrage de compte <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#lettrage' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Valider les écritures du brouillard <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#brouillard' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Exporter le journal centralisateur <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#centralisateur' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a> redirectkeep=/backend/journals/%{key}"
       current_fog: "Je vous redirige vers le brouillard comptable de l'exercice en cours.<br><br>Besoin d'aide pour valider les écriture du brouillard? Cliquez <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#brouillard' target='_blank' rel='noopener noreferrer'>ici <i class='icon icon-help'></i></a> redirectkeep=/backend/draft_journal?current_financial_year=%{key}&redirection=%2Fbackend%2Fjournals"
       fog: "Je vous redirige vers le brouillard comptable du journal %{name}.<br><br>Besoin d'aide pour valider les écriture du brouillard? Cliquez <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#brouillard' target='_blank' rel='noopener noreferrer'>ici <i class='icon icon-help'></i></a> redirectkeep=/backend/draft_journal?journal_id=%{key}&redirection=%2Fbackend%2Fjournals%2F%{key}"
-      letterings: "Je vous redirige vers le lettrage de comptes.<br><br>Besoin d'aide ? Cliquez <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#lettrage' target='_blank' rel='noopener noreferrer'>ici <i class='icon icon-help'></i></a> redirectkeep=/backend/accounts/reconciliation" 
+      letterings: "Je vous redirige vers le lettrage de comptes.<br><br>Besoin d'aide ? Cliquez <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#lettrage' target='_blank' rel='noopener noreferrer'>ici <i class='icon icon-help'></i></a> redirectkeep=/backend/accounts/reconciliation"
       lettering: "Je vous redirige vers le lettrage du compte %{name}.<br><br>Besoin d'aide ? Cliquez <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#lettrage' target='_blank' rel='noopener noreferrer'>ici <i class='icon icon-help'></i></a> redirectkeep=/backend/accounts/%{key}/mark"
-      financial_years: "Je vous redirige vers la liste des exercices comptables.<br><br>Besoin d'aide ?<br>&#8226 Gestion des exercices comptables <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#exercice' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Ouvrir un exercice comptable <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#ouv-exercice' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Exporter le bilan <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#bilan' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Exporter le FEC <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#exportfec' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Faire un échange comptable <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#echange-donnees' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Clôturer un exercice comptable <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#cloture' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Verrouiller un exercice comptable <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#verrouillage' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a> redirectkeep=/backend/financial-years" 
+      financial_years: "Je vous redirige vers la liste des exercices comptables.<br><br>Besoin d'aide ?<br>&#8226 Gestion des exercices comptables <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#exercice' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Ouvrir un exercice comptable <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#ouv-exercice' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Exporter le bilan <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#bilan' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Exporter le FEC <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#exportfec' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Faire un échange comptable <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#echange-donnees' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Clôturer un exercice comptable <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#cloture' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Verrouiller un exercice comptable <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#verrouillage' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a> redirectkeep=/backend/financial-years"
       financial_year: "Je vous redirige vers l'exercice comptable %{name}.<br><br>Besoin d'aide ?<br>&#8226 Gestion des exercices comptables <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#exercice' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Ouvrir un exercice comptable <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#ouv-exercice' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Exporter le bilan <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#bilan' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Exporter le FEC <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#exportfec' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Faire un échange comptable <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#echange-donnees' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Clôturer un exercice comptable <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#cloture' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a><br>&#8226 Verrouiller un exercice comptable <a style='font-size:14px' href='https://doc.ekylibre.com/v2/fr/chapitre5/#verrouillage' target='_blank' rel='noopener noreferrer'><i class='icon icon-help'></i></a> redirectkeep=/backend/financial-years/%{key}"
-    issues: 
+    issues:
       tool_not_found: "Je n'ai le support de l'incident, j'annule."
       found_tool: "Je vous emmène saisir un incident sur l'outil %{tool} redirect=%{url}"
       export_over: "L'export de votre fiche de côuts est terminée. Vous pouvez la consulter ici"
@@ -118,7 +120,7 @@ fra:
         what_targets: "Selectionnez les %{tar} de cette intervention=multiple_choices"
         what_family: "Je n'ai pas saisi le type d'intervention.<br>Choisissez le type de production, ou réessayez de me donner le nom exact de la procédure"
         what_category: "Choisissez la catégorie de l’intervention, ou réessayez de me donner le nom exact de l’intervention."
-      units: 
+      units:
         gram: "g"
         hectoliter: "hL"
         hectoliter_per_hectare: "hL/ha"
@@ -208,5 +210,5 @@ fra:
       mechanical: 'mécanique'
       manual_f: 'manuelle'
       saved: "Cette réception est enregistrée.<br>Je vous y redirige. redirect=/backend/wine_incoming_harvests/%{id}"
-    ambiguities: 
+    ambiguities:
       ask: "Veuillez séléctionner les éléments correspondant au terme '%{item}'=multiple_choices"

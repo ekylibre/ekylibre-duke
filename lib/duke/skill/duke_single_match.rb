@@ -9,10 +9,11 @@ module Duke
 
       private
 
-        attr_accessor :financial_year, :journal, :account, :bank_account, :fixed_asset, :depreciable, :entity, :activity_variety
+        attr_accessor :campaign, :financial_year, :journal, :account, :bank_account, :fixed_asset, :depreciable, :entity, :activity_variety
 
         def parseable
-          [*super, :financial_year, :journal, :account, :bank_account, :fixed_asset, :depreciable, :entity, :activity_variety].uniq
+          [*super, :campaign, :financial_year, :journal, :account, :bank_account, :fixed_asset, :depreciable, :entity,
+           :activity_variety].uniq
         end
 
         # Returns best account
@@ -64,6 +65,13 @@ module Duke
           return DukeMatchingItem.new(key: FinancialYear.first.id, name: FinancialYear.first.name) if FinancialYear.all.size.eql?(1)
 
           @financial_year.max
+        end
+
+        # Returns best campaign
+        def best_campaign
+          return DukeMatchingItem.new(key: Campaign.first.id, name: Campaign.first.name) if Campaign.all.count == 1
+
+          @campaign.max
         end
 
         # Correct financialYear ambiguity
