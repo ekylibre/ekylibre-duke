@@ -3,12 +3,12 @@ module Duke
     class DukeIntervention < DukeArticle
       using Duke::Utils::DukeRefinements
 
-      attr_accessor :procedure, :input, :ambiguities, :working_periods, :doer, :tool, :plant, :cultivation, :crop_groups, :land_parcel
-      attr_reader :specific
+      attr_accessor :procedure, :input, :ambiguities, :working_periods, :doer, :worker_group, :tool, :plant, :cultivation, :crop_groups,
+                    :land_parcel, :specific
 
       def initialize(**args)
         super()
-        @input, @doer, @tool, @crop_groups = Array.new(4, DukeMatchingArray.new)
+        @input, @doer, @worker_group, @tool, @crop_groups = Array.new(5, DukeMatchingArray.new)
         @retry = 0
         @ambiguities = []
         @working_periods = []
@@ -34,6 +34,14 @@ module Duke
         val = super(value)
         @retry += 1 if val.nil?
         val
+      end
+
+      # Distinguish worker_groups from doers
+      def distinguish_worker_groups
+        @doer.reject{|doer| Product.find_by(id: doer[:key]).is_a?(Worker)}.each do |worker_group|
+          @worker_group.push(worker_group)
+          @doer.delete(worker_group)
+        end
       end
 
       # Extract both date_and duration (Both information can be extract from same string)
@@ -89,7 +97,7 @@ module Duke
         # Intervention symbols of user_specifics parseable attributes
         # @returns Array of symbols
         def parseable
-          [*super(), :input, :doer, :tool, :crop_groups, :plant, :cultivation, :land_parcel].uniq
+          [*super(), :input, :doer, :worker_group, :tool, :crop_groups, :plant, :cultivation, :land_parcel].uniq
         end
 
         # @param [DukeIntervention] int : intervention to concatenate with it's specific attributes
@@ -122,7 +130,7 @@ module Duke
           sentence = I18n.t("duke.interventions.ask.save_intervention_#{rand(0...3)}")
           sentence += "<br>&#8226 #{I18n.t('duke.interventions.intervention')} : #{Procedo::Procedure.find(@procedure).human_name}"
           if @crop_groups.to_a.present?
-            sentence += "<br>&#8226 #{I18n.t('duke.interventions.group')} : #{@crop_groups.map(&:name).join(', ')}"
+            sentence += "<br>&#8226 #{I18n.t('duke.interventions.crop_group')} : #{@crop_groups.map(&:name).join(', ')}"
           end
           tar_type = procedo.parameters.find {|param| param.type == :target}
           if tar_type.present? && send(tar_type.name).to_a.present?
@@ -130,6 +138,9 @@ module Duke
           end
           sentence += "<br>&#8226 #{I18n.t('duke.interventions.tool')} : #{@tool.map(&:name).join(', ')}" if @tool.to_a.present?
           sentence += "<br>&#8226 #{I18n.t('duke.interventions.doer')} : #{@doer.map(&:name).join(', ')}" if @doer.to_a.present?
+          if @worker_group.to_a.present?
+            sentence += "<br>&#8226 #{I18n.t('duke.interventions.worker_group')} : #{@worker_group.map(&:name).join(', ')}"
+          end
           if @input.to_a.present?
             sentence += "<br>&#8226 #{I18n.t('duke.interventions.input')} : "
             @input.each do |input|

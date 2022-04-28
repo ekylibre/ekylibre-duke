@@ -68,12 +68,13 @@ module Duke
       def parse_specific_buttons(specific)
         if btn_click_response? @user_input # If response type matches a multiple click response
           products = btn_click_responses(@user_input).map do |id| # Creating a list with all chosen products
-            if specific == :working_entity
+            if %w[working_entity intervention_working_entity].include? specific
               Product.find_by_id(id).is_a?(Worker) ? Product.find(id) : WorkerGroup.find(id)
             else
               Product.find(id)
             end
           end
+          specific = :doer if specific == 'intervention_working_entity'
           products.each{|product| unless product.nil?
                                     send(specific).push DukeMatchingItem.new(name: product.name,
                                                                             key: product.id,

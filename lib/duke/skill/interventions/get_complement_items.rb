@@ -28,13 +28,11 @@ module Duke
                 {
                   global_label: param.human_name
                 },
-                Product.availables(at: @date.to_time).of_expression(param.filter)
+                Product.availables(at: @date.to_time).of_expression(param.filter).reject{|pr| send(type).any?{|reco| reco.key == pr.id}}
               ]
             end
-            items = items.flatten.reject do |prod| # Remove Already chosen from suggestions
-              prod.respond_to?(:id) && send(type).any?{|reco| reco.key == prod.id}
-            end
-            options = items.map do |itm| # Turn it to Jsonified options
+            items = add_worker_groups(items) if type.to_sym == :doer
+            options = items.flatten.map do |itm| # Turn it to Jsonified options
               itm.is_a?(Hash) ? itm : optionify(itm.send(display_name(type)), itm.id)
             end
             if options.empty?
@@ -44,6 +42,18 @@ module Duke
             else
               dynamic_options(I18n.t("duke.interventions.ask.what_complement_#{type}"), options)
             end
+          end
+
+          def add_worker_groups(items)
+            if WorkerGroup.any?
+              items.push([
+                  {
+                    global_label: I18n.t('duke.interventions.worker_group')
+                  },
+                  WorkerGroup.all.reject{|wg| send(:worker_group).any?{|worker_group| worker_group.key == wg.id}}
+                ])
+            end
+            items
           end
 
           def display_name(type)
