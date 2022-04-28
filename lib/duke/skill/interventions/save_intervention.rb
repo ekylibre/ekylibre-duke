@@ -118,10 +118,15 @@ module Duke
 
           # @return Array with doer_attributes
           def doer_attributes
-            if @doer.blank? || Procedo::Procedure.find(@procedure).parameters_of_type(:doer).blank?
+            if @doer.blank? && @worker_group.blank? || Procedo::Procedure.find(@procedure).parameters_of_type(:doer).blank?
               []
             else
-              @doer.map.with_index do |doer, index|
+              @worker_group.each do |worker_group|
+                WorkerGroup.find(worker_group.key).items.map(&:worker_id).each do |worker_id|
+                  @doer.push(Duke::DukeMatchingItem.new(key: worker_id))
+                end
+              end
+              @doer.uniq_by_key.map.with_index do |doer, index|
                 [index, {
                   reference_name: Procedo::Procedure.find(@procedure).parameters_of_type(:doer).first.name,
                   product_id: doer.key

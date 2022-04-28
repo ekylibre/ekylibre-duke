@@ -15,6 +15,8 @@ module Duke
           tmp_int = Duke::Skill::DukeIntervention.new.recover_from_hash(@event.parsed)
           tmp_int.user_input = @event.user_input
           tmp_int.parse_specific_buttons(@event.options.specific)
+          tmp_int.distinguish_worker_groups
+          tmp_int.specific = %i[doer worker_group] if tmp_int.specific == :doer
           concat_specific(int: tmp_int)
           to_ibm(modifiable: modification_candidates)
         end

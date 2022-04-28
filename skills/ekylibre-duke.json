@@ -4445,7 +4445,7 @@
               "tenant": "$tenant",
               "handler": "Interventions::ComplementSpecific",
               "options": {
-                "specific": "doer"
+                "specific": "intervention_working_entity"
               },
               "user_input": "<? input.text ?>"
             }
