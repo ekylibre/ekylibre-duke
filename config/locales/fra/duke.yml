@@ -150,7 +150,7 @@ fra:
       intervention: "Intervention"
       proc: "Procédure"
       crop_group: "Groupement(s) parcellaires"
-      worker_group: "Groupement(s) d'équipiers"
+      worker_group: "Groupe(s) d'équipiers"
       tool: "Équipement(s)"
       equipments: "Équipement(s)"
       worker: "Opérateur(s)"
