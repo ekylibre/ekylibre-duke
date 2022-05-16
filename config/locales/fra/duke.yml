@@ -103,9 +103,9 @@ fra:
       working_periods: "Horaires de travail"
     interventions:
       ask:
-        save_intervention_0: "Voulez-vous enregistrer cette intervention"
-        save_intervention_1: "Validez-vous la saisie de cette intervention"
-        save_intervention_2: "Confirmez-vous l'enregistrement de cette intervention"
+        save_intervention_0: "Voulez-vous enregistrer cette intervention ?"
+        save_intervention_1: "Validez-vous la saisie de cette intervention ?"
+        save_intervention_2: "Confirmez-vous l'enregistrement de cette intervention ?"
         how_much_inputs_0: "Combien de %{unit} de %{input} ont été utilisés ?"
         how_much_inputs_1: "Combien de %{unit} de %{input} avez-vous utilisé ?"
         which_procedure: "Quelle intervention souhaitez-vous saisir ? "
