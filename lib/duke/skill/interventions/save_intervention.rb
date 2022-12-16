@@ -16,6 +16,15 @@ module Duke
 
         private
 
+          def zoned_working_periods
+            @working_periods.each do |wp|
+              %w[started_at stopped_at].each do |indicator|
+                wp[indicator] = Time.zone.at(wp[indicator].to_time).to_s
+              end
+            end
+            @working_periods.map.with_index{|wp, index| [index.to_s, wp]}.to_h
+          end
+
           # @returns [Integer] newly created intervention id
           def save_intervention
             attributes = intervention_attributes
@@ -40,7 +49,7 @@ module Duke
               doers_attributes: doer_attributes.to_a,
               targets_attributes: target_attributes.to_a,
               inputs_attributes: input_attributes.to_a,
-              working_periods_attributes: @working_periods.map.with_index{|wp, index| [index.to_s, wp]}.to_h
+              working_periods_attributes: zoned_working_periods
             }
           end
 
@@ -109,10 +118,15 @@ module Duke
 
           # @return Array with doer_attributes
           def doer_attributes
-            if @doer.blank? || Procedo::Procedure.find(@procedure).parameters_of_type(:doer).blank?
+            if @doer.blank? && @worker_group.blank? || Procedo::Procedure.find(@procedure).parameters_of_type(:doer).blank?
               []
             else
-              @doer.map.with_index do |doer, index|
+              @worker_group.each do |worker_group|
+                WorkerGroup.find(worker_group.key).items.map(&:worker_id).each do |worker_id|
+                  @doer.push(Duke::DukeMatchingItem.new(key: worker_id))
+                end
+              end
+              @doer.uniq_by_key.map.with_index do |doer, index|
                 [index, {
                   reference_name: Procedo::Procedure.find(@procedure).parameters_of_type(:doer).first.name,
                   product_id: doer.key

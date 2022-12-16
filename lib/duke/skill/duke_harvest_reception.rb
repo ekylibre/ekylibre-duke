@@ -247,7 +247,7 @@ module Duke
           sentence = I18n.t("duke.harvest_reception.ask.save_harvest_reception_#{rand(0...2)}")
           # Crop Group
           if @crop_groups.present?
-            sentence+= "<br>&#8226 #{I18n.t('duke.interventions.group')} : "
+            sentence+= "<br>&#8226 #{I18n.t('duke.interventions.crop_group')} : "
             sentence += @crop_groups.map{|cg| "#{cg[:area].to_s}% #{cg.name}"}.join(', ').to_s
           end
           # Plant

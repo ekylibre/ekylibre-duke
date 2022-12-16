@@ -68,12 +68,13 @@ module Duke
       def parse_specific_buttons(specific)
         if btn_click_response? @user_input # If response type matches a multiple click response
           products = btn_click_responses(@user_input).map do |id| # Creating a list with all chosen products
-            if specific == :working_entity
+            if %w[working_entity intervention_working_entity].include? specific
               Product.find_by_id(id).is_a?(Worker) ? Product.find(id) : WorkerGroup.find(id)
             else
               Product.find(id)
             end
           end
+          specific = :doer if specific == 'intervention_working_entity'
           products.each{|product| unless product.nil?
                                     send(specific).push DukeMatchingItem.new(name: product.name,
                                                                             key: product.id,
@@ -162,14 +163,13 @@ module Duke
           return
         end
         @date = Time.new(d.year, d.month, d.day, time.hour, time.min, time.sec) # Set correct time to date if match
-        @offset = "+0#{Time.at(@date.to_time).utc_offset / 3600}:00"
       end
 
       # @param [String] istr
       def extract_wp_from_interval(istr = @user_input)
         istr.scan(Duke::Utils::Regex.hour_interval).to_a.each do |interval|
           start, ending = [extract_hour(interval.first), extract_hour(interval.first)].sort # Extract two hours from interval & sort it
-          @date = @date.to_time.change(offset: @offset, hour: start.hour, min: start.min)
+          @date = @date.to_time.change(hour: start.hour, min: start.min)
           @duration = ((ending - start)/60).to_i
           @working_periods.push(
             {
@@ -183,13 +183,13 @@ module Duke
       # Checks if HH:MM corresponds to Time.now.HH:MM
       def not_current_time?
         now = Time.now
-        hour_diff = @date.change(year: now.year, month: now.month, day: now.day) - now
+        hour_diff = @date.to_time.change(year: now.year, month: now.month, day: now.day) - now
         hour_diff.abs > 300
       end
 
       private
 
-        attr_accessor :retry, :tool, :cultivablezones, :offset
+        attr_accessor :retry, :tool, :cultivablezones
 
         def parseable
           %i[tool cultivablezones product_nature_variant lexicon_article supplier_article]
@@ -298,6 +298,7 @@ module Duke
           self.update_description(int.description)
           if int.working_periods.size > 1 && int.duration.present?
             @working_periods = int.working_periods
+            @date = int.date
             return
           elsif (int.date.to_date == @date.to_date || int.date.to_date != @date.to_date && int.date.to_date == Time.now.to_date)
             @date = @date.to_time.change(hour: int.date.hour, min: int.date.min) if int.not_current_time?
@@ -383,7 +384,7 @@ module Duke
           if empty_iterator?(item_type)
             iterator = []
           elsif item_type == :working_entity
-            iterator = (WorkerGroup.at(@date.to_time) + Worker.availables(at: @date.to_time))
+            iterator = (WorkerGroup.all + Worker.availables(at: @date.to_time))
           elsif item_type == :worker_group
             iterator = WorkerGroup.at(@date.to_time)
           elsif item_type == :product_nature_variant
@@ -413,6 +414,8 @@ module Duke
             iterator = CropGroup.all
           elsif item_type == :financial_year
             iterator = FinancialYear.all
+          elsif item_type == :campaign
+            iterator = Campaign.all
           elsif item_type == :activity_variety
             iterator = Activity.select('distinct on (cultivation_variety) *')
           elsif item_type == :press

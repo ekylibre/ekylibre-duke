@@ -125,6 +125,15 @@
       "intent": "Export",
       "examples": [
         {
+          "text": "bilan 2022"
+        },
+        {
+          "text": "compte de résultats 2022"
+        },
+        {
+          "text": "compte résultat 2022"
+        },
+        {
           "text": "Créer l'export de mon document"
         },
         {
@@ -1291,6 +1300,84 @@
       "description": "Intent to return when Intent suggestion were not selected by the user on ambiguity"
     },
     {
+      "intent": "ProductionCost",
+      "examples": [
+        {
+          "text": "Affiche mes couts de productions pour le blé de 2022"
+        },
+        {
+          "text": "Calcule mes couts de productions"
+        },
+        {
+          "text": "Combien m'a couté l'activité sur l'année dernières"
+        },
+        {
+          "text": "Combien m'a couté mon activité blé en 2022"
+        },
+        {
+          "text": "Combien m'a couté mon blé en 2022"
+        },
+        {
+          "text": "Combien m'a couté mon blé en 2023"
+        },
+        {
+          "text": "Combien me coute ma luzerne sur l'année en cours"
+        },
+        {
+          "text": "coup de production 2020 sur mes vignes"
+        },
+        {
+          "text": "Coût de production"
+        },
+        {
+          "text": "Coût de production du blé pour l'année 2022"
+        },
+        {
+          "text": "Coût de production du maïs pour l'année 2022"
+        },
+        {
+          "text": "Coût de production pour l'année 2021"
+        },
+        {
+          "text": "Coût de production pour l'année 2022"
+        },
+        {
+          "text": "Coût de production pour l'année 2023"
+        },
+        {
+          "text": "Couts pour la luzerne de 2022"
+        },
+        {
+          "text": "Quel est le cout de production de la campagne 2021"
+        },
+        {
+          "text": "Quel est mon coût de production"
+        },
+        {
+          "text": "Quel est mon coût de production pour le blé en 2021"
+        },
+        {
+          "text": "Quel est mon coût de production pour le blé en 2022"
+        },
+        {
+          "text": "Quel est mon coût de production pour le blé en 2023"
+        },
+        {
+          "text": "Quel est mon coût de production pour le maïs en 2021"
+        },
+        {
+          "text": "Quel est mon coût de production pour le maïs en 2022"
+        },
+        {
+          "text": "Quel est mon coût de production pour le maïs en 2023"
+        },
+        {
+          "text": "Quels sont les couts de production de la luzerne"
+        }
+      ],
+      "description": "Allow to detect emphasis for production cost"
+    },
+    {
       "intent": "Show",
       "examples": [
         {
@@ -1610,6 +1697,72 @@
         }
       ],
       "description": "Tva Declaration"
+    },
+    {
+      "intent": "WorkerTimeCapture",
+      "examples": [
+        {
+          "text": "4 heure de tant de travaux hier par Enselme"
+        },
+        {
+          "text": "5h travaillées par le groupe ABC"
+        },
+        {
+          "text": "6h de saisie de temsp"
+        },
+        {
+          "text": "6h de temps à saisir pour Val"
+        },
+        {
+          "text": "6h travaillées par Tonio le 5 mars"
+        },
+        {
+          "text": "7h pour le groupe ABC le 5 janvier"
+        },
+        {
+          "text": "Enregistre 4 heures travaillées a l'instant"
+        },
+        {
+          "text": "Enregistre mes temps de travaux 5h aujourd'hui"
+        },
+        {
+          "text": "J'ai travaillé 6h aujourd'hui"
+        },
+        {
+          "text": "Nouvelle saisie de temps"
+        },
+        {
+          "text": "Saisie des tants de travaux pour moi"
+        },
+        {
+          "text": "saisie de temps Frédéric 8h"
+        },
+        {
+          "text": "Saisie de temps pour Nomma 3h sur les trucs"
+        },
+        {
+          "text": "Saisir les tempsd e travaux de polin"
+        },
+        {
+          "text": "Tant de travail pour Frédéric hier pendant 4h"
+        },
+        {
+          "text": "Tant de travaux saisie"
+        },
+        {
+          "text": "temps de travaux 5h ce matin"
+        },
+        {
+          "text": "temps de travaux du groupe ABC : 7H le 20 janvier"
+        },
+        {
+          "text": "Temps de travaux groupe A 6h hier"
+        },
+        {
+          "text": "Temps de travaux pour Romain le 23 février 3h30"
+        }
+      ],
+      "description": ""
     }
   ],
   "entities": [
@@ -1820,6 +1973,7 @@
           "value": "IncomeStatement",
           "synonyms": [
             "compte de résultats",
+            "resultat",
             "résultat",
             "résultats"
           ]
@@ -2554,6 +2708,24 @@
             "personne",
             "tier",
             "tiers"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    },
+    {
+      "entity": "TimeLog",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "time_log",
+          "synonyms": [
+            "durée travaillée",
+            "saisie des temps",
+            "saisie de temps",
+            "Tant de travaux",
+            "temps de travaux",
+            "temps travaillé"
           ]
         }
       ],
@@ -3690,6 +3862,33 @@
     },
     {
       "type": "standard",
+      "title": "Production Cost",
+      "parent": "node_4_1615390045421",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "tenant": "$tenant",
+              "handler": "Redirections::ToProductionCost",
+              "user_input": " <? input.text  ?>"
+            }
+          },
+          "result_variable": "webhook_result_28"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#ProductionCost",
+      "dialog_node": "node_10_1650362279100",
+      "previous_sibling": "node_10_1605181561792"
+    },
+    {
+      "type": "standard",
       "title": "Modify Temporality",
       "output": {},
       "parent": "node_4_1599664519103",
@@ -3729,7 +3928,7 @@
       "output": {
         "text": {
           "values": [
-            "Bienvenue je vous écoute, vous êtes sur innovation"
+            "Bienvenue je vous écoute"
           ],
           "selection_policy": "sequential"
         }
@@ -4200,6 +4399,75 @@
     },
     {
       "type": "standard",
+      "title": "TimeLog comprehension",
+      "parent": "node_2_1644850366571",
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "true",
+      "dialog_node": "node_1_1645004458851",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "Check Ambiguity",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_1_1645004458851",
+      "context": {
+        "tmp": "<? output.generic.addAll($webhook_result_28.options) ?>",
+        "ambiguity_key": "<? $webhook_result_28.options.get(0).description.key ?>",
+        "ambiguity_type": "<? $webhook_result_28.options.get(0).description.itm_type ?>"
+      },
+      "metadata": {
+        "_customization": {
+          "mcr": false
+        }
+      },
+      "conditions": "true",
+      "dialog_node": "node_1_1645037879308",
+      "previous_sibling": "node_7_1645038265961",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "Add Worker",
+      "output": {},
+      "parent": "node_7_1645038265961",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$parsed",
+              "tenant": "$tenant",
+              "handler": "TimeLogs::ComplementDoer",
+              "user_input": "<? input.text ?>"
+            }
+          },
+          "result_variable": "webhook_result_28"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "condition",
+        "dialog_node": "node_10_1602063735631"
+      },
+      "conditions": "true",
+      "dialog_node": "node_1_1645038142559",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
       "title": "Add Analysis",
       "output": {},
       "parent": "node_8_1615800693158",
@@ -4330,7 +4598,7 @@
               "tenant": "$tenant",
               "handler": "Interventions::ComplementSpecific",
               "options": {
-                "specific": "doer"
+                "specific": "intervention_working_entity"
               },
               "user_input": "<? input.text ?>"
             }
@@ -5066,6 +5334,90 @@
     },
     {
       "type": "standard",
+      "title": "TimeLog",
+      "parent": "node_7_1615390107712",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "tenant": "$tenant",
+              "handler": "TimeLogs::ParseSentence",
+              "user_id": "<? context.metadata.user_id ?>",
+              "user_input": "<? input.text  ?>"
+            }
+          },
+          "result_variable": "webhook_result_28"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#WorkerTimeCapture || @TimeLog:time_log",
+      "user_label": "Saisie de temps de travaux",
+      "dialog_node": "node_2_1644850366571",
+      "previous_sibling": "node_2_1615798232509"
+    },
+    {
+      "type": "standard",
+      "title": "Check ambiguity  - Webhook Callout",
+      "output": {},
+      "parent": "node_1_1645037879308",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$parsed",
+              "tenant": "$tenant",
+              "handler": "TimeLogs::ParseDisambiguation",
+              "options": {
+                "ambiguity_key": "$ambiguity_key",
+                "ambiguity_type": "$ambiguity_type"
+              },
+              "user_input": "<? input.text  ?>"
+            }
+          },
+          "result_variable": "webhook_result_28"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "true",
+      "dialog_node": "node_2_1645037879328",
+      "previous_sibling": "response_6_1645037879328",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "J'annule"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_6_1645004756313",
+      "conditions": "@Save:SaveNo",
+      "dialog_node": "node_2_1645194604571",
+      "previous_sibling": "node_8_1645194585797",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
       "title": "Modify Quantity/TAV",
       "output": {},
       "parent": "node_4_1615801149112",
@@ -5763,7 +6115,7 @@
     {
       "type": "folder",
       "title": "Redirection",
-      "conditions": "#Show",
+      "conditions": "#Show || #ProductionCost",
       "dialog_node": "node_4_1615390045421",
       "previous_sibling": "node_9_1615385623867"
     },
@@ -5832,7 +6184,7 @@
     {
       "type": "folder",
       "title": "IDEA",
-      "conditions": "#IDEA_A1 || #IDEA_A2 && $user_plan == 'ekyviti",
+      "conditions": "#IDEA_A1 || #IDEA_A2 && $user_plan == 'ekyviti'",
       "dialog_node": "node_4_1625162317230",
       "previous_sibling": "Bienvenue"
     },
@@ -6201,6 +6553,33 @@
     },
     {
       "type": "standard",
+      "parent": "node_8_1645527936409",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$parsed",
+              "tenant": "$tenant",
+              "handler": "TimeLogs::ComplementTemporality",
+              "user_input": "<? input.text ?>"
+            }
+          },
+          "result_variable": "webhook_result_28"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "true",
+      "dialog_node": "node_5_1645194634269",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
       "title": "Did not understand",
       "output": {
         "generic": [
@@ -6511,6 +6890,59 @@
     },
     {
       "type": "standard",
+      "title": "Save TimeLog",
+      "output": {
+        "generic": [
+          {
+            "title": "$webhook_result_28.sentence",
+            "options": [
+              {
+                "label": "Valider",
+                "value": {
+                  "input": {
+                    "text": "SaveYes"
+                  }
+                }
+              },
+              {
+                "label": "Modifier équipiers",
+                "value": {
+                  "input": {
+                    "text": "MoreWorkers"
+                  }
+                }
+              },
+              {
+                "label": "Modifier temps de travaux",
+                "value": {
+                  "input": {
+                    "text": "ModifyTemporality"
+                  }
+                }
+              },
+              {
+                "label": "Annuler",
+                "value": {
+                  "input": {
+                    "text": "SaveNo"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_1_1645004458851",
+      "context": {
+        "parsed": "$webhook_result_28.parsed"
+      },
+      "conditions": "true",
+      "dialog_node": "node_6_1645004756313",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
       "title": "Cancel",
       "output": {
         "generic": [
@@ -6648,7 +7080,7 @@
     {
       "type": "folder",
       "title": "Capture",
-      "conditions": "#Intervention or #EquipmentIssue || #Harvest_Reception",
+      "conditions": "#Intervention || #Harvest_Reception || #WorkerTimeCapture || @TimeLog",
       "dialog_node": "node_7_1615390107712",
       "previous_sibling": "node_4_1615390045421"
     },
@@ -6866,13 +7298,28 @@
     },
     {
       "type": "standard",
+      "title": "Add Worker",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_1_1645004458851",
+      "context": {
+        "tmp": "<? output.generic.addAll($options) ?>"
+      },
+      "conditions": "true",
+      "dialog_node": "node_7_1645038265961",
+      "previous_sibling": "node_6_1645004756313",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
       "title": "What can Duke do",
       "output": {
         "generic": [
           {
             "values": [
               {
-                "text": "A l'heure actuelle, vous pouvez saisir une intervention dans l'ERP d'Ekylibre, exporter des feuilles de coûts ou des cahier de traçabilité et être redirigé vers votre parcellaire, vos activités ou vos équipements"
+                "text": "À l'heure actuelle, vous pouvez saisir une intervention dans l'ERP d'Ekylibre, exporter des feuilles de coûts ou des cahiers de traçabilité et être redirigé vers votre parcellaire, vos activités ou vos équipements"
               }
             ],
             "response_type": "text",
@@ -7198,6 +7645,85 @@
       },
       "conditions": "@Save:SaveYes",
       "dialog_node": "node_8_1628265491749"
+    },
+    {
+      "type": "standard",
+      "parent": "node_6_1645004756313",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$parsed",
+              "tenant": "$tenant",
+              "handler": "TimeLogs::SaveTimeLog"
+            }
+          },
+          "result_variable": "webhook_result_30"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "@Save:SaveYes",
+      "dialog_node": "node_8_1645194585797",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "parent": "node_6_1645004756313",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$parsed",
+              "tenant": "$tenant",
+              "handler": "TimeLogs::GetComplementDoers"
+            }
+          },
+          "result_variable": "webhook_result_29"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "user_input",
+        "dialog_node": "node_1_1645038142559"
+      },
+      "conditions": "@Save:MoreWorkers",
+      "dialog_node": "node_8_1645194617696",
+      "previous_sibling": "node_2_1645194604571",
+      "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Veuillez saisir la date et les horaires des travaux<br>Ex: &#9997 'Hier pendant 5h30' ou 'le 12 février de 8h à midi et de 13h à 17h'"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_6_1645004756313",
+      "conditions": "@Modify:ModifyTemporality",
+      "dialog_node": "node_8_1645527936409",
+      "previous_sibling": "node_8_1645194617696",
+      "disambiguation_opt_out": true
     },
     {
       "type": "standard",
@@ -7883,6 +8409,34 @@
       "conditions": "$webhook_result_idea.redirect == 'A2_14'",
       "dialog_node": "response_10_1628262966386",
       "previous_sibling": "response_5_1628262964920"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_1_1645004458851",
+      "context": {
+        "parsed": "$webhook_result_28.parsed"
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_1_1645037879308"
+      },
+      "conditions": "$webhook_result_28.redirect == \"ask_ambiguity\"",
+      "dialog_node": "response_10_1645004497840",
+      "previous_sibling": "node_1_1645037879308"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_5_1645194634269",
+      "conditions": "anything_else",
+      "dialog_node": "response_10_1645526859243",
+      "previous_sibling": "response_2_1645526857731"
     },
     {
       "type": "response_condition",
@@ -8707,6 +9261,57 @@
       "output": {
         "generic": []
       },
+      "parent": "node_1_1645038142559",
+      "context": {
+        "parsed": "$webhook_result_28.parsed",
+        "sentence": "$webhook_result_28.sentence"
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "condition",
+        "dialog_node": "node_1_1645004458851"
+      },
+      "conditions": "$webhook_result_28",
+      "dialog_node": "response_2_1645038142570"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_5_1645194634269",
+      "context": {
+        "parsed": "$webhook_result_28.parsed",
+        "sentence": "$webhook_result_28.sentence"
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "condition",
+        "dialog_node": "node_1_1645004458851"
+      },
+      "conditions": "$webhook_result_28",
+      "dialog_node": "response_2_1645526857731"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_1_1645004458851",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1601640416521"
+      },
+      "conditions": "anything_else",
+      "dialog_node": "response_2_1645706938664",
+      "previous_sibling": "response_3_1645004516430"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
       "parent": "node_20_1612459506306",
       "conditions": "anything_else",
       "dialog_node": "response_22_1612459506306",
@@ -9042,6 +9647,73 @@
       "conditions": "$previous_indicator == 'A2'",
       "dialog_node": "response_3_1628585395009",
       "previous_sibling": "response_9_1625224147411"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_1_1645004458851",
+      "context": {
+        "parsed": "$webhook_result_28.parsed"
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_6_1645004756313"
+      },
+      "conditions": "$webhook_result_28.redirect == \"save_time\"",
+      "dialog_node": "response_3_1645004509224",
+      "previous_sibling": "response_10_1645004497840"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_1_1645004458851",
+      "context": {
+        "parsed": "$webhook_result_28.parsed",
+        "options": "$webhook_result_28.options"
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1645038265961"
+      },
+      "conditions": "$webhook_result_28.redirect == \"ask_doer\"",
+      "dialog_node": "response_3_1645004516430",
+      "previous_sibling": "response_3_1645004509224"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_1_1645038142559",
+      "conditions": "anything_else",
+      "dialog_node": "response_3_1645038142570",
+      "previous_sibling": "response_2_1645038142570"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Malheureusement, il y a eu une erreur"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_8_1645194585797",
+      "conditions": "anything_else",
+      "dialog_node": "response_3_1645534824468",
+      "previous_sibling": "response_4_1645534823841"
     },
     {
       "type": "response_condition",
@@ -9502,6 +10174,34 @@
       },
       "conditions": "$previous_indicator == 'A2'",
       "dialog_node": "response_4_1628585435601"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_2_1645037879328",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "condition",
+        "dialog_node": "node_1_1645004458851"
+      },
+      "conditions": "$webhook_result_28",
+      "dialog_node": "response_4_1645037879328"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "$webhook_result_30.sentence"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_8_1645194585797",
+      "conditions": "$webhook_result_30",
+      "dialog_node": "response_4_1645534823841"
     },
     {
       "type": "response_condition",
@@ -9995,6 +10695,21 @@
       "output": {
         "text": {
           "values": [
+            "Malheureusement, cela n'a pas abouti"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_2_1645037879328",
+      "conditions": "anything_else",
+      "dialog_node": "response_5_1645037879328",
+      "previous_sibling": "response_4_1645037879328"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
             "Malheureusement cela n'a pas abouti"
           ],
           "selection_policy": "sequential"
@@ -10317,6 +11032,69 @@
     {
       "type": "response_condition",
       "output": {
+        "generic": []
+      },
+      "parent": "node_2_1644850366571",
+      "context": {
+        "parsed": "$webhook_result_28.parsed"
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "condition",
+        "dialog_node": "node_1_1645004458851"
+      },
+      "conditions": "$webhook_result_28",
+      "dialog_node": "response_6_1644850417458",
+      "previous_sibling": "node_1_1645004458851"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_2_1644850366571",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1601640416521"
+      },
+      "conditions": "anything_else",
+      "dialog_node": "response_6_1644850419785",
+      "previous_sibling": "response_6_1644850417458"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": [
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_1_1645037879308",
+      "disabled": true,
+      "dialog_node": "response_6_1645037879328"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "text": {
+          "values": [
+            "Quels travailleurs souhaitez vous ajouter ?"
+          ],
+          "selection_policy": "sequential"
+        }
+      },
+      "parent": "node_8_1645194617696",
+      "conditions": "anything_else",
+      "dialog_node": "response_6_1645196071212",
+      "previous_sibling": "response_7_1645196069616"
+    },
+    {
+      "type": "response_condition",
+      "output": {
         "generic": [
           {
             "values": [
@@ -10598,6 +11376,18 @@
       "conditions": "$webhook_result_idea.redirect == 'A2_07'",
       "dialog_node": "response_7_1628262962433",
       "previous_sibling": "response_1_1628262961087"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_8_1645194617696",
+      "context": {
+        "tmp": "<? output.generic.addAll($webhook_result_29.options) ?>"
+      },
+      "conditions": "$webhook_result_29",
+      "dialog_node": "response_7_1645196069616"
     },
     {
       "type": "response_condition",

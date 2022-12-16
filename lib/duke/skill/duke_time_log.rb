@@ -22,7 +22,7 @@ module Duke
           if input_clone.match(Duke::Utils::Regex.morning_hour)
             @duration = 60 if @duration.nil?
           elsif input_clone.match(Duke::Utils::Regex.afternoon_hour)
-            @date = @date.change(hour: @date.hour+12)
+            @date = @date.to_time.change(hour: @date.hour+12)
             @duration = 60 if @duration.nil?
           elsif input_clone.match('matin')
             if duration.present?
@@ -32,8 +32,8 @@ module Duke
               @working_periods =
               [
                 {
-                  started_at: @date.to_time.change(offset: @offset, hour: 8, min: 0),
-                  stopped_at: @date.to_time.change(offset: @offset, hour: 12, min: 0)
+                  started_at: @date.to_time.change(hour: 8, min: 0),
+                  stopped_at: @date.to_time.change(hour: 12, min: 0)
                   }
                 ]
             end
@@ -45,8 +45,8 @@ module Duke
               @working_periods =
               [
                 {
-                  started_at: @date.to_time.change(offset: @offset, hour: 14, min: 0),
-                  stopped_at: @date.to_time.change(offset: @offset, hour: 17, min: 0)
+                  started_at: @date.to_time.change(hour: 14, min: 0),
+                  stopped_at: @date.to_time.change(hour: 17, min: 0)
                   }
                 ]
             end
@@ -62,18 +62,26 @@ module Duke
           @working_periods =
           [
             {
-              started_at: @date.to_time.change(offset: @offset) - 1.hour,
-              stopped_at: @date.to_time.change(offset: @offset)
+              started_at: @date.to_time - 1.hour,
+              stopped_at: @date.to_time
             }
           ]
         elsif @duration.is_a?(Integer) # Specific working_periods if a duration was found
-          @working_periods =
-          [
-            {
-              started_at: @date.to_time.change(offset: @offset) - @duration.to_i.minutes,
-              stopped_at: @date.to_time.change(offset: @offset)
-            }
-          ]
+          @working_periods =  if not_current_time?
+                                [
+                                  {
+                                    started_at: @date.to_time,
+                                    stopped_at: @date.to_time + @duration.to_i.minutes
+                                  }
+                                ]
+                              else
+                                [
+                                  {
+                                   started_at: @date.to_time - @duration.to_i.minutes,
+                                   stopped_at: @date.to_time
+                                  }
+                                ]
+                              end
         end
       end
 
@@ -110,11 +118,11 @@ module Duke
           sentence += "<br>&#8226 #{I18n.t('duke.interventions.doer')} : #{@working_entity.map(&:name).join(', ')}"
           sentence += "<br>&#8226 #{I18n.t('duke.interventions.date')} : #{@date.to_time.strftime('%d/%m/%Y')}"
           wp = @working_periods.sort_by{|wp| wp[:started_at]}
-          sentence += "<br>&#8226 #{I18n.t('duke.interventions.working_period')} : #{wp.map do |wp|
-                                                                                       I18n.t('duke.interventions.working_periods',
-                                                                                              start: speak_hour(wp[:started_at]),
-                                                                                              ending: speak_hour(wp[:stopped_at]))
-                                                                                     end.join(', ')}"
+          sentence += "<br>&#8226 #{I18n.t('duke.time_logs.working_periods')} : #{wp.map do |wp|
+                                                                                    I18n.t('duke.interventions.working_periods',
+                                                                                           start: speak_hour(wp[:started_at]),
+                                                                                           ending: speak_hour(wp[:stopped_at]))
+                                                                                  end.join(', ')}"
         end
 
         # @param [String] type : Type of item for which we want to display all suggestions
@@ -124,15 +132,15 @@ module Duke
             [
               [
                 {
-                  global_label: 'Equipiers'
+                  global_label: 'Équipier(s)'
                 },
                 Worker.availables(at: @date.to_time)
               ],
               [
                 {
-                  global_label: "Groupe d'équipiers"
+                  global_label: "Groupe(s) d'équipiers"
                 },
-                WorkerGroup.at(@date.to_time)
+                WorkerGroup.all
               ]
             ]
           options = items.flatten.map do |itm| # Turn it to Jsonified options
