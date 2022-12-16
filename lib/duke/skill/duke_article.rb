@@ -4,7 +4,7 @@ module Duke
       using Duke::Utils::DukeRefinements
       include Duke::Utils::BaseDuke
 
-      attr_accessor :date, :duration, :user_input, :description
+      attr_accessor :date, :duration, :user_input, :description, :supplier_article, :lexicon_article, :product_nature_variant
 
       def initialize(**args)
         @description = ''
@@ -192,7 +192,7 @@ module Duke
         attr_accessor :retry, :tool, :cultivablezones
 
         def parseable
-          %i[tool cultivablezones]
+          %i[tool cultivablezones product_nature_variant lexicon_article supplier_article]
         end
 
         def to_ibm(**opt)
@@ -386,7 +386,15 @@ module Duke
           elsif item_type == :working_entity
             iterator = (WorkerGroup.all + Worker.availables(at: @date.to_time))
           elsif item_type == :worker_group
-            iterator = WorkerGroup.all
+            iterator = WorkerGroup.at(@date.to_time)
+          elsif item_type == :product_nature_variant
+            iterator = ProductNatureVariant.all
+          elsif item_type == :lexicon_article
+            iterator = MasterVariant.all.where(family: %w[article equipment service]).map do |variant|
+              Duke::DukeMockObject.new(name: variant.translation.fra, id: variant.reference_name)
+            end
+          elsif item_type == :supplier_article
+            iterator = PurchaseInvoice.of_supplier(@supplier).map(&:items).flatten.map(&:variant)
           elsif item_type == :account
             iterator = Account.all
           elsif item_type == :journal
