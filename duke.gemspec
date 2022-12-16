@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   #  Testing
   spec.add_development_dependency 'bundler', '~> 2.2.15'
   spec.add_development_dependency 'minitest', '~> 5.8.0'
-  spec.add_development_dependency 'rails', '5.0.7.2'
+  spec.add_dependency 'rails', '~> 5.2'
   spec.add_development_dependency 'rake', '~> 13.0'
 
   spec.add_runtime_dependency 'httparty', '~> 0.17.3'
