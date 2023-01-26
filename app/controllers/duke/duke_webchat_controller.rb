@@ -10,14 +10,19 @@ module Duke
       render(json: create_assistant.session_creation(WATSON_EKYVITI_ID).to_json)
     end
 
+    def create_session_assistant
+      create_assistant.session_assistant_creation(WATSON_EKYVITI_ID)
+    end
+
     def send_msg
-      assistant = create_assistant
-      auth = Assistant::Auth.new(session_id: params[:duke_id], assistant_id: params[:assistant_id])
-      if (intent = params[:user_intent]).present?
-        assistant.send_message_intent(auth: auth, intent: intent, message: params[:msg], user_defined: user_defined)
-      else
-        assistant.send_message(auth: auth, message: params[:msg], user_defined: user_defined)
-      end
+      DukeSendJob.perform_later(session_id: params[:duke_id], intent: params[:user_intent], message: params[:msg], user_defined: user_defined)
+      # assistant = create_assistant
+      # auth = Assistant::Auth.new(session_id: params[:duke_id], assistant_id: params[:assistant_id])
+      # if (intent = params[:user_intent]).present?
+         # assistant.send_message_intent(auth: auth, intent: intent, message: params[:msg], user_defined: user_defined)
+      # else
+         # assistant.send_message(auth: auth, message: params[:msg], user_defined: user_defined)
+      # end
       render json: {}
     end
 

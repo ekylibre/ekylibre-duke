@@ -21,18 +21,17 @@ module Duke
     attr_reader :api_key, :version, :url, :authenticator
 
     # Creating an Assistant instance, basically at each Request, does not @return
-    def initialize(api_key:, version:, url:)
+    def initialize(api_key:, version:, url:, assistant_id: nil)
       @api_key = api_key
       @version = version
       @url = url
-      @authenticator = Authenticators::IamAuthenticator.new(
-        apikey: api_key
-      )
-      @assistant = AssistantV2.new(
-        authenticator: @authenticator,
-        version: version
-      )
+      @assistant_id = assistant_id
+      @authenticator = Authenticators::IamAuthenticator.new(apikey: api_key)
+      @assistant = AssistantV2.new(authenticator: @authenticator, version: version)
       @assistant.service_url = url
+      if Rails.env.development?
+        @assistant.configure_http_client(disable_ssl_verification: true)
+      end
     end
 
     # @return [Auth]
@@ -42,6 +41,44 @@ module Duke
       )
       session_id = JSON.parse(JSON.pretty_generate(response.result))['session_id']
       Auth.new(session_id: session_id, assistant_id: assistant_id)
+    end
+
+    # @return [Assistant]
+    def session_assistant_creation(assistant_id)
+      response = @assistant.create_session(assistant_id: assistant_id)
+      response.result["session_id"]
+    end
+
+    def send_build_message(assistant_id, session_id, intent, message, user_defined)
+      response = @assistant.message(
+        assistant_id: assistant_id,
+        session_id: session_id,
+        input: build_input_message(intent: intent, message: message),
+        context: build_context_message(user_defined)
+      )
+    end
+
+    def build_input_message(intent:, message:)
+      if intent.present?
+        { text: message, intents: [{ intent: intent, confidence: 1 }] }
+      else
+        { text: message }
+      end
+    end
+
+    def build_context_message(user_defined)
+      {
+        global: {
+          system: {
+            user_id: user_defined[:user_email]
+          }
+        },
+        skills: {
+          "main skill": {
+            user_defined: user_defined
+          }
+        }
+      }
     end
 
     # @param [Auth] auth
@@ -94,7 +131,9 @@ module Duke
     private
       # Returns correct API URL
       def build_url(auth)
-        "#{@url}/v2/assistants/#{auth.assistant_id}/sessions/#{auth.session_id}/message?version=#{@version}"
+        ibm_url = "#{@url}/v2/assistants/#{auth.assistant_id}/sessions/#{auth.session_id}/message?version=#{@version}"
+        puts "ibm_url #{ibm_url.inspect.green}"
+        ibm_url
       end
 
       # Creating API-accepted headers for IBM Watson
@@ -102,6 +141,7 @@ module Duke
         headers = Common.new.get_sdk_headers(:conversation, :V2, :message).merge({ Accept: 'application/json',
                                                                                   "Content-Type": 'application/json' })
         @authenticator.authenticate(headers)
+        puts "headers #{headers.inspect.green}"
         headers
       end
   end
