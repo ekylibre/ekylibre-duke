@@ -5,7 +5,7 @@ Duke currently handles harvest receptions (viti) and vegetal/viti interventions
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application's Gemfile (Gemfile.local):
 
 ```
 gem 'duke', git: 'git@gitlab.com:ekylibre/ekylibre-duke.git', branch: 'dev' # for dev branch
@@ -52,6 +52,7 @@ WATSON_VERSION=YOUR_WATSON_VERSION
 WATSON_EKYVITI_ID=YOUR_ASSISTANT_ID
 AZURE_API_KEY=YOUR_AZURE_API_KEY
 AZURE_REGION=YOUR_AZURE_REGION
+NGROK_HTTPS_URL=YOUR_NGROK_HTTPS_URL
 ```
 4. Redirect your IBM webhooks requests to your ekylibre server
 
@@ -60,20 +61,22 @@ Locally :
 Install ngrok & execute below command:
 
 ```
-$ ./ngrok http -host-header=TENANT.ekylibre.lan PORT
+$ ./ngrok http --host-header=<<TENANT>>.ekylibre.lan PORT
 ```
 
-Example 1 : ./ngrok http -host-header=demo.ekylibre.lan 3000
+Example 1 : ./ngrok http --host-header=demo.ekylibre.lan 3000
 
-Example 2 : ./ngrok http -host-header=entredeuxterres.ekylibre.lan 3000
+Example 2 : ./ngrok http --host-header=entredeuxterres.ekylibre.lan 3000
 
-Then go locally inside your Gem to app/controllers/duke/duke_webchat_controller.rb and change your user_url line 36 in the user_defined method with
+Don't forget to update your .env file with `NGROK_HTTPS_URL=YOUR_NGROK_HTTPS_URL`
 
-user_url: "https://YOUR_NGROK_HTTPS_URL/dukewatson"
+5. Start your server
 
-instead of
+```
+$ TENANT=<<TENANT>> foreman s
+```
 
-user_url: "#{request.protocol}#{request.host}/dukewatson"
+Example 1 : TENANT=demo foreman s
 
 ## Contributing
 

@@ -29,8 +29,8 @@ module Duke
         apikey: api_key
       )
       @assistant = AssistantV2.new(
-        version: version,
-        authenticator: @authenticator
+        authenticator: @authenticator,
+        version: version
       )
       @assistant.service_url = url
     end
