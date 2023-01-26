@@ -390,8 +390,15 @@ module Duke
           elsif item_type == :product_nature_variant
             iterator = ProductNatureVariant.all
           elsif item_type == :lexicon_article
-            iterator = MasterVariant.all.where(family: %w[article equipment service]).map do |variant|
-              Duke::DukeMockObject.new(name: variant.translation.fra, id: variant.reference_name)
+            iterator = []
+            MasterVariant.all.where(family: %w[article equipment service]).each do |variant|
+              if variant.name_tags?
+                variant.name_tags.each do |tag|
+                  iterator << Duke::DukeMockObject.new(name: tag.to_s, id: variant.reference_name)
+                end
+              else
+                iterator << Duke::DukeMockObject.new(name: variant.translation.fra, id: variant.reference_name)
+              end
             end
           elsif item_type == :supplier_article
             iterator = PurchaseInvoice.of_supplier(@supplier).map(&:items).flatten.map(&:variant)
@@ -437,7 +444,8 @@ module Duke
           elsif item_type == :cultivation
             iterator = Product.of_expression('is plant or is land_parcel').interventionables(at: @date.to_time)
           end
-          return iterator.map{|rec| { id: rec.id, partials: rec.send(name_attr).duke_clear.words_combinations, name: rec.send(name_attr) }}
+          return iterator.map{ |rec|
+ { id: rec.id, partials: rec.send(name_attr).duke_clear.words_combinations, name: rec.send(name_attr) } }
         end
 
         # @param [str] item_type
