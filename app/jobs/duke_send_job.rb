@@ -6,11 +6,7 @@ class DukeSendJob < ApplicationJob
     if session_id.nil?
       session_id = assistant.session_assistant_creation(WATSON_EKYVITI_ID)
     end
-    begin
-      response = assistant.send_build_message(WATSON_EKYVITI_ID, session_id, intent, message, user_defined)
-    rescue IBMCloudSdkCore::ApiException => e
-      puts e.inspect.red
-    end
-    ActionCable.server.broadcast "duke_#{session_id}", message: response['output']['generic']
+    response = assistant.send_build_message(WATSON_EKYVITI_ID, session_id, intent, message, user_defined)
+    ActionCable.server.broadcast "duke_#{session_id}", message: response.result["output"]["generic"] if response.status == 200
   end
 end

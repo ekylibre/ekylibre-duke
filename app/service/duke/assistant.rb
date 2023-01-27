@@ -50,19 +50,38 @@ module Duke
     end
 
     def send_build_message(assistant_id, session_id, intent, message, user_defined)
-      response = @assistant.message(
-        assistant_id: assistant_id,
-        session_id: session_id,
-        input: build_input_message(intent: intent, message: message),
-        context: build_context_message(user_defined)
-      )
+      begin
+        response = @assistant.message(
+          assistant_id: assistant_id,
+          session_id: session_id,
+          input: build_input_message(intent: intent, message: message),
+          context: build_context_message(user_defined)
+        )
+      rescue IBMCloudSdkCore::ApiException => e
+        puts e.inspect.red
+        raise StandardError.new("IBM Wastson API error : #{e.inspect}")
+      end
+    end
+
+    def send_test_message(assistant_id, session_id, message)
+      begin
+        response = @assistant.message(
+          assistant_id: assistant_id,
+          session_id: session_id,
+          input: { "text" => message },
+          context: nil
+        )
+      rescue IBMCloudSdkCore::ApiException => e
+        puts e.inspect.red
+        raise StandardError.new("IBM Wastson API error : #{e.inspect}")
+      end
     end
 
     def build_input_message(intent:, message:)
       if intent.present?
-        { text: message, intents: [{ intent: intent, confidence: 1 }] }
+        { message_type: 'text', text: message, intents: [{ intent: intent, confidence: 1 }] }
       else
-        { text: message }
+        { message_type: 'text', text: message }
       end
     end
 
@@ -74,9 +93,7 @@ module Duke
           }
         },
         skills: {
-          "main skill": {
-            user_defined: user_defined
-          }
+          user_defined: user_defined
         }
       }
     end
