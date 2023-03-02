@@ -34,13 +34,13 @@ module Duke
                     else
                       request.protocol + request.host
                     end
-        user_url = 
+        user_url =
         if current_user
           {
             tenant: Ekylibre::Tenant.current,
             user_token: current_user.authentication_token,
             user_email: current_user.email,
-            user_url: base_url + "/dukewatson",
+            user_url: base_url + '/dukewatson',
             user_plan: user_plan
           }
         else

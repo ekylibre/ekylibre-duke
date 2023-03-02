@@ -5,10 +5,6 @@ class StripXForwardedHost
 
   def call(env)
     env.delete('HTTP_X_FORWARDED_HOST')
-    begin
-      @app.call(env)
-    rescue ActionController::InvalidAuthenticityToken => e
-      binding.pry
-    end
+    @app.call(env)
   end
 end
