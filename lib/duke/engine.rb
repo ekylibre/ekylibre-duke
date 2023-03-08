@@ -1,7 +1,16 @@
+require_relative '../../config/initializers/strip_x_forwarded_host'
 module Duke
   class Engine < ::Rails::Engine
     initializer 'duke.assets.precompile' do |app|
       app.config.assets.precompile += %w[duke.js *.svg *.haml]
+    end
+
+    initializer 'duke.development_config', before: :load_environment_config do |app|
+      # required with ngrok 3.1.0 https://github.com/inconshreveable/ngrok/issues/879
+      app.config.middleware.insert_before(0, StripXForwardedHost)
+
+      app.config.action_cable.disable_request_forgery_protection = true
+      app.config.action_controller.forgery_protection_origin_check = false
     end
 
     initializer :i18n do |app|

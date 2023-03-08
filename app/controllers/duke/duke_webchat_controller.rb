@@ -1,12 +1,13 @@
 module Duke
   class DukeWebchatController < ApplicationController
+    skip_before_action :verify_authenticity_token
 
     def create_assistant
       Assistant.new(api_key: WATSON_APIKEY, version: WATSON_VERSION, url: WATSON_URL)
     end
 
     def create_session
-      render(json: create_assistant.session_creation(WATSON_EKYVITI_ID).to_json)
+      render(json: create_assistant.session_creation(WATSON_ID).to_json)
     end
 
     def send_msg
@@ -28,12 +29,18 @@ module Duke
 
       def user_defined
         user_plan = defined?(Saassy) ? Saassy.product_name : 'ekyagri'
+        base_url =  if Rails.env == 'development'
+                      ENV.fetch('NGROK_HTTPS_URL') { raise 'NGROK_HTTPS_URL env variable should be set in dev mode' }
+                    else
+                      request.protocol + request.host
+                    end
+        user_url =
         if current_user
           {
             tenant: Ekylibre::Tenant.current,
             user_token: current_user.authentication_token,
             user_email: current_user.email,
-            user_url: "#{request.protocol}#{request.host}/dukewatson",
+            user_url: base_url + '/dukewatson',
             user_plan: user_plan
           }
         else
