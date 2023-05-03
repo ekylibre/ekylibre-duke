@@ -27,7 +27,7 @@ module Duke
     private
 
       def user_defined
-        user_plan = defined?(Saassy) ? Saassy.product_name : 'ekyagri'
+        user_plan = 'ekyviti'
         if current_user
           {
             tenant: Ekylibre::Tenant.current,
