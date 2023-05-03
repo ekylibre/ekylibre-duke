@@ -28,7 +28,7 @@ module Duke
     private
 
       def user_defined
-        user_plan = defined?(Saassy) ? Saassy.product_name : 'ekyagri'
+        user_plan = 'ekyviti'
         base_url =  if Rails.env == 'development'
                       ENV.fetch('NGROK_HTTPS_URL') { raise 'NGROK_HTTPS_URL env variable should be set in dev mode' }
                     else
