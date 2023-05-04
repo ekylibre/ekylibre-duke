@@ -81,6 +81,10 @@ module Duke
         Activity.availables.any? {|act| act.family == :plant_farming}
       end
 
+      def viti?
+        Activity.availables.any? {|act| act.family == :vine_farming}
+      end
+
       # does Tenant have any animal activity ?
       def animal?
         Activity.availables.any? {|act| act.family == :animal_farming}

@@ -82,10 +82,12 @@ module Duke
                               else
                                 [
                                   :common,
-                                  if Saassy.ekyagri?
+                                  if viti? && vegetal?
+                                    :viti_vegetal
+                                  elsif viti?
+                                    :viti
+                                  elsif vegetal?
                                     :vegetal
-                                  else
-                                    vegetal? ? :viti_vegetal : :viti
                                   end,
                                   animal? ? :animal : nil
                                 ]
