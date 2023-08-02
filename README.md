@@ -73,6 +73,10 @@ NGROK_HTTPS_URL=YOUR_NGROK_HTTPS_URL
 
 3. Start your server
 
+```
+$ foreman s
+```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub in [this repository](https://gitlab.com/ekylibre/ekylibre-duke)
