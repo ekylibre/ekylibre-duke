@@ -47,12 +47,16 @@ Locally :
 Install ngrok & execute below command:
 
 ```
-$ ./ngrok http --host-header=TENANT.ekylibre.lan PORT
+$ ./ngrok http --domain=YOUR_DOMAIN --host-header=TENANT.ekylibre.lan PORT
 ```
 
 Example 1 : ./ngrok http --host-header=demo.ekylibre.lan 3000
 
 Example 2 : ./ngrok http --host-header=entredeuxterres.ekylibre.lan 3000
+
+Example 3 : ngrok http --domain=intimate-firefly-top.ngrok-free.app --host-header=demo.ekylibre.lan 3000
+
+Get the https url from ngrok console as YOUR_NGROK_HTTPS_URL
 
 2. Add environment variable 
 

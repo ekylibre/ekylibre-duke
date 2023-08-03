@@ -550,6 +550,21 @@
       "examples": []
     },
     {
+      "intent": "IDEA_A3",
+      "examples": [],
+      "description": ""
+    },
+    {
+      "intent": "IDEA_A4",
+      "examples": [],
+      "description": ""
+    },
+    {
+      "intent": "IDEA_A5",
+      "examples": [],
+      "description": ""
+    },
+    {
       "intent": "Intervention",
       "examples": [
         {
@@ -3264,7 +3279,7 @@
   },
   "webhooks": [
     {
-      "url": "https://stripe-stag.ekylibre-dev.farm/dukewatson",
+      "url": "https://stripe.ekylibre-dev.farm/dukewatson",
       "name": "main_webhook",
       "headers": [
         {
@@ -3501,6 +3516,17 @@
     {
       "type": "event_handler",
       "output": {},
+      "parent": "slot_7_1690966630052",
+      "context": {
+        "number": "@sys-number"
+      },
+      "conditions": "@sys-number",
+      "event_name": "input",
+      "dialog_node": "handler_4_1690966630080"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
       "parent": "slot_10_1611940086272",
       "context": {
         "sale_type": "@Unspecific:Unpaid"
@@ -3527,6 +3553,21 @@
       "conditions": "@Modify",
       "event_name": "input",
       "dialog_node": "handler_5_1615801169705"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [],
+            "response_type": "text"
+          }
+        ]
+      },
+      "parent": "slot_7_1690966630052",
+      "event_name": "focus",
+      "dialog_node": "handler_5_1690966630080",
+      "previous_sibling": "handler_4_1690966630080"
     },
     {
       "type": "event_handler",
@@ -3886,6 +3927,38 @@
       "conditions": "#ProductionCost",
       "dialog_node": "node_10_1650362279100",
       "previous_sibling": "node_10_1605181561792"
+    },
+    {
+      "type": "standard",
+      "title": "A4_09",
+      "output": {
+        "generic": [
+          {
+            "title": "Les questions qui suivent concernent vos activités de maraîchage<br>Mise en place de cultures en association et/ou semis sous couvert sur une même planche ?",
+            "options": [
+              {
+                "label": "Oui",
+                "value": {
+                  "input": {
+                    "text": "SaveYes"
+                  }
+                }
+              },
+              {
+                "label": "Non",
+                "value": {
+                  "input": {
+                    "text": "SaveNo"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_1_1690965585555",
+      "dialog_node": "node_10_1691041850573"
     },
     {
       "type": "standard",
@@ -4465,6 +4538,73 @@
       "conditions": "true",
       "dialog_node": "node_1_1645038142559",
       "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "title": "IDEA_A3_Redirect",
+      "output": {},
+      "parent": "node_2_1625219388792",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::Redirect",
+              "options": {
+                "number": "$diagnostic_id",
+                "specific": "A3"
+              }
+            }
+          },
+          "result_variable": "webhook_result_idea"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "#IDEA_A3",
+      "dialog_node": "node_1_1690921870405",
+      "previous_sibling": "node_7_1628262879087"
+    },
+    {
+      "type": "standard",
+      "title": "IDEA_A4_Redirect",
+      "output": {},
+      "parent": "node_2_1625219388792",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::Redirect",
+              "options": {
+                "number": "$diagnostic_id",
+                "specific": "A4"
+              }
+            }
+          },
+          "result_variable": "webhook_result_idea"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "#IDEA_A4",
+      "dialog_node": "node_1_1690965585555",
+      "previous_sibling": "node_1_1690921870405"
     },
     {
       "type": "standard",
@@ -5418,6 +5558,90 @@
     },
     {
       "type": "standard",
+      "title": "A3_01",
+      "output": {
+        "generic": [
+          {
+            "title": "Participez-vous à des programmes d'entretien de ressources génétiques ?<div class='duke-information'> <i style='color: #3340A4;' class='icon icon-help-outline'></i>    Ces programmes peuvent concerner la sélection génétique sur des races à petit effectif, sur des espèces, variétés, cépages oubliés ou la sélection participative avec possibilité d’en bénéficier, sélection massale viticole, etc.</div>",
+            "options": [
+              {
+                "label": "Oui",
+                "value": {
+                  "input": {
+                    "text": "SaveYes"
+                  }
+                }
+              },
+              {
+                "label": "Non",
+                "value": {
+                  "input": {
+                    "text": "SaveNo"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_1_1690921870405",
+      "context": {
+        "boolean": false
+      },
+      "conditions": "true",
+      "dialog_node": "node_2_1690921870408"
+    },
+    {
+      "type": "standard",
+      "title": "A4_10",
+      "output": {
+        "generic": [
+          {
+            "title": "$webhook_result_idea.sentence",
+            "options": [
+              {
+                "label": "Oui",
+                "value": {
+                  "input": {
+                    "text": "SaveYes"
+                  }
+                }
+              },
+              {
+                "label": "Non",
+                "value": {
+                  "input": {
+                    "text": "SaveNo"
+                  }
+                }
+              }
+            ],
+            "response_type": "option"
+          }
+        ]
+      },
+      "parent": "node_1_1690965585555",
+      "context": {},
+      "conditions": "true",
+      "dialog_node": "node_2_1690965585565",
+      "previous_sibling": "node_10_1691041850573"
+    },
+    {
+      "type": "standard",
+      "title": "Said no",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_10_1691041850573",
+      "context": {
+        "value": false
+      },
+      "conditions": "@Save:SaveNo",
+      "dialog_node": "node_2_1691042306494"
+    },
+    {
+      "type": "standard",
       "title": "Modify Quantity/TAV",
       "output": {},
       "parent": "node_4_1615801149112",
@@ -5917,6 +6141,89 @@
       "output": {
         "generic": []
       },
+      "parent": "node_2_1690921870408",
+      "context": {
+        "boolean": true
+      },
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "@Save:SaveYes",
+      "dialog_node": "node_3_1690921870408"
+    },
+    {
+      "type": "standard",
+      "title": "Fallow land area Disagree",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Quelle est votre surface de jachère (hectares) ?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_2_1690965585565",
+      "conditions": "@Save:SaveNo",
+      "dialog_node": "node_3_1690966303559"
+    },
+    {
+      "type": "standard",
+      "title": "Send A4_09 response",
+      "parent": "node_2_1691042306494",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A4::GardeningSeeding",
+              "options": {
+                "specific": "$value"
+              }
+            }
+          },
+          "result_variable": "webhook_result_24"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "true",
+      "dialog_node": "node_3_1691042448879"
+    },
+    {
+      "type": "standard",
+      "title": "Said yes",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_10_1691041850573",
+      "context": {
+        "value": true
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_3_1691042448879"
+      },
+      "conditions": "true",
+      "dialog_node": "node_3_1691043182967",
+      "previous_sibling": "node_2_1691042306494"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": []
+      },
       "parent": "node_31_1628265769396",
       "context": {
         "boolean": true
@@ -6184,9 +6491,64 @@
     {
       "type": "folder",
       "title": "IDEA",
-      "conditions": "#IDEA_A1 || #IDEA_A2 && $user_plan == 'ekyviti'",
+      "conditions": "#IDEA_A1 || #IDEA_A2 || #IDEA_A3 || #IDEA_A4",
       "dialog_node": "node_4_1625162317230",
       "previous_sibling": "Bienvenue"
+    },
+    {
+      "type": "standard",
+      "title": "Send response",
+      "output": {},
+      "parent": "node_3_1690921870408",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A3::GeneticProgram",
+              "options": {
+                "specific": "A3"
+              },
+              "user_input": "$boolean"
+            }
+          },
+          "result_variable": "webhook_result_26"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_1_1690921870405"
+      },
+      "conditions": "true",
+      "dialog_node": "node_4_1690921870408"
+    },
+    {
+      "type": "standard",
+      "title": "Fallow land area Agree",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_2_1690965585565",
+      "context": {
+        "number": "$webhook_result_idea.options"
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_5_1690966438785"
+      },
+      "conditions": "true",
+      "dialog_node": "node_4_1690967213630",
+      "previous_sibling": "node_3_1690966303559"
     },
     {
       "type": "standard",
@@ -6577,6 +6939,53 @@
       "conditions": "true",
       "dialog_node": "node_5_1645194634269",
       "disambiguation_opt_out": true
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_2_1690921870408",
+      "context": {
+        "boolean": false
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_4_1690921870408"
+      },
+      "conditions": "true",
+      "dialog_node": "node_5_1690921870408",
+      "previous_sibling": "node_3_1690921870408"
+    },
+    {
+      "type": "frame",
+      "title": "Send Fallow land area",
+      "parent": "node_3_1690966303559",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A4::FallowLandValue",
+              "options": {
+                "number": "$number"
+              }
+            }
+          },
+          "result_variable": "webhook_result_23"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "conditions": "true",
+      "dialog_node": "node_5_1690966438785"
     },
     {
       "type": "standard",
@@ -10211,6 +10620,21 @@
     {
       "type": "response_condition",
       "output": {
+        "generic": []
+      },
+      "parent": "node_1_1690921870405",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_2_1690921870408"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A3_01'",
+      "dialog_node": "response_42_1690921870409",
+      "previous_sibling": "node_2_1690921870408"
+    },
+    {
+      "type": "response_condition",
+      "output": {
         "generic": [
           {
             "title": "$sentence",
@@ -10713,6 +11137,20 @@
     {
       "type": "response_condition",
       "output": {
+        "generic": []
+      },
+      "parent": "node_3_1691042448879",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_1_1690965585555"
+      },
+      "conditions": "true",
+      "dialog_node": "response_5_1691042485145"
+    },
+    {
+      "type": "response_condition",
+      "output": {
         "text": {
           "values": [
             "Malheureusement cela n'a pas abouti"
@@ -11100,6 +11538,21 @@
     {
       "type": "response_condition",
       "output": {
+        "generic": []
+      },
+      "parent": "node_1_1690965585555",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_2_1690965585565"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A4_10'",
+      "dialog_node": "response_6_1690965585565",
+      "previous_sibling": "node_2_1690965585565"
+    },
+    {
+      "type": "response_condition",
+      "output": {
         "generic": [
           {
             "values": [
@@ -11397,6 +11850,21 @@
     {
       "type": "response_condition",
       "output": {
+        "generic": []
+      },
+      "parent": "node_1_1690965585555",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_2_1625224532915"
+      },
+      "conditions": "anything_else",
+      "dialog_node": "response_7_1690967953468",
+      "previous_sibling": "response_6_1690965585565"
+    },
+    {
+      "type": "response_condition",
+      "output": {
         "generic": [
           {
             "values": [
@@ -11613,6 +12081,19 @@
       "parent": "node_3_1616166282095",
       "conditions": "$webhook_result_19",
       "dialog_node": "response_8_1616166306336"
+    },
+    {
+      "type": "response_condition",
+      "output": {},
+      "parent": "node_5_1690966438785",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_1_1690965585555"
+      },
+      "conditions": "true",
+      "dialog_node": "response_8_1690966630891",
+      "previous_sibling": "slot_7_1690966630052"
     },
     {
       "type": "response_condition",
@@ -12076,6 +12557,12 @@
       "variable": "$quantity",
       "dialog_node": "slot_7_1615800058526",
       "previous_sibling": "response_4_1615800072334"
+    },
+    {
+      "type": "slot",
+      "parent": "node_5_1690966438785",
+      "variable": "$number",
+      "dialog_node": "slot_7_1690966630052"
     },
     {
       "type": "slot",
