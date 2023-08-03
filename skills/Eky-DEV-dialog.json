@@ -3347,6 +3347,36 @@
     {
       "type": "event_handler",
       "output": {},
+      "parent": "slot_9_1691077093015",
+      "context": {
+        "number": "@sys-number"
+      },
+      "conditions": "@sys-number",
+      "event_name": "input",
+      "dialog_node": "handler_10_1691077093015"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Je n'ai pas compris le nombre, merci de me le réindiquer"
+              }
+            ],
+            "response_type": "text"
+          }
+        ]
+      },
+      "parent": "slot_9_1691077093015",
+      "event_name": "focus",
+      "dialog_node": "handler_11_1691077093015",
+      "previous_sibling": "handler_10_1691077093015"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
       "parent": "slot_6_1615801169688",
       "event_name": "focus",
       "dialog_node": "handler_1_1615801169705",
@@ -3359,6 +3389,76 @@
       "event_name": "focus",
       "dialog_node": "handler_1_1615802444045",
       "previous_sibling": "handler_7_1615802444045"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Je n'ai toujours pas compris le nombre"
+              }
+            ],
+            "response_type": "text"
+          }
+        ]
+      },
+      "parent": "slot_9_1691077093015",
+      "conditions": "true",
+      "event_name": "nomatch",
+      "dialog_node": "handler_12_1691077093015",
+      "previous_sibling": "handler_11_1691077093015"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
+      "parent": "slot_15_1691077302008",
+      "context": {
+        "number": "@sys-number"
+      },
+      "conditions": "@sys-number",
+      "event_name": "input",
+      "dialog_node": "handler_16_1691077302008"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Je n'ai pas compris le nombre, merci de me le réindiquer"
+              }
+            ],
+            "response_type": "text"
+          }
+        ]
+      },
+      "parent": "slot_15_1691077302008",
+      "event_name": "focus",
+      "dialog_node": "handler_17_1691077302008",
+      "previous_sibling": "handler_16_1691077302008"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Je n'ai toujours pas compris le nombre"
+              }
+            ],
+            "response_type": "text"
+          }
+        ]
+      },
+      "parent": "slot_15_1691077302008",
+      "conditions": "true",
+      "event_name": "nomatch",
+      "dialog_node": "handler_18_1691077302008",
+      "previous_sibling": "handler_17_1691077302008"
     },
     {
       "type": "event_handler",
@@ -3527,6 +3627,17 @@
     {
       "type": "event_handler",
       "output": {},
+      "parent": "slot_3_1691076507522",
+      "context": {
+        "number": "@sys-number"
+      },
+      "conditions": "@sys-number",
+      "event_name": "input",
+      "dialog_node": "handler_4_1691076507522"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
       "parent": "slot_10_1611940086272",
       "context": {
         "sale_type": "@Unspecific:Unpaid"
@@ -3568,6 +3679,45 @@
       "event_name": "focus",
       "dialog_node": "handler_5_1690966630080",
       "previous_sibling": "handler_4_1690966630080"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Je n'ai toujours pas compris le nombre"
+              }
+            ],
+            "response_type": "text"
+          }
+        ]
+      },
+      "parent": "slot_2_1691049677110",
+      "conditions": "true",
+      "event_name": "nomatch",
+      "dialog_node": "handler_5_1691049883747",
+      "previous_sibling": "handler_8_1691049677131"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Je n'ai pas compris le nombre, merci de me le réindiquer"
+              }
+            ],
+            "response_type": "text"
+          }
+        ]
+      },
+      "parent": "slot_3_1691076507522",
+      "event_name": "focus",
+      "dialog_node": "handler_5_1691076507522",
+      "previous_sibling": "handler_4_1691076507522"
     },
     {
       "type": "event_handler",
@@ -3613,6 +3763,37 @@
     {
       "type": "event_handler",
       "output": {},
+      "parent": "slot_2_1691049677110",
+      "context": {
+        "number": "@sys-number"
+      },
+      "conditions": "@sys-number",
+      "event_name": "input",
+      "dialog_node": "handler_6_1691049677131"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Je n'ai toujours pas compris le nombre"
+              }
+            ],
+            "response_type": "text"
+          }
+        ]
+      },
+      "parent": "slot_3_1691076507522",
+      "conditions": "true",
+      "event_name": "nomatch",
+      "dialog_node": "handler_6_1691076507522",
+      "previous_sibling": "handler_5_1691076507522"
+    },
+    {
+      "type": "event_handler",
+      "output": {},
       "parent": "slot_3_1614761724977",
       "event_name": "focus",
       "dialog_node": "handler_7_1614761725001",
@@ -3636,6 +3817,25 @@
       "conditions": "@sys-number",
       "event_name": "input",
       "dialog_node": "handler_7_1615802444045"
+    },
+    {
+      "type": "event_handler",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Je n'ai pas compris le nombre, merci de me le réindiquer"
+              }
+            ],
+            "response_type": "text"
+          }
+        ]
+      },
+      "parent": "slot_2_1691049677110",
+      "event_name": "focus",
+      "dialog_node": "handler_8_1691049677131",
+      "previous_sibling": "handler_6_1691049677131"
     },
     {
       "type": "event_handler",
@@ -4608,6 +4808,27 @@
     },
     {
       "type": "standard",
+      "title": "A4_16",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Sur votre exploitation, combien avez-vous de mètres de ripisylves ?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_1_1690965585555",
+      "conditions": "true",
+      "dialog_node": "node_1_1691076507516",
+      "previous_sibling": "node_7_1691049245441"
+    },
+    {
+      "type": "standard",
       "title": "Add Analysis",
       "output": {},
       "parent": "node_8_1615800693158",
@@ -4725,6 +4946,27 @@
     },
     {
       "type": "standard",
+      "title": "A4_21",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Sur votre exploitation, combien avez-vous d’hectares de tourbières ?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_1_1690965585555",
+      "conditions": "true",
+      "dialog_node": "node_13_1691077301999",
+      "previous_sibling": "node_7_1691077093008"
+    },
+    {
+      "type": "standard",
       "title": "Add worker",
       "output": {},
       "parent": "node_13_1612459497880",
@@ -4774,6 +5016,41 @@
       },
       "conditions": "@Save:SaveYes",
       "dialog_node": "node_14_1628265543669"
+    },
+    {
+      "type": "frame",
+      "title": "Send response A4_21",
+      "output": {},
+      "parent": "node_13_1691077301999",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A4::PeatlandArea",
+              "options": {
+                "number": "$number"
+              }
+            }
+          },
+          "result_variable": "webhook_result_25"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_1_1690965585555"
+      },
+      "conditions": "true",
+      "dialog_node": "node_14_1691077302008"
     },
     {
       "type": "standard",
@@ -5625,7 +5902,7 @@
       "context": {},
       "conditions": "true",
       "dialog_node": "node_2_1690965585565",
-      "previous_sibling": "node_10_1691041850573"
+      "previous_sibling": "node_13_1691077301999"
     },
     {
       "type": "standard",
@@ -5639,6 +5916,41 @@
       },
       "conditions": "@Save:SaveNo",
       "dialog_node": "node_2_1691042306494"
+    },
+    {
+      "type": "frame",
+      "title": "Send response A4_16",
+      "output": {},
+      "parent": "node_1_1691076507516",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A4::Ripisylve",
+              "options": {
+                "number": "$number"
+              }
+            }
+          },
+          "result_variable": "webhook_result_25"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_1_1690965585555"
+      },
+      "conditions": "true",
+      "dialog_node": "node_2_1691076507522"
     },
     {
       "type": "standard",
@@ -6218,6 +6530,40 @@
       "conditions": "true",
       "dialog_node": "node_3_1691043182967",
       "previous_sibling": "node_2_1691042306494"
+    },
+    {
+      "type": "frame",
+      "title": "Send response A4_17",
+      "parent": "node_7_1691049245441",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A4::BushEdge",
+              "options": {
+                "number": "$number"
+              }
+            }
+          },
+          "result_variable": "webhook_result_25"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_1_1690965585555"
+      },
+      "conditions": "true",
+      "dialog_node": "node_3_1691049655751"
     },
     {
       "type": "standard",
@@ -7722,6 +8068,48 @@
     },
     {
       "type": "standard",
+      "title": "A4_17",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "$webhook_result_idea.sentence"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_1_1690965585555",
+      "conditions": "true",
+      "dialog_node": "node_7_1691049245441",
+      "previous_sibling": "node_10_1691041850573"
+    },
+    {
+      "type": "standard",
+      "title": "A4_20",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Sur votre exploitation, combien d’hectares en agroforesterie intraparcellaire avez-vous ?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_1_1690965585555",
+      "conditions": "true",
+      "dialog_node": "node_7_1691077093008",
+      "previous_sibling": "node_1_1691076507516"
+    },
+    {
+      "type": "standard",
       "title": "What can Duke do",
       "output": {
         "generic": [
@@ -8133,6 +8521,41 @@
       "dialog_node": "node_8_1645527936409",
       "previous_sibling": "node_8_1645194617696",
       "disambiguation_opt_out": true
+    },
+    {
+      "type": "frame",
+      "title": "Send response A4_20",
+      "output": {},
+      "parent": "node_7_1691077093008",
+      "actions": [
+        {
+          "name": "main_webhook",
+          "type": "webhook",
+          "parameters": {
+            "main_param": {
+              "parsed": "$diagnostic_id",
+              "tenant": "$tenant",
+              "handler": "Durability::A4::AgroForestArea",
+              "options": {
+                "number": "$number"
+              }
+            }
+          },
+          "result_variable": "webhook_result_25"
+        }
+      ],
+      "metadata": {
+        "_customization": {
+          "mcr": true
+        }
+      },
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_1_1690965585555"
+      },
+      "conditions": "true",
+      "dialog_node": "node_8_1691077093015"
     },
     {
       "type": "standard",
@@ -10132,6 +10555,36 @@
     {
       "type": "response_condition",
       "output": {
+        "generic": []
+      },
+      "parent": "node_1_1690965585555",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1691077093008"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A4_20'",
+      "dialog_node": "response_3_1691077194324",
+      "previous_sibling": "response_5_1691076603035"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_1_1690965585555",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_13_1691077301999"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A4_21'",
+      "dialog_node": "response_3_1691077416950",
+      "previous_sibling": "response_3_1691077194324"
+    },
+    {
+      "type": "response_condition",
+      "output": {
         "generic": [
           {
             "values": [
@@ -10616,6 +11069,21 @@
       "parent": "node_8_1645194585797",
       "conditions": "$webhook_result_30",
       "dialog_node": "response_4_1645534823841"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_1_1690965585555",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_10_1691041850573"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A4_09'",
+      "dialog_node": "response_4_1691064818184",
+      "previous_sibling": "response_6_1690965585565"
     },
     {
       "type": "response_condition",
@@ -11147,6 +11615,21 @@
       },
       "conditions": "true",
       "dialog_node": "response_5_1691042485145"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_1_1690965585555",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_1_1691076507516"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A4_16'",
+      "dialog_node": "response_5_1691076603035",
+      "previous_sibling": "response_8_1691064829776"
     },
     {
       "type": "response_condition",
@@ -11860,7 +12343,7 @@
       },
       "conditions": "anything_else",
       "dialog_node": "response_7_1690967953468",
-      "previous_sibling": "response_6_1690965585565"
+      "previous_sibling": "response_3_1691077416950"
     },
     {
       "type": "response_condition",
@@ -12094,6 +12577,21 @@
       "conditions": "true",
       "dialog_node": "response_8_1690966630891",
       "previous_sibling": "slot_7_1690966630052"
+    },
+    {
+      "type": "response_condition",
+      "output": {
+        "generic": []
+      },
+      "parent": "node_1_1690965585555",
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "node_7_1691049245441"
+      },
+      "conditions": "$webhook_result_idea.redirect == 'A4_17'",
+      "dialog_node": "response_8_1691064829776",
+      "previous_sibling": "response_4_1691064818184"
     },
     {
       "type": "response_condition",
@@ -12478,6 +12976,13 @@
     {
       "type": "slot",
       "output": {},
+      "parent": "node_14_1691077302008",
+      "variable": "$number",
+      "dialog_node": "slot_15_1691077302008"
+    },
+    {
+      "type": "slot",
+      "output": {},
       "parent": "node_1_1601576465499",
       "variable": "$quantity",
       "dialog_node": "slot_2_1601576465505"
@@ -12499,6 +13004,13 @@
     {
       "type": "slot",
       "output": {},
+      "parent": "node_3_1691049655751",
+      "variable": "$number",
+      "dialog_node": "slot_2_1691049677110"
+    },
+    {
+      "type": "slot",
+      "output": {},
       "parent": "node_10_1614761600209",
       "variable": "$tax_state",
       "dialog_node": "slot_3_1614761724977",
@@ -12516,6 +13028,13 @@
       "variable": "$campaign_id",
       "dialog_node": "slot_3_1625218029092",
       "previous_sibling": "response_4_1625233076132"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_2_1691076507522",
+      "variable": "$number",
+      "dialog_node": "slot_3_1691076507522"
     },
     {
       "type": "slot",
@@ -12570,6 +13089,13 @@
       "variable": "$Complementary",
       "dialog_node": "slot_8_1615800948137",
       "previous_sibling": "node_7_1615801038676"
+    },
+    {
+      "type": "slot",
+      "output": {},
+      "parent": "node_8_1691077093015",
+      "variable": "$number",
+      "dialog_node": "slot_9_1691077093015"
     },
     {
       "type": "standard",
